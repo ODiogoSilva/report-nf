@@ -129,22 +129,13 @@
                           </span>
                       </h4>
                   </li>
-                  <a class="list-group-item">
-                      INNUca
-                      <span class="badge badge-primary badge-pill">14</span>
-                  </a>
-                  <a class="list-group-item">
-                      Prokka
-                      <span class="badge badge-primary badge-pill">2</span>
-                  </a>
-                  <a class="list-group-item">
-                      chewBBACA
-                      <span class="badge badge-primary badge-pill">2</span>
-                  </a>
-                  <a class="list-group-item">
-                      Pathotyping
-                      <span class="badge badge-primary badge-pill">1</span>
-                  </a>
+                    <a class="list-group-item workflow_li"
+                       ng-repeat="workflow in workflows"
+                       ng-click="switch_workflow(workflow[0])">{{workflow[0]}}
+                        <span
+                                class="badge badge-primary badge-pill">{{workflow[1]
+                            }}</span>
+                    </a>
                 </ul>
 
             </div>

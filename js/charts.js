@@ -10,6 +10,13 @@ app.controller("reportsController", function($scope, $http){
     $scope.graph1_name = "Graph 1";
     $scope.graph2_name = "Graph 2";
     $scope.table_name = "Table 1";
+
+    $scope.workflows = [
+        ["INNUca", 14],
+        ["Prokka", 2],
+        ["chewBBACA", 2],
+        ["Pathotyping", 1]
+    ];
     
 
     $('.selectpicker').selectpicker({
@@ -32,6 +39,10 @@ app.controller("reportsController", function($scope, $http){
         return false;
     });
 
+    $scope.switch_workflow = (workflow_name) => {
+        console.log("Workflow change");
+        $scope.workflow_name = workflow_name;
+    };
 
 
     const json_table_data = [
