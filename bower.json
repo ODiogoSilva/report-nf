@@ -16,6 +16,16 @@
   ],
   "dependencies": {
     "highcharts": "^6.0.3",
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "angular": "^1.6.6",
+    "bootstrap": "^3.3.7",
+    "datatables.net": "^1.10.16",
+    "datatables.net-dt": "^3.2.2",
+    "datatables.net-autofill": "^2.2.2",
+    "datatables.net-autofill-dt": "^2.2.2",
+    "datatables.net-buttons": "^1.4.2",
+    "datatables.net-buttons-dt": "^1.4.2",
+    "bootstrap-select": "^1.12.4",
+    "components-font-awesome": "^4.7.0"
   }
 }
