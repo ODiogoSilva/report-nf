@@ -1,0 +1,21 @@
+{
+  "name": "report-nf",
+  "homepage": "https://github.com/ODiogoSilva/report-nf",
+  "authors": [
+    "ODiogoSilva <o.diogosilva@gmail.com>"
+  ],
+  "description": "",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "highcharts": "^6.0.3",
+    "jquery": "^3.2.1"
+  }
+}
