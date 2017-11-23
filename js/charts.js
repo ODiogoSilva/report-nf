@@ -6,6 +6,11 @@ app.controller("reportsController", function($scope, $http){
     $scope.workflow_name = "INNUca";
     $scope.table_headers = ["ID", "Coverage", "Badge", "lastName",
         "gender", "dob", "race"];
+    
+    $scope.graph1_name = "Graph 1";
+    $scope.graph2_name = "Graph 2";
+    $scope.table_name = "Table 1";
+    
 
     $('.selectpicker').selectpicker({
       style: 'btn-info',
@@ -18,6 +23,14 @@ app.controller("reportsController", function($scope, $http){
         console.log(response);
     });
 
+
+    $('.toggle_sidebar').on("click", () => {
+        /* to toggle the sidebar, just switch the CSS classes */
+        $("#workflows_sidebar").toggleClass("collapsed_sidebar");
+        $("#workflows_content").toggleClass("col-md-12 col-md-8");
+        $(".toggle_sidebar").toggleClass("hide_button");
+        return false;
+    });
 
 
 

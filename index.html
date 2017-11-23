@@ -41,115 +41,170 @@
         button.m-bottom{
             margin-bottom: 10px;
         }
+
+        #workflows_sidebar {
+          /* for the animation */
+          transition: margin 0.3s ease;
+        }
+
+        .collapsed_sidebar {
+          /* hide it for small displays*/
+          display: none;
+        }
+
+        @media (min-width: 992px) {
+          .collapsed_sidebar {
+            display: block;
+            /* same width as sidebar */
+            margin-left: -25%;
+          }
+        }
+
+        #row-main {
+          /* necessary to hide collapsed sidebar */
+          overflow-x: hidden;
+        }
+
+        #workflows_content {
+          /* for the animation */
+          transition: width 0.3s ease;
+        }
+
+        .hide_button {
+            display:none;
+        }
+
+        a {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body ng-app="reportsApp" ng-controller="reportsController">
 
 
     <div id="body_container" style="display:none;">
+        <div class="row">
+            <div class="jumbotron">
+                <div class="container" style="text-align: center;">
+                    <h1>Reports Page</h1>
+                    <p>Reports app from the Oneida Platform</p>
+                    <h4>Select a Project or a set of strains assign to that
+                        project</h4>
 
-        <div class="jumbotron">
-            <div class="container" style="text-align: center;">
-                <h1>Reports Page</h1>
-                <p>Reports app from the Oneida Platform</p>
-                <h4>Select a Project or a set of strains assign to that
-                    project</h4>
+                    <div>
+                        <select class="selectpicker" multiple
+                                title="Select one or more projects">
+                            <option>Project 1</option>
+                            <option>Project 2</option>
+                            <option>Project 3</option>
+                        </select>
 
-                <div>
-                    <select class="selectpicker" multiple
-                            title="Select one or more projects">
-                        <option>Project 1</option>
-                        <option>Project 2</option>
-                        <option>Project 3</option>
-                    </select>
-
-                    <select class="selectpicker" multiple
-                            title="Select one or more strains">
-                        <option>Load entire Project</option>
-                        <option>Strain 1</option>
-                        <option>Strain 2</option>
-                    </select>
-                </div>
-                <div style="margin-top: 10px;">
-                    <button class="btn btn-info">Submit</button>
-                </div>
-                <div style="margin-top: 10px;">
-                    <p><b>Workflow: </b>{{workflow_name}}</p>
+                        <select class="selectpicker" multiple
+                                title="Select one or more strains">
+                            <option>Load entire Project</option>
+                            <option>Strain 1</option>
+                            <option>Strain 2</option>
+                        </select>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button class="btn btn-info">Submit</button>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <p><b>Workflow: </b>{{workflow_name}}</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-2">
-            <ul class="list-group">
-              <li class="list-group-item list-group-item-primary">
-                  <h4>Workflows</h4>
-              </li>
-              <li class="list-group-item">
-                  INNUca
-                  <span class="badge badge-primary badge-pill">14</span>
-              </li>
-              <li class="list-group-item">
-                  Prokka
-                  <span class="badge badge-primary badge-pill">2</span>
-              </li>
-              <li class="list-group-item">
-                  chewBBACA
-                  <span class="badge badge-primary badge-pill">2</span>
-              </li>
-              <li class="list-group-item">
-                  Pathotyping
-                  <span class="badge badge-primary badge-pill">1</span>
-              </li>
-            </ul>
+        <div class="row" id="row-main">
+            <div class="col-md-2" id="workflows_sidebar">
+                <ul class="list-group">
+                  <li class="list-group-item list-group-item-primary">
+                      <h4>Workflows
+                          <span style="float: right;">
+                              <button
+                                      class="btn btn-xs btn-default toggle_sidebar">
+                                  <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                              </button>
+                          </span>
+                      </h4>
+                  </li>
+                  <a class="list-group-item">
+                      INNUca
+                      <span class="badge badge-primary badge-pill">14</span>
+                  </a>
+                  <a class="list-group-item">
+                      Prokka
+                      <span class="badge badge-primary badge-pill">2</span>
+                  </a>
+                  <a class="list-group-item">
+                      chewBBACA
+                      <span class="badge badge-primary badge-pill">2</span>
+                  </a>
+                  <a class="list-group-item">
+                      Pathotyping
+                      <span class="badge badge-primary badge-pill">1</span>
+                  </a>
+                </ul>
 
-        </div>
+            </div>
 
-        <div class="col-md-8">
-            <div class="container">
-                <button type="button" class="btn btn-sm btn-info m-bottom"
-                        data-toggle="collapse"
-                        data-target="#table1_div"><i class="fa fa-compress" aria-hidden="true"></i>
-                </button>
-                <div id="table1_div" class="collapse in">
-                    <table id="table1" class="display" cellspacing="0"
-                           style="height:100%;width:100%;">
-                        <thead>
-                            <tr>
-                                <th ng-repeat="header in table_headers">{{header}}</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th ng-repeat="header in table_headers">{{header}}</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+            <div class="col-md-8" id="workflows_content">
+                <span style="float: left;">
+                  <button
+                          class="btn btn-xs btn-default toggle_sidebar hide_button">
+                      <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  </button>
+              </span>
+                <div class="container">
+                    <button type="button" class="btn btn-sm btn-info m-bottom"
+                            data-toggle="collapse"
+                            data-target="#table1_div"><i class="fa fa-compress" aria-hidden="true"></i>
+                    </button>
+                    <b style="display:inline-block">{{table_name}}</b>
+                    <div id="table1_div" class="collapse in">
+                        <table id="table1" class="display" cellspacing="0"
+                               style="height:100%;width:100%;">
+                            <thead>
+                                <tr>
+                                    <th ng-repeat="header in table_headers">{{header}}</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th ng-repeat="header in table_headers">{{header}}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
-            </div>
 
-            <div class="container not_first">
-                <button type="button" class="btn btn-sm btn-info m-bottom"
-                        data-toggle="collapse"
-                        data-target="#container"><i class="fa fa-compress"
-                                            aria-hidden="true"></i>
-                </button>
-                <div id="container" class="collapse in" style="width:100%;
-                height:400px;"></div>
-            </div>
-            <div class="container not_first">
-                <button type="button" class="btn btn-sm btn-info m-bottom"
+                <div class="container not_first">
+                    <button type="button" class="btn btn-sm btn-info m-bottom"
+                            data-toggle="collapse"
+                            data-target="#container"><i class="fa fa-compress"
+                                                aria-hidden="true"></i>
+                    </button>
+                    <b style="display:inline-block">{{graph1_name}}</b>
+                    <div id="container" class="collapse in" style="width:100%;
+                    height:400px;"></div>
+                </div>
+                <div class="container not_first">
+                    <button type="button" class="btn btn-sm btn-info m-bottom"
                         data-toggle="collapse"
                         data-target="#container2"><i class="fa fa-compress"
                                             aria-hidden="true"></i>
-                </button>
-                <div id="container2"
-                     class="collapse in"
-                     style="width:100%; height:400px;"></div>
+                    </button>
+                    <b style="display:inline-block">{{graph2_name}}</b>
+                    <div id="container2"
+                         class="collapse in"
+                         style="width:100%; height:400px;"></div>
+                </div>
             </div>
-        </div>
 
-        <div class="col-md-2">
+            <div class="col-md-2" id="more_content">
 
+            </div>
         </div>
 
     </div>
