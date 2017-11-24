@@ -4,8 +4,9 @@ const app = angular.module("reportsApp", []);
 app.controller("reportsController", function($scope, $http){
 
     $scope.workflow_name = "INNUca";
-    $scope.table_headers = ["ID", "Coverage", "Badge", "lastName",
-        "gender", "dob", "race"];
+    $scope.table_headers = ["ID", "Sample name", "reads", "bp", "coverage 1",
+                            "trimmed", "coverage 2", "contigs", "assembled bp",
+                            "contigs 2", "assembled bp 2"];
     
     $scope.graph1_name = "Graph 1";
     $scope.graph2_name = "Graph 2";
@@ -48,36 +49,68 @@ app.controller("reportsController", function($scope, $http){
     const json_table_data = [
         {
             "ID":1,
-            "Coverage":"LanTest101",
-            "Badge":"x1",
-            "lastName":"yLanTest101",
-            "gender":"M",
-            "dob":"10/16/1941",
-            "race":"Caucasian/White"
+            "Sample name":"LanTest101",
+            "reads":"x1",
+            "bp":"yLanTest101",
+            "coverage 1":"M",
+            "trimmed":"10/16/1941",
+            "coverage 2":"Caucasian/White",
+            "contigs":"Caucasian/White",
+            "assembled bp":"waaa",
+            "contigs 2":"lslsls",
+            "assembled bp 2": "sdas"
         },
 
         {
             "ID":2,
-            "Coverage":'<div' +
-            ' style="width:61%;height:100%;background-color:' +
-            ' #bbd9ea;"><span >61%</span></div>',
-            "Badge":'<img' +
-            ' src="https://img.shields.io/badge/INNUca-A-green.svg">',
-            "lastName":"yLanTest102",
-            "gender":"M",
-            "dob":"08/10/2005",
-            "race":"Caucasian/White"
+            "Sample name":"LanTest101",
+            "reads":"x1",
+            "bp":"yLanTest101",
+            "coverage 1":"M",
+            "trimmed":"10/16/1941",
+            "coverage 2":"Caucasian/White",
+            "contigs":"Caucasian/White",
+            "assembled bp":"waaa",
+            "contigs 2":"lslsls",
+            "assembled bp 2": "sdas"
         },
 
         {
-            "ID":3,
-            "Coverage":"Test1111",
-            "Badge":"x3",
-            "lastName":"yTest1111",
-            "gender":"M",
-            "dob":"08/13/2015",
-            "race":"Native Hawaian/Pacific Islander"
+            "ID":2,
+            "Sample name":"LanTest101",
+            "reads":"x1",
+            "bp":"yLanTest101",
+            "coverage 1":"M",
+            "trimmed":"10/16/1941",
+            "coverage 2":"Caucasian/White",
+            "contigs":"Caucasian/White",
+            "assembled bp":"waaa",
+            "contigs 2":"lslsls",
+            "assembled bp 2": "sdas"
         }
+
+        // {
+        //     "ID":2,
+        //     "Coverage":'<div' +
+        //     ' style="width:61%;height:100%;background-color:' +
+        //     ' #bbd9ea;"><span >61%</span></div>',
+        //     "reads":'<img' +
+        //     ' src="https://img.shields.io/badge/INNUca-A-green.svg">',
+        //     "bp":"yLanTest102",
+        //     "coverage 1":"M",
+        //     "trimmed":"08/10/2005",
+        //     "coverage 2":"Caucasian/White"
+        // },
+        //
+        // {
+        //     "ID":3,
+        //     "Coverage":"Test1111",
+        //     "Badge":"x3",
+        //     "lastName":"yTest1111",
+        //     "gender":"M",
+        //     "dob":"08/13/2015",
+        //     "race":"Native Hawaian/Pacific Islander"
+        // }
     ];
 
     setTimeout(() => {
@@ -85,12 +118,16 @@ app.controller("reportsController", function($scope, $http){
             "data": json_table_data,
             "columns" : [
                 { "data" : "ID" },
-                { "data" : "Coverage" },
-                { "data" : "Badge" },
-                { "data" : "lastName" },
-                { "data" : "gender" },
-                { "data" : "dob" },
-                { "data" : "race" }
+                { "data" : "Sample name" },
+                { "data" : "reads" },
+                { "data" : "bp" },
+                { "data" : "coverage 1" },
+                { "data" : "trimmed" },
+                { "data" : "coverage 2" },
+                { "data" : "contigs" },
+                { "data" : "assembled bp" },
+                { "data" : "contigs 2" },
+                { "data" : "assembled bp 2" }
             ],
             autoFill: {
                 enable: false
