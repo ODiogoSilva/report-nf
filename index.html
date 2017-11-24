@@ -102,12 +102,16 @@
                                style="height:100%;width:100%;">
                             <thead>
                                 <tr>
-                                    <th ng-repeat="header in table_headers">{{header}}</th>
+                                    <th ng-repeat="header in table_headers_up" rowspan="{{header[1]}}"
+                                        colspan="{{header[2]}}">{{header[0]}}</th>
+                                </tr>
+                                <tr>
+                                    <th ng-repeat="header in table_headers_down">{{header}}</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th ng-repeat="header in table_headers">{{header}}</th>
+                                    <th ng-repeat="header in table_footer">{{header}}</th>
                                 </tr>
                             </tfoot>
                         </table>
