@@ -1,156 +1,7 @@
 
-const app = angular.module("reportsApp", []);
+const build_charts = (results) => {
 
-app.controller("reportsController", function($scope, $http){
-
-    get_reports_by_project(1).then((results) => {
-        build_table(results);
-        // build_charts(results)
-    });
-
-    init_table($scope);
-
-    $('.selectpicker').selectpicker({
-      style: 'btn-info',
-      size: 4
-    });
-
-    // const reports_requests = Requests($http);
-
-
-
-    $('.toggle_sidebar').on("click", () => {
-        /* to toggle the sidebar, just switch the CSS classes */
-        $("#workflows_sidebar").toggleClass("collapsed_sidebar");
-        $("#workflows_content").toggleClass("col-md-12 col-md-8");
-        $(".toggle_sidebar").toggleClass("hide_button");
-        return false;
-    });
-
-    $scope.switch_workflow = (workflow_name) => {
-        console.log("Workflow change");
-        $scope.workflow_name = workflow_name;
-    };
-
-
-    const json_table_data = [
-        {
-            "ID":1,
-            "Sample name":"LanTest101",
-            "reads":"x1",
-            "bp":"yLanTest101",
-            "coverage 1":"M",
-            "trimmed":"10/16/1941",
-            "coverage 2":"Caucasian/White",
-            "contigs":"Caucasian/White",
-            "assembled bp":"waaa",
-            "contigs 2":"lslsls",
-            "assembled bp 2": "sdas"
-        },
-
-        {
-            "ID":2,
-            "Sample name":"LanTest101",
-            "reads":"x1",
-            "bp":"yLanTest101",
-            "coverage 1":"M",
-            "trimmed":"10/16/1941",
-            "coverage 2":"Caucasian/White",
-            "contigs":"Caucasian/White",
-            "assembled bp":"waaa",
-            "contigs 2":"lslsls",
-            "assembled bp 2": "sdas"
-        },
-
-        {
-            "ID":2,
-            "Sample name":"LanTest101",
-            "reads":"x1",
-            "bp":"yLanTest101",
-            "coverage 1":"M",
-            "trimmed":"10/16/1941",
-            "coverage 2":"Caucasian/White",
-            "contigs":"Caucasian/White",
-            "assembled bp":"waaa",
-            "contigs 2":"lslsls",
-            "assembled bp 2": "sdas"
-        }
-
-        // {
-        //     "ID":2,
-        //     "Coverage":'<div' +
-        //     ' style="width:61%;height:100%;background-color:' +
-        //     ' #bbd9ea;"><span >61%</span></div>',
-        //     "reads":'<img' +
-        //     ' src="https://img.shields.io/badge/INNUca-A-green.svg">',
-        //     "bp":"yLanTest102",
-        //     "coverage 1":"M",
-        //     "trimmed":"08/10/2005",
-        //     "coverage 2":"Caucasian/White"
-        // },
-        //
-        // {
-        //     "ID":3,
-        //     "Coverage":"Test1111",
-        //     "Badge":"x3",
-        //     "lastName":"yTest1111",
-        //     "gender":"M",
-        //     "dob":"08/13/2015",
-        //     "race":"Native Hawaian/Pacific Islander"
-        // }
-    ];
-
-    setTimeout(() => {
-        $('#table1').DataTable( {
-            "data": json_table_data,
-            "columns" : [
-                { "data" : "ID" },
-                { "data" : "Sample name" },
-                { "data" : "reads" },
-                { "data" : "bp" },
-                { "data" : "coverage 1" },
-                { "data" : "trimmed" },
-                { "data" : "coverage 2" },
-                { "data" : "contigs" },
-                { "data" : "assembled bp" },
-                { "data" : "contigs 2" },
-                { "data" : "assembled bp 2" }
-            ],
-            autoFill: {
-                enable: false
-            },
-            dom: 'Bfrtip',
-            buttons: [
-                'copy',
-                'csv',
-                'excel',
-                'pdf',
-                'print',
-                {
-                    extend: 'collection',
-                    text: 'Table control',
-                    buttons: [
-                        {
-                            text: "Enable AutoFill",
-                            action: function (e, dt) {
-                                if (dt.autoFill().enabled()) {
-                                    this.autoFill().disable();
-                                    this.text('Enable AutoFill');
-                                }
-                                else {
-                                    this.autoFill().enable();
-                                    this.text('Disable AutoFill');
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        } );
-    }, );
-
-
-    const c1 = Highcharts.chart("container", {
+    const c1 = Highcharts.chart("spades_1", {
 
         title: {
             text: 'Chart.update'
@@ -172,7 +23,7 @@ app.controller("reportsController", function($scope, $http){
         }]
     });
 
-    const c2 = Highcharts.chart("container2", {
+    const c2 = Highcharts.chart("spades_2", {
 
         title: {
             text: 'Chart.update'
@@ -194,7 +45,7 @@ app.controller("reportsController", function($scope, $http){
         }]
     });
 
-    charts_ar = [c1, c2];
+    const charts_ar = [c1, c2];
 
     $("#test").click(function () {
 
@@ -210,8 +61,6 @@ app.controller("reportsController", function($scope, $http){
         }
     });
 
-    $("#waiting_gif").css({display:"none"});
-    $("#body_container").css({display:"block"});
+}
 
-});
 

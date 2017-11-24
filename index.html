@@ -98,7 +98,7 @@
                     </button>
                     <b style="display:inline-block">{{table_name}}</b>
                     <div id="table1_div" class="collapse in">
-                        <table id="table1" class="display" cellspacing="0"
+                        <table id="master_table" class="display" cellspacing="0"
                                style="height:100%;width:100%;">
                             <thead>
                                 <tr>
@@ -121,12 +121,16 @@
                 <div class="container not_first">
                     <button type="button" class="btn btn-sm btn-info m-bottom"
                             data-toggle="collapse"
-                            data-target="#container">
+                            data-target="#spades_graph_container">
                         <i class="fa fa-compress" aria-hidden="true"></i>
                     </button>
                     <b style="display:inline-block">{{graph1_name}}</b>
-                    <div id="container" class="collapse in" style="width:100%;
-                    height:400px;"></div>
+                    <div id="spades_graph_container" class="collapse in" style="width:100%;">
+                        <div id="spades_1" class="collapse in" style="width:100%;
+                        height:400px;"></div>
+                        <div id="spades_2" class="collapse in" style="width:100%;
+                        height:400px;"></div>
+                    </div>
                 </div>
                 <div class="container not_first">
                     <button type="button" class="btn btn-sm btn-info m-bottom"
@@ -135,9 +139,9 @@
                                             aria-hidden="true"></i>
                     </button>
                     <b style="display:inline-block">{{graph2_name}}</b>
-                    <div id="container2"
+                    <!--<div id="container2"
                          class="collapse in"
-                         style="width:100%; height:400px;"></div>
+                         style="width:100%; height:400px;"></div>-->
                 </div>
             </div>
 
@@ -171,6 +175,7 @@
     <script src="./js/charts.js"></script>
     <script src="./js/requests.js"></script>
     <script src="./js/table.js"></script>
+    <script src="./js/reports.js"></script>
     <link rel="stylesheet" href="css/stylesheet.css">
 
 </body>
