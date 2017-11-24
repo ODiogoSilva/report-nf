@@ -6,7 +6,7 @@ const Requests = ($http) => {
             req = {
 		        url:'https://192.92.149.157/app/api/v1.0/reports/project/',
 		        method:'GET',
-		        data: { project_id: project_id }
+		        params: { project_id: project_id }
 		    }
 
 		    $http(req).then(function(response){
