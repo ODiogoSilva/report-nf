@@ -50,12 +50,10 @@ app.controller("reportsController", function($scope, $http){
       size: 4
     });
 
-    reports_requests = Requests($http);
+    // const reports_requests = Requests($http);
 
-    reports_requests.get_reports_by_project(1, function(response){
-        console.log(response);
-    });
-
+    let results = get_reports_by_project(1).then((results) => {console.log(results)});
+    console.log(results);
 
     $('.toggle_sidebar').on("click", () => {
         /* to toggle the sidebar, just switch the CSS classes */
