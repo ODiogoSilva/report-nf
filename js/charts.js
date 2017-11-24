@@ -3,47 +3,12 @@ const app = angular.module("reportsApp", []);
 
 app.controller("reportsController", function($scope, $http){
 
-    $scope.workflow_name = "INNUca";
-    $scope.table_headers_up = [
-        ["ID", "2", "1"],
-        ["Sample name", "2", "1"],
-        ["reads", "2", "1"],
-        ["bp", "2", "1"],
-        ["coverage 1", "2", "1"],
-        ["trimmed", "2", "1"],
-        ["coverage 2", "2", "1"],
-        ["spades", "1", "2"],
-        ["pilon", "1", "2"]
-    ];
-    $scope.table_headers_down = [
-        "contigs", "assembled bp",
-        "contigs 2", "assembled bp 2"
-    ];
-    $scope.table_footer = [
-        "ID",
-        "Sample name",
-        "reads",
-        "bp",
-        "coverage 1",
-        "trimmed",
-        "coverage 2",
-        "contigs",
-        "assembled bp",
-        "contigs 2",
-        "assembled bp 2"
-    ];
-    
-    $scope.graph1_name = "Graph 1";
-    $scope.graph2_name = "Graph 2";
-    $scope.table_name = "Table 1";
+    get_reports_by_project(1).then((results) => {
+        build_table(results);
+        // build_charts(results)
+    });
 
-    $scope.workflows = [
-        ["INNUca", 14],
-        ["Prokka", 2],
-        ["chewBBACA", 2],
-        ["Pathotyping", 1]
-    ];
-    
+    init_table($scope);
 
     $('.selectpicker').selectpicker({
       style: 'btn-info',
@@ -52,8 +17,7 @@ app.controller("reportsController", function($scope, $http){
 
     // const reports_requests = Requests($http);
 
-    let results = get_reports_by_project(1).then((results) => {console.log(results)});
-    console.log(results);
+
 
     $('.toggle_sidebar').on("click", () => {
         /* to toggle the sidebar, just switch the CSS classes */
