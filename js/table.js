@@ -2,7 +2,6 @@ const init_table = (scope) => {
 
     scope.workflow_name = "INNUca";
     scope.table_headers_up = [
-        ["ID", "2", "1"],
         ["Sample name", "2", "1"],
         ["reads", "2", "1"],
         ["bp", "2", "1"],
@@ -17,7 +16,6 @@ const init_table = (scope) => {
         "contigs 2", "assembled bp 2"
     ];
     scope.table_footer = [
-        "ID",
         "Sample name",
         "reads",
         "bp",
@@ -45,5 +43,18 @@ const init_table = (scope) => {
 
 
 const build_table = (results) => {
-    console.log(results)
+
+    storage = {};
+
+    for ( r of results ) {
+
+        // Get information from integrity coverage process
+        if (r.process_id === 1) {
+            storage[`${r.sample_name}_${r.pipeline_id}`]["ID"]
+        }
+
+        storage[`${r.sample_name}_${r.pipeline_id}`]
+    }
+
+    console.log(storage)
 };
