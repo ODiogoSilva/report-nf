@@ -30,6 +30,12 @@ app.controller("reportsController", function($scope, $http){
       size: 4
     });
 
+    $("#spades_ul li").click(function () {
+        $("#spades_ul li").removeClass("active");
+        $(this).addClass("active");
+        $('.box').hide().eq($(this).index()).show();  // hide all divs and show the current div
+    });
+
     $("#waiting_gif").css({display:"none"});
     $("#body_container").css({display:"block"});
 

@@ -119,29 +119,36 @@
                 </div>
 
                 <div class="container not_first">
-                    <button type="button" class="btn btn-sm btn-info m-bottom"
+                    <button type="button" class="btn btn-sm btn-info"
                             data-toggle="collapse"
                             data-target="#spades_graph_container">
                         <i class="fa fa-compress" aria-hidden="true"></i>
                     </button>
                     <b style="display:inline-block">{{graph1_name}}</b>
-                    <div id="spades_graph_container" class="collapse in" style="width:100%;">
-                        <div id="spades_1" class="collapse in" style="width:100%;
+                    <ul id="spades_ul" class="nav nav-tabs"
+                            style="float:right;" style="display:inline-block;">
+                          <li id="spades_1_li"
+                              class="active"><a href="">Spades 1</a></li>
+                          <li id="spades_2_li" ><a href="">Spades
+                              2</a></li>
+                        </ul>
+                    <div id="spades_graph_container" class="collapse in" style="width:100%;height:400px;">
+                        <div id="spades_1" class="box" style="width:100%;
                         height:400px;"></div>
-                        <div id="spades_2" class="collapse in" style="width:100%;
-                        height:400px;"></div>
+                        <div id="spades_2" class="box" style="width:100%;
+                        height:400px;display:none;"></div>
                     </div>
                 </div>
                 <div class="container not_first">
-                    <button type="button" class="btn btn-sm btn-info m-bottom"
+                    <button type="button" class="btn btn-sm btn-info"
                         data-toggle="collapse"
                         data-target="#container2"><i class="fa fa-compress"
                                             aria-hidden="true"></i>
                     </button>
                     <b style="display:inline-block">{{graph2_name}}</b>
-                    <!--<div id="container2"
+                    <div id="container2"
                          class="collapse in"
-                         style="width:100%; height:400px;"></div>-->
+                         style="width:100%; height:400px;"></div>
                 </div>
             </div>
 

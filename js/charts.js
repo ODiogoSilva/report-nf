@@ -4,7 +4,7 @@ const build_charts = (results) => {
     const c1 = Highcharts.chart("spades_1", {
 
         title: {
-            text: 'Chart.update'
+            text: 'Spades 1'
         },
 
         subtitle: {
@@ -26,7 +26,7 @@ const build_charts = (results) => {
     const c2 = Highcharts.chart("spades_2", {
 
         title: {
-            text: 'Chart.update'
+            text: 'Spades 2'
         },
 
         subtitle: {
