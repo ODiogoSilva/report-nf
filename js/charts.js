@@ -60,7 +60,7 @@ app.controller("reportsController", function($scope, $http){
             "ID":2,
             "Coverage":'<div' +
             ' style="width:61%;height:100%;background-color:' +
-            ' #bbd9ea;"><span>61%</span></div>',
+            ' #bbd9ea;"><span >61%</span></div>',
             "Badge":'<img' +
             ' src="https://img.shields.io/badge/INNUca-A-green.svg">',
             "lastName":"yLanTest102",

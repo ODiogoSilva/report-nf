@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="./bower_components/highcharts/highcharts.js"></script>
+    <script src="./bower_components/highcharts/highcharts-more.js"></script>
+    <script src="./bower_components/highcharts/modules/exporting.js"></script>
     <link rel="stylesheet"
           href="./bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet"
@@ -20,67 +23,8 @@
 
     <title>Reports</title>
 
-    <style>
-        html, body {
-            margin: 5px;
-            height: 100%;
-        }
-
-        div.not_first {
-            margin-top: 2%;
-        }
-
-        .centered {
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          /* bring your own prefixes */
-          transform: translate(-50%, -50%);
-        }
-
-        button.m-bottom{
-            margin-bottom: 10px;
-        }
-
-        #workflows_sidebar {
-          /* for the animation */
-          transition: margin 0.3s ease;
-        }
-
-        .collapsed_sidebar {
-          /* hide it for small displays*/
-          display: none;
-        }
-
-        @media (min-width: 992px) {
-          .collapsed_sidebar {
-            display: block;
-            /* same width as sidebar */
-            margin-left: -25%;
-          }
-        }
-
-        #row-main {
-          /* necessary to hide collapsed sidebar */
-          overflow-x: hidden;
-        }
-
-        #workflows_content {
-          /* for the animation */
-          transition: width 0.3s ease;
-        }
-
-        .hide_button {
-            display:none;
-        }
-
-        a {
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body ng-app="reportsApp" ng-controller="reportsController">
-
 
     <div id="body_container" style="display:none;">
         <div class="row">
@@ -201,14 +145,11 @@
     </div>
 
     <img id="waiting_gif" src="./images/waiting_gif.gif" class="centered"
-    width="200"
-         height="120">
+    width="200" height="120">
 
     <script src="./bower_components/jquery/dist/jquery.min.js"></script>
     <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="./bower_components/highcharts/highcharts.js"></script>
-    <script src="./bower_components/highcharts/highcharts-more.js"></script>
-    <script src="./bower_components/highcharts/modules/exporting.js"></script>
+
     <script src="./bower_components/angular/angular.js"></script>
     <script src="./bower_components/datatables.net/js/jquery.dataTables.js"></script>
     <script
@@ -225,6 +166,7 @@
             src="./bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
     <script src="./js/charts.js"></script>
     <script src="./js/requests.js"></script>
+    <link rel="stylesheet" href="css/stylesheet.css">
 
 </body>
 </html>
