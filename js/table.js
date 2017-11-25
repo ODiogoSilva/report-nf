@@ -137,10 +137,13 @@ const build_table = (results) => {
 
     for ( const r of results ) {
 
-        // Get information from integrity coverage process
-        if (r.process_id === "1") {
+        if (!storage[`${r.sample_name}_${r.pipeline_id}`]) {
             storage[`${r.sample_name}_${r.pipeline_id}`] =
                 {"Sample name": r.sample_name};
+        }
+
+        // Get information from integrity coverage process
+        if (r.process_id === "1") {
             storage[`${r.sample_name}_${r.pipeline_id}`]["reads"] =
                 r.report_json.reads || "NA";
             storage[`${r.sample_name}_${r.pipeline_id}`]["bp"] =
@@ -199,6 +202,4 @@ const build_table = (results) => {
 
 
     insert_table_data(table_data)
-
-    console.log(table_data)
 };
