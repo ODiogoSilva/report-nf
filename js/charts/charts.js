@@ -12,7 +12,7 @@ class Charts {
 
     /* Method to add reports to the global reports */
     async addReportData(reports_data) {
-        this.reports_data = await reports_data.concat(reports_data);
+        this.reports_data = await this.reports_data.concat(reports_data);
         return true;
     }
 

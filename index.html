@@ -43,7 +43,10 @@
                             </select>
                         </div>
                         <div style="margin-top: 10px;">
-                            <button id="submit_project" class="btn btn-info">Submit</button>
+                            <div class="row">
+                                <button id="submit_project" style="display:inline-block;"class="btn btn-info">Submit</button>
+                                <button id="reset_project" style="display:none;" class="btn btn-info">Reset</button>
+                            </div>
                         </div>
                         <div id="current_workflow" style="margin-top: 10px;display:none;">
                             <p><b>Workflow: </b>{{workflow_name}}</p>
@@ -174,8 +177,8 @@
             src="./bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
     <script src="./js/charts/spades.js"></script>
     <script src="./js/charts/utils.js"></script>
-    <script src="./js/reports.js"></script>
     <script src="js/charts/charts.js"></script>
+    <script src="./js/reports.js"></script>
     <script src="./js/dragNdrop.js"></script>
     <script src="./js/requests.js"></script>
     <script src="./js/table.js"></script>

@@ -57,6 +57,14 @@ const buildSpadesDistribution = (data, container, title) => {
 
     console.log(data);
 
+    try{
+        const available_chart = $('#'+container).Highcharts();
+        available_chart.destroy();
+    }
+    catch(e){
+        console.log("Chart does not exists");
+    }
+
     const spades_size = Highcharts.chart(container, {
         title: {text: title},
         xAxis: [{

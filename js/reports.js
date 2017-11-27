@@ -2,18 +2,19 @@ const app = angular.module("reportsApp", []);
 
 let data = "";
 
+const charts = new Charts();
+
 /* Function to build tables and graphs based on the reports */
 const initReports = (results) => {
 
     $("#waiting_gif").css({display:"block"});
     $("#row-main").css({display:"none"});
 
-    const charts = new Charts();
-
-    build_table(results);
+    //build_table(results);
     data = results;
 
     charts.addReportData(results).then(() => {
+        console.log(charts.reports_data);
         charts.buildSpadesGraphs();
     });
 
@@ -53,6 +54,16 @@ app.controller("reportsController", function($scope){
            populateSelect("project_select", results, p_results);
 
            $("#submit_project").off("click").on("click", () => {
+
+               $("#reset_project").css({display:"inline-block"});
+
+               $("#reset_project").off("click").on("click", () => {
+                   charts.reports_data = [];
+                   $("#reset_project").css({display:"none"});
+                   $("#row-main").css({display:"none"});
+                   $("#current_workflow").css({display:"none"});
+               });
+
                /* Request to get the reports for a given project */
                getReportsByProject($("#project_select option:selected").val()).then((results) => {
                    initReports(results);
