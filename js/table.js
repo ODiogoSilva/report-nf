@@ -2,7 +2,9 @@ const init_table = (scope) => {
 
     scope.workflow_name = "INNUca";
     scope.table_headers_up = [
+        ["ID", "2", "1"],
         ["Sample", "2", "1"],
+        ["QC", "2", "1"],
         ["reads", "2", "1"],
         ["bp", "2", "1"],
         ["coverage (1st)", "2", "1"],
@@ -16,7 +18,9 @@ const init_table = (scope) => {
         "contigs 2", "assembled bp 2"
     ];
     scope.table_footer = [
+        "ID",
         "Sample",
+        "QC",
         "reads",
         "bp",
         "coverage (1st)",
@@ -46,7 +50,9 @@ const insert_table_data = (data) => {
     $('#master_table').DataTable( {
         "data": data,
         "columns" : [
-            { "data" : "Sample" },
+            { "data" : "Sample_id" },
+            { "data" : "sample" },
+            { "data" : "qc" },
             { "data" : "reads" },
             { "data" : "bp" },
             { "data" : "coverage_1" },
@@ -108,7 +114,9 @@ const build_table = (results) => {
         // there is always a storage entry for any given sample.
         if (!storage[`${r.sample_name}_${r.pipeline_id}`]) {
             storage[`${r.sample_name}_${r.pipeline_id}`] =
-                {"Sample": r.sample_name};
+                {"sample": r.sample_name,
+                 "Sample_id": `${r.project_id}.${r.pipeline_id}`,
+                 "qc": "A"};
         }
 
         // Get information from integrity coverage process
