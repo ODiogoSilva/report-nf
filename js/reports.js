@@ -45,6 +45,15 @@ const populateSelect = (container, species_data, data) => {
 /* Angular controller to control the DOM elements from the index.html file */
 app.controller("reportsController", function($scope){
 
+    $scope.workflow_charts = {
+        "INNUca": [
+            ["Table 1", "#table1_div"],
+            ["Graph 1", "#spades_graph_container"],
+            ["Graph 2", "#container2"]
+        ]
+    };
+
+
     init_table($scope);
 
     /* Request to get all the available species */
@@ -67,6 +76,7 @@ app.controller("reportsController", function($scope){
                /* Request to get the reports for a given project */
                getReportsByProject($("#project_select option:selected").val()).then((results) => {
                    initReports(results);
+
                }, () => {
                    console.log("No reports for that project.");
                });
