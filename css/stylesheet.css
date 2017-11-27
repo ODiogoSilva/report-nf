@@ -59,6 +59,10 @@ a {
 Table style elements
  */
 
+th {
+    text-align: center;
+}
+
 .badge-qc {
     color: white;
     font-weight: bold;
@@ -70,4 +74,18 @@ Table style elements
     vertical-align: middle;
     font-size: 15px;
     background: #42f480;
+}
+
+.table-cell {
+    width: 100%;
+    height: 30px;
+}
+
+.table-bar {
+    background: rgba(146, 187, 252, .3);
+    width: 100%;
+    height: 100%;
+    line-height: 30px;
+    vertical-align: middle;
+    text-align: center;
 }

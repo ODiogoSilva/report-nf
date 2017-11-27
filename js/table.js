@@ -92,8 +92,21 @@ const insert_table_data = (data) => {
                     }
                 ]
             }
-        ]
+        ],
+        // initComplete: function(){$(".table-cell").parent().css({"height": "30px"});}
     } );
+};
+
+const shorten_number = (num) => {
+    const suffix = ["", "K", "M", "G"];
+    for (const i of suffix) {
+        if (num < 1000) {
+            return `${num}${i}`
+        } else {
+            num /= 1000;
+            num = num.toFixed(2);
+        }
+    }
 };
 
 /**
@@ -104,6 +117,17 @@ const insert_table_data = (data) => {
 const build_table = (results) => {
 
     let storage = {};
+    let vals = {
+        "reads": [],
+        "bp": [],
+        "coverage_1": [],
+        "trimmed": [],
+        "coverage_2": [],
+        "contigs": [],
+        "assembled bp": [],
+        "contigs 2": [],
+        "assembled bp 2": []
+    };
 
     for ( const r of results ) {
 
@@ -123,39 +147,47 @@ const build_table = (results) => {
         if (r.process_id === "1") {
             storage[`${r.sample_name}_${r.pipeline_id}`]["reads"] =
                 r.report_json.reads || "NA";
+            vals["reads"].push(parseFloat(r.report_json.reads));
             storage[`${r.sample_name}_${r.pipeline_id}`]["bp"] =
                 r.report_json.bp || "NA";
+            vals["bp"].push(parseFloat(r.report_json.bp));
             storage[`${r.sample_name}_${r.pipeline_id}`]["coverage_1"] =
                 r.report_json.coverage || "NA";
+            vals["coverage_1"].push(parseFloat(r.report_json.coverage));
         }
 
         // Get information from trimmomatic report
         if (r.process_id === "2") {
             storage[`${r.sample_name}_${r.pipeline_id}`]["trimmed"] =
-                r.report_json.trim_perc || "NA";
+                r.report_json.trim_perc;
+            vals["trimmed"].push(parseFloat(r.report_json.trim_perc));
         }
 
         // Get information from the second coverage assessment
         if (r.process_id === "3") {
             storage[`${r.sample_name}_${r.pipeline_id}`]["coverage_2"] =
                 r.report_json.coverage || "NA";
+            vals["coverage_2"].push(parseFloat(r.report_json.coverage));
         }
 
         // Get information from the first assembly report from spades
         if (r.process_id === "6") {
             storage[`${r.sample_name}_${r.pipeline_id}`]["contigs"] =
                 r.report_json.contigs || "NA";
+            vals["contigs"].push(parseFloat(r.report_json.contigs));
             storage[`${r.sample_name}_${r.pipeline_id}`]["assembled bp"] =
                 r.report_json.bp || "NA";
+            vals["assembled bp"].push(parseFloat(r.report_json.bp));
         }
 
         // Get information from the second assembly report from pilon
         if (r.process_id === "8") {
             storage[`${r.sample_name}_${r.pipeline_id}`]["contigs 2"] =
                 r.report_json.contigs || "NA";
+            vals["contigs 2"].push(parseFloat(r.report_json.contigs));
             s = r.report_json.bp || "NA";
             storage[`${r.sample_name}_${r.pipeline_id}`]["assembled bp 2"] = s;
-
+            vals["assembled bp 2"].push(parseFloat(r.report_json.bp))
         }
     }
 
@@ -175,15 +207,41 @@ const build_table = (results) => {
         "contigs 2",
         "assembled bp 2"
     ];
+
+    bar_columns = [
+        "reads",
+        "bp",
+        "coverage_1",
+        "trimmed",
+        "coverage_2",
+        "contigs",
+        "assembled bp",
+        "contigs 2",
+        "assembled bp 2"
+    ];
+
     let table_data = Object.keys(storage).map((key) => {
         fields.map((f) => {
             if (!(f in storage[key])) {
                 storage[key][f] = "NA"
+            } else {
+                if (bar_columns.indexOf(f) > -1) {
+                    // Get proportion
+                    let prop;
+                    if (f === "trimmed") {
+                        prop = parseFloat(storage[key][f])
+                    } else {
+                        prop = (parseFloat(storage[key][f]) / Math.max(...vals[f])) * 100;
+                    }
+                    const out_div = `<div class='table-cell'><div class='table-bar' style='width:${prop}%'>${storage[key][f]}</div></div>`
+                    storage[key][f] = out_div
+                }
             }
         });
-        return storage[key]
+        return storage[key];
     });
 
+    console.log(table_data)
 
     insert_table_data(table_data)
 };
