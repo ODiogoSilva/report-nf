@@ -54,3 +54,20 @@ button.m-bottom{
 a {
     cursor: pointer;
 }
+
+/*
+Table style elements
+ */
+
+.badge-qc {
+    color: white;
+    font-weight: bold;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    line-height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 15px;
+    background: #42f480;
+}
