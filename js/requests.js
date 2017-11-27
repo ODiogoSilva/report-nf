@@ -18,7 +18,19 @@
 //     }
 // };
 
-const get_reports_by_project = async (project_id) => {
+const getSpecies = async () => {
+    return await $.get(
+        'https://192.92.149.157/app/api/v1.0/species/'
+    );
+};
+
+const getProjects = async () => {
+    return await $.get(
+        'https://192.92.149.157/app/api/v1.0/projects/all/'
+    );
+};
+
+const getReportsByProject = async (project_id) => {
     return await $.get(
 		'https://192.92.149.157/app/api/v1.0/reports/project/',
         { project_id: project_id },
