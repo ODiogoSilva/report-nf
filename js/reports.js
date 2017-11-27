@@ -10,7 +10,7 @@ const initReports = (results) => {
     $("#waiting_gif").css({display:"block"});
     $("#row-main").css({display:"none"});
 
-    //build_table(results);
+    build_table(results);
     data = results;
 
     charts.addReportData(results).then(() => {
