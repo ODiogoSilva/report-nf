@@ -5,6 +5,7 @@
     <script src="./bower_components/highcharts/highcharts-more.js"></script>
     <script src="./bower_components/highcharts/modules/histogram-bellcurve.js"></script>
     <script src="./bower_components/highcharts/modules/exporting.js"></script>
+
     <link rel="stylesheet"
           href="./bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet"
@@ -29,6 +30,8 @@
 
     <div id="body_container" style="display:none;">
         <div id="dragNdropdiv" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
+
+            <!-- Jumbotron region -->
             <div class="row">
                 <div class="jumbotron">
                     <div class="container" style="text-align: center;">
@@ -39,7 +42,7 @@
 
                         <div>
                             <select id="project_select" class="selectpicker"
-                                    title="Select one Project" data-live-search="true">
+                                    title="Select one Project" data-live-search="true" data-style="btn-default">
                             </select>
                         </div>
                         <div style="margin-top: 10px;">
@@ -48,14 +51,16 @@
                                 <button id="reset_project" style="display:none;" class="btn btn-info">Reset</button>
                             </div>
                         </div>
-                        <div id="current_workflow" style="margin-top: 10px;display:none;">
+                        <!--<div id="current_workflow" style="margin-top: 10px;display:none;">
                             <p><b>Workflow: </b>{{workflow_name}}</p>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
 
+            <!-- Data region -->
             <div class="row" id="row-main" style="display:none;">
+                <!-- Workflow sidebar -->
                 <div class="col-md-2" id="workflows_sidebar">
                     <ul class="list-group">
                       <li class="list-group-item list-group-item-primary">
@@ -68,10 +73,11 @@
                               </span>
                           </h4>
                       </li>
+                        <!-- populate ul with all available workflows -->
                       <div ng-repeat="workflow in workflows">
                           <li>
                               <a class="list-group-item workflow_li"
-                                 ng-click="switch_workflow(workflow[0])">{{workflow[0]}}
+                                 ng-click="switch_workflow(workflow[0])" href="#{{workflow[0]}}_heading">{{workflow[0]}}
                                   <span
                                           class="badge badge-primary badge-pill">{{workflow[1]
                         }}</span>
@@ -99,65 +105,16 @@
                           <i class="fa fa-arrow-right" aria-hidden="true"></i>
                       </button>
                   </span>
-                    <div class="container">
-                        <button type="button" class="btn btn-sm btn-info m-bottom"
-                                data-toggle="collapse"
-                                data-target="#table1_div"><i class="fa fa-compress" aria-hidden="true"></i>
-                        </button>
-                        <b style="display:inline-block">{{table_name}}</b>
-                        <div id="table1_div" class="collapse in">
-                            <table id="master_table" class="display" cellspacing="0"
-                                   style="height:100%;width:100%;">
-                                <thead>
-                                    <tr>
-                                        <th ng-repeat="header in table_headers_up" rowspan="{{header[1]}}"
-                                            colspan="{{header[2]}}">{{header[0]}}</th>
-                                    </tr>
-                                    <tr>
-                                        <th ng-repeat="header in table_headers_down">{{header}}</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th ng-repeat="header in table_footer">{{header}}</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
 
-                    <div class="container not_first">
-                        <button type="button" class="btn btn-sm btn-info"
-                                data-toggle="collapse"
-                                data-target="#spades_graph_container">
-                            <i class="fa fa-compress" aria-hidden="true"></i>
-                        </button>
-                        <b style="display:inline-block">{{graph1_name}}</b>
-                        <ul id="spades_ul" class="nav nav-tabs"
-                                style="float:right;display:inline-block;">
-                              <li id="spades_1_li"
-                                  class="active"><a href="">Spades 1</a></li>
-                              <li id="spades_2_li" ><a href="">Spades
-                                  2</a></li>
-                            </ul>
-                        <div id="spades_graph_container" class="collapse in" style="width:100%;height:400px;">
-                            <div id="spades_1" class="box" style="width:100%;
-                            height:400px;"></div>
-                            <div id="spades_2" class="box" style="width:100%;
-                            height:400px;display:none;"></div>
-                        </div>
-                    </div>
-                    <div class="container not_first">
-                        <button type="button" class="btn btn-sm btn-info"
-                            data-toggle="collapse"
-                            data-target="#container2"><i class="fa fa-compress"
-                                                aria-hidden="true"></i>
-                        </button>
-                        <b style="display:inline-block">{{graph2_name}}</b>
-                        <div id="container2"
-                             class="collapse in"
-                             style="width:100%; height:400px;"></div>
-                    </div>
+                    <!-- INNUca content: tables and graphs -->
+                    <div ng-include="'./html_templates/innuca.html'"></div>
+                    <!-- Prokka content: tables and graphs -->
+                    <div ng-include="'./html_templates/prokka.html'"></div>
+                    <!-- Pathotyping content: tables and graphs -->
+                    <div ng-include="'./html_templates/pathotyping.html'"></div>
+                    <!-- chewBBACA content: tables and graphs -->
+                    <div ng-include="'./html_templates/chewbbaca.html'"></div>
+
                 </div>
 
                 <div class="col-md-2" id="more_content">
@@ -173,7 +130,6 @@
 
     <script src="./bower_components/jquery/dist/jquery.min.js"></script>
     <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script>
-
     <script src="./bower_components/angular/angular.js"></script>
     <script src="./bower_components/datatables.net/js/jquery.dataTables.js"></script>
     <script

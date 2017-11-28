@@ -89,3 +89,7 @@ th {
     vertical-align: middle;
     text-align: center;
 }
+
+.heading {
+    border-bottom: 3px solid #000;
+}

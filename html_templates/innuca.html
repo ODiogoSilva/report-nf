@@ -1,0 +1,62 @@
+
+<!-- INNUca content: tables and graphs -->
+<div class="container">
+    <h1 class="heading" id="innuca_heading">INNUca</h1>
+    <button type="button" class="btn btn-sm btn-info m-bottom"
+            data-toggle="collapse"
+            data-target="#table1_div"><i class="fa fa-compress" aria-hidden="true"></i>
+    </button>
+    <b style="display:inline-block">{{table_name}}</b>
+    <div id="table1_div" class="collapse in">
+        <table id="master_table" class="display" cellspacing="0"
+               style="height:100%;width:100%;">
+            <thead>
+            <tr>
+                <th ng-repeat="header in table_headers_up" rowspan="{{header[1]}}"
+                    colspan="{{header[2]}}">{{header[0]}}</th>
+            </tr>
+            <tr>
+                <th ng-repeat="header in table_headers_down">{{header}}</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th ng-repeat="header in table_footer">{{header}}</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="container not_first">
+    <button type="button" class="btn btn-sm btn-info"
+            data-toggle="collapse"
+            data-target="#spades_graph_container">
+        <i class="fa fa-compress" aria-hidden="true"></i>
+    </button>
+    <b style="display:inline-block">{{graph1_name}}</b>
+    <ul id="spades_ul" class="nav nav-tabs"
+        style="float:right;display:inline-block;">
+        <li id="spades_1_li"
+            class="active"><a href="">Spades 1</a></li>
+        <li id="spades_2_li" ><a href="">Spades
+            2</a></li>
+    </ul>
+    <div id="spades_graph_container" class="collapse in" style="width:100%;height:400px;">
+        <div id="spades_1" class="box" style="width:100%;
+                            height:400px;"></div>
+        <div id="spades_2" class="box" style="width:100%;
+                            height:400px;display:none;"></div>
+    </div>
+</div>
+<div class="container not_first">
+    <button type="button" class="btn btn-sm btn-info"
+            data-toggle="collapse"
+            data-target="#container2"><i class="fa fa-compress"
+                                         aria-hidden="true"></i>
+    </button>
+    <b style="display:inline-block">{{graph2_name}}</b>
+    <div id="container2"
+         class="collapse in"
+         style="width:100%; height:400px;"></div>
+</div>

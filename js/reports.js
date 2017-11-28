@@ -36,7 +36,7 @@ const populateSelect = (container, species_data, data) => {
         options += "<option value='"+entry.id+"'>"+sp_id_to_name[entry.species_id] + " - " +entry.name+"</option>";
     });
 
-    $("#"+container).empty().append(options).selectpicker('refresh');
+    $("#"+container).empty().append(options).selectpicker('refresh').selectpicker('setStyle', 'btn-default');
 
 };
 
@@ -52,7 +52,6 @@ app.controller("reportsController", function($scope){
 
         ]
     };
-
 
     init_table($scope);
 
