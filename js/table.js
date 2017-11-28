@@ -131,62 +131,62 @@ const build_table = (results) => {
 
     for ( const r of results ) {
 
+        // Get sample name and process id
+        const sample_name = r.sample_name;
+        const pipeline_id = r.pipeline_id;
+        const id = `${sample_name}_${pipeline_id}`;
+
         // If the current combination of pipeline_id and sample_name
         // has not been added to the storage object, create a new
         // entry with the sample name key. This ensures that,
         // regardless of the order of the processes in the JSON,
         // there is always a storage entry for any given sample.
-        if (!storage[`${r.sample_name}_${r.pipeline_id}`]) {
-            storage[`${r.sample_name}_${r.pipeline_id}`] =
-                {"sample": r.sample_name,
-                 "Sample_id": `${r.project_id}.${r.pipeline_id}`,
-                 "qc": "<div class='badge-qc'>A</div>"};
+        if (!storage[id]) {
+            storage[id] =
+                {"sample": sample_name,
+                 "Sample_id": `${sample_name}.${r.pipeline_id}`,
+                 "qc": "<div class='badge-qc'><span class='tooltip-qc'>Waaaa</span>A</div>"};
         }
 
         // Get information from integrity coverage process
         if (r.process_id === "1") {
-            storage[`${r.sample_name}_${r.pipeline_id}`]["reads"] =
-                r.report_json.reads || "NA";
+            storage[id]["reads"] = r.report_json.reads || "NA";
             vals["reads"].push(parseFloat(r.report_json.reads));
-            storage[`${r.sample_name}_${r.pipeline_id}`]["bp"] =
-                r.report_json.bp || "NA";
+
+            storage[id]["bp"] = r.report_json.bp || "NA";
             vals["bp"].push(parseFloat(r.report_json.bp));
-            storage[`${r.sample_name}_${r.pipeline_id}`]["coverage_1"] =
-                r.report_json.coverage || "NA";
+
+            storage[id]["coverage_1"] = r.report_json.coverage || "NA";
             vals["coverage_1"].push(parseFloat(r.report_json.coverage));
         }
 
         // Get information from trimmomatic report
         if (r.process_id === "2") {
-            storage[`${r.sample_name}_${r.pipeline_id}`]["trimmed"] =
-                r.report_json.trim_perc;
+            storage[id]["trimmed"] = r.report_json.trim_perc;
             vals["trimmed"].push(parseFloat(r.report_json.trim_perc));
         }
 
         // Get information from the second coverage assessment
         if (r.process_id === "3") {
-            storage[`${r.sample_name}_${r.pipeline_id}`]["coverage_2"] =
-                r.report_json.coverage || "NA";
+            storage[id]["coverage_2"] = r.report_json.coverage || "NA";
             vals["coverage_2"].push(parseFloat(r.report_json.coverage));
         }
 
         // Get information from the first assembly report from spades
         if (r.process_id === "6") {
-            storage[`${r.sample_name}_${r.pipeline_id}`]["contigs"] =
-                r.report_json.contigs || "NA";
+            storage[id]["contigs"] = r.report_json.contigs || "NA";
             vals["contigs"].push(parseFloat(r.report_json.contigs));
-            storage[`${r.sample_name}_${r.pipeline_id}`]["assembled bp"] =
-                r.report_json.bp || "NA";
+
+            storage[id]["assembled bp"] = r.report_json.bp || "NA";
             vals["assembled bp"].push(parseFloat(r.report_json.bp));
         }
 
         // Get information from the second assembly report from pilon
         if (r.process_id === "8") {
-            storage[`${r.sample_name}_${r.pipeline_id}`]["contigs 2"] =
-                r.report_json.contigs || "NA";
+            storage[id]["contigs 2"] = r.report_json.contigs || "NA";
             vals["contigs 2"].push(parseFloat(r.report_json.contigs));
-            s = r.report_json.bp || "NA";
-            storage[`${r.sample_name}_${r.pipeline_id}`]["assembled bp 2"] = s;
+
+            storage[id]["assembled bp 2"] = r.report_json.bp || "NA";
             vals["assembled bp 2"].push(parseFloat(r.report_json.bp))
         }
     }
@@ -233,7 +233,7 @@ const build_table = (results) => {
                     } else {
                         prop = (parseFloat(storage[key][f]) / Math.max(...vals[f])) * 100;
                     }
-                    const out_div = `<div class='table-cell'><div class='table-bar' style='width:${prop}%'>${storage[key][f]}</div></div>`
+                    const out_div = `<div class='table-cell'><div class='table-bar' style='width:${prop}%'>${storage[key][f]}</div></div>`;
                     storage[key][f] = out_div
                 }
             }
