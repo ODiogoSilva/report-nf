@@ -21,15 +21,13 @@ class Charts {
         Available at charts/spades.js
     */
     buildSpadesGraphs() {
-        console.log(this.reports_data);
         processSpadesData(this.reports_data).then((processed_data) => {
-            this.spades_data.spades_size_graph = buildSpadesDistribution(
-                processed_data.storage_dist, "spades_1", "Distribution of contig size"
+            this.spades_data.spades_size_graph = buildSpadesBoxPlot(
+                processed_data.boxplot_size, "spades_1", "Distribution of contig size"
             );
             this.spades_data.spades_size_graph = buildSpadesDistribution(
-                processed_data.storage_cov, "spades_2", "Distribution of contig size"
+                processed_data.boxplot_cov, "spades_2", "Distribution of contig size"
             );
-            console.log(processed_data.boxplot_data[0]);
         });
     }
 

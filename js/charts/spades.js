@@ -18,9 +18,10 @@ const processSpadesData = async (raw_reports) => {
         }
     }
 
-    processed_data.storage_dist = await getHighchartsSeries("bellcurve", storage_dist);
-    processed_data.storage_cov = await getHighchartsSeries("bellcurve", storage_cov);
-    processed_data.boxplot_data = await getHighchartsSeries("boxplot", storage_dist);
+    // processed_data.storage_dist = await getHighchartsSeries("bellcurve", storage_dist);
+    // processed_data.storage_cov = await getHighchartsSeries("bellcurve", storage_cov);
+    processed_data.boxplot_size = await getHighchartsSeries("boxplot", storage_dist);
+    processed_data.boxplot_cov = await getHighchartsSeries("boxplot", storage_dist);
 
     return processed_data;
 
@@ -33,7 +34,7 @@ const getHighchartsSeries = (chart_type, data) => {
 
     if (chart_type === "boxplot") {
         series_array = Object.keys(data).map((key) => {
-            return getBoxValues(data[key]);
+            return getBoxValues(data[key], key);
         });
     }
     else{
@@ -52,10 +53,30 @@ const getHighchartsSeries = (chart_type, data) => {
 
 };
 
+const buildSpadesBoxPlot = (data, container, title) => {
+
+    const spades_size_bp = Highcharts.chart(container, {
+        chart: {
+            zoomType: "x",
+            type: "boxplot"
+        },
+        title: {text: title},
+        xAxis: {title: "Samples"},
+        yAxis: {title: "Size"},
+        series: [{
+            name: "Size distribution",
+            data: data,
+        }]
+    });
+
+    console.log(spades_size_bp);
+
+    return spades_size_bp
+
+};
+
 /* Build all spades distribution plots */
 const buildSpadesDistribution = (data, container, title) => {
-
-    console.log(data);
 
     try{
         const available_chart = $('#'+container).Highcharts();
@@ -66,6 +87,7 @@ const buildSpadesDistribution = (data, container, title) => {
     }
 
     const spades_size = Highcharts.chart(container, {
+        chart: {zoomType: "x"},
         title: {text: title},
         xAxis: [{
             min: 0,

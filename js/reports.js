@@ -14,7 +14,6 @@ const initReports = (results) => {
     data = results;
 
     charts.addReportData(results).then(() => {
-        console.log(charts.reports_data);
         charts.buildSpadesGraphs();
     });
 
@@ -50,6 +49,7 @@ app.controller("reportsController", function($scope){
             ["Table 1", "#table1_div"],
             ["Graph 1", "#spades_graph_container"],
             ["Graph 2", "#container2"]
+
         ]
     };
 

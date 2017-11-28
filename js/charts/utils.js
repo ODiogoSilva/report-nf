@@ -22,13 +22,13 @@ function numSort(a,b) {
 }
 
 /* Function to get boxplot values */
-function getBoxValues(data) {
-    const boxValues = {};
-    boxValues.x = Math.random() * 100;
-    boxValues.low    = Math.min.apply(Math,data);
-    boxValues.q1     = getPercentile(data, 25);
-    boxValues.median = getPercentile(data, 50);
-    boxValues.q3     = getPercentile(data, 75);
-    boxValues.high   = Math.max.apply(Math,data);
+function getBoxValues(data, sample) {
+    const boxValues = [];
+    boxValues.push(sample);
+    boxValues.push(Math.min.apply(Math,data));
+    boxValues.push(getPercentile(data, 25));
+    boxValues.push(getPercentile(data, 50));
+    boxValues.push(getPercentile(data, 75));
+    boxValues.push(Math.max.apply(Math,data));
     return boxValues;
 }

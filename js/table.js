@@ -241,7 +241,5 @@ const build_table = (results) => {
         return storage[key];
     });
 
-    console.log(table_data)
-
     insert_table_data(table_data)
 };
