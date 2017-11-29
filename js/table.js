@@ -32,17 +32,6 @@ const init_table = (scope) => {
         "assembled bp 2"
     ];
 
-    scope.graph1_name = "Graph 1";
-    scope.graph2_name = "Graph 2";
-    scope.table_name = "Table 1";
-
-    scope.workflows = [
-        ["INNUca", 14],
-        ["Prokka", 2],
-        ["chewBBACA", 2],
-        ["Pathotyping", 1]
-    ];
-
 };
 
 

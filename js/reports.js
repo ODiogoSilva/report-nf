@@ -110,6 +110,17 @@ const populateSelect = (container, species_data, data) => {
 /* Angular controller to control the DOM elements from the index.html file */
 app.controller("reportsController", function($scope){
 
+    $scope.graph1_name = "Graph 1";
+    $scope.graph2_name = "Graph 2";
+    $scope.table_name = "Table 1";
+
+    $scope.workflows = [
+        ["INNUca", 14],
+        ["Prokka", 2],
+        ["chewBBACA", 2],
+        ["Pathotyping", 1]
+    ];
+
     $scope.workflow_charts = {
         "INNUca": [
             ["Table 1", "#table1_div"],
