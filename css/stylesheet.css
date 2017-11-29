@@ -29,7 +29,17 @@ button.m-bottom{
     transition: margin 0.3s ease;
 }
 
+#results_div {
+    /* for the animation */
+    transition: width 0.3s ease;
+}
+
 .collapsed_sidebar {
+    /* hide it for small displays*/
+    display: none;
+}
+
+.collapsed_right_sidebar {
     /* hide it for small displays*/
     display: none;
 }
@@ -42,7 +52,19 @@ button.m-bottom{
     }
 }
 
+@media (min-width: 992px) {
+    .collapsed_right_sidebar {
+        display: block;
+        /* same width as sidebar */
+        margin-right: -25%;
+    }
+}
+
 #row-main {
+    /* necessary to hide collapsed sidebar */
+    overflow-x: hidden;
+}
+#right-sidebar {
     /* necessary to hide collapsed sidebar */
     overflow-x: hidden;
 }
@@ -140,4 +162,21 @@ th {
 
 .heading {
     border-bottom: 3px solid #000;
+}
+
+.sidebar-button {
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display:block;
+    z-index: 1;
+}
+
+/* Affix functionality of side navbar */
+.affix {
+    top: 30px;
+    bottom: 90px;
+    width: 300px;
+    min-height: 50px;
 }

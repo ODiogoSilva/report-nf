@@ -193,8 +193,12 @@ app.controller("reportsController", function($scope){
 
     setTimeout( () => {
         $('#phyloviz_button').off("click").on("click", () => {
-            console.log("AQUI");
             $('#sendToPHYLOViZModal').modal('show');
+        });
+
+        $('#sidebar-button').off("click").on("click", () => {
+            $("#right-sidebar").toggleClass("collapsed_right_sidebar");
+            $("#results_div").toggleClass("col-md-12 col-md-10");
         });
     }, 100);
 

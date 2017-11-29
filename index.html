@@ -33,98 +33,105 @@
     <div ng-include="'./html_templates/modals/phyloviz_modal.html'"></div>
 
     <div id="body_container" style="display:none;">
-        <div id="dragNdropdiv" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
 
-            <!-- Jumbotron region -->
-            <div class="row">
-                <div class="jumbotron">
-                    <div class="container" style="text-align: center;">
-                        <h1>Reports Page</h1>
-                        <p>Reports app from the Oneida Platform</p>
-                        <h4>Select a Project</h4>
+        <div class="col-md-12" id="results_div">
 
-                        <div>
-                            <select id="project_select" class="selectpicker"
-                                    title="Select one Project" data-live-search="true" data-style="btn-default">
-                            </select>
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <div class="row">
-                                <button id="submit_project" style="display:inline-block;"class="btn btn-info">Submit</button>
-                                <button id="reset_project" style="display:none;" class="btn btn-danger">Reset</button>
+            <a id="sidebar-button" href="#" class="btn btn-primary btn-md sidebar-button" role="button" data-placement="left"><i class="fa fa-bars" aria-hidden="true"></i></a>
+
+            <div id="dragNdropdiv" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
+
+                <!-- Jumbotron region -->
+                <div class="row">
+                    <div class="jumbotron">
+                        <div class="container" style="text-align: center;">
+                            <h1>Reports Page</h1>
+                            <p>Reports app from the Oneida Platform</p>
+                            <h4>Select a Project</h4>
+
+                            <div>
+                                <select id="project_select" class="selectpicker"
+                                        title="Select one Project" data-live-search="true" data-style="btn-default">
+                                </select>
                             </div>
+                            <div style="margin-top: 10px;">
+                                <div class="row">
+                                    <button id="submit_project" style="display:inline-block;"class="btn btn-info">Submit</button>
+                                    <button id="reset_project" style="display:none;" class="btn btn-danger">Reset</button>
+                                </div>
+                            </div>
+                            <!--<div id="current_workflow" style="margin-top: 10px;display:none;">
+                                <p><b>Workflow: </b>{{workflow_name}}</p>
+                            </div>-->
                         </div>
-                        <!--<div id="current_workflow" style="margin-top: 10px;display:none;">
-                            <p><b>Workflow: </b>{{workflow_name}}</p>
-                        </div>-->
                     </div>
                 </div>
-            </div>
 
-            <!-- Data region -->
-            <div class="row" id="row-main" style="display:none;">
-                <!-- Workflow sidebar -->
-                <div class="col-md-2" id="workflows_sidebar">
-                    <ul class="list-group">
-                      <li class="list-group-item list-group-item-primary">
-                          <h4>Workflows
-                              <span style="float: right;">
-                                  <button
-                                          class="btn btn-xs btn-default toggle_sidebar">
-                                      <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                                  </button>
-                              </span>
-                          </h4>
-                      </li>
-                        <!-- populate ul with all available workflows -->
-                      <div ng-repeat="workflow in workflows">
-                          <li>
-                              <!--href="#{{workflow[0]}}_heading"-->
-                              <a class="list-group-item workflow_li"
-                                 ng-click="switch_workflow(workflow[0])" data-toggle="collapse" href="#{{workflow[0]}}_charts">{{workflow[0]}}
-                                  <span
-                                          class="badge badge-primary badge-pill">{{workflow[1]
-                        }}</span>
-                                  <!--<span style="float:right;margin-right:5px;z-index:1000;" data-toggle="collapse" href="#{{workflow[0]}}_charts">
-                                      <i id="{{workflow[0]}}_c" data-toggle="collapse" href="#{{workflow[0]}}_charts" class="fa fa-bar-chart" aria-hidden="true"></i>
-                                  </span>-->
-                              </a>
+                <!-- Data region -->
+                <div class="row" id="row-main" style="display:none;">
+                    <!-- Workflow sidebar -->
+                    <div class="col-md-2" id="workflows_sidebar" data-spy="affix" data-offset-top="400">
+                        <ul class="list-group">
+                          <li class="list-group-item list-group-item-primary">
+                              <h4>Workflows
+                                  <span style="float: right;">
+                                      <button
+                                              class="btn btn-xs btn-default toggle_sidebar">
+                                          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                      </button>
+                                  </span>
+                              </h4>
                           </li>
-                          <div id="{{workflow[0]}}_charts" class="panel-collapse collapse">
-                              <ul class="list-group">
-                                  <li ng-repeat="chart in workflow_charts[workflow[0]]" class="list-group-item">
-                                      <a href="{{chart[1]}}">{{chart[0]}}</a>
-                                  </li>
-                              </ul>
+                            <!-- populate ul with all available workflows -->
+                          <div ng-repeat="workflow in workflows">
+
+                                  <!--href="#{{workflow[0]}}_heading"-->
+                                  <a class="list-group-item workflow_li"
+                                     ng-click="switch_workflow(workflow[0])" data-toggle="collapse" href="#{{workflow[0]}}_charts">{{workflow[0]}}
+                                      <span
+                                              class="badge badge-primary badge-pill">{{workflow[1]
+                            }}</span>
+                                      <!--<span style="float:right;margin-right:5px;z-index:1000;" data-toggle="collapse" href="#{{workflow[0]}}_charts">
+                                          <i id="{{workflow[0]}}_c" data-toggle="collapse" href="#{{workflow[0]}}_charts" class="fa fa-bar-chart" aria-hidden="true"></i>
+                                      </span>-->
+                                  </a>
+
+                              <div id="{{workflow[0]}}_charts" class="panel-collapse collapse">
+                                  <ul class="list-group">
+                                      <li ng-repeat="chart in workflow_charts[workflow[0]]" class="list-group-item">
+                                          <a href="{{chart[1]}}">{{chart[0]}}</a>
+                                      </li>
+                                  </ul>
+                              </div>
                           </div>
-                      </div>
-                    </ul>
+                        </ul>
 
-                </div>
+                    </div>
 
-                <div class="col-md-8" id="workflows_content">
-                    <span style="float: left;">
-                      <button
-                              class="btn btn-xs btn-default toggle_sidebar hide_button">
-                          <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                      </button>
-                  </span>
+                    <div class="col-md-10" id="workflows_content">
+                        <span style="float: left;">
+                          <button
+                                  class="btn btn-xs btn-default toggle_sidebar hide_button">
+                              <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                          </button>
+                      </span>
 
-                    <!-- INNUca content: tables and graphs -->
-                    <div ng-include="'./html_templates/innuca.html'"></div>
-                    <!-- Prokka content: tables and graphs -->
-                    <div ng-include="'./html_templates/prokka.html'"></div>
-                    <!-- chewBBACA content: tables and graphs -->
-                    <div ng-include="'./html_templates/chewbbaca.html'"></div>
-                    <!-- Pathotyping content: tables and graphs -->
-                    <div ng-include="'./html_templates/pathotyping.html'"></div>
+                        <!-- INNUca content: tables and graphs -->
+                        <div ng-include="'./html_templates/innuca.html'"></div>
+                        <!-- Prokka content: tables and graphs -->
+                        <div ng-include="'./html_templates/prokka.html'"></div>
+                        <!-- chewBBACA content: tables and graphs -->
+                        <div ng-include="'./html_templates/chewbbaca.html'"></div>
+                        <!-- Pathotyping content: tables and graphs -->
+                        <div ng-include="'./html_templates/pathotyping.html'"></div>
 
-                </div>
-
-                <div class="col-md-2" id="more_content">
+                    </div>
 
                 </div>
             </div>
+        </div>
+
+        <div class="col-md-2 collapsed_right_sidebar" id="right-sidebar">
+            <div style="width:100%;height: 100%;" ng-include="'./html_templates/right_sidebar.html'"></div>
         </div>
 
     </div>
