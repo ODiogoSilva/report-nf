@@ -173,8 +173,14 @@ th {
     z-index: 1;
 }
 
+.affix-top {
+    width: 100%;
+}
+
 /* Affix functionality of side navbar */
 .affix {
+    display: inline-block;
+    width: 14.4%;
     top: 30px;
     bottom: 90px;
     min-height: 50px;
