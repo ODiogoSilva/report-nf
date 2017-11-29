@@ -28,6 +28,10 @@
 </head>
 <body ng-app="reportsApp" ng-controller="reportsController">
 
+    <!-- Modals region -->
+    <div ng-include="'./html_templates/modals/modal_alert.html'"></div>
+    <div ng-include="'./html_templates/modals/phyloviz_modal.html'"></div>
+
     <div id="body_container" style="display:none;">
         <div id="dragNdropdiv" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
 
@@ -37,8 +41,7 @@
                     <div class="container" style="text-align: center;">
                         <h1>Reports Page</h1>
                         <p>Reports app from the Oneida Platform</p>
-                        <h4>Select a Project or a set of strains assign to that
-                            project</h4>
+                        <h4>Select a Project</h4>
 
                         <div>
                             <select id="project_select" class="selectpicker"
@@ -48,7 +51,7 @@
                         <div style="margin-top: 10px;">
                             <div class="row">
                                 <button id="submit_project" style="display:inline-block;"class="btn btn-info">Submit</button>
-                                <button id="reset_project" style="display:none;" class="btn btn-info">Reset</button>
+                                <button id="reset_project" style="display:none;" class="btn btn-danger">Reset</button>
                             </div>
                         </div>
                         <!--<div id="current_workflow" style="margin-top: 10px;display:none;">
@@ -76,14 +79,15 @@
                         <!-- populate ul with all available workflows -->
                       <div ng-repeat="workflow in workflows">
                           <li>
+                              <!--href="#{{workflow[0]}}_heading"-->
                               <a class="list-group-item workflow_li"
-                                 ng-click="switch_workflow(workflow[0])" href="#{{workflow[0]}}_heading">{{workflow[0]}}
+                                 ng-click="switch_workflow(workflow[0])" data-toggle="collapse" href="#{{workflow[0]}}_charts">{{workflow[0]}}
                                   <span
                                           class="badge badge-primary badge-pill">{{workflow[1]
                         }}</span>
-                                  <span style="float:right;margin-right:5px;z-index:2;" data-toggle="collapse" href="#{{workflow[0]}}_charts">
+                                  <!--<span style="float:right;margin-right:5px;z-index:1000;" data-toggle="collapse" href="#{{workflow[0]}}_charts">
                                       <i id="{{workflow[0]}}_c" data-toggle="collapse" href="#{{workflow[0]}}_charts" class="fa fa-bar-chart" aria-hidden="true"></i>
-                                  </span>
+                                  </span>-->
                               </a>
                           </li>
                           <div id="{{workflow[0]}}_charts" class="panel-collapse collapse">
@@ -110,10 +114,10 @@
                     <div ng-include="'./html_templates/innuca.html'"></div>
                     <!-- Prokka content: tables and graphs -->
                     <div ng-include="'./html_templates/prokka.html'"></div>
-                    <!-- Pathotyping content: tables and graphs -->
-                    <div ng-include="'./html_templates/pathotyping.html'"></div>
                     <!-- chewBBACA content: tables and graphs -->
                     <div ng-include="'./html_templates/chewbbaca.html'"></div>
+                    <!-- Pathotyping content: tables and graphs -->
+                    <div ng-include="'./html_templates/pathotyping.html'"></div>
 
                 </div>
 
@@ -126,7 +130,7 @@
     </div>
 
     <img id="waiting_gif" src="./images/waiting_gif.gif" class="centered"
-    width="200" height="120">
+    width="200" height="120" style="display:none;">
 
     <script src="./bower_components/jquery/dist/jquery.min.js"></script>
     <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script>

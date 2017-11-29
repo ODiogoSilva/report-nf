@@ -23,6 +23,25 @@ const initReports = (results) => {
 
 };
 
+const modalAlert = (text, callback) => {
+
+    $('#buttonSub').off("click");
+    $('#buttonCancelAlert').off("click");
+
+    $('#modalAlert .modal-body').empty();
+    $('#modalAlert .modal-body').append("<p>"+text+"</p>");
+
+    $('#buttonSub').one("click", function(){
+        $('#modalAlert').modal("hide");
+        console.log("Alert");
+
+        setTimeout(function(){return callback()}, 400);
+    })
+
+    $('#modalAlert').modal("show");
+
+};
+
 /* Populates the select picker options based on the species and the project name */
 const populateSelect = (container, species_data, data) => {
     let options = "";
@@ -77,11 +96,11 @@ app.controller("reportsController", function($scope){
                    initReports(results);
 
                }, () => {
-                   console.log("No reports for that project.");
+                   modalAlert("No reports for that project.", function(){});
                });
            })
        }, () => {
-           console.log("No projects for that species");
+           modalAlert("No projects for that species", function(){});
            populateSelect("project_select", []);
        });
     });
@@ -123,6 +142,13 @@ app.controller("reportsController", function($scope){
         $('.box').hide().eq($(this).index()).show();  // hide all divs and show the current div
     });
 
-    $("#waiting_gif").css({display:"none"});
     $("#body_container").css({display:"block"});
+
+    setTimeout( () => {
+        $('#phyloviz_button').off("click").on("click", () => {
+            console.log("AQUI");
+            $('#sendToPHYLOViZModal').modal('show');
+        });
+    }, 100);
+
 });
