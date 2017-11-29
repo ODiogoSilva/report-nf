@@ -23,13 +23,11 @@ class Table {
         });
         this.table_headers = table_object.headers;
         this.column_mapping = table_object.column_mapping;
-        return table_object;
     }
 
     /* Method to add data to the table */
     addTableData(table_object) {
         this.table_data = this.table_data.concat(table_object.data);
-        return table_object;
     }
 
     /* Method to destroy the DataTable */
@@ -56,7 +54,6 @@ class Table {
 
     /* Method to build DataTable */
     buildDataTable() {
-        console.log(this.table_data, this.table_headers, this.column_mapping);
         if ( $.fn.DataTable.isDataTable('#'+this.container)) {
             this.destroyTable(this.container);
         }
@@ -103,7 +100,12 @@ class Table {
                 style:    'os',
                 selector: 'td:first-child'
             },
-            // initComplete: function(){$(".table-cell").parent().css({"height": "30px"});}
+            "initComplete": () => {
+                /* Trigger selected class on row when click on checkbox */
+                $(".editor-active").off("click").on("click", (e) => {
+                    $(e.target).closest("tr").toggleClass("selected");
+                });
+            }
         } );
     }
 
