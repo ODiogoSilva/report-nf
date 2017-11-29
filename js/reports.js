@@ -4,28 +4,43 @@ let data = "";
 
 const charts = new Charts();
 
-/* Function to build tables and graphs based on the reports */
+
+/**
+ * Function to build tables and graphs based on the reports
+ * @param scope
+ * @param results
+ */
 const initReports = (scope, results) => {
 
     $("#waiting_gif").css({display:"block"});
     $("#row-main").css({display:"none"});
 
-    build_table(results);
+    // build_table(results);
     data = results;
 
     /* Init tables */
+    const innuca_table = new Table("master_table_innuca");
     const chewbbaca_table = new Table("master_table_chewbbaca");
     const prokka_table = new Table("master_table_prokka");
 
     /* Launch Tables */
+    innuca_table.processInnuca(results).then( async (results_ch) => {
+        await innuca_table.addTableHeaders(scope, results_ch,
+            "table_headers_innuca");
+        await innuca_table.addTableData(results_ch);
+        await innuca_table.buildDataTable();
+    });
+
     chewbbaca_table.processChewbbaca(results).then( async (results_ch) => {
-        await chewbbaca_table.addTableHeaders(scope, results_ch, "table_headers_chewbbaca");
+        await chewbbaca_table.addTableHeaders(scope, results_ch,
+            "table_headers_chewbbaca");
         await chewbbaca_table.addTableData(results_ch);
         await chewbbaca_table.buildDataTable();
     });
 
     prokka_table.processProkka(results).then( async (results_ch) => {
-        await prokka_table.addTableHeaders(scope, results_ch, "table_headers_prokka");
+        await prokka_table.addTableHeaders(scope, results_ch,
+            "table_headers_prokka");
         await prokka_table.addTableData(results_ch);
         await prokka_table.buildDataTable();
     });
@@ -40,9 +55,9 @@ const initReports = (scope, results) => {
 
 
 
-    charts.addReportData(results).then(() => {
-        charts.buildSpadesGraphs();
-    });
+    // charts.addReportData(results).then(() => {
+    //     charts.buildSpadesGraphs();
+    // });
 
     $("#waiting_gif").css({display:"none"});
     $("#row-main").css({display:"block"});
@@ -63,13 +78,18 @@ const modalAlert = (text, callback) => {
         console.log("Alert");
 
         setTimeout(function(){return callback()}, 400);
-    })
+    });
 
     $('#modalAlert').modal("show");
 
 };
 
-/* Populates the select picker options based on the species and the project name */
+/**
+ * Populates the select picker options based on the species and the project name
+ * @param container
+ * @param species_data
+ * @param data
+ */
 const populateSelect = (container, species_data, data) => {
     let options = "";
     const sp_id_to_name = {};

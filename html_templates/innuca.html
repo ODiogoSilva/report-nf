@@ -8,20 +8,16 @@
     </button>
     <b style="display:inline-block">{{table_name}}</b>
     <div id="table1_div" class="collapse in">
-        <table id="master_table" class="display" cellspacing="0"
+        <table id="master_table_innuca" class="display" cellspacing="0"
                style="height:100%;width:100%;">
             <thead>
             <tr>
-                <th ng-repeat="header in table_headers_up" rowspan="{{header[1]}}"
-                    colspan="{{header[2]}}">{{header[0]}}</th>
-            </tr>
-            <tr>
-                <th ng-repeat="header in table_headers_down">{{header}}</th>
+                <th ng-repeat="header in table_headers_innuca">{{header}}</th>
             </tr>
             </thead>
             <tfoot>
             <tr>
-                <th ng-repeat="header in table_footer">{{header}}</th>
+                <th ng-repeat="header in table_headers_innuca">{{header}}</th>
             </tr>
             </tfoot>
         </table>
