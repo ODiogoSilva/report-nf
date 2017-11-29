@@ -69,41 +69,43 @@
                 <!-- Data region -->
                 <div class="row" id="row-main" style="display:none;">
                     <!-- Workflow sidebar -->
-                    <div class="col-md-2" id="workflows_sidebar" data-spy="affix" data-offset-top="400">
-                        <ul class="list-group">
-                          <li class="list-group-item list-group-item-primary">
-                              <h4>Workflows
-                                  <span style="float: right;">
-                                      <button
-                                              class="btn btn-xs btn-default toggle_sidebar">
-                                          <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                                      </button>
-                                  </span>
-                              </h4>
-                          </li>
-                            <!-- populate ul with all available workflows -->
-                          <div ng-repeat="workflow in workflows">
+                    <div class="col-md-2" id="workflows_sidebar">
+                        <div data-spy="affix" data-offset-top="400">
+                            <ul class="list-group">
+                              <li class="list-group-item list-group-item-primary">
+                                  <h4>Workflows
+                                      <span style="float: right;">
+                                          <button
+                                                  class="btn btn-xs btn-default toggle_sidebar">
+                                              <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                          </button>
+                                      </span>
+                                  </h4>
+                              </li>
+                                <!-- populate ul with all available workflows -->
+                              <div ng-repeat="workflow in workflows">
 
-                                  <!--href="#{{workflow[0]}}_heading"-->
-                                  <a class="list-group-item workflow_li"
-                                     ng-click="switch_workflow(workflow[0])" data-toggle="collapse" href="#{{workflow[0]}}_charts">{{workflow[0]}}
-                                      <span
-                                              class="badge badge-primary badge-pill">{{workflow[1]
-                            }}</span>
-                                      <!--<span style="float:right;margin-right:5px;z-index:1000;" data-toggle="collapse" href="#{{workflow[0]}}_charts">
-                                          <i id="{{workflow[0]}}_c" data-toggle="collapse" href="#{{workflow[0]}}_charts" class="fa fa-bar-chart" aria-hidden="true"></i>
-                                      </span>-->
-                                  </a>
+                                      <!--href="#{{workflow[0]}}_heading"-->
+                                      <a class="list-group-item workflow_li"
+                                         ng-click="switch_workflow(workflow[0])" data-toggle="collapse" href="#{{workflow[0]}}_charts">{{workflow[0]}}
+                                          <span
+                                                  class="badge badge-primary badge-pill">{{workflow[1]
+                                }}</span>
+                                          <!--<span style="float:right;margin-right:5px;z-index:1000;" data-toggle="collapse" href="#{{workflow[0]}}_charts">
+                                              <i id="{{workflow[0]}}_c" data-toggle="collapse" href="#{{workflow[0]}}_charts" class="fa fa-bar-chart" aria-hidden="true"></i>
+                                          </span>-->
+                                      </a>
 
-                              <div id="{{workflow[0]}}_charts" class="panel-collapse collapse">
-                                  <ul class="list-group">
-                                      <li ng-repeat="chart in workflow_charts[workflow[0]]" class="list-group-item">
-                                          <a href="{{chart[1]}}">{{chart[0]}}</a>
-                                      </li>
-                                  </ul>
+                                  <div id="{{workflow[0]}}_charts" class="panel-collapse collapse">
+                                      <ul class="list-group">
+                                          <li ng-repeat="chart in workflow_charts[workflow[0]]" class="list-group-item">
+                                              <a href="{{chart[1]}}">{{chart[0]}}</a>
+                                          </li>
+                                      </ul>
+                                  </div>
                               </div>
-                          </div>
-                        </ul>
+                            </ul>
+                        </div>
 
                     </div>
 
