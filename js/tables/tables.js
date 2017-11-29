@@ -6,57 +6,62 @@
 
 
 class Table {
-    constructor() {
+    constructor(container) {
         this.table_headers = [];
         this.table_data = [];
         this.column_mapping = [];
+        this.container = container;
     }
 
-    /* Method to add table headers and column mapping */
-    addTableHeaders(scope, table_headers, column_mapping) {
-        scope.table_headers = table_headers;
-        this.table_headers = table_headers;
-        this.column_mapping = column_mapping;
-        return true;
+    /*
+        Method to add table headers and column mapping
+        Needs the scope to modify the html table headers
+    */
+    addTableHeaders(scope, table_object, headers_v_name) {
+        scope.$apply( () => {
+            scope[headers_v_name] = table_object.headers;
+        });
+        this.table_headers = table_object.headers;
+        this.column_mapping = table_object.column_mapping;
+        return table_object;
     }
 
     /* Method to add data to the table */
-    async addTableData(table_data) {
-        this.table_data = await this.table_data.concat(table_data);
-        return true;
-
+    addTableData(table_object) {
+        this.table_data = this.table_data.concat(table_object.data);
+        return table_object;
     }
 
     /* Method to destroy the DataTable */
-    destroyTable(container) {
-        if ( $.fn.DataTable.isDataTable('#'+container)) {
-            $('#'+container).DataTable().clear();
-            $('#'+container).DataTable().destroy();
+    destroyTable() {
+        if ( $.fn.DataTable.isDataTable('#'+this.container)) {
+            $('#'+this.container).DataTable().clear();
+            $('#'+this.container).DataTable().destroy();
 
         }
     }
 
     /* Method to clear the DataTable */
-    clearTable(container){
-        if ( $.fn.DataTable.isDataTable('#'+container)) {
-            $('#'+container).DataTable().clear();
+    clearTable(){
+        if ( $.fn.DataTable.isDataTable('#'+this.container)) {
+            $('#'+this.container).DataTable().clear();
         }
     }
 
     /* Method to add a new DataTable rows */
-    updateTable(container, data) {
-        const table = $('#' + table_id).DataTable();
+    updateTable(data) {
+        const table = $('#' + this.container).DataTable();
         table.rows.add(data);
     }
 
     /* Method to build DataTable */
-    buildDataTable(container) {
-
-        if ( $.fn.DataTable.isDataTable('#'+container)) {
-            this.destroyTable(container);
+    buildDataTable() {
+        console.log(this.table_data, this.table_headers, this.column_mapping);
+        if ( $.fn.DataTable.isDataTable('#'+this.container)) {
+            this.destroyTable(this.container);
         }
 
-        $('#'+container).DataTable( {
+        $('#'+this.container).DataTable( {
             "data": this.table_data,
             "columns" : this.column_mapping,
             autoFill: {
@@ -89,6 +94,15 @@ class Table {
                     ]
                 }
             ],
+            columnDefs: [ {
+                orderable: false,
+                className: 'select-checkbox',
+                targets:   0
+            } ],
+            select: {
+                style:    'os',
+                selector: 'td:first-child'
+            },
             // initComplete: function(){$(".table-cell").parent().css({"height": "30px"});}
         } );
     }

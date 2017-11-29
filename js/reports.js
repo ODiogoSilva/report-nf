@@ -5,13 +5,40 @@ let data = "";
 const charts = new Charts();
 
 /* Function to build tables and graphs based on the reports */
-const initReports = (results) => {
+const initReports = (scope, results) => {
 
     $("#waiting_gif").css({display:"block"});
     $("#row-main").css({display:"none"});
 
     build_table(results);
     data = results;
+
+    /* Init tables */
+    const chewbbaca_table = new Table("master_table_chewbbaca");
+    const prokka_table = new Table("master_table_prokka");
+
+    /* Launch Tables */
+    chewbbaca_table.processChewbbaca(results).then( async (results_ch) => {
+        await chewbbaca_table.addTableHeaders(scope, results_ch, "table_headers_chewbbaca");
+        await chewbbaca_table.addTableData(results_ch);
+        await chewbbaca_table.buildDataTable();
+    });
+
+    prokka_table.processProkka(results).then( async (results_ch) => {
+        await prokka_table.addTableHeaders(scope, results_ch, "table_headers_prokka");
+        await prokka_table.addTableData(results_ch);
+        await prokka_table.buildDataTable();
+    });
+
+    /*.then( (results_ch) => {
+        console.log(results_ch);
+        return chewbbaca_table.addTableData(results_ch);
+    }).then( (results_ch) => {
+        console.log(results_ch);
+        return chewbbaca_table.buildDataTable();
+    });*/
+
+
 
     charts.addReportData(results).then(() => {
         charts.buildSpadesGraphs();
@@ -93,7 +120,7 @@ app.controller("reportsController", function($scope){
 
                /* Request to get the reports for a given project */
                getReportsByProject($("#project_select option:selected").val()).then((results) => {
-                   initReports(results);
+                   initReports($scope, results);
 
                }, () => {
                    modalAlert("No reports for that project.", function(){});
