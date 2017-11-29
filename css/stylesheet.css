@@ -179,8 +179,8 @@ th {
 
 /* Affix functionality of side navbar */
 .affix {
-    display: inline-block;
-    width: 14.4%;
+    width: 16.6666667%;
+    padding-right: 33px;
     top: 30px;
     bottom: 90px;
     min-height: 50px;
