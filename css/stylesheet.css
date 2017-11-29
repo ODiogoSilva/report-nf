@@ -24,6 +24,11 @@ button.m-bottom{
     transition: margin 0.3s ease;
 }
 
+#right-sidebar {
+    /* for the animation */
+    transition: margin 0.3s ease;
+}
+
 .collapsed_sidebar {
     /* hide it for small displays*/
     display: none;

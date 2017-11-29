@@ -163,7 +163,7 @@ app.controller("reportsController", function($scope){
     $('.toggle_sidebar').on("click", () => {
         /* to toggle the sidebar, just switch the CSS classes */
         $("#workflows_sidebar").toggleClass("collapsed_sidebar");
-        $("#workflows_content").toggleClass("col-md-12 col-md-8");
+        $("#workflows_content").toggleClass("col-md-12 col-md-10");
         $(".toggle_sidebar").toggleClass("hide_button");
         return false;
     });
