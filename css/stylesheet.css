@@ -270,3 +270,14 @@ th {
     bottom: 90px;
     min-height: 50px;
 }
+
+.button_side {
+    cursor: pointer;
+}
+
+#accordion {
+    width:15.5%;
+    position:fixed;
+    margin-right: 20%;
+    margin-top: 5%;
+}
