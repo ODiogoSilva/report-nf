@@ -86,18 +86,72 @@ a {
 Workflow side bar elements
  */
 
-.workflow-header {
+/* Style for side navbar */
+#workflow-header {
     font-size: 25px;
+    color: grey;
     font-weight: bold;
-    border-bottom: 1px solid black;;
+    border-bottom: 1px solid grey;
 }
 
+/* Set line spacing for submenu itens */
+.nav-tour > li > ul {
+}
+
+/* Style for all entries in side nav (including non links) */
 .nav-tour > li {
-    font-size: 15px;
+    font-family: 'Jura', sans-serif;
+    color: grey;
+    font-size: 18px;
 }
 
-.nav-tour > .active > li {
-    color: pink;
+.nav-tour > li > a {
+    padding-bottom: 0;
+}
+
+ /*Hide submenus when inactive */
+.nav-tour .nav {
+    display: none;
+}
+
+/* Display submenus when active */
+.nav-tour > .active > .nav {
+    display: block;
+}
+
+/* Style for sub-menus when active */
+.nav-tour > .active > .nav > li {
+    font-size: 60%;
+}
+
+/* Add margin for items in active sub-menu that are not active */
+.nav-tour > .active > .nav > li > a{
+    margin-left: 10px;
+    padding: 5px;
+}
+
+/* Style for active submenu itens */
+.nav-tour > .active > .nav > .active > a,
+.nav-tour > .active > .nav > .active > a:hover {
+    font-weight: bold;
+    border-left: 2px solid #37abc8;
+    margin-left: 0px;
+}
+
+/* when hovering over inactive submensu */
+
+/* Style for active itens */
+.nav-tour > .active > a,
+.nav-tour > .active > a:hover {
+    font-weight: bold;
+    border-left: 2px solid #37abc8
+}
+
+/* when hovering over inactive menus */
+.nav-tour > .active > .nav > li > a:hover,
+.nav-tour > li > a:hover {
+    border-left: 2px solid #ccc;
+    background-color: transparent;
 }
 
 /*

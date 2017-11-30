@@ -123,10 +123,13 @@ app.controller("reportsController", function($scope){
 
     $scope.workflow_charts = {
         "INNUca": [
-            ["Table 1", "#table1_div"],
-            ["Graph 1", "#spades_graph_container"],
-            ["Graph 2", "#container2"]
+            ["Table 1", "table1_div"],
+            ["Graph 1", "spades_graph_container"],
+            ["Graph 2", "container2"]
 
+        ],
+        "Prokka": [
+            ["Table 3", "table3_div"]
         ]
     };
 
@@ -239,7 +242,6 @@ app.directive('scrollSpy', function ($window) {
                         _results.push(spyElems[spy.id] = elem.find('#' + spy.id));
                     }
                 }
-                console.log(_results)
                 return _results;
             });
 
@@ -247,6 +249,10 @@ app.directive('scrollSpy', function ($window) {
                 var highlightSpy, pos, spy, _i, _len, _ref;
                 highlightSpy = null;
                 _ref = scope.spies;
+
+                for (s of scope.spies) {
+                    spyElems[s.id] = elem.find("#" + s.id)
+                }
 
                 // cycle through `spy` elements to find which to highlight
                 for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -272,10 +278,10 @@ app.directive('scrollSpy', function ($window) {
                 }
 
                 // select the last `spy` if the scrollbar is at the bottom of the page
-                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-                    spy.pos = pos;
-                    highlightSpy = spy;
-                }
+                // if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                //     spy.pos = pos;
+                //     highlightSpy = spy;
+                // }
 
                 return highlightSpy != null ? highlightSpy["in"]() : void 0;
             });
@@ -297,6 +303,7 @@ app.directive('spy', function ($location, $anchorScroll) {
                 id: attrs.spy,
                 in: function() {
                     elem.addClass('active');
+                    elem.parent().parent().addClass("active")
                 },
                 out: function() {
                     elem.removeClass('active');

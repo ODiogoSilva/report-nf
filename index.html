@@ -70,34 +70,40 @@
                 <div class="row" id="row-main" style="display:none;" scroll-spy>
                     <!-- Workflow sidebar -->
                     <div class="col-md-2 sidebar" id="workflows_sidebar">
-                        <div data-spy="affix" data-offset-top="360">
-                            <ul class="list-group">
-                              <li class="list-group-item list-group-item-primary">
-                                  <h4>Workflows
-                                      <span style="float: right;">
-                                          <button
-                                                  class="btn btn-xs btn-default toggle_sidebar">
-                                              <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                                          </button>
-                                      </span>
-                                  </h4>
-                              </li>
-                                <!-- populate ul with all available workflows -->
-                                <div ng-repeat="workflow in workflows">
-                                    <!--href="#{{workflow[0]}}_heading"-->
-                                    <a class="list-group-item workflow_li" spy="{{workflow[0]}}" data-toggle="collapse" href="#{{workflow[0]}}_charts">{{workflow[0]}}
-                                        <span class="badge badge-primary badge-pill">{{workflow[1]}}</span>
-                                    </a>
-                                    <div id="{{workflow[0]}}_charts" class="panel-collapse collapse">
-                                        <ul class="list-group">
-                                            <li ng-repeat="chart in workflow_charts[workflow[0]]" class="list-group-item">
-                                                <a href="{{chart[1]}}">{{chart[0]}}</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </ul>
-                        </div>
+                        <ul class="nav nav-stacked nav-tour" data-spy="affix" data-offset-top="360">
+                            <li id="workflow-header">Workflows</li>
+                            <li spy="{{workflow[0]}}" ng-repeat="workflow in workflows">
+                                <a> {{workflow[0]}}</a>
+                                <ul class="nav">
+                                    <li spy="{{chart[1]}}" parentSpy="{{workflow[0]}}" ng-repeat="chart in workflow_charts[workflow[0]]">
+                                        <a href="#{{chart[1]}}">{{chart[0]}}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!--<ul class="list-group">-->
+                                <!--<div class="list-group-item list-group-item-primary">-->
+                                    <!--<h4>Workflows-->
+                                        <!--<span style="float: right;">-->
+                                            <!--<button class="btn btn-xs btn-default toggle_sidebar">-->
+                                                <!--<i class="fa fa-arrow-left" aria-hidden="true"></i>-->
+                                            <!--</button>-->
+                                        <!--</span>-->
+                                    <!--</h4>-->
+                                <!--</div>-->
+                                <!--&lt;!&ndash; populate ul with all available workflows &ndash;&gt;-->
+                                <!--<li spy="{{workflow[0]}}" class="list-group-item" ng-repeat="workflow in workflows">-->
+                                    <!--&lt;!&ndash;href="#{{workflow[0]}}_heading"&ndash;&gt;-->
+                                    <!--<a data-target="#{{workflow[0]}}" bs-scrollspy class="list-group-item">{{workflow[0]}}<span class="badge badge-primary badge-pill">{{workflow[1]}}</span></a>-->
+                                    <!--<div id="{{workflow[0]}}_charts" class="panel-collapse collapse">-->
+                                        <!--<ul class="list-group">-->
+                                            <!--<li ng-repeat="chart in workflow_charts[workflow[0]]" class="list-group-item">-->
+                                                <!--<a href="{{chart[1]}}">{{chart[0]}}</a>-->
+                                            <!--</li>-->
+                                        <!--</ul>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        </ul>
 
                     </div>
 
@@ -121,6 +127,7 @@
                     </div>
 
                 </div>
+
             </div>
         </div>
 
@@ -137,18 +144,14 @@
     <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="./bower_components/angular/angular.js"></script>
     <script src="./bower_components/datatables.net/js/jquery.dataTables.js"></script>
-    <script
-            src="./bower_components/datatables.net-buttons/js/dataTables.buttons.js"></script>
-    <script
-            src="./bower_components/datatables.net-autofill/js/dataTables.autoFill.js"></script>
-    <script
-            src="./bower_components/datatables.net-buttons/js/buttons.colVis.js"></script>
-    <script
-            src="./bower_components/datatables.net-buttons/js/buttons.html5.js"></script>
-    <script
-            src="./bower_components/datatables.net-buttons/js/buttons.print.js"></script>
-    <script
-            src="./bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+    <script src="./bower_components/datatables.net-buttons/js/dataTables.buttons.js"></script>
+    <script src="./bower_components/datatables.net-autofill/js/dataTables.autoFill.js"></script>
+    <script src="./bower_components/datatables.net-buttons/js/buttons.colVis.js"></script>
+    <script src="./bower_components/datatables.net-buttons/js/buttons.html5.js"></script>
+    <script src="./bower_components/datatables.net-buttons/js/buttons.print.js"></script>
+    <script src="./bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+    <script src="./bower_components/angular-strap/dist/angular-strap.min.js"></script>
+    <script src="./bower_components/angular-strap/src/helpers/dimensions.js"></script>
     <script src="./js/charts/spades.js"></script>
     <script src="./js/charts/utils.js"></script>
     <script src="js/charts/charts.js"></script>
