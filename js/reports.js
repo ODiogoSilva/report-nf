@@ -135,8 +135,6 @@ app.controller("reportsController", function($scope){
         "Pathotyping": []
     };
 
-    init_table($scope);
-
     /* Request to get all the available species */
     getSpecies().then((results) => {
        /* Request to get all the available projects */
