@@ -214,14 +214,14 @@ th {
     transition: opacity 1s;
     z-index: 9;
     /* Size and Position */
-    width: 200px;
+    width: 300px;
     padding: 5px;
     top: -5px;
     right: 110%;
     margin-right: 5px;
     /* Borders */
     border-radius: 6px;
-    border: solid #555;
+    border: 2px solid #555;
     /* Colors */
     background-color: #fff;
     color: #555;
@@ -232,7 +232,7 @@ th {
 
 .tooltip-qc .tooltip-qc-text::after {
     top: 18px;
-    left: 101%;
+    left: 100.5%;
     margin-top: -5px;
     position: absolute;
     border: 5px solid transparent;
@@ -243,6 +243,20 @@ th {
 .tooltip-qc:hover .tooltip-qc-text {
     visibility: visible;
     opacity: 1;
+}
+
+.tooltip-qc-text li {
+    list-style-type: none;
+    line-height: 20px;
+}
+
+.tooltip-qc-text ul {
+    margin: 0 0;
+}
+
+.tooltip-qc-text ul {
+    padding-left: 10px;
+    font-size: 10px;
 }
 
 .heading {

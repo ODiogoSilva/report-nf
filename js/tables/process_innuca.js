@@ -98,6 +98,10 @@ const processInnuca = (reports_data) => {
     // Populate table data
     innuca_data.data = Object.keys(storage).map((x) => {
 
+        qc_msg = get_qc(warnings[x]);
+
+        storage[x]["qc"] = qc_msg;
+
         // Iterate over all expected columns in the table. If one or more
         // columns are missing from any given taxa, those columns are filled
         // with NA. This occurs when the pipeline stopped in the middle of the
@@ -150,3 +154,75 @@ const processInnuca = (reports_data) => {
     return innuca_data
 
 };
+
+/**
+ *
+ * @param warn_object
+ */
+const get_qc = (warning_object) => {
+
+    let low = [];
+    let moderate = [];
+    let high = [];
+
+    const qc_picker = {
+        "low": ["#42f480", "A"],
+        "moderate": ["#d1cc51", "B"],
+        "high": ["#f79d54", "C"]
+    };
+    let qc_color;
+    let qc_value;
+
+    for (warn of Object.values(warning_object)) {
+        for (w of warn.value) {
+            // Get severity of error
+            const severity = w.split(":")[1];
+            const warn_msg = `<li>${warn.process}: ${w.split(":")[0]}</li>`;
+            switch (severity) {
+                case "low":
+                    low.push(warn_msg);
+                    low.push(warn_msg);
+                    break;
+                case "moderate":
+                    moderate.push(warn_msg);
+                    break;
+                case "high":
+                    high.push(warn_msg);
+                    break
+            }
+        }
+    }
+
+    if (high.length > 0) {
+        qc_color = qc_picker.high[0];
+        qc_value = qc_picker.high[1];
+    } else if (moderate.length > 0) {
+        qc_color = qc_picker.moderate[0];
+        qc_value = qc_picker.moderate[1];
+    } else {
+        qc_color = qc_picker.low[0];
+        qc_value = qc_picker.low[1];
+    }
+
+    // for (ar of [low, moderate, high]) {
+    //     console.log(ar)
+    // }
+
+    qc_msg = `<div class='badge-qc tooltip-qc' style="background: ${qc_color}">
+                <span class='tooltip-qc-text'>
+                    <div>
+                        <ul>
+                            <li>Low severity:</li>
+                                <ul>${low.join("")}</ul>
+                            <li>Moderate severity:</li>
+                                <ul>${moderate.join("")}</ul>
+                            <li>High severity:</li>
+                                <ul>${high.join("")}</ul>
+                        </ul>
+                    </div>
+                </span>${qc_value}</div>`;
+    console.log(qc_msg)
+
+    return qc_msg
+
+}
