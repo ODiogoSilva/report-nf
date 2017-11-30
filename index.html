@@ -67,9 +67,9 @@
                 </div>
 
                 <!-- Data region -->
-                <div class="row" id="row-main" style="display:none;">
+                <div class="row" id="row-main" style="display:none;" scroll-spy>
                     <!-- Workflow sidebar -->
-                    <div class="col-md-2" id="workflows_sidebar">
+                    <div class="col-md-2 sidebar" id="workflows_sidebar">
                         <div data-spy="affix" data-offset-top="360">
                             <ul class="list-group">
                               <li class="list-group-item list-group-item-primary">
@@ -85,8 +85,7 @@
                                 <!-- populate ul with all available workflows -->
                                 <div ng-repeat="workflow in workflows">
                                     <!--href="#{{workflow[0]}}_heading"-->
-                                    <a class="list-group-item workflow_li"
-                                       ng-click="switch_workflow(workflow[0])" data-toggle="collapse" href="#{{workflow[0]}}_charts">{{workflow[0]}}
+                                    <a class="list-group-item workflow_li" spy="{{workflow[0]}}" data-toggle="collapse" href="#{{workflow[0]}}_charts">{{workflow[0]}}
                                         <span class="badge badge-primary badge-pill">{{workflow[1]}}</span>
                                     </a>
                                     <div id="{{workflow[0]}}_charts" class="panel-collapse collapse">

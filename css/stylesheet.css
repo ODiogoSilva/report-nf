@@ -83,6 +83,24 @@ a {
 }
 
 /*
+Workflow side bar elements
+ */
+
+.workflow-header {
+    font-size: 25px;
+    font-weight: bold;
+    border-bottom: 1px solid black;;
+}
+
+.nav-tour > li {
+    font-size: 15px;
+}
+
+.nav-tour > .active > li {
+    color: pink;
+}
+
+/*
 Table style elements
  */
 
@@ -173,11 +191,11 @@ th {
     z-index: 1;
 }
 
+/* Affix functionality of side navbar */
 .affix-top {
     width: 100%;
 }
 
-/* Affix functionality of side navbar */
 .affix {
     width: 16.6666667%;
     padding-right: 33px;

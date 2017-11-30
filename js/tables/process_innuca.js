@@ -47,6 +47,12 @@ const processInnuca = (reports_data) => {
             warnings[id] = {}
         }
 
+        // If the current json report has a warnings property, parse the QC
+        // results
+        if (jr.hasOwnProperty("warnings")) {
+            warnings[id][process_id] = jr.warnings;
+        }
+
         // If the current json report has a table-row property, parse it
         // to the data table
         if (jr.hasOwnProperty("table-row")) {
@@ -74,6 +80,8 @@ const processInnuca = (reports_data) => {
             }
         }
     }
+
+    console.log(warnings)
 
     //
     // At this point, the table data and headers were already gathered.
@@ -114,11 +122,6 @@ const processInnuca = (reports_data) => {
                     const out_div = `<div class='table-cell'><div class='table-bar' style='width:${prop}%'>${storage[x][f]}</div></div>`;
                     storage[x][f] = out_div
                 }
-                // if (f === "trimmed") {
-                //     prop = parseFloat(storage[x][f])
-                // } else {
-                //     prop = (parseFloat(storage[x][f] / Math.max(...)))
-                // }
             }
         });
         return storage[x]
