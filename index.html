@@ -73,9 +73,9 @@
                         <ul class="nav nav-stacked nav-tour" data-spy="affix" data-offset-top="360">
                             <li id="workflow-header">Workflows</li>
                             <li spy="{{workflow[0]}}" ng-repeat="workflow in workflows">
-                                <a> {{workflow[0]}}</a>
+                                <a href="#{{workflow[0]}}">{{workflow[0]}}</a>
                                 <ul class="nav">
-                                    <li spy="{{chart[1]}}" parentSpy="{{workflow[0]}}" ng-repeat="chart in workflow_charts[workflow[0]]">
+                                    <li spy="{{chart[1]}}" ng-repeat="chart in workflow_charts[workflow[0]]">
                                         <a href="#{{chart[1]}}">{{chart[0]}}</a>
                                     </li>
                                 </ul>
@@ -150,8 +150,6 @@
     <script src="./bower_components/datatables.net-buttons/js/buttons.html5.js"></script>
     <script src="./bower_components/datatables.net-buttons/js/buttons.print.js"></script>
     <script src="./bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-    <script src="./bower_components/angular-strap/dist/angular-strap.min.js"></script>
-    <script src="./bower_components/angular-strap/src/helpers/dimensions.js"></script>
     <script src="./js/charts/spades.js"></script>
     <script src="./js/charts/utils.js"></script>
     <script src="js/charts/charts.js"></script>

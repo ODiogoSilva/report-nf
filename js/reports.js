@@ -130,7 +130,9 @@ app.controller("reportsController", function($scope){
         ],
         "Prokka": [
             ["Table 3", "table3_div"]
-        ]
+        ],
+        "ChewBBACA": [],
+        "Pathotyping": []
     };
 
     init_table($scope);
@@ -182,14 +184,6 @@ app.controller("reportsController", function($scope){
         return false;
     });
 
-    /* Event to trigger workflow change
-       Run changes in graphs by workflow here.
-     */
-    $scope.switch_workflow = (workflow_name) => {
-        console.log("Workflow change");
-        $scope.workflow_name = workflow_name;
-    };
-
     /* Trigger style of dropdowns */
     $('.selectpicker').selectpicker({
       style: 'btn-info',
@@ -231,24 +225,11 @@ app.directive('scrollSpy', function ($window) {
             var spyElems;
             spyElems = [];
 
-            scope.$watch('spies', function (spies) {
-                var spy, _i, _len, _results;
-                _results = [];
-
-                for (_i = 0, _len = spies.length; _i < _len; _i++) {
-                    spy = spies[_i];
-
-                    if (spyElems[spy.id] == null) {
-                        _results.push(spyElems[spy.id] = elem.find('#' + spy.id));
-                    }
-                }
-                return _results;
-            });
-
-            $($window).scroll(function () {
+            $($window).on('scroll', function () {
                 var highlightSpy, pos, spy, _i, _len, _ref;
                 highlightSpy = null;
                 _ref = scope.spies;
+                let offset = 80;
 
                 for (s of scope.spies) {
                     spyElems[s.id] = elem.find("#" + s.id)
@@ -264,7 +245,7 @@ app.directive('scrollSpy', function ($window) {
                         continue;
                     }
 
-                    if ((pos = spyElems[spy.id].offset().top) - $window.scrollY <= 0) {
+                    if ((pos = spyElems[spy.id].offset().top) - $window.scrollY - offset <= 0) {
                         // the window has been scrolled past the top of a spy element
                         spy.pos = pos;
 
@@ -277,12 +258,6 @@ app.directive('scrollSpy', function ($window) {
                     }
                 }
 
-                // select the last `spy` if the scrollbar is at the bottom of the page
-                // if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-                //     spy.pos = pos;
-                //     highlightSpy = spy;
-                // }
-
                 return highlightSpy != null ? highlightSpy["in"]() : void 0;
             });
         }
@@ -294,10 +269,10 @@ app.directive('spy', function ($location, $anchorScroll) {
         restrict: "A",
         require: "^scrollSpy",
         link: function(scope, elem, attrs, affix) {
-            elem.click(function () {
-                $location.hash(attrs.spy);
-                $anchorScroll();
-            });
+            // elem.click(function () {
+                // $location.hash(attrs.spy);
+                // $anchorScroll();
+            // });
 
             affix.addSpy({
                 id: attrs.spy,

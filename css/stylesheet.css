@@ -91,7 +91,7 @@ Workflow side bar elements
     font-size: 25px;
     color: grey;
     font-weight: bold;
-    border-bottom: 1px solid grey;
+    /*border-bottom: 1px solid grey;*/
 }
 
 /* Set line spacing for submenu itens */
@@ -100,9 +100,12 @@ Workflow side bar elements
 
 /* Style for all entries in side nav (including non links) */
 .nav-tour > li {
-    font-family: 'Jura', sans-serif;
-    color: grey;
     font-size: 18px;
+    text-align: right;
+}
+
+.nav-tour a {
+    color: grey;
 }
 
 .nav-tour > li > a {
@@ -121,7 +124,7 @@ Workflow side bar elements
 
 /* Style for sub-menus when active */
 .nav-tour > .active > .nav > li {
-    font-size: 60%;
+    font-size: 80%;
 }
 
 /* Add margin for items in active sub-menu that are not active */
@@ -134,23 +137,33 @@ Workflow side bar elements
 .nav-tour > .active > .nav > .active > a,
 .nav-tour > .active > .nav > .active > a:hover {
     font-weight: bold;
-    border-left: 2px solid #37abc8;
-    margin-left: 0px;
+    border-right: 2px solid dimgrey;;
+    margin-right: 0px;
+}
+
+.nav-tour > .active > .nav > .active > a:focus,
+.nav-tour > .active > .nav > a:focus {
+    background-color: transparent!important;
 }
 
 /* when hovering over inactive submensu */
+
+.nav-tour > .active > a:focus {
+    background-color: transparent;
+}
 
 /* Style for active itens */
 .nav-tour > .active > a,
 .nav-tour > .active > a:hover {
     font-weight: bold;
-    border-left: 2px solid #37abc8
+    border-right: 2px solid dimgrey;
 }
 
 /* when hovering over inactive menus */
 .nav-tour > .active > .nav > li > a:hover,
+.nav-tour > .active > .nav > li > a:focus,
 .nav-tour > li > a:hover {
-    border-left: 2px solid #ccc;
+    border-right: 1px solid dimgrey;
     background-color: transparent;
 }
 
