@@ -42,7 +42,7 @@ const processInnuca = (reports_data) => {
                     "active": 0,
                     "Sample": sample_name,
                     "id": `${project_id}.${pipeline_id}`,
-                    "qc": "<div class='badge-qc tooltip-qc'><span class='tooltip-qc-text'>Waaaa</span>A</div>"
+                    "qc": ""
                 };
             warnings[id] = {}
         }
@@ -80,8 +80,6 @@ const processInnuca = (reports_data) => {
             }
         }
     }
-
-    console.log(warnings)
 
     //
     // At this point, the table data and headers were already gathered.
@@ -123,7 +121,7 @@ const processInnuca = (reports_data) => {
                         prop = (parseFloat(storage[x][f]) /
                             Math.max(...column_bars[f])) * 100;
                     }
-                    const out_div = `<div class='table-cell'><div class='table-bar' style='width:${prop}%'>${storage[x][f]}</div></div>`;
+                    const out_div = `<div class='table-cell'><div class="table-bar-text">${storage[x][f]}</div><div class='table-bar' style='width:${prop}%'></div>${storage[x][f]}</div>`;
                     storage[x][f] = out_div
                 }
             }
