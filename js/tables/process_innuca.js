@@ -9,10 +9,11 @@ const processInnuca = (reports_data) => {
         "data": {}
     };
 
+    console.log(reports_data);
 
     let columns = {};
     let storage = {};
-    let warnings = {};
+    let qc_storage = {};
     // Holds an object containing the table headers tha should be filled with
     // a column bar and an array of their values
     let column_bars = {};
@@ -44,13 +45,19 @@ const processInnuca = (reports_data) => {
                     "id": `${project_id}.${pipeline_id}`,
                     "qc": ""
                 };
-            warnings[id] = {}
+            qc_storage[id] = {"warnings": {}, "fails": {}};
         }
 
         // If the current json report has a warnings property, parse the QC
         // results
         if (jr.hasOwnProperty("warnings")) {
-            warnings[id][process_id] = jr.warnings;
+            qc_storage[id].warnings[process_id] = jr.warnings;
+        }
+
+        // If the current json report has a fail property, parse to the QC
+        // results
+        if (jr.hasOwnProperty("fail")) {
+            qc_storage[id].fails[process_id] = jr.fail
         }
 
         // If the current json report has a table-row property, parse it
@@ -96,7 +103,9 @@ const processInnuca = (reports_data) => {
     // Populate table data
     innuca_data.data = Object.keys(storage).map((x) => {
 
-        qc_msg = get_qc(warnings[x]);
+        console.log(qc_storage)
+
+        let qc_msg = get_qc(qc_storage[x]);
 
         storage[x]["qc"] = qc_msg;
 
@@ -157,22 +166,45 @@ const processInnuca = (reports_data) => {
  *
  * @param warn_object
  */
-const get_qc = (warning_object) => {
+const get_qc = (qc_object) => {
 
     let low = [];
     let moderate = [];
     let high = [];
 
+    console.log(qc_object);
+
     const qc_picker = {
         "low": ["#42f480", "A"],
         "moderate": ["#d1cc51", "B"],
-        "high": ["#f79d54", "C"]
+        "high": ["#f79d54", "C"],
+        "fail": ["#d64944", "F"],
+        "error": ["#000000", "E"]
     };
     let qc_color;
     let qc_value;
+    let qc_msg;
 
-    for (warn of Object.values(warning_object)) {
-        for (w of warn.value) {
+    if (Object.keys(qc_object.fails).length !== 0) {
+        qc_color = qc_picker.fail[0];
+        qc_value = qc_picker.fail[1];
+        let fail_msg = Object.values(qc_object.fails).toString()
+        qc_msg = `<div class='badge-qc tooltip-qc' 
+                       style="background: ${qc_color}">
+                    <span class='tooltip-qc-text'>
+                        <div>
+                            <ul>
+                                <li>Fail reason:</li>
+                                    <ul>${fail_msg}</ul>
+                            </ul>
+                        </div>
+                    </span>${qc_value}</div>`;
+
+        return qc_msg
+    }
+
+    for (const warn of Object.values(qc_object.warnings)) {
+        for (const w of warn.value) {
             // Get severity of error
             const severity = w.split(":")[1];
             const warn_msg = `<li>${warn.process}: ${w.split(":")[0]}</li>`;
@@ -219,8 +251,7 @@ const get_qc = (warning_object) => {
                         </ul>
                     </div>
                 </span>${qc_value}</div>`;
-    console.log(qc_msg)
 
     return qc_msg
 
-}
+};
