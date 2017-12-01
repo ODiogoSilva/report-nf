@@ -34,7 +34,7 @@ const getHighchartsSeries = (chart_type, data) => {
 
     if (chart_type === "boxplot") {
         series_array = Object.keys(data).map((key) => {
-            return getBoxValues(data[key], key);
+            return getBoxValues(data.key, key);
         });
     }
     else{
