@@ -227,7 +227,7 @@ app.directive('scrollSpy', function ($window) {
                 var highlightSpy, pos, spy, _i, _len, _ref;
                 highlightSpy = null;
                 _ref = scope.spies;
-                let offset = 80;
+                let offset = 200;
 
                 for (s of scope.spies) {
                     spyElems[s.id] = elem.find("#" + s.id)
