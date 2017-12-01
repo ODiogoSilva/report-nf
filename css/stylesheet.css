@@ -188,7 +188,7 @@ th {
 
 .table-bar {
     position: absolute;
-    background: rgba(146, 187, 252, .4);
+    background: rgba(252, 160, 3, 0.4);
     height: 100%;
     z-index: 1;
 }
@@ -212,7 +212,6 @@ th {
     text-align: center;
     vertical-align: middle;
     font-size: 15px;
-    background: #42f480;
 }
 
 .tooltip-qc {
@@ -270,6 +269,20 @@ th {
 .tooltip-qc-text ul {
     padding-left: 10px;
     font-size: 10px;
+}
+
+.loader {
+    border: 3px solid #aaa3a3; /* Light grey */
+    border-top: 3px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .heading {

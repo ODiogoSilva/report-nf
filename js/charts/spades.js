@@ -43,7 +43,7 @@ const getHighchartsSeries = (chart_type, data) => {
                 name: key,
                 type: "bellcurve",
                 baseSeries: key,
-                data: data[key],
+                data: data.key,
                 id: key,
             }
         });

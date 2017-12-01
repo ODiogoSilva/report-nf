@@ -103,7 +103,13 @@ const processInnuca = (reports_data) => {
     // Populate table data
     innuca_data.data = Object.keys(storage).map((x) => {
 
-        console.log(qc_storage)
+        // Check if current sample has finished
+        const last_header = innuca_data.headers[innuca_data.headers.length - 1];
+        if (storage[x].hasOwnProperty(last_header)) {
+            qc_storage[x].status = "finished";
+        } else {
+            qc_storage[x].status = "pending";
+        }
 
         let qc_msg = get_qc(qc_storage[x]);
 
@@ -116,7 +122,9 @@ const processInnuca = (reports_data) => {
         sorted_columns.map((f) => {
             // The field does not exist, fill with NA
             if (!(storage[x].hasOwnProperty(f))){
-                storage[x][f] = "NA"
+                storage[x][f] = "<div class='table-cell'>" +
+                                    "<div class='table-bar-text'>NA</div>" +
+                                "</div>"
             // The field exists, do some pre-processing
             } else {
                 let prop;
@@ -156,8 +164,6 @@ const processInnuca = (reports_data) => {
         },
     ].concat(mappings);
 
-    console.log(innuca_data);
-
     return innuca_data
 
 };
@@ -172,8 +178,6 @@ const get_qc = (qc_object) => {
     let moderate = [];
     let high = [];
 
-    console.log(qc_object);
-
     const qc_picker = {
         "low": ["#42f480", "A"],
         "moderate": ["#d1cc51", "B"],
@@ -185,6 +189,8 @@ const get_qc = (qc_object) => {
     let qc_value;
     let qc_msg;
 
+    // If the current sample has the fails property, return the fail QC
+    // badge and exit
     if (Object.keys(qc_object.fails).length !== 0) {
         qc_color = qc_picker.fail[0];
         qc_value = qc_picker.fail[1];
@@ -203,6 +209,15 @@ const get_qc = (qc_object) => {
         return qc_msg
     }
 
+    // If the sample has not yet finished but did not fail, return the loader
+    // div
+    if (qc_object.status === "pending"){
+        qc_msg = "<div class='loader'></div>";
+        return qc_msg
+    }
+
+    // If the sample has finished without failing or errors, evaluate the
+    // QC grade
     for (const warn of Object.values(qc_object.warnings)) {
         for (const w of warn.value) {
             // Get severity of error
@@ -223,6 +238,8 @@ const get_qc = (qc_object) => {
         }
     }
 
+    // Determine the badge color and grade with the priority being from
+    // high to low
     if (high.length > 0) {
         qc_color = qc_picker.high[0];
         qc_value = qc_picker.high[1];
@@ -233,10 +250,6 @@ const get_qc = (qc_object) => {
         qc_color = qc_picker.low[0];
         qc_value = qc_picker.low[1];
     }
-
-    // for (ar of [low, moderate, high]) {
-    //     console.log(ar)
-    // }
 
     qc_msg = `<div class='badge-qc tooltip-qc' style="background: ${qc_color}">
                 <span class='tooltip-qc-text'>
