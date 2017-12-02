@@ -66,22 +66,22 @@ const processInnuca = (reports_data) => {
 
             // Add each individual cell from the current process id
             for (const cell of jr["table-row"]) {
-                header = cell.header;
-                storage[id][cell.header] = cell.value;
+                header = cell.header.replace("_", " ");
+                storage[id][header] = cell.value;
 
                 // Add the column header to the columns array, if it doesn't
                 // exist yet
-                if (!columns.hasOwnProperty(cell.header)) {
-                    columns[cell.header] = process_id
+                if (!columns.hasOwnProperty(header)) {
+                    columns[header] = process_id
                 }
 
                 // If the current column has the column-bar attribute, add it
                 // to the column_bars array
                 if (cell.hasOwnProperty("column-bar")){
-                    if (!column_bars.hasOwnProperty(cell.header)){
-                        column_bars[cell.header] = [cell.value]
+                    if (!column_bars.hasOwnProperty(header)){
+                        column_bars[header] = [cell.value]
                     } else {
-                        column_bars[cell.header].push(cell.value)
+                        column_bars[header].push(cell.value)
                     }
                 }
             }
@@ -194,7 +194,7 @@ const get_qc = (qc_object) => {
     if (Object.keys(qc_object.fails).length !== 0) {
         qc_color = qc_picker.fail[0];
         qc_value = qc_picker.fail[1];
-        let fail_msg = Object.values(qc_object.fails).toString()
+        let fail_msg = Object.values(qc_object.fails).toString().replace("_", " ");
         qc_msg = `<div class='badge-qc tooltip-qc' 
                        style="background: ${qc_color}">
                     <span class='tooltip-qc-text'>
@@ -222,7 +222,8 @@ const get_qc = (qc_object) => {
         for (const w of warn.value) {
             // Get severity of error
             const severity = w.split(":")[1];
-            const warn_msg = `<li>${warn.process}: ${w.split(":")[0]}</li>`;
+            const warning_cat = w.split(":")[0].replace(/_/g, " ");
+            const warn_msg = `<li>${warn.process}: ${warning_cat}</li>`;
             switch (severity) {
                 case "low":
                     low.push(warn_msg);
