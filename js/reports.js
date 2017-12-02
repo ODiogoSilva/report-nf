@@ -4,6 +4,10 @@ let data = "";
 
 const charts = new Charts();
 
+/* Init tables */
+const innuca_table = new Table("master_table_innuca");
+const chewbbaca_table = new Table("master_table_chewbbaca");
+const prokka_table = new Table("master_table_prokka");
 
 /**
  * Function to build tables and graphs based on the reports
@@ -17,11 +21,6 @@ const initReports = (scope, results) => {
 
     // build_table(results);
     data = results;
-
-    /* Init tables */
-    const innuca_table = new Table("master_table_innuca");
-    const chewbbaca_table = new Table("master_table_chewbbaca");
-    const prokka_table = new Table("master_table_prokka");
 
     /* Launch Tables */
     innuca_table.processInnuca(results).then( async (results_ch) => {
@@ -54,10 +53,9 @@ const initReports = (scope, results) => {
     });*/
 
 
-
-    // charts.addReportData(results).then(() => {
-    //     charts.buildSpadesGraphs();
-    // });
+    charts.addReportData(results).then(() => {
+        charts.buildSpadesGraphs();
+    });
 
     $("#waiting_gif").css({display:"none"});
     $("#row-main").css({display:"block"});
