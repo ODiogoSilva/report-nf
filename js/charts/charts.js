@@ -26,7 +26,7 @@ class Charts {
                 processed_data.boxplot_size, "spades_1", "Distribution of contig size"
             );
             this.spades_data.spades_size_graph = buildSpadesDistribution(
-                processed_data.boxplot_cov, "spades_2", "Distribution of contig size"
+                processed_data.storage_dist, "container2", "Distribution of contig size"
             );
         });
     }
@@ -34,6 +34,30 @@ class Charts {
 }
 
 
+const sampleSelector = (x) => {
+
+    // Get sample name from click event
+    const sample = x.point.name;
+
+    for (const el of innuca_table.table_data){
+        if (sample === el.Sample) {
+            el.active = 1;
+            innuca_table.highlightRow(sample)
+        }
+    }
+
+};
+
+
+// console.log(innuca_table.table_data)
+// for (const el of innuca_table.table_data) {
+//     console.log(el.Sample, this.name)
+//     if (this.name === el.Sample) {
+//         console.log("here")
+//         el.active = 1;
+//         console.log(innuca_table.table_data)
+//     }
+// }
 /*
 const charts_ar = [c1, c2];
 
