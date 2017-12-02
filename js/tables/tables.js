@@ -11,6 +11,7 @@ class Table {
         this.table_data = [];
         this.column_mapping = [];
         this.container = container;
+        this.tableObj = null
     }
 
     /*
@@ -52,13 +53,17 @@ class Table {
         table.rows.add(data);
     }
 
+    highlightRow(id) {
+        $("#" + id).toggleClass("selected", "")
+    }
+
     /* Method to build DataTable */
     buildDataTable() {
         if ( $.fn.DataTable.isDataTable('#'+this.container)) {
             this.destroyTable(this.container);
         }
 
-        $('#'+this.container).DataTable( {
+        this.tableObj = $('#'+this.container).DataTable( {
             "data": this.table_data,
             "columns" : this.column_mapping,
             autoFill: {
@@ -105,6 +110,9 @@ class Table {
                 $(".editor-active").off("click").on("click", (e) => {
                     $(e.target).closest("tr").toggleClass("selected");
                 });
+            },
+            "fnCreatedRow": (nRow, aData) => {
+                $(nRow).attr("id", aData.Sample);
             }
         } );
     }
