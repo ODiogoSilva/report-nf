@@ -24,7 +24,7 @@ const get_qc = (qcObject) => {
     if (Object.keys(qcObject.fails).length !== 0) {
         qcColor = qcPicker.fail[0];
         qcValue = qcPicker.fail[1];
-        let fail_msg = Object.values(qcObject.fails).toString().replace("_", " ");
+        let fail_msg = Object.values(qcObject.fails).toString().replace(/_/g, " ");
         qcMsg = `<div class='badge-qc tooltip-qc' 
                        style="background: ${qcColor}">
                     <span class='tooltip-qc-text'>
@@ -96,7 +96,7 @@ const get_qc = (qcObject) => {
                     </div>
                 </span>${qcValue}</div>`;
 
-    return qcMsg
+    return qcMsg;
 
 };
 
