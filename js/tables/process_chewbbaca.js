@@ -5,30 +5,30 @@
 
 const processChewbbaca = (reports_data) => {
 
-    const chewbbaca_data = {};
-    let chewbbaca_headers = ["", "id"];
-    let data_key = "";
-    const chewbbaca_data_array = [];
+    const chewbbacaData = {};
+    let chewbbacaHeaders = ["", "id"];
+    let dataKey = "";
+    const chewbbacaDataArray = [];
 
     /* Get headers */
     let firstTime = true;
     for (const report of reports_data) {
         if (report.report_json.task === "chewbbaca"){
             if (firstTime) {
-                chewbbaca_headers = chewbbaca_headers.concat(report.report_json.cagao[1].header);
+                chewbbacaHeaders = chewbbacaHeaders.concat(report.report_json.cagao[1].header);
                 firstTime = false;
                 Object.keys(report.report_json.cagao[1]).map((key) => {
-                    if (key !== "header") data_key = key;
+                    if (key !== "header") dataKey = key;
                 });
                 break;
             }
         }
     }
 
-    chewbbaca_headers.push("Profile");
+    chewbbacaHeaders.push("Profile");
 
     /* Set column mapping from the headers */
-    let chewbbaca_column_mapping = [
+    let chewbbacaColumnMapping = [
         {
             data: "active",
             render: function (data, type, row) {
@@ -41,8 +41,8 @@ const processChewbbaca = (reports_data) => {
         }
     ];
 
-    chewbbaca_headers.map((x) => {
-        if (x !== "") chewbbaca_column_mapping.push({"data": x});
+    chewbbacaHeaders.map((x) => {
+        if (x !== "") chewbbacaColumnMapping.push({"data": x});
     });
 
     /* Get data for each strain to add to the table */
@@ -53,19 +53,19 @@ const processChewbbaca = (reports_data) => {
                 "id": report.sample_name
             }
 
-            report.report_json.cagao[1][data_key].map( (j, i) => {
-                data_object[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][data_key][i]
+            report.report_json.cagao[1][dataKey].map( (j, i) => {
+                data_object[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][dataKey][i]
             });
             data_object["Profile"] = "<button class='btn btn-md btn-primary'>Profile</button>"
-            chewbbaca_data_array.push(data_object);
+            chewbbacaDataArray.push(data_object);
 
         }
     }
 
-    chewbbaca_data.headers = chewbbaca_headers;
-    chewbbaca_data.column_mapping = chewbbaca_column_mapping;
-    chewbbaca_data.data = chewbbaca_data_array;
+    chewbbacaData.headers = chewbbacaHeaders;
+    chewbbacaData.columnMapping = chewbbacaColumnMapping;
+    chewbbacaData.data = chewbbacaDataArray;
 
-    return chewbbaca_data;
+    return chewbbacaData;
 
 };

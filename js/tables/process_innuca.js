@@ -1,8 +1,8 @@
 /**
  *
- * @param warn_object
+ * @param qcObject
  */
-const get_qc = (qcObject) => {
+const getQc = (qcObject) => {
 
     let low = [];
     let moderate = [];
@@ -24,14 +24,14 @@ const get_qc = (qcObject) => {
     if (Object.keys(qcObject.fails).length !== 0) {
         qcColor = qcPicker.fail[0];
         qcValue = qcPicker.fail[1];
-        let fail_msg = Object.values(qcObject.fails).toString().replace(/_/g, " ");
+        let failMsg = Object.values(qcObject.fails).toString().replace(/_/g, " ");
         qcMsg = `<div class='badge-qc tooltip-qc' 
                        style="background: ${qcColor}">
                     <span class='tooltip-qc-text'>
                         <div>
                             <ul>
                                 <li>Fail reason:</li>
-                                    <ul>${fail_msg}</ul>
+                                    <ul><li>${failMsg}</li></ul>
                             </ul>
                         </div>
                     </span>${qcValue}</div>`;
@@ -43,7 +43,7 @@ const get_qc = (qcObject) => {
     // div
     if (qcObject.status === "pending"){
         qcMsg = "<div class='loader'></div>";
-        return qcMsg
+        return qcMsg;
     }
 
     // If the sample has finished without failing or errors, evaluate the
@@ -52,18 +52,18 @@ const get_qc = (qcObject) => {
         for (const w of warn.value) {
             // Get severity of error
             const severity = w.split(":")[1];
-            const warning_cat = w.split(":")[0].replace(/_/g, " ");
-            const warn_msg = `<li>${warn.process}: ${warning_cat}</li>`;
+            const warningCat = w.split(":")[0].replace(/_/g, " ");
+            const warnMsg = `<li>${warn.process}: ${warningCat}</li>`;
             switch (severity) {
                 case "low":
-                    low.push(warn_msg);
-                    low.push(warn_msg);
+                    low.push(warnMsg);
+                    low.push(warnMsg);
                     break;
                 case "moderate":
-                    moderate.push(warn_msg);
+                    moderate.push(warnMsg);
                     break;
                 case "high":
-                    high.push(warn_msg);
+                    high.push(warnMsg);
                     break;
             }
         }
@@ -112,8 +112,6 @@ const processInnuca = (reportsData) => {
         "data": {}
     };
 
-    console.log(reportsData);
-
     let storage = new Map();
     let columns = new Map();
     let qcStorage = new Map();
@@ -122,7 +120,7 @@ const processInnuca = (reportsData) => {
     // a column bar and an array of their values
     let columnBars = {};
     // These headers are always present in the beginning of the table
-    let start_headers = ["", "qc", "id", "Sample"];
+    let startHeaders = ["", "qc", "id", "Sample"];
 
     for (const report of reportsData) {
 
@@ -160,7 +158,7 @@ const processInnuca = (reportsData) => {
         // If the current json report has a fail property, parse to the QC
         // results
         if (jr.hasOwnProperty("fail")) {
-            qcStorage.get(id).fails[processId] = jr.fail
+            qcStorage.get(id).fails[processId] = jr.fail;
         }
 
         // If the current json report has a table-row property, parse it
@@ -175,7 +173,7 @@ const processInnuca = (reportsData) => {
                 // Add the column header to the columns array, if it doesn't
                 // exist yet
                 if (!columns.has(header)) {
-                    columns.set(header, processId)
+                    columns.set(header, processId);
                 }
 
                 // If the current column has the column-bar attribute, add it
@@ -196,16 +194,16 @@ const processInnuca = (reportsData) => {
     //
 
     // Sort the column headers according to the process id
-    let sorted_columns = [];
+    let sortedColumns = [];
     for (let c of columns.keys()) {
-        sorted_columns.push(c)
+        sortedColumns.push(c);
     }
-    sorted_columns.sort((x, y) => {
+    sortedColumns.sort((x, y) => {
         return x[1].length - y[1].length;
     });
 
     // Add the final headers to the table data object
-    innucaData.headers = start_headers.concat(sorted_columns);
+    innucaData.headers = startHeaders.concat(sortedColumns);
 
     innucaData.data = [];
     // Populate table data
@@ -214,22 +212,22 @@ const processInnuca = (reportsData) => {
         let dataObject = {};
 
         // Check if current sample has finished
-        const last_header = innucaData.headers[innucaData.headers.length - 1];
-        if (v.has(last_header)) {
+        const lastHeader = innucaData.headers[innucaData.headers.length - 1];
+        if (v.has(lastHeader)) {
             qcStorage.get(k).status = "finished";
         } else {
             qcStorage.get(k).status = "pending";
         }
 
-        let qc_msg = get_qc(qcStorage.get(k));
+        let qcMsg = getQc(qcStorage.get(k));
 
-        v.set("qc", qc_msg);
+        v.set("qc", qcMsg);
 
         // Iterate over all expected columns in the table. If one or more
         // columns are missing from any given taxa, those columns are filled
         // with NA. This occurs when the pipeline stopped in the middle of the
         // run
-        sorted_columns.map((f) => {
+        sortedColumns.map((f) => {
             // The field does not exist, fill with NA
             if (!(v.has(f))){
                 v.set(f,
@@ -249,27 +247,27 @@ const processInnuca = (reportsData) => {
                         prop = (parseFloat(v.get(f)) /
                             Math.max(...columnBars[f])) * 100;
                     }
-                    const out_div = `<div class='table-cell'><div class="table-bar-text">${v.get(f)}</div><div class='table-bar' style='width:${prop}%'></div>${v.get(f)}</div>`;
-                    v.set(f, out_div)
+                    const outDiv = `<div class='table-cell'><div class="table-bar-text">${v.get(f)}</div><div class='table-bar' style='width:${prop}%'></div>${v.get(f)}</div>`;
+                    v.set(f, outDiv);
                 }
             }
         });
 
         // Convert Map to object data type
         v.forEach((v, k) => { dataObject[k] = v });
-        innucaData.data.push(dataObject)
+        innucaData.data.push(dataObject);
     });
 
     // Create mappings for column headers
     const mappings = innucaData.headers.slice(1).map((x) => {
-        return {"data": x}
+        return {"data": x};
     });
 
-    innucaData.column_mapping = [
+    innucaData.columnMapping = [
         {
             data:   "active",
             render: function ( data, type, row ) {
-                if ( type === 'display' ) {
+                if ( type === "display" ) {
                     return '<input type="checkbox" class="editor-active">';
                 }
                 return data;
@@ -278,6 +276,6 @@ const processInnuca = (reportsData) => {
         },
     ].concat(mappings);
 
-    return innucaData
+    return innucaData;
 
 };

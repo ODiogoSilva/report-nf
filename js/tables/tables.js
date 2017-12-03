@@ -7,9 +7,9 @@
 
 class Table {
     constructor(container) {
-        this.table_headers = [];
-        this.table_data = [];
-        this.column_mapping = [];
+        this.tableHeaders = [];
+        this.tableData = [];
+        this.columnMapping = [];
         this.container = container;
         this.tableObj = null
     }
@@ -22,13 +22,13 @@ class Table {
         scope.$apply( () => {
             scope[headers_v_name] = table_object.headers;
         });
-        this.table_headers = table_object.headers;
-        this.column_mapping = table_object.column_mapping;
+        this.tableHeaders = table_object.headers;
+        this.columnMapping = table_object.columnMapping;
     }
 
     /* Method to add data to the table */
     addTableData(table_object) {
-        this.table_data = this.table_data.concat(table_object.data);
+        this.tableData = this.tableData.concat(table_object.data);
     }
 
     /* Method to destroy the DataTable */
@@ -64,8 +64,8 @@ class Table {
         }
 
         this.tableObj = $('#'+this.container).DataTable( {
-            "data": this.table_data,
-            "columns" : this.column_mapping,
+            "data": this.tableData,
+            "columns" : this.columnMapping,
             autoFill: {
                 enable: false
             },
