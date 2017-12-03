@@ -8,25 +8,25 @@ const get_qc = (qcObject) => {
     let moderate = [];
     let high = [];
 
-    const qc_picker = {
+    const qcPicker = {
         "low": ["#42f480", "A"],
         "moderate": ["#d1cc51", "B"],
         "high": ["#f79d54", "C"],
         "fail": ["#d64944", "F"],
         "error": ["#000000", "E"]
     };
-    let qc_color;
-    let qc_value;
-    let qc_msg;
+    let qcColor;
+    let qcValue;
+    let qcMsg;
 
     // If the current sample has the fails property, return the fail QC
     // badge and exit
     if (Object.keys(qcObject.fails).length !== 0) {
-        qc_color = qc_picker.fail[0];
-        qc_value = qc_picker.fail[1];
+        qcColor = qcPicker.fail[0];
+        qcValue = qcPicker.fail[1];
         let fail_msg = Object.values(qcObject.fails).toString().replace("_", " ");
-        qc_msg = `<div class='badge-qc tooltip-qc' 
-                       style="background: ${qc_color}">
+        qcMsg = `<div class='badge-qc tooltip-qc' 
+                       style="background: ${qcColor}">
                     <span class='tooltip-qc-text'>
                         <div>
                             <ul>
@@ -34,16 +34,16 @@ const get_qc = (qcObject) => {
                                     <ul>${fail_msg}</ul>
                             </ul>
                         </div>
-                    </span>${qc_value}</div>`;
+                    </span>${qcValue}</div>`;
 
-        return qc_msg
+        return qcMsg
     }
 
     // If the sample has not yet finished but did not fail, return the loader
     // div
     if (qcObject.status === "pending"){
-        qc_msg = "<div class='loader'></div>";
-        return qc_msg
+        qcMsg = "<div class='loader'></div>";
+        return qcMsg
     }
 
     // If the sample has finished without failing or errors, evaluate the
@@ -64,7 +64,7 @@ const get_qc = (qcObject) => {
                     break;
                 case "high":
                     high.push(warn_msg);
-                    break
+                    break;
             }
         }
     }
@@ -72,17 +72,17 @@ const get_qc = (qcObject) => {
     // Determine the badge color and grade with the priority being from
     // high to low
     if (high.length > 0) {
-        qc_color = qc_picker.high[0];
-        qc_value = qc_picker.high[1];
+        qcColor = qcPicker.high[0];
+        qcValue = qcPicker.high[1];
     } else if (moderate.length > 0) {
-        qc_color = qc_picker.moderate[0];
-        qc_value = qc_picker.moderate[1];
+        qcColor = qcPicker.moderate[0];
+        qcValue = qcPicker.moderate[1];
     } else {
-        qc_color = qc_picker.low[0];
-        qc_value = qc_picker.low[1];
+        qcColor = qcPicker.low[0];
+        qcValue = qcPicker.low[1];
     }
 
-    qc_msg = `<div class='badge-qc tooltip-qc' style="background: ${qc_color}">
+    qcMsg = `<div class='badge-qc tooltip-qc' style="background: ${qcColor}">
                 <span class='tooltip-qc-text'>
                     <div>
                         <ul>
@@ -94,9 +94,9 @@ const get_qc = (qcObject) => {
                                 <ul>${high.join("")}</ul>
                         </ul>
                     </div>
-                </span>${qc_value}</div>`;
+                </span>${qcValue}</div>`;
 
-    return qc_msg
+    return qcMsg
 
 };
 
