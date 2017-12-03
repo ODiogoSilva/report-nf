@@ -19,10 +19,10 @@ const processSpadesData = async (raw_reports) => {
         }
     }
 
-    processed_data.storage_dist = await getHighchartsSeries("bellcurve", storage_dist);
+    processed_data.storageDist = await getHighchartsSeries("bellcurve", storage_dist);
     // processed_data.storage_cov = await getHighchartsSeries("bellcurve", storage_cov);
-    processed_data.boxplot_size = await getHighchartsSeries("boxplot", storage_dist);
-    // processed_data.boxplot_cov = await getHighchartsSeries("boxplot", storage_dist);
+    processed_data.boxplotSize = await getHighchartsSeries("boxplot", storage_dist);
+    // processed_data.boxplot_cov = await getHighchartsSeries("boxplot", storageDist);
 
     return processed_data;
 

@@ -1,18 +1,18 @@
 
 /* Charts Class
     - Adds reports to the reports array
-    - Constructs charts based on the reports_data array
+    - Constructs charts based on the reportsData array
  */
 class Charts {
 
     constructor() {
-        this.reports_data = [];
-        this.spades_data = {};
+        this.reportsData = [];
+        this.spadesData = {};
     }
 
     /* Method to add reports to the global reports */
-    async addReportData(reports_data) {
-        this.reports_data = await this.reports_data.concat(reports_data);
+    async addReportData(reportsData) {
+        this.reportsData = await this.reportsData.concat(reportsData);
         return true;
     }
 
@@ -21,12 +21,12 @@ class Charts {
         Available at charts/spades.js
     */
     buildSpadesGraphs() {
-        processSpadesData(this.reports_data).then((processed_data) => {
-            this.spades_data.spades_size_graph = buildSpadesBoxPlot(
-                processed_data.boxplot_size, "spades_1", "Distribution of contig size"
+        processSpadesData(this.reportsData).then((processed_data) => {
+            this.spadesData.spadesBoxPlot = buildSpadesBoxPlot(
+                processed_data.boxplotSize, "spades_1", "Distribution of contig size"
             );
-            this.spades_data.spades_size_graph = buildSpadesDistribution(
-                processed_data.storage_dist, "container2", "Distribution of contig size"
+            this.spadesData.spadesSizeDist = buildSpadesDistribution(
+                processed_data.storageDist, "container2", "Distribution of contig size"
             );
         });
     }

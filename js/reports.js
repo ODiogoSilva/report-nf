@@ -144,7 +144,7 @@ app.controller("reportsController", function($scope){
                $("#reset_project").css({display:"inline-block"});
 
                $("#reset_project").off("click").on("click", () => {
-                   charts.reports_data = [];
+                   charts.reportsData = [];
                    $("#reset_project").css({display:"none"});
                    $("#row-main").css({display:"none"});
                    $("#current_workflow").css({display:"none"});
