@@ -1,32 +1,33 @@
 /**
  * Function to process INNuca data to load into the DataTable
- * @param reports_data
+ * @param reportsData
  */
-const processInnuca = (reports_data) => {
+const processInnuca = (reportsData) => {
 
     // Instantiate the object with the table data
-    const innuca_data = {
+    const innucaData = {
         "data": {}
     };
 
-    console.log(reports_data);
+    console.log(reportsData);
+
+    let storage = new Map();
 
     let columns = {};
-    let storage = {};
-    let qc_storage = {};
+    let qcStorage = {};
     // Holds an object containing the table headers tha should be filled with
     // a column bar and an array of their values
-    let column_bars = {};
+    let columnBars = {};
     // These headers are always present in the beginning of the table
     let start_headers = ["", "qc", "id", "Sample"];
 
-    for (const report of reports_data) {
+    for (const report of reportsData) {
 
-        const project_id = report.project_id;
-        const sample_name = report.sample_name;
-        const pipeline_id = report.pipeline_id;
-        const process_id = report.process_id;
-        const id = `${sample_name}_${pipeline_id}`;
+        const projectId = report.project_id;
+        const sampleName = report.sample_name;
+        const pipelineId = report.pipeline_id;
+        const processId = report.process_id;
+        const id = `${sampleName}_${pipelineId}`;
 
         const jr = report.report_json;
 
@@ -35,29 +36,28 @@ const processInnuca = (reports_data) => {
         // entry with the sample name key. This ensures that,
         // regardless of the order of the processes in the JSON,
         // there is always a storage entry for any given sample.
-        if (!storage[id]) {
+        if (!storage.has(id)) {
             // This object is create with a few table items that are always
             // present in the table
-            storage[id] =
-                {
-                    "active": 0,
-                    "Sample": sample_name,
-                    "id": `${project_id}.${pipeline_id}`,
-                    "qc": ""
-                };
-            qc_storage[id] = {"warnings": {}, "fails": {}};
+            storage.set(id, new Map([
+                    ["active", 0],
+                    ["Sample", sampleName],
+                    ["id", `${projectId}.${pipelineId}`],
+                    ["qc", ""]
+                ]));
+            qcStorage[id] = {"warnings": {}, "fails": {}};
         }
 
         // If the current json report has a warnings property, parse the QC
         // results
         if (jr.hasOwnProperty("warnings")) {
-            qc_storage[id].warnings[process_id] = jr.warnings;
+            qcStorage[id].warnings[processId] = jr.warnings;
         }
 
         // If the current json report has a fail property, parse to the QC
         // results
         if (jr.hasOwnProperty("fail")) {
-            qc_storage[id].fails[process_id] = jr.fail
+            qcStorage[id].fails[processId] = jr.fail
         }
 
         // If the current json report has a table-row property, parse it
@@ -67,21 +67,21 @@ const processInnuca = (reports_data) => {
             // Add each individual cell from the current process id
             for (const cell of jr["table-row"]) {
                 header = cell.header.replace("_", " ");
-                storage[id][header] = cell.value;
+                storage.get(id).set(header, cell.value);
 
                 // Add the column header to the columns array, if it doesn't
                 // exist yet
                 if (!columns.hasOwnProperty(header)) {
-                    columns[header] = process_id
+                    columns[header] = processId
                 }
 
                 // If the current column has the column-bar attribute, add it
                 // to the column_bars array
                 if (cell.hasOwnProperty("column-bar")){
-                    if (!column_bars.hasOwnProperty(header)){
-                        column_bars[header] = [cell.value]
+                    if (!columnBars.hasOwnProperty(header)){
+                        columnBars[header] = [cell.value]
                     } else {
-                        column_bars[header].push(cell.value)
+                        columnBars[header].push(cell.value)
                     }
                 }
             }
@@ -98,22 +98,25 @@ const processInnuca = (reports_data) => {
     });
 
     // Add the final headers to the table data object
-    innuca_data.headers = start_headers.concat(sorted_columns);
+    innucaData.headers = start_headers.concat(sorted_columns);
 
+    innucaData.data = [];
     // Populate table data
-    innuca_data.data = Object.keys(storage).map((x) => {
+    storage.forEach((v, k) => {
+
+        let dataObject = {};
 
         // Check if current sample has finished
-        const last_header = innuca_data.headers[innuca_data.headers.length - 1];
-        if (storage[x].hasOwnProperty(last_header)) {
-            qc_storage[x].status = "finished";
+        const last_header = innucaData.headers[innucaData.headers.length - 1];
+        if (v.has(last_header)) {
+            qcStorage[k].status = "finished";
         } else {
-            qc_storage[x].status = "pending";
+            qcStorage[k].status = "pending";
         }
 
-        let qc_msg = get_qc(qc_storage[x]);
+        let qc_msg = get_qc(qcStorage[k]);
 
-        storage[x]["qc"] = qc_msg;
+        v.set("qc", qc_msg);
 
         // Iterate over all expected columns in the table. If one or more
         // columns are missing from any given taxa, those columns are filled
@@ -121,37 +124,41 @@ const processInnuca = (reports_data) => {
         // run
         sorted_columns.map((f) => {
             // The field does not exist, fill with NA
-            if (!(storage[x].hasOwnProperty(f))){
-                storage[x][f] = "<div class='table-cell'>" +
-                                    "<div class='table-bar-text'>NA</div>" +
-                                "</div>"
+            if (!(v.has(f))){
+                v.set(f,
+                    "<div class='table-cell'>" +
+                        "<div class='table-bar-text'>NA</div>" +
+                    "</div>")
             // The field exists, do some pre-processing
             } else {
                 let prop;
                 // Check if the current column has the column-bar attribute.
                 // If so, change the value cell to display a column bar
                 // based on its value
-                if (column_bars.hasOwnProperty(f)){
+                if (columnBars.hasOwnProperty(f)){
                     if (f === "trimmed"){
-                        prop = parseFloat(storage[x][f])
+                        prop = parseFloat(v.get(f))
                     } else {
-                        prop = (parseFloat(storage[x][f]) /
-                            Math.max(...column_bars[f])) * 100;
+                        prop = (parseFloat(v.get(f)) /
+                            Math.max(...columnBars[f])) * 100;
                     }
-                    const out_div = `<div class='table-cell'><div class="table-bar-text">${storage[x][f]}</div><div class='table-bar' style='width:${prop}%'></div>${storage[x][f]}</div>`;
-                    storage[x][f] = out_div
+                    const out_div = `<div class='table-cell'><div class="table-bar-text">${v.get(f)}</div><div class='table-bar' style='width:${prop}%'></div>${v.get(f)}</div>`;
+                    v.set(f, out_div)
                 }
             }
         });
-        return storage[x]
+
+        // Convert Map to object data type
+        v.forEach((v, k) => { dataObject[k] = v });
+        innucaData.data.push(dataObject)
     });
 
     // Create mappings for column headers
-    const mappings = innuca_data.headers.slice(1).map((x) => {
+    const mappings = innucaData.headers.slice(1).map((x) => {
         return {"data": x}
     });
 
-    innuca_data.column_mapping = [
+    innucaData.column_mapping = [
         {
             data:   "active",
             render: function ( data, type, row ) {
@@ -164,7 +171,7 @@ const processInnuca = (reports_data) => {
         },
     ].concat(mappings);
 
-    return innuca_data
+    return innucaData
 
 };
 
@@ -172,7 +179,7 @@ const processInnuca = (reports_data) => {
  *
  * @param warn_object
  */
-const get_qc = (qc_object) => {
+const get_qc = (qcObject) => {
 
     let low = [];
     let moderate = [];
@@ -191,10 +198,10 @@ const get_qc = (qc_object) => {
 
     // If the current sample has the fails property, return the fail QC
     // badge and exit
-    if (Object.keys(qc_object.fails).length !== 0) {
+    if (Object.keys(qcObject.fails).length !== 0) {
         qc_color = qc_picker.fail[0];
         qc_value = qc_picker.fail[1];
-        let fail_msg = Object.values(qc_object.fails).toString().replace("_", " ");
+        let fail_msg = Object.values(qcObject.fails).toString().replace("_", " ");
         qc_msg = `<div class='badge-qc tooltip-qc' 
                        style="background: ${qc_color}">
                     <span class='tooltip-qc-text'>
@@ -211,14 +218,14 @@ const get_qc = (qc_object) => {
 
     // If the sample has not yet finished but did not fail, return the loader
     // div
-    if (qc_object.status === "pending"){
+    if (qcObject.status === "pending"){
         qc_msg = "<div class='loader'></div>";
         return qc_msg
     }
 
     // If the sample has finished without failing or errors, evaluate the
     // QC grade
-    for (const warn of Object.values(qc_object.warnings)) {
+    for (const warn of Object.values(qcObject.warnings)) {
         for (const w of warn.value) {
             // Get severity of error
             const severity = w.split(":")[1];
