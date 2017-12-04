@@ -229,6 +229,12 @@ app.controller("reportsController", function($scope){
             $('.overlay').fadeOut();
         });
 
+        $("#sliderbp").slider({ id: "sliderbpc", min: 0, max: 10, range: true, value: [3, 7] });
+        $("#sliderrn").slider({ id: "sliderrnc", min: 0, max: 10, range: true, value: [3, 7] });
+        $("#sliderc").slider({ id: "slidercc", min: 0, max: 10, range: true, value: [3, 7] });
+        $("#slidercn").slider({ id: "slidercnc", min: 0, max: 10, range: true, value: [3, 7] });
+        $("#sliderabp").slider({ id: "sliderabpc", min: 0, max: 10, range: true, value: [3, 7] });
+
     }, 100);
 
 });

@@ -313,3 +313,15 @@ th {
     height:80%;
     margin-top: 5%;
 }
+
+.slider-track-high {
+    background: green;
+}
+
+.slider-track-low {
+    background: red;
+}
+
+.slider-selection {
+    background: yellow;
+}

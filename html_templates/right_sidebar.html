@@ -51,9 +51,12 @@
                 <div class="panel-body">
                     <div>
                         <label>Filter By Name:</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Strain Name">
-                        </div>
+                        <input type="text" class="form-control" placeholder="Strain Name">
+                    </div>
+                    <br>
+                    <div>
+                        <label>Filter By Project ID:</label>
+                        <input type="text" class="form-control" placeholder="Project ID">
                     </div>
                     <br>
                     <div>
@@ -63,6 +66,37 @@
                             <option ng-repeat="qc in qc_levels">{{qc}}</option>
                         </select>
                     </div>
+                    <br>
+                    <div>
+                        <label>Filter By Base Pairs:</label>
+                        <input id="sliderbp" type="text"/><br/>
+                    </div>
+                    <br>
+                    <div>
+                        <label>Filter By Read Number:</label>
+                        <input id="sliderrn" type="text"/><br/>
+                    </div>
+                    <br>
+                    <div>
+                        <label>Filter By Coverage:</label>
+                        <input id="sliderc" type="text"/><br/>
+                    </div>
+                    <br>
+                    <div>
+                        <label>Filter By Contigs Number:</label>
+                        <input id="slidercn" type="text"/><br/>
+                    </div>
+                    <br>
+                    <div>
+                        <label>Filter By Assembled Base Pairs:</label>
+                        <input id="sliderabp" type="text"/><br/>
+                    </div>
+                    <br>
+                    <div style="text-align: center;">
+                        <button class="btn btn-md btn-primary">Submit</button>
+                    </div>
+
+
                 </div>
             </div>
         </div>
