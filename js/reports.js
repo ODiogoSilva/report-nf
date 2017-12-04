@@ -141,6 +141,8 @@ app.controller("reportsController", function($scope){
         "Pathotyping": []
     };
 
+    $scope.qc_levels = ["A", "B", "C", "D", "F"];
+
     /* Request to get all the available species */
     getSpecies().then((results) => {
        /* Request to get all the available projects */
@@ -188,11 +190,6 @@ app.controller("reportsController", function($scope){
         return false;
     });
 
-    /* Trigger style of dropdowns */
-    $('.selectpicker').selectpicker({
-      style: 'btn-info',
-      size: 4
-    });
 
     $("#body_container").css({display:"block"});
 
@@ -215,6 +212,12 @@ app.controller("reportsController", function($scope){
             $("#spades_ul li").removeClass("active");
             $(this).addClass("active");
             $('.box').hide().eq($(this).index()).show();  // hide all divs and show the current div
+        });
+
+        /* Trigger style of dropdowns */
+        $('.selectpicker').selectpicker({
+            style: 'btn-default',
+            size: 4
         });
 
 

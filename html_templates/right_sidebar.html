@@ -53,16 +53,15 @@
                         <label>Filter By Name:</label>
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Strain Name">
-                            <span class="input-group-addon button_side" id="addon3">Search</span>
                         </div>
                     </div>
                     <br>
                     <div>
-                        <label>Filter By Process:</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Process Name">
-                            <span class="input-group-addon button_side" id="addon4">Search</span>
-                        </div>
+                        <label>Filter By QC:</label>
+                        <select id="qc_select" class="selectpicker"
+                                title="Select QC" data-live-search="true" data-style="btn-default">
+                            <option ng-repeat="qc in qc_levels">{{qc}}</option>
+                        </select>
                     </div>
                 </div>
             </div>
