@@ -11,7 +11,7 @@ class Table {
         this.tableData = [];
         this.columnMapping = [];
         this.container = container;
-        this.tableObj = null
+        this.tableObj = null;
     }
 
     /*
@@ -91,6 +91,21 @@ class Table {
                                     this.autoFill().enable();
                                     this.text('Disable AutoFill');
                                 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    extend: 'collection',
+                    text: 'Selection',
+                    autoClose: true,
+                    buttons: [
+                        {
+                            text: 'Show graphs',
+                            action: function ( e, dt, node, config ) {
+                                const data = dt.rows('.selected').data();
+                                console.log(data);
+                                $("#modalGraphs").modal('show');
                             }
                         }
                     ]

@@ -32,8 +32,7 @@
 }
 
 #sidebar ul li.active > a, a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
+    color: #000;
 }
 
 .wrapper {

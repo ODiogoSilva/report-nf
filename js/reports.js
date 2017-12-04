@@ -19,6 +19,7 @@ const initReports = (scope, results) => {
     $("#waiting_gif").css({display:"block"});
     $("#row-main").css({display:"none"});
 
+
     // build_table(results);
     data = results;
 
@@ -43,14 +44,6 @@ const initReports = (scope, results) => {
         await prokka_table.addTableData(results_ch);
         await prokka_table.buildDataTable();
     });
-
-    /*.then( (results_ch) => {
-        console.log(results_ch);
-        return chewbbaca_table.addTableData(results_ch);
-    }).then( (results_ch) => {
-        console.log(results_ch);
-        return chewbbaca_table.buildDataTable();
-    });*/
 
 
     charts.addReportData(results).then(() => {
@@ -110,6 +103,8 @@ app.controller("reportsController", function($scope){
     $scope.graph1_name = "Graph 1";
     $scope.graph2_name = "Graph 2";
     $scope.table_name = "Table 1";
+
+
 
     $scope.workflows = [
         ["Assembly", 14],
@@ -185,13 +180,6 @@ app.controller("reportsController", function($scope){
       size: 4
     });
 
-    /* Show/hide tabs of spades and its divs */
-    $("#spades_ul li").click(function () {
-        $("#spades_ul li").removeClass("active");
-        $(this).addClass("active");
-        $('.box').hide().eq($(this).index()).show();  // hide all divs and show the current div
-    });
-
     $("#body_container").css({display:"block"});
 
     setTimeout( () => {
@@ -208,11 +196,17 @@ app.controller("reportsController", function($scope){
             $('a[aria-expanded=true]').attr('aria-expanded', 'false');
         });
 
+        /* Show/hide tabs of spades and its divs */
+        $("#spades_ul li").click(function () {
+            $("#spades_ul li").removeClass("active");
+            $(this).addClass("active");
+            $('.box').hide().eq($(this).index()).show();  // hide all divs and show the current div
+        });
+
 
         // if dismiss or overlay was clicked
         $('#dismiss, .overlay').on('click', function () {
             // hide the sidebar
-            console.log("AQUI");
             $('#sidebar').removeClass('active');
             // fade out the overlay
             $('.overlay').fadeOut();
