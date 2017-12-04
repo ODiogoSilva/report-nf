@@ -50,6 +50,32 @@ const addToFilters = (po, array) => {
     return array
 };
 
+
+/**
+ * Assigns new values to the data_filters object according to the filters submitted by the user
+ * @param filterInstance
+ * @param filterObject
+ */
+const updateFilterObject = (filterInstance, filterObject) => {
+    if (filterInstance.sample !== "" && !filterObject.sample.includes(filterInstance.sample)){
+        filterObject.sample.push(filterInstance.sample);
+    }
+    if (filterInstance.projectId !== "" && !filterObject.projectId.includes(filterInstance.projectId)){
+        filterObject.projectId.push(filterInstance.projectId);
+    }
+    if (filterInstance.qc !== "" && !filterObject.qc.includes(filterInstance.qc)){
+        filterObject.qc.push(filterInstance.qc);
+    }
+    filterObject.bp.range = filterInstance.bp;
+    filterObject.reads.range = filterInstance.reads;
+    filterObject["coverage (2nd)"].range = filterInstance["coverage (2nd)"];
+    filterObject.contigs.range = filterInstance.contigs;
+    filterObject["assembled bp"].range = filterInstance["assembled bp"];
+
+    return filterObject;
+
+};
+
 /**
  *
  * @param jsonResult

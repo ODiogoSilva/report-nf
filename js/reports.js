@@ -245,6 +245,26 @@ app.controller("reportsController", function($scope){
         $("#slidercn").slider({ id: "slidercnc", min: 0, max: 10, range: true, value: [3, 7] });
         $("#sliderabp").slider({ id: "sliderabpc", min: 0, max: 10, range: true, value: [3, 7] });
 
+        /* Trigger filter functions on filter button click */
+        $("#filter_button").off("click").on("click", () => {
+            const filterInstance = {
+                "bp": $("#sliderbp").data("slider").getValue(),
+                "reads": $("#sliderrn").data("slider").getValue(),
+                "coverage (2nd)": $("#sliderc").data("slider").getValue(),
+                "contigs": $("#slidercn").data("slider").getValue(),
+                "assembled bp": $("#sliderabp").data("slider").getValue(),
+                "sample": $("#filter_by_name").val(),
+                "projectId": $("#filter_by_projectid").val(),
+                "qc": $( "#qc_select option:selected" ).text()
+
+            };
+
+            data_filters = updateFilterObject(filterInstance, data_filters);
+            console.log(data_filters);
+
+            console.log(filterInstance);
+        });
+
     }, 100);
 
 });
