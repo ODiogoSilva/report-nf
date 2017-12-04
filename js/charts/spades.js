@@ -99,7 +99,8 @@ const buildSpadesBoxPlot = (data, container, title) => {
         },
         series: [{
             name: "Size distribution",
-            data: data
+            data: data,
+            showInLegend: false
         }],
 
     });
