@@ -113,20 +113,20 @@ app.controller("reportsController", function($scope){
     $scope.table_name = "Table 1";
 
     $scope.workflows = [
-        ["INNUca", 14],
-        ["Prokka", 2],
+        ["Assembly", 14],
+        ["Annotation", 2],
         ["chewBBACA", 2],
         ["Pathotyping", 1]
     ];
 
     $scope.workflow_charts = {
-        "INNUca": [
+        "Assembly": [
             ["Table 1", "table1_div"],
             ["Graph 1", "spades_graph_container"],
             ["Graph 2", "container2"]
 
         ],
-        "Prokka": [
+        "Annotation": [
             ["Table 3", "table3_div"]
         ],
         "ChewBBACA": [],
