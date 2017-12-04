@@ -3,13 +3,13 @@
     Function to process prokka data to load into the DataTable
  */
 
-const processProkka = (reports_data) => {
+const processProkka = (reportsData) => {
 
-    const prokka_data = {};
+    const prokkaData = {};
 
-    prokka_data.headers = ["", "ID", "GENE", "FUNCTION", "NAME"];
+    prokkaData.headers = ["", "ID", "GENE", "FUNCTION", "NAME"];
 
-    prokka_data.column_mapping = [
+    prokkaData.columnMapping = [
         {
             data:   "active",
             render: function ( data, type, row ) {
@@ -26,7 +26,7 @@ const processProkka = (reports_data) => {
         {"data": "NAME"}
     ];
 
-    prokka_data.data = [
+    prokkaData.data = [
         {
             "active": "0",
             "ID": 1,
@@ -50,6 +50,6 @@ const processProkka = (reports_data) => {
         }
     ];
 
-    return prokka_data;
+    return prokkaData;
 
 };

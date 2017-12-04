@@ -1,18 +1,18 @@
 
 /* Charts Class
     - Adds reports to the reports array
-    - Constructs charts based on the reports_data array
+    - Constructs charts based on the reportsData array
  */
 class Charts {
 
     constructor() {
-        this.reports_data = [];
-        this.spades_data = {};
+        this.reportsData = [];
+        this.spadesData = {};
     }
 
     /* Method to add reports to the global reports */
-    async addReportData(reports_data) {
-        this.reports_data = await this.reports_data.concat(reports_data);
+    async addReportData(reportsData) {
+        this.reportsData = await this.reportsData.concat(reportsData);
         return true;
     }
 
@@ -21,12 +21,12 @@ class Charts {
         Available at charts/spades.js
     */
     buildSpadesGraphs() {
-        processSpadesData(this.reports_data).then((processed_data) => {
-            this.spades_data.spades_size_graph = buildSpadesBoxPlot(
-                processed_data.boxplot_size, "spades_1", "Distribution of contig size"
+        processSpadesData(this.reportsData).then((processed_data) => {
+            this.spadesData.spadesBoxPlot = buildSpadesBoxPlot(
+                processed_data.boxplotSize, "spades_1", "Distribution of contig size"
             );
-            this.spades_data.spades_size_graph = buildSpadesDistribution(
-                processed_data.boxplot_cov, "spades_2", "Distribution of contig size"
+            this.spadesData.spadesSizeDist = buildSpadesDistribution(
+                processed_data.storageDist, "container2", "Distribution of contig size"
             );
         });
     }
@@ -34,6 +34,30 @@ class Charts {
 }
 
 
+const sampleSelector = (x) => {
+
+    // Get sample name from click event
+    const sample = x.point.name;
+
+    for (const el of innuca_table.tableData){
+        if (sample === el.Sample) {
+            el.active = 1;
+            innuca_table.highlightRow(sample)
+        }
+    }
+
+};
+
+
+// console.log(innuca_table.tableData)
+// for (const el of innuca_table.tableData) {
+//     console.log(el.Sample, this.name)
+//     if (this.name === el.Sample) {
+//         console.log("here")
+//         el.active = 1;
+//         console.log(innuca_table.tableData)
+//     }
+// }
 /*
 const charts_ar = [c1, c2];
 

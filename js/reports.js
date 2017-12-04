@@ -4,6 +4,10 @@ let data = "";
 
 const charts = new Charts();
 
+/* Init tables */
+const innuca_table = new Table("master_table_innuca");
+const chewbbaca_table = new Table("master_table_chewbbaca");
+const prokka_table = new Table("master_table_prokka");
 
 /**
  * Function to build tables and graphs based on the reports
@@ -17,11 +21,6 @@ const initReports = (scope, results) => {
 
     // build_table(results);
     data = results;
-
-    /* Init tables */
-    const innuca_table = new Table("master_table_innuca");
-    const chewbbaca_table = new Table("master_table_chewbbaca");
-    const prokka_table = new Table("master_table_prokka");
 
     /* Launch Tables */
     innuca_table.processInnuca(results).then( async (results_ch) => {
@@ -54,10 +53,9 @@ const initReports = (scope, results) => {
     });*/
 
 
-
-    // charts.addReportData(results).then(() => {
-    //     charts.buildSpadesGraphs();
-    // });
+    charts.addReportData(results).then(() => {
+        charts.buildSpadesGraphs();
+    });
 
     $("#waiting_gif").css({display:"none"});
     $("#row-main").css({display:"block"});
@@ -114,20 +112,20 @@ app.controller("reportsController", function($scope){
     $scope.table_name = "Table 1";
 
     $scope.workflows = [
-        ["INNUca", 14],
-        ["Prokka", 2],
+        ["Assembly", 14],
+        ["Annotation", 2],
         ["chewBBACA", 2],
         ["Pathotyping", 1]
     ];
 
     $scope.workflow_charts = {
-        "INNUca": [
+        "Assembly": [
             ["Table 1", "table1_div"],
             ["Graph 1", "spades_graph_container"],
             ["Graph 2", "container2"]
 
         ],
-        "Prokka": [
+        "Annotation": [
             ["Table 3", "table3_div"]
         ],
         "ChewBBACA": [],
@@ -145,7 +143,7 @@ app.controller("reportsController", function($scope){
                $("#reset_project").css({display:"inline-block"});
 
                $("#reset_project").off("click").on("click", () => {
-                   charts.reports_data = [];
+                   charts.reportsData = [];
                    $("#reset_project").css({display:"none"});
                    $("#row-main").css({display:"none"});
                    $("#current_workflow").css({display:"none"});
