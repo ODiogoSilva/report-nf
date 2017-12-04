@@ -109,7 +109,7 @@ app.controller("reportsController", function($scope){
 
     $scope.graph1_name = "Graph 1";
     $scope.graph2_name = "Graph 2";
-    $scope.table_name = "Table 1";
+    $scope.table_name = "Main table";
 
     $scope.workflows = [
         ["Assembly", 14],
@@ -120,7 +120,7 @@ app.controller("reportsController", function($scope){
 
     $scope.workflow_charts = {
         "Assembly": [
-            ["Table 1", "table1_div"],
+            ["Main table", "table1_div"],
             ["Graph 1", "spades_graph_container"],
             ["Graph 2", "container2"]
 

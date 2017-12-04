@@ -56,31 +56,52 @@ const getHighchartsSeries = (chart_type, data) => {
 
 const buildSpadesBoxPlot = (data, container, title) => {
 
+    console.log(data)
+
+    // Get data labels
+    const dataLabels = [];
+    for ( const el of data ) {
+        dataLabels.push(el[0])
+    }
+
     const spades_size_bp = Highcharts.chart(container, {
         chart: {
-            zoomType: "xy",
+            zoomType: "x",
             type: "boxplot",
         },
-        title: {text: title},
-        xAxis: {title: "Samples"},
-        yAxis: {
-            title: "Size",
-            min: 0
-        },
-        series: [{
-            name: "Size distribution",
-            data: data,
-        }],
         plotOptions: {
-            series: {
+            boxplot: {
+                color: "#787477",
+                fillColor: "#aaa",
                 cursor: "pointer",
+                stemDashStyle: "dot",
+                whiskerLength: "20%",
+                lineWidth: 2,
                 point: {
                     events: {
                         click: sampleSelector
                     }
                 }
             }
-        }
+        },
+        title: {text: title},
+        xAxis: {
+            title: "Samples",
+            labels: {
+                rotation: -45,
+                enabled: true,
+                formatter: () => { return data[0][0]; }
+            }
+        },
+        yAxis: {
+            title: "Size",
+            min: 0
+        },
+        series: [{
+            name: "Size distribution",
+            data: data
+        }],
+
     });
 
     console.log(spades_size_bp);
