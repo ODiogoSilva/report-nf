@@ -100,14 +100,27 @@ const getQc = (qcObject) => {
 
 };
 
+/**
+ * Sets the maximum value for the data_filters
+ * @param header
+ * @param value
+ */
+const setMaxFilters = (header, value) => {
+
+    // Skip, if header is not present in filters object
+    if (!data_filters.hasOwnProperty(header)) {return}
+
+    if ( value > data_filters[header].max ) {
+        data_filters[header].max = value
+    }
+
+};
 
 /**
  * Function to process INNuca data to load into the DataTable
  * @param reportsData
  */
-const processInnuca = (reportsData) => {
-
-    console.log(reportsData)
+const processInnuca = (reportsData, setMax) => {
 
     // Instantiate the object with the table data
     const innucaData = {
@@ -221,8 +234,8 @@ const processInnuca = (reportsData) => {
             qcStorage.get(k).status = "pending";
         }
 
+        // Get QC message for a sample
         let qcMsg = getQc(qcStorage.get(k));
-
         v.set("qc", qcMsg);
 
         // Iterate over all expected columns in the table. If one or more
@@ -246,8 +259,10 @@ const processInnuca = (reportsData) => {
                     if (f === "trimmed"){
                         prop = parseFloat(v.get(f))
                     } else {
-                        prop = (parseFloat(v.get(f)) /
-                            Math.max(...columnBars[f])) * 100;
+                        maxValue = Math.max(...columnBars[f]);
+                        prop = (parseFloat(v.get(f)) / maxValue) * 100;
+                        // Set/Update maximum filters value
+                        if ( setMax === true ) {setMaxFilters(f, maxValue)}
                     }
                     const outDiv = `<div class='table-cell'><div class="table-bar-text">${v.get(f)}</div><div class='table-bar' style='width:${prop}%'></div>${v.get(f)}</div>`;
                     v.set(f, outDiv);

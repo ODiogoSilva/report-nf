@@ -34,8 +34,8 @@ class Table {
     /* Method to destroy the DataTable */
     destroyTable() {
         if ( $.fn.DataTable.isDataTable('#'+this.container)) {
-            $('#'+this.container).DataTable().clear();
-            $('#'+this.container).DataTable().destroy();
+            this.tableObj.clear();
+            this.tableObj.destroy();
 
         }
     }
@@ -43,14 +43,13 @@ class Table {
     /* Method to clear the DataTable */
     clearTable(){
         if ( $.fn.DataTable.isDataTable('#'+this.container)) {
-            $('#'+this.container).DataTable().clear();
+            this.tableObj.clear();
         }
     }
 
     /* Method to add a new DataTable rows */
     updateTable(data) {
-        const table = $('#' + this.container).DataTable();
-        table.rows.add(data);
+        this.tableObj.rows.add(data);
     }
 
     highlightRow(id) {
@@ -138,8 +137,8 @@ class Table {
     }
 
     /* Process INNUca data to load into the DataTable */
-    async processInnuca(reports) {
-        return await processInnuca(reports);
+    async processInnuca(reports, setMax) {
+        return await processInnuca(reports, setMax);
     }
 
     /* Process Pathotyping data to load into the DataTable */

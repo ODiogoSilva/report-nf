@@ -5,8 +5,13 @@ let data_filters = {
     "sample": [],
     "projectId": [],
     "qc": [],
-    "bp": [2, null],
+    "bp": {"range": [null, null], "max": null},
+    "reads": {"range": [null, null], "max": null},
+    "coverage (2nd)": {"range": [null, null], "max": null},
+    "contigs": {"range": [null, null], "max": null},
+    "assembled bp": {"range": [null, null], "max": null},
 };
+let projectIdMap = new Map();
 
 const charts = new Charts();
 
@@ -19,8 +24,10 @@ const prokka_table = new Table("master_table_prokka");
  * Function to build tables and graphs based on the reports
  * @param scope
  * @param results
+ * @param {boolean} setMax - If true, the processInnuca method will update the
+ * maximum values for the data_filters
  */
-const initReports = (scope, results) => {
+const initReports = (scope, results, setMax = true) => {
 
     $("#waiting_gif").css({display:"block"});
     $("#row-main").css({display:"none"});
@@ -36,7 +43,7 @@ const initReports = (scope, results) => {
 
     /* Launch Tables */
     p1.then( async (r) => {
-        const results_ch = await innuca_table.processInnuca(r);
+        const results_ch = await innuca_table.processInnuca(r, setMax);
         await innuca_table.addTableHeaders(scope, results_ch,
             "table_headers_innuca");
         await innuca_table.addTableData(results_ch);
@@ -60,9 +67,11 @@ const initReports = (scope, results) => {
     });
 
 
-    charts.addReportData(results).then(() => {
-        charts.buildSpadesGraphs();
+    p1.then( async (r) => {
+        await charts.addReportData(r);
+        await charts.buildSpadesGraphs();
     });
+
 
     $("#waiting_gif").css({display:"none"});
     $("#row-main").css({display:"block"});
@@ -105,6 +114,7 @@ const populateSelect = (container, species_data, data) => {
 
     data.map((entry) => {
         options += "<option value='"+entry.id+"'>"+sp_id_to_name[entry.species_id] + " - " +entry.name+"</option>";
+        projectIdMap.set(entry.id, entry.name)
     });
 
     $("#"+container).empty().append(options).selectpicker('refresh').selectpicker('setStyle', 'btn-default');

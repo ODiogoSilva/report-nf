@@ -16,9 +16,39 @@ const testArray = (array, testString) => {
     return found
 };
 
-const testIntegrityCoverage = () => {
+/**
+ * Tests if the information on a tableRow array for a given header
+ * is within the specified range
+ * {array} @param rg
+ * {array} @tableRow
+ */
+const testRowValue = (rg, tableRow, header) => {
 
-}
+    // Get header value from reportJson
+    let val = null;
+    for (const x of tableRow)  {
+        if ( x.header === header ) {
+            val = x.value
+        }
+    }
+
+    // Test if value is within range
+    if ( rg[0] !== null && val < rg[0] ) {return false}
+    if ( rg[1] !== null && val > rg[1] ) {return false}
+
+    return true;
+};
+
+const addToFilters = (po, array) => {
+
+    // Define id and push to array if it's not there
+    const pid = `${po.project_id}${po.pipeline_id}`;
+    if (!array.includes(pid)) {
+        array.push(pid)
+    }
+
+    return array
+};
 
 /**
  *
@@ -27,36 +57,69 @@ const testIntegrityCoverage = () => {
  */
 const filterJson = (jsonResult, filterObject) => {
 
+    // Will store the filtered array
     let filteredJson = [];
+    // Stores the sample combination of projectid and sampleid that will be
+    // filtered
+    let filteredIds = [];
 
+    // Populate list of filteredIds
     for ( const po of jsonResult ) {
 
         // Filter for sample name
         if ( testArray(filterObject.sample, po.sample_name) === true ) {
-            continue
+            filteredIds = addToFilters(po, filteredIds);
         }
 
         // Filter for project id
-        if ( testArray(filterObject.projectId, po.project_id) === true ) {
-            continue
+        const projectName = projectIdMap.get(parseInt(po.project_id));
+        if ( testArray(filterObject.projectId, projectName) === true ) {
+            filteredIds = addToFilters(po, filteredIds);
         }
 
-        // Filter for basepairs
         if ( po.report_json.task === "integrity_coverage" ) {
-            console.log(filterObject.bp);
-            console.log(po.report_json["table-row"].value);
-            if (filterObject.bp[0] &&
-                    po.report_json["table-row"].value < filterObject.bp[0]) {
-                continue
+            // Filter for base pairs
+            if ( !testRowValue(data_filters.bp.range,
+                    po.report_json["table-row"], "bp") === true ) {
+                filteredIds = addToFilters(po, filteredIds)
             }
-            if (filterObject[1] &&
-                    po.report_json["table-row"].value > filterObject.bp[1]) {
-                continue
+            // Filter for number of reads
+            if ( !testRowValue(data_filters.reads.range,
+                    po.report_json["table-row"], "reads") === true ) {
+                filteredIds = addToFilters(po, filteredIds)
             }
         }
 
-        // JSON object passed all filters, add to final array
-        filteredJson.push(po);
+        if ( po.report_json.task === "check_coverage" ) {
+            // Filter for coverage
+            if ( !testRowValue(data_filters["coverage (2nd)"].range,
+                    po.report_json["table-row"], "coverage_(2nd)") ) {
+                filteredIds = addToFilters(po, filteredIds)
+            }
+        }
+
+        if (po.report_json.task === "pilon" ) {
+            // Filter for number of contigs
+            if ( !testRowValue(data_filters.contigs.range,
+                    po.report_json["table-row"], "contigs")) {
+                filteredIds = addToFilters(po, filteredIds)
+            }
+            // Filter for assembled base pairs
+            if ( !testRowValue(data_filters["assembled bp"].range,
+                    po.report_json["table-row"], "contigs") ) {
+                filteredIds = addToFilters(po, filteredIds)
+            }
+        }
+    }
+
+    // Filter JSON array
+    let pid;
+    for ( const po of jsonResult ) {
+        // Get combination id of current sample
+        pid = `${po.project_id}${po.pipeline_id}`;
+        if ( !filteredIds.includes(pid) ) {
+            filteredJson.push(po)
+        }
     }
 
     return filteredJson
