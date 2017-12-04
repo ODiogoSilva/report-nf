@@ -106,7 +106,6 @@ const populateSelect = (container, species_data, data) => {
 
 };
 
-
 /* Angular controller to control the DOM elements from the index.html file */
 app.controller("reportsController", function($scope){
 
@@ -202,10 +201,25 @@ app.controller("reportsController", function($scope){
             $('#sendToPHYLOViZModal').modal('show');
         });
 
-        $('#sidebar-button').off("click").on("click", () => {
-            $("#right-sidebar").toggleClass("collapsed_right_sidebar");
-            $("#results_div").toggleClass("col-md-12 col-md-10");
+        // when opening the sidebar
+        $('#sidebar-button').on('click', function () {
+            // open sidebar
+            $('#sidebar').addClass('active');
+            // fade in the overlay
+            $('.overlay').fadeIn();
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
         });
+
+
+        // if dismiss or overlay was clicked
+        $('#dismiss, .overlay').on('click', function () {
+            // hide the sidebar
+            console.log("AQUI");
+            $('#sidebar').removeClass('active');
+            // fade out the overlay
+            $('.overlay').fadeOut();
+        });
+
     }, 100);
 
 });

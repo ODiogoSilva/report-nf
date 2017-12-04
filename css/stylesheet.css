@@ -24,11 +24,6 @@ button.m-bottom{
     transition: margin 0.3s ease;
 }
 
-#right-sidebar {
-    /* for the animation */
-    transition: margin 0.3s ease;
-}
-
 #results_div {
     /* for the animation */
     transition: width 0.3s ease;
@@ -61,10 +56,6 @@ button.m-bottom{
 }
 
 #row-main {
-    /* necessary to hide collapsed sidebar */
-    overflow-x: hidden;
-}
-#right-sidebar {
     /* necessary to hide collapsed sidebar */
     overflow-x: hidden;
 }
@@ -315,9 +306,3 @@ th {
     cursor: pointer;
 }
 
-#accordion {
-    width:15.5%;
-    position:fixed;
-    margin-right: 20%;
-    margin-top: 5%;
-}

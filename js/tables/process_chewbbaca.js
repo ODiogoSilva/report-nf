@@ -17,9 +17,6 @@ const processChewbbaca = (reports_data) => {
             if (firstTime) {
                 chewbbaca_headers = chewbbaca_headers.concat(report.report_json.cagao[1].header);
                 firstTime = false;
-                Object.keys(report.report_json.cagao[1]).map((key) => {
-                    if (key !== "header") data_key = key;
-                });
                 break;
             }
         }
@@ -52,6 +49,10 @@ const processChewbbaca = (reports_data) => {
                 "active": 0,
                 "id": report.sample_name
             }
+
+            Object.keys(report.report_json.cagao[1]).map((key) => {
+                if (key !== "header") data_key = key;
+            });
 
             report.report_json.cagao[1][data_key].map( (j, i) => {
                 data_object[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][data_key][i]

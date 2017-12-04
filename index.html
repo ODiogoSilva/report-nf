@@ -17,6 +17,9 @@
     <link rel="stylesheet"
           href="./bower_components/bootstrap-select/dist/css/bootstrap-select.css">
 
+    <link rel="stylesheet" href="css/sidebar_style.css">
+    <link rel="stylesheet" href="css/stylesheet.css">
+
     <link rel="stylesheet"
           href="./bower_components/components-font-awesome/css/font-awesome.css">
 
@@ -32,7 +35,9 @@
     <div ng-include="'./html_templates/modals/modal_alert.html'"></div>
     <div ng-include="'./html_templates/modals/phyloviz_modal.html'"></div>
 
-    <div id="body_container" style="display:none;">
+    <div id="body_container" style="display:none;" class="wrapper">
+
+        <div ng-include="'./html_templates/right_sidebar.html'"></div>
 
         <div class="col-md-12" id="results_div">
 
@@ -131,9 +136,7 @@
             </div>
         </div>
 
-        <div class="col-md-2 collapsed_right_sidebar" id="right-sidebar">
-            <div style="width:100%;height: 100%;" ng-include="'./html_templates/right_sidebar.html'"></div>
-        </div>
+        <div class="overlay"><div>
 
     </div>
 
@@ -150,6 +153,7 @@
     <script src="./bower_components/datatables.net-buttons/js/buttons.html5.js"></script>
     <script src="./bower_components/datatables.net-buttons/js/buttons.print.js"></script>
     <script src="./bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="./js/charts/spades.js"></script>
     <script src="./js/charts/utils.js"></script>
     <script src="js/charts/charts.js"></script>
@@ -161,7 +165,6 @@
     <script src="./js/reports.js"></script>
     <script src="./js/dragNdrop.js"></script>
     <script src="./js/requests.js"></script>
-    <link rel="stylesheet" href="css/stylesheet.css">
 
 </body>
 </html>
