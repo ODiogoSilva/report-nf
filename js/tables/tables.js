@@ -57,7 +57,7 @@ class Table {
     }
 
     /* Method to build DataTable */
-    buildDataTable() {
+    buildDataTable(scope) {
         if ( $.fn.DataTable.isDataTable('#'+this.container)) {
             this.destroyTable(this.container);
         }
@@ -102,8 +102,9 @@ class Table {
                         {
                             text: 'Show graphs',
                             action: function ( e, dt, node, config ) {
-                                const data = dt.rows('.selected').data();
-                                console.log(data);
+                                const sample = dt.rows('.selected').data()[0].Sample;
+                                console.log(sample);
+                                console.log(scope);
                                 $("#modalGraphs").modal('show');
                             }
                         }

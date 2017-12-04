@@ -308,12 +308,6 @@ th {
 }
 
 
-#modalGraphs .modal-dialog{
-    width: 80%;
-    height:80%;
-    margin-top: 5%;
-}
-
 .slider-track-high {
     background: green;
 }

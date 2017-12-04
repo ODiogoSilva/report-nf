@@ -47,7 +47,7 @@ const initReports = (scope, results, setMax = true) => {
         await innuca_table.addTableHeaders(scope, results_ch,
             "table_headers_innuca");
         await innuca_table.addTableData(results_ch);
-        await innuca_table.buildDataTable();
+        await innuca_table.buildDataTable(scope);
     });
 
     p1.then( async (r) => {
@@ -127,8 +127,6 @@ app.controller("reportsController", function($scope){
     $scope.graph1_name = "Graph 1";
     $scope.graph2_name = "Graph 2";
     $scope.table_name = "Main table";
-
-
 
     $scope.workflows = [
         ["Assembly", 14],
