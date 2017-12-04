@@ -1,6 +1,12 @@
 const app = angular.module("reportsApp", []);
 
-let data = "";
+let data = null;
+let data_filters = {
+    "sample": [],
+    "projectId": [],
+    "qc": [],
+    "bp": [2, null],
+};
 
 const charts = new Charts();
 
@@ -19,26 +25,34 @@ const initReports = (scope, results) => {
     $("#waiting_gif").css({display:"block"});
     $("#row-main").css({display:"none"});
 
+    // fresults = filter_json(results);
+    const p1 = new Promise( (resolve) => {
+            resolve(filterJson(results, data_filters));
+        }
+    );
 
     // build_table(results);
-    data = results;
+    // data = results;
 
     /* Launch Tables */
-    innuca_table.processInnuca(results).then( async (results_ch) => {
+    p1.then( async (r) => {
+        const results_ch = await innuca_table.processInnuca(r);
         await innuca_table.addTableHeaders(scope, results_ch,
             "table_headers_innuca");
         await innuca_table.addTableData(results_ch);
         await innuca_table.buildDataTable();
     });
 
-    chewbbaca_table.processChewbbaca(results).then( async (results_ch) => {
+    p1.then( async (r) => {
+        const results_ch = await chewbbaca_table.processChewbbaca(r);
         await chewbbaca_table.addTableHeaders(scope, results_ch,
             "table_headers_chewbbaca");
         await chewbbaca_table.addTableData(results_ch);
         await chewbbaca_table.buildDataTable();
     });
 
-    prokka_table.processProkka(results).then( async (results_ch) => {
+    p1.then( async (r) => {
+        const results_ch = await prokka_table.processProkka(r);
         await prokka_table.addTableHeaders(scope, results_ch,
             "table_headers_prokka");
         await prokka_table.addTableData(results_ch);

@@ -107,6 +107,8 @@ const getQc = (qcObject) => {
  */
 const processInnuca = (reportsData) => {
 
+    console.log(reportsData)
+
     // Instantiate the object with the table data
     const innucaData = {
         "data": {}

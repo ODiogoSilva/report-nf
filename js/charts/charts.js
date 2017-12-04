@@ -38,7 +38,6 @@ const sampleSelector = (x) => {
 
     // Get sample name from click event
     const sample = x.point.name;
-
     for (const el of innuca_table.tableData){
         if (sample === el.Sample) {
             el.active = 1;
