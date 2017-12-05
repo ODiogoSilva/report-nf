@@ -171,6 +171,10 @@ app.controller("reportsController", function($scope){
 
                $("#reset_project").off("click").on("click", () => {
                    charts.reportsData = [];
+                   chewbbaca_table.tableData = [];
+                   innuca_table.tableData = [];
+                   prokka_table.tableData = [];
+
                    $("#reset_project").css({display:"none"});
                    $("#row-main").css({display:"none"});
                    $("#current_workflow").css({display:"none"});
@@ -243,6 +247,7 @@ app.controller("reportsController", function($scope){
             $('#sidebar').removeClass('active');
             // fade out the overlay
             $('.overlay').fadeOut();
+            $('.popover').removeClass("in");
         });
 
         // Get html to popover of filters
@@ -258,6 +263,11 @@ app.controller("reportsController", function($scope){
         $("#sliderc").slider({ id: "slidercc", min: 0, max: 10, range: true, value: [3, 7] });
         $("#slidercn").slider({ id: "slidercnc", min: 0, max: 10, range: true, value: [3, 7] });
         $("#sliderabp").slider({ id: "sliderabpc", min: 0, max: 10, range: true, value: [3, 7] });
+
+        /* Trigger check for regex and filter by project id */
+        $(".add_filter").off("click").on("click", () => {
+            // Add check here
+        });
 
         /* Trigger filter functions on filter button click */
         $("#filter_button").off("click").on("click", () => {

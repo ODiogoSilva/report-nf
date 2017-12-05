@@ -7,8 +7,9 @@
 }
 
 #sidebar .sidebar-header {
-    padding: 20px;
-    background: #97dcfc;
+    text-align: center;
+    padding: 5%;
+    background: grey;
 }
 
 #sidebar ul.components {
@@ -81,4 +82,21 @@
 #accordion {
     width:100%;
     position:absolute;
+}
+
+.slider-track-high {
+    background: lightgrey;
+}
+
+.slider-track-low {
+    background: lightgrey;
+}
+
+.slider-selection {
+    background: grey;
+}
+
+.active_filters {
+    font-size: 80%;
+    margin-left: 2%;
 }

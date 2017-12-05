@@ -296,21 +296,3 @@ th {
 .button_side {
     cursor: pointer;
 }
-
-
-.slider-track-high {
-    background: green;
-}
-
-.slider-track-low {
-    background: red;
-}
-
-.slider-selection {
-    background: yellow;
-}
-
-.active_filters {
-    font-size: 80%;
-    margin-left: 2%;
-}
