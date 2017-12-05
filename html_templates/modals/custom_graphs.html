@@ -6,26 +6,27 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Let's take a look at a {{}}</h4>
+                <h4 id="modalTitle" class="modal-title">Hello there, {{sample}}</h4>
             </div>
             <div class="modal-body">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab_graph1">Graph 1</a></li>
-                    <li><a data-toggle="tab" href="#tab_graph2">Graph 2</a></li>
-                    <li><a data-toggle="tab" href="#tab_graph3">Graph 3</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div id="tab_graph1" class="tab-pane fade in active">
-                        <h3>Graph 1</h3>
-                        <p>Some content.</p>
-                    </div>
-                    <div id="tab_graph2" class="tab-pane fade">
-                        <h3>Graph 2</h3>
-                        <p>Some content in menu 1.</p>
-                    </div>
-                    <div id="tab_graph3" class="tab-pane fade">
-                        <h3>Graph 3</h3>
-                        <p>Some content in menu 2.</p>
+                <div class="container-fluid">
+                    <div id="summaryRow" class="container-fluid">
+                        <div class="row modal-row">
+                            <div class="col-sm-2 modal-cell top-cell">Sample quality:</div>
+                            <div class="col-sm-2 modal-cell top-cell">Reads</div>
+                            <div class="col-sm-2 modal-cell top-cell">Base pairs</div>
+                            <div class="col-sm-2 modal-cell top-cell">Coverage</div>
+                            <div class="col-sm-2 modal-cell top-cell">Contigs</div>
+                            <div class="col-sm-2 modal-cell top-cell">Assembled BP</div>
+                        </div>
+                        <div class="row modal-row">
+                            <div id="qcContainer" class="col-sm-2 modal-cell bot-cell"></div>
+                            <div id="readsContainer" class="col-sm-2 modal-cell bot-cell"></div>
+                            <div id="bpContainer" class="col-sm-2 modal-cell bot-cell"></div>
+                            <div id="covContainer" class="col-sm-2 modal-cell bot-cell"></div>
+                            <div id="contigsContainer" class="col-sm-2 modal-cell bot-cell"></div>
+                            <div id="assembledContainer" class="col-sm-2 modal-cell bot-cell"></div>
+                        </div>
                     </div>
                 </div>
             </div>

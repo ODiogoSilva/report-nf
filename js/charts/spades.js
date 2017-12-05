@@ -56,8 +56,6 @@ const getHighchartsSeries = (chart_type, data) => {
 
 const buildSpadesBoxPlot = (data, container, title) => {
 
-    console.log(data)
-
     // Get data labels
     const dataLabels = [];
     for ( const el of data ) {
@@ -79,7 +77,7 @@ const buildSpadesBoxPlot = (data, container, title) => {
                 lineWidth: 2,
                 point: {
                     events: {
-                        click: sampleSelector
+                        click: showModelGraphs
                     }
                 }
             }

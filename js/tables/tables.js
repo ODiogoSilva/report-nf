@@ -56,8 +56,12 @@ class Table {
         $("#" + id).toggleClass("selected", "")
     }
 
+    getValue(id, target) {
+        return $("#" + id).find("#" + target);
+    }
+
     /* Method to build DataTable */
-    buildDataTable(scope) {
+    buildDataTable() {
         if ( $.fn.DataTable.isDataTable('#'+this.container)) {
             this.destroyTable(this.container);
         }
@@ -103,9 +107,7 @@ class Table {
                             text: 'Show graphs',
                             action: function ( e, dt, node, config ) {
                                 const sample = dt.rows('.selected').data()[0].Sample;
-                                console.log(sample);
-                                console.log(scope);
-                                $("#modalGraphs").modal('show');
+                                showModelGraphs(sample)
                             }
                         }
                     ]

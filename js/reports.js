@@ -1,6 +1,10 @@
 const app = angular.module("reportsApp", []);
 
+// Array of JSON files with the report data
 let data = null;
+
+// Object with the project filters. Each value can be dynamically changed
+// during the app session
 let data_filters = {
     "sample": [],
     "projectId": [],
@@ -11,11 +15,15 @@ let data_filters = {
     "contigs": {"range": [null, null], "max": null},
     "assembled bp": {"range": [null, null], "max": null},
 };
+
+// Object that will store the mapping between the project_id key in the JSON
+// reports and the corresponding project name
 let projectIdMap = new Map();
 
+// Init charts
 const charts = new Charts();
 
-/* Init tables */
+// Init tables
 const innuca_table = new Table("master_table_innuca");
 const chewbbaca_table = new Table("master_table_chewbbaca");
 const prokka_table = new Table("master_table_prokka");
@@ -32,14 +40,14 @@ const initReports = (scope, results, setMax = true) => {
     $("#waiting_gif").css({display:"block"});
     $("#row-main").css({display:"none"});
 
-    // fresults = filter_json(results);
+    // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve) => {
             resolve(filterJson(results, data_filters));
         }
     );
 
-    // build_table(results);
-    // data = results;
+    // Update the data array with the new filtered results
+    data = results;
 
     /* Launch Tables */
     p1.then( async (r) => {

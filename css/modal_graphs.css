@@ -3,3 +3,18 @@
     height:80%;
     margin-top: 5%;
 }
+
+.modal-row {
+    height: 40px;
+}
+
+.modal-cell {
+    line-height: 30px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.top-cell {
+    color: #2b2b2b;
+    font-weight: bold;
+}
