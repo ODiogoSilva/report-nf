@@ -237,6 +237,14 @@ app.controller("reportsController", function($scope){
             $('.overlay').fadeOut();
         });
 
+        // Get html to popover of filters
+        $('.active_filters').popover({
+            html : true,
+            content: function() {
+                return $('#popover_filters_content').html();
+            }
+        });
+
         $("#sliderbp").slider({ id: "sliderbpc", min: 0, max: 10, range: true, value: [3, 7] });
         $("#sliderrn").slider({ id: "sliderrnc", min: 0, max: 10, range: true, value: [3, 7] });
         $("#sliderc").slider({ id: "slidercc", min: 0, max: 10, range: true, value: [3, 7] });

@@ -51,12 +51,20 @@
                 <div class="panel-body">
                     <div>
                         <label>Filter By Name:</label>
-                        <input id="filter_by_name" type="text" class="form-control" placeholder="Strain Name">
+                        <div class="input-group">
+                            <input id="filter_by_name" type="text" class="form-control" placeholder="Strain Name">
+                            <span class="input-group-addon" id="filter_by_name_button"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                        </div>
+                        <a class="active_filters" id="active_filters_name" data-placement="left" data-toggle="popover">Active filters</a>
                     </div>
                     <br>
                     <div>
                         <label>Filter By Project ID:</label>
-                        <input id="filter_by_projectid" type="text" class="form-control" placeholder="Project ID">
+                        <div class="input-group">
+                            <input id="filter_by_projectid" type="text" class="form-control" placeholder="Project ID">
+                            <span class="input-group-addon" id="filter_by_projectid_button"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                        </div>
+                        <a class="active_filters" id="active_filters_projectid" data-placement="left" data-toggle="popover">Active filters</a>
                     </div>
                     <br>
                     <div>
@@ -116,4 +124,22 @@
         </div>
     </div>
 </nav>
+
+<!-- Generated markup by the plugin -->
+<div id="popover_filters_content" style="display: none">
+    <ul class="list-group">
+        <div class="input-group">
+            <span class="input-group-addon">Strain 1</span>
+            <span class="input-group-addon btn btn-default" style="background-color: deepskyblue"><i class="fa fa-minus" aria-hidden="true"></i></span>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Strain 2</span>
+            <span class="input-group-addon btn btn-default" style="background-color: deepskyblue"><i class="fa fa-minus" aria-hidden="true"></i></span>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Strain 3</span>
+            <span class="input-group-addon btn btn-default" style="background-color: deepskyblue"><i class="fa fa-minus" aria-hidden="true"></i></span>
+        </div>
+    </ul>
+</div>
 

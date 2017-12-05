@@ -319,3 +319,8 @@ th {
 .slider-selection {
     background: yellow;
 }
+
+.active_filters {
+    font-size: 80%;
+    margin-left: 2%;
+}
