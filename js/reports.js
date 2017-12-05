@@ -32,10 +32,10 @@ const prokka_table = new Table("master_table_prokka");
  * Function to build tables and graphs based on the reports
  * @param scope
  * @param results
- * @param {boolean} setMax - If true, the processInnuca method will update the
+ * @param {boolean} append - If true, the processInnuca method will update the
  * maximum values for the data_filters
  */
-const initReports = (scope, results, setMax = true) => {
+const initReports = (scope, results, append = true) => {
 
     $("#waiting_gif").css({display:"block"});
     $("#row-main").css({display:"none"});
@@ -52,10 +52,10 @@ const initReports = (scope, results, setMax = true) => {
     /* Launch Tables */
     p1.then( async (r) => {
         if (r.length === 0) return;
-        const results_ch = await innuca_table.processInnuca(r, setMax);
+        const results_ch = await innuca_table.processInnuca(r, append);
         await innuca_table.addTableHeaders(scope, results_ch,
             "table_headers_innuca");
-        await innuca_table.addTableData(results_ch, setMax);
+        await innuca_table.addTableData(results_ch, append);
         await innuca_table.buildDataTable(scope);
     });
 
@@ -80,7 +80,7 @@ const initReports = (scope, results, setMax = true) => {
 
     p1.then( async (r) => {
         if (r.length === 0) return;
-        await charts.addReportData(r);
+        await charts.addReportData(r, append);
         await charts.buildSpadesGraphs();
     });
 

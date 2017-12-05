@@ -11,8 +11,12 @@ class Charts {
     }
 
     /* Method to add reports to the global reports */
-    async addReportData(reportsData) {
-        this.reportsData = await this.reportsData.concat(reportsData);
+    async addReportData(reportsData, append) {
+        if ( append === "true" ) {
+            this.reportsData = await this.reportsData.concat(reportsData);
+        } else {
+            this.reportsData = reportsData
+        }
         return true;
     }
 
