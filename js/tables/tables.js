@@ -27,14 +27,26 @@ class Table {
     }
 
     /* Method to add data to the table */
-    addTableData(table_object) {
-        this.tableData = this.tableData.concat(table_object.data);
+    addTableData(table_object, update) {
+        if ( update === true ) {
+            this.tableData = this.tableData.concat(table_object.data);
+        } else {
+            this.tableData = table_object.data;
+            this.clearTable();
+        }
+    }
+
+    emptyTable() {
+        if ( $.fn.DataTable.isDataTable('#'+this.container)) {
+            this.tableObj.empty();
+
+        }
     }
 
     /* Method to destroy the DataTable */
     destroyTable() {
-        if ( $.fn.DataTable.isDataTable('#'+this.container)) {
-            this.tableObj.clear();
+        if ( this.tableObj ) {
+            // this.tableObj.clear();
             this.tableObj.destroy();
 
         }
@@ -63,7 +75,7 @@ class Table {
     /* Method to build DataTable */
     buildDataTable() {
         if ( $.fn.DataTable.isDataTable('#'+this.container)) {
-            this.destroyTable(this.container);
+            this.destroyTable();
         }
 
         this.tableObj = $('#'+this.container).DataTable( {

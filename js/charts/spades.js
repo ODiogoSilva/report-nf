@@ -103,8 +103,6 @@ const buildSpadesBoxPlot = (data, container, title) => {
 
     });
 
-    console.log(spades_size_bp);
-
     return spades_size_bp
 
 };
@@ -119,8 +117,6 @@ const buildSpadesDistribution = (data, container, title) => {
     // catch(e){
     //     console.log(e);
     // }
-
-    console.log(data)
 
     const spades_size = Highcharts.chart(container, {
         chart: {zoomType: "x"},
@@ -138,16 +134,3 @@ const buildSpadesDistribution = (data, container, title) => {
     return spades_size;
 };
 
-function kernelDensityEstimator(kernel, X) {
-    return function(V) {
-        return X.map(function(x) {
-            console.log(V)
-            return [x, d3.mean(V, function(v) { return kernel(x - v); })];
-        });
-    };
-}
-function kernelEpanechnikov(k) {
-    return function(v) {
-        return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
-    };
-}

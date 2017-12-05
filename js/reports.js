@@ -6,7 +6,7 @@ let data = null;
 // Object with the project filters. Each value can be dynamically changed
 // during the app session
 let data_filters = {
-    "sample": {"active": ["HSM7.*"], "temp": ["coco"]},
+    "sample": {"active": [], "temp": []},
     "projectId": {"active": [], "temp": []},
     "qc": [],
     "bp": {"range": [null, null], "max": null},
@@ -54,7 +54,7 @@ const initReports = (scope, results, setMax = true) => {
         const results_ch = await innuca_table.processInnuca(r, setMax);
         await innuca_table.addTableHeaders(scope, results_ch,
             "table_headers_innuca");
-        await innuca_table.addTableData(results_ch);
+        await innuca_table.addTableData(results_ch, setMax);
         await innuca_table.buildDataTable(scope);
     });
 
@@ -97,7 +97,6 @@ const modalAlert = (text, callback) => {
 
     $('#buttonSub').one("click", function(){
         $('#modalAlert').modal("hide");
-        console.log("Alert");
 
         setTimeout(function(){return callback()}, 400);
     });
@@ -268,19 +267,11 @@ app.controller("reportsController", function($scope){
             }
         });
 
-        // Get html to popover of filters
-        // $('.error').popover({
-        //     html : true,
-        //     content: function() {
-        //         return $('#error-tooltip').html();
-        //     }
-        // });
-
-        $("#sliderbp").slider({ id: "sliderbpc", min: 0, max: 10, range: true, value: [3, 7] });
-        $("#sliderrn").slider({ id: "sliderrnc", min: 0, max: 10, range: true, value: [3, 7] });
-        $("#sliderc").slider({ id: "slidercc", min: 0, max: 10, range: true, value: [3, 7] });
-        $("#slidercn").slider({ id: "slidercnc", min: 0, max: 10, range: true, value: [3, 7] });
-        $("#sliderabp").slider({ id: "sliderabpc", min: 0, max: 10, range: true, value: [3, 7] });
+        $("#sliderbp").slider({ id: "sliderbpc", min: 0, max: 10, range: true});
+        $("#sliderrn").slider({ id: "sliderrnc", min: 0, max: 10, range: true});
+        $("#sliderc").slider({ id: "slidercc", min: 0, max: 10, range: true});
+        $("#slidercn").slider({ id: "slidercnc", min: 0, max: 10, range: true});
+        $("#sliderabp").slider({ id: "sliderabpc", min: 0, max: 10, range: true});
 
         /* Trigger check for regex and filter by project id */
         $(".add_filter").off("click").on("click", () => {
@@ -295,16 +286,14 @@ app.controller("reportsController", function($scope){
                 "coverage (2nd)": $("#sliderc").data("slider").getValue(),
                 "contigs": $("#slidercn").data("slider").getValue(),
                 "assembled bp": $("#sliderabp").data("slider").getValue(),
-                "sample": $("#filter_by_name").val(),
-                "projectId": $("#filter_by_projectid").val(),
-                "qc": $( "#qc_select option:selected" ).text()
+                "sample": data_filters.sample.temp,
+                "projectId": data_filters.projectId.temp,
+                "qc": $( "#qc_select").find("option:selected" ).text()
 
             };
 
-            data_filters = updateFilterObject(filterInstance, data_filters);
-            console.log(data_filters);
+            updateFilterObject(filterInstance, data_filters);
 
-            console.log(filterInstance);
         });
 
     }, 100);

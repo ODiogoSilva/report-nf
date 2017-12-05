@@ -52,27 +52,38 @@ const addToFilters = (po, array) => {
 
 
 /**
- * Assigns new values to the data_filters object according to the filters submitted by the user
+ * Assigns new values to the data_filters object according to the filters
+ * submitted by the user
  * @param filterInstance
- * @param filterObject
+ * @param data_filters
  */
-const updateFilterObject = (filterInstance, filterObject) => {
-    if (filterInstance.sample !== "" && !filterObject.sample.includes(filterInstance.sample)){
-        filterObject.sample.push(filterInstance.sample);
-    }
-    if (filterInstance.projectId !== "" && !filterObject.projectId.includes(filterInstance.projectId)){
-        filterObject.projectId.push(filterInstance.projectId);
-    }
-    if (filterInstance.qc !== "" && !filterObject.qc.includes(filterInstance.qc)){
-        filterObject.qc.push(filterInstance.qc);
-    }
-    filterObject.bp.range = filterInstance.bp;
-    filterObject.reads.range = filterInstance.reads;
-    filterObject["coverage (2nd)"].range = filterInstance["coverage (2nd)"];
-    filterObject.contigs.range = filterInstance.contigs;
-    filterObject["assembled bp"].range = filterInstance["assembled bp"];
+const updateFilterObject = (filterInstance) => {
 
-    return filterObject;
+    console.log(filterInstance.sample)
+
+    // Set the active sample filters and reset the temporary filters
+    data_filters.sample.active = data_filters.sample.active.concat(filterInstance.sample);
+    data_filters.sample.temp = [];
+    // Set the active project filters and reset the temporary filters
+    data_filters.projectId.active = data_filters.projectId.active.concat(filterInstance.projectId);
+    data_filters.projectId.temp = [];
+
+    if (filterInstance.qc !== "" && !data_filters.qc.includes(filterInstance.qc)){
+        data_filters.qc.push(filterInstance.qc);
+    }
+    data_filters.bp.range = filterInstance.bp;
+    data_filters.reads.range = filterInstance.reads;
+    data_filters["coverage (2nd)"].range = filterInstance["coverage (2nd)"];
+    data_filters.contigs.range = filterInstance.contigs;
+    data_filters["assembled bp"].range = filterInstance["assembled bp"];
+
+    console.log(data_filters)
+
+    const scope = angular.element($("#outer")).scope();
+    scope.$apply(() => {
+        initReports(scope, data, false)
+    });
+
 
 };
 
@@ -105,12 +116,12 @@ const filterJson = (jsonResult, filterObject) => {
 
         if ( po.report_json.task === "integrity_coverage" ) {
             // Filter for base pairs
-            if ( !testRowValue(data_filters.bp.range,
+            if ( !testRowValue(filterObject.bp.range,
                     po.report_json["table-row"], "bp") === true ) {
                 filteredIds = addToFilters(po, filteredIds)
             }
             // Filter for number of reads
-            if ( !testRowValue(data_filters.reads.range,
+            if ( !testRowValue(filterObject.reads.range,
                     po.report_json["table-row"], "reads") === true ) {
                 filteredIds = addToFilters(po, filteredIds)
             }
@@ -118,7 +129,7 @@ const filterJson = (jsonResult, filterObject) => {
 
         if ( po.report_json.task === "check_coverage" ) {
             // Filter for coverage
-            if ( !testRowValue(data_filters["coverage (2nd)"].range,
+            if ( !testRowValue(filterObject["coverage (2nd)"].range,
                     po.report_json["table-row"], "coverage_(2nd)") ) {
                 filteredIds = addToFilters(po, filteredIds)
             }
@@ -126,12 +137,12 @@ const filterJson = (jsonResult, filterObject) => {
 
         if (po.report_json.task === "pilon" ) {
             // Filter for number of contigs
-            if ( !testRowValue(data_filters.contigs.range,
+            if ( !testRowValue(filterObject.contigs.range,
                     po.report_json["table-row"], "contigs")) {
                 filteredIds = addToFilters(po, filteredIds)
             }
             // Filter for assembled base pairs
-            if ( !testRowValue(data_filters["assembled bp"].range,
+            if ( !testRowValue(filterObject["assembled bp"].range,
                     po.report_json["table-row"], "contigs") ) {
                 filteredIds = addToFilters(po, filteredIds)
             }
@@ -250,7 +261,7 @@ const checkFilter = (targetId) => {
     filterSelecteor.append(filterDiv);
     tempFilters.push(val);
 
-    return showLabel(selector, spanSelector, helpSelector, "Filter successfyll", "ok")
+    return showLabel(selector, spanSelector, helpSelector, "Filter successfully added!", "ok")
 
 
 };

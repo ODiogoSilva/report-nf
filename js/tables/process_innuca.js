@@ -107,11 +107,21 @@ const getQc = (qcObject) => {
  */
 const setMaxFilters = (header, value) => {
 
+    sliderMap = new Map([
+        ["bp", $("#sliderbp")],
+        ["reads", $("#sliderrn")],
+        ["coverage (2nd)", $("#sliderc")],
+        ["contigs", $("#slidercn")],
+        ["assembled bp", $("#sliderabp")]
+    ]);
+
     // Skip, if header is not present in filters object
     if (!data_filters.hasOwnProperty(header)) {return}
 
     if ( value > data_filters[header].max ) {
-        data_filters[header].max = value
+        data_filters[header].max = value;
+        sliderMap.get(header).slider({max: value});
+        sliderMap.get(header).slider("setValue", [0, value]);
     }
 
 };
@@ -292,6 +302,8 @@ const processInnuca = (reportsData, setMax) => {
             className: "dt-body-center"
         },
     ].concat(mappings);
+
+    console.log(innucaData)
 
     return innucaData;
 
