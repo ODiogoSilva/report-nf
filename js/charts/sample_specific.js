@@ -5,19 +5,7 @@ const humanReadable = (number) => {
     return (number / Math.pow(1000, i)).toFixed(1) + " " + suffix[i];
 };
 
-/**
- *
- * @param sample
- * @param data
- */
-const showModelGraphs = (sample) => {
-
-    if ( sample.hasOwnProperty("point") ) {
-        sample = sample.point.name;
-    }
-
-    // Set title with sample name
-    $("#modalTitle").html(`Hello there, ${sample}`)
+const populateHeader = (sample) => {
 
     // Get QC div and add to container
     const qc = innuca_table.getValue(sample, "qc");
@@ -43,6 +31,25 @@ const showModelGraphs = (sample) => {
     const assembledbp = innuca_table.getValue(sample, "assembledbp")[0].innerText;
     $("#assembledContainer").html(humanReadable(assembledbp));
 
+};
+
+/**
+ *
+ * @param sample
+ * @param data
+ */
+const showModelGraphs = (sample) => {
+
+    if ( sample.hasOwnProperty("point") ) {
+        sample = sample.point.name;
+    }
+
+    // Set title with sample name
+    $("#modalTitle").html(`Hello there, ${sample}`);
+
+    // Populate header row
+    populateHeader(sample);
+
     $("#modalGraphs").modal("show")
 
-}
+};
