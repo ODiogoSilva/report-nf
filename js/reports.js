@@ -250,11 +250,21 @@ app.controller("reportsController", function($scope){
             $('.popover').removeClass("in");
         });
 
-        // Get html to popover of filters
-        $('.active_filters').popover({
+        // Get html to popover of sample filters
+        $("#active_filters_name").popover({
             html : true,
+            trigger: "focus",
             content: function() {
-                return $('#popover_filters_content').html();
+                return $('#popover_filters_sample').html();
+            }
+        });
+
+        // Get html to popover of project filters
+        $("#active_filters_projectid").popover({
+            html : true,
+            trigger: "focus",
+            content: function() {
+                return $('#popover_filters_project').html();
             }
         });
 

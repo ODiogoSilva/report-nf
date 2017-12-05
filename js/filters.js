@@ -156,9 +156,28 @@ const filterJson = (jsonResult, filterObject) => {
  * @param selector
  * @param msg
  */
-const showErrorLabel = (selector, spanSelector, helpSelector, msg) => {
-    selector.addClass("has-error has-feedback");
+const showLabel = (selector, spanSelector, helpSelector, msg, type) => {
+    // Reset error and Ok classes
+    spanSelector.removeClass("glyphicon-remove glyphicon-ok");
+    spanSelector.removeClass("text-danger text-success");
+    helpSelector.removeClass("text-danger text-success");
+    selector.removeClass("has-error has-success")
+
+    // Depending on the provided type, show the message as an error or success
+    if ( type === "error" ) {
+        selector.addClass("has-error has-feedback");
+        helpSelector.addClass("text-danger");
+        spanSelector.addClass("glyphicon-remove")
+    } else {
+        selector.addClass("has-success has-feedback");
+        helpSelector.addClass("text-success");
+        spanSelector.addClass("glyphicon-ok")
+
+    }
+
     spanSelector.css({"opacity": "1"});
+    spanSelector.css({"display": "block"});
+
     helpSelector.html(msg);
     helpSelector.css({"display": "block"});
 };
@@ -170,41 +189,68 @@ const showErrorLabel = (selector, spanSelector, helpSelector, msg) => {
  */
 const checkFilter = (targetId) => {
 
+    // Set selectors and value
     const target = $("#" + targetId);
     const selector = target.parent().parent();
     const spanSelector = $("#" + targetId + "_span");
     const helpSelector = $("#" + targetId + "_help");
     const val = target.val();
 
+    // Adds functionality of removing the error/success class atributes
+    // associated with the text-input
     target.off("click").on("click", () => {
-        selector.removeClass("has-error has-feedback");
+        selector.removeClass("has-error has-success has-feedback");
+        helpSelector.removeClass("text-danger text-success");
         spanSelector.css({"opacity": "0"});
         helpSelector.css({"display": "none"});
     });
 
-    // Check if filter is not empty
-    if ( val === "" ) {
-        showErrorLabel(selector, spanSelector, helpSelector, "Empty filter")
-    }
-
-    // Get all sample filters
+    // Get all sample filters and the filter selector where the new filters
+    // will be added
     let activeFilters;
+    let filterSelecteor;
+    let tempFilters;
     if ( targetId === "filter_by_name" ) {
         activeFilters = data_filters.sample.active.concat(data_filters.sample.temp)
+        filterSelecteor = $("#" + "popover_filters_sample");
+        tempFilters = data_filters.sample.temp;
     } else {
         activeFilters = data_filters.projectId.active.concat(data_filters.projectId.temp)
+        filterSelecteor = $("#" + "popover_filters_project");
+        tempFilters = data_filters.sample.temp
     }
 
+    /* Begin checks here */
+
+    // Check if filter is not empty
+    if ( val === "" ) {
+        return showLabel(selector, spanSelector, helpSelector, "Empty filter", "error")
+    }
+
+    // Check if val can be a regular expression
     try {
         re = new RegExp(val)
     } catch(err) {
-        showErrorLabel(selector, spanSelector, helpSelector, "Invalid expression")
+        return showLabel(selector, spanSelector, helpSelector, "Invalid expression", "error")
     }
 
+    // Check for duplicate filter terms
     if ( activeFilters.includes(val) ) {
-        showErrorLabel(selector, spanSelector, helpSelector, "Filter already applied")
+        return showLabel(selector, spanSelector, helpSelector, "Filter already applied", "error")
     }
 
+    /* Checks ended here */
+
+    // If the current value passed all checks, add it to the filter selector
+    // and to the data_filters object
+    filterDiv = `<div class="input-group">
+                    <input class="form-control" readonly value="${val}">
+                    <span class="input-group-addon btn btn-default"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                </div>`;
+    filterSelecteor.append(filterDiv);
+    tempFilters.push(val);
+
+    return showLabel(selector, spanSelector, helpSelector, "Filter successfyll", "ok")
 
 
 };
