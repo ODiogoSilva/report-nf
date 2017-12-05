@@ -93,13 +93,13 @@ const filterJson = (jsonResult, filterObject) => {
     for ( const po of jsonResult ) {
 
         // Filter for sample name
-        if ( testArray(filterObject.sample, po.sample_name) === true ) {
+        if ( testArray(filterObject.sample.active, po.sample_name) === true ) {
             filteredIds = addToFilters(po, filteredIds);
         }
 
         // Filter for project id
         const projectName = projectIdMap.get(parseInt(po.project_id));
-        if ( testArray(filterObject.projectId, projectName) === true ) {
+        if ( testArray(filterObject.projectId.active, projectName) === true ) {
             filteredIds = addToFilters(po, filteredIds);
         }
 
@@ -149,4 +149,62 @@ const filterJson = (jsonResult, filterObject) => {
     }
 
     return filteredJson
+};
+
+/**
+ *
+ * @param selector
+ * @param msg
+ */
+const showErrorLabel = (selector, spanSelector, helpSelector, msg) => {
+    selector.addClass("has-error has-feedback");
+    spanSelector.css({"opacity": "1"});
+    helpSelector.html(msg);
+    helpSelector.css({"display": "block"});
+};
+
+
+/**
+ *
+ * @param targetId
+ */
+const checkFilter = (targetId) => {
+
+    const target = $("#" + targetId);
+    const selector = target.parent().parent();
+    const spanSelector = $("#" + targetId + "_span");
+    const helpSelector = $("#" + targetId + "_help");
+    const val = target.val();
+
+    target.off("click").on("click", () => {
+        selector.removeClass("has-error has-feedback");
+        spanSelector.css({"opacity": "0"});
+        helpSelector.css({"display": "none"});
+    });
+
+    // Check if filter is not empty
+    if ( val === "" ) {
+        showErrorLabel(selector, spanSelector, helpSelector, "Empty filter")
+    }
+
+    // Get all sample filters
+    let activeFilters;
+    if ( targetId === "filter_by_name" ) {
+        activeFilters = data_filters.sample.active.concat(data_filters.sample.temp)
+    } else {
+        activeFilters = data_filters.projectId.active.concat(data_filters.projectId.temp)
+    }
+
+    try {
+        re = new RegExp(val)
+    } catch(err) {
+        showErrorLabel(selector, spanSelector, helpSelector, "Invalid expression")
+    }
+
+    if ( activeFilters.includes(val) ) {
+        showErrorLabel(selector, spanSelector, helpSelector, "Filter already applied")
+    }
+
+
+
 };

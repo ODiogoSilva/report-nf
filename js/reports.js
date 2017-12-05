@@ -6,8 +6,8 @@ let data = null;
 // Object with the project filters. Each value can be dynamically changed
 // during the app session
 let data_filters = {
-    "sample": [],
-    "projectId": [],
+    "sample": {"active": ["HSM7.*"], "temp": ["coco"]},
+    "projectId": {"active": [], "temp": []},
     "qc": [],
     "bp": {"range": [null, null], "max": null},
     "reads": {"range": [null, null], "max": null},
@@ -257,6 +257,14 @@ app.controller("reportsController", function($scope){
                 return $('#popover_filters_content').html();
             }
         });
+
+        // Get html to popover of filters
+        // $('.error').popover({
+        //     html : true,
+        //     content: function() {
+        //         return $('#error-tooltip').html();
+        //     }
+        // });
 
         $("#sliderbp").slider({ id: "sliderbpc", min: 0, max: 10, range: true, value: [3, 7] });
         $("#sliderrn").slider({ id: "sliderrnc", min: 0, max: 10, range: true, value: [3, 7] });
