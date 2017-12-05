@@ -167,30 +167,20 @@ th {
 }
 
 .table-cell {
+    display: inline-block;
     position: relative;
     width: 100%;
     height: 30px;
     line-height: 30px;
     vertical-align: middle;
     text-align: center;
-    color: transparent;
 }
-
 
 .table-bar {
     position: absolute;
     background: rgba(100, 100, 100, 0.2);
     height: 100%;
     z-index: 1;
-}
-
-.table-bar-text {
-    width: 100%;
-    position: absolute;
-    vertical-align: middle;
-    text-align: center;
-    z-index: 2;
-    color: black;
 }
 
 .badge-qc {

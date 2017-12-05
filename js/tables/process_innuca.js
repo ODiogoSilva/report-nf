@@ -25,7 +25,7 @@ const getQc = (qcObject) => {
         qcColor = qcPicker.fail[0];
         qcValue = qcPicker.fail[1];
         let failMsg = Object.values(qcObject.fails).toString().replace(/_/g, " ");
-        qcMsg = `<div class='badge-qc tooltip-qc' 
+        qcMsg = `<div id="qc" class='badge-qc tooltip-qc' 
                        style="background: ${qcColor}">
                     <span class='tooltip-qc-text'>
                         <div>
@@ -82,7 +82,7 @@ const getQc = (qcObject) => {
         qcValue = qcPicker.low[1];
     }
 
-    qcMsg = `<div class='badge-qc tooltip-qc' style="background: ${qcColor}">
+    qcMsg = `<div id="qc" class='badge-qc tooltip-qc' style="background: ${qcColor}">
                 <span class='tooltip-qc-text'>
                     <div>
                         <ul>
@@ -264,7 +264,7 @@ const processInnuca = (reportsData, setMax) => {
                         // Set/Update maximum filters value
                         if ( setMax === true ) {setMaxFilters(f, maxValue)}
                     }
-                    const outDiv = `<div class='table-cell'><div class="table-bar-text">${v.get(f)}</div><div class='table-bar' style='width:${prop}%'></div>${v.get(f)}</div>`;
+                    const outDiv = `<div id="${f.replace(/ |\(|\)/g, "")}" class='table-cell'><div class='table-bar' style='width:${prop}%'></div>${v.get(f)}</div>`;
                     v.set(f, outDiv);
                 }
             }
