@@ -55,7 +55,7 @@ class Table {
     /* Method to clear the DataTable */
     clearTable(){
         if ( $.fn.DataTable.isDataTable('#'+this.container)) {
-            this.tableObj.clear();
+            this.tableObj.clear().draw();
         }
     }
 
@@ -74,76 +74,78 @@ class Table {
 
     /* Method to build DataTable */
     buildDataTable() {
-        if ( $.fn.DataTable.isDataTable('#'+this.container)) {
-            this.destroyTable();
+        if ( this.tableObj) {
+            this.clearTable();
+            this.tableObj.rows.add(this.tableData).draw();
         }
-
-        this.tableObj = $('#'+this.container).DataTable( {
-            "data": this.tableData,
-            "columns" : this.columnMapping,
-            autoFill: {
-                enable: false
-            },
-            dom: 'Bfrtip',
-            buttons: [
-                'copy',
-                'csv',
-                'excel',
-                'pdf',
-                'print',
-                {
-                    extend: 'collection',
-                    text: 'Table control',
-                    buttons: [
-                        {
-                            text: "Enable AutoFill",
-                            action: function (e, dt) {
-                                if (dt.autoFill().enabled()) {
-                                    this.autoFill().disable();
-                                    this.text('Enable AutoFill');
-                                }
-                                else {
-                                    this.autoFill().enable();
-                                    this.text('Disable AutoFill');
-                                }
-                            }
-                        }
-                    ]
+        else{
+            this.tableObj = $('#'+this.container).DataTable( {
+                "data": this.tableData,
+                "columns" : this.columnMapping,
+                autoFill: {
+                    enable: false
                 },
-                {
-                    extend: 'collection',
-                    text: 'Selection',
-                    autoClose: true,
-                    buttons: [
-                        {
-                            text: 'Show graphs',
-                            action: function ( e, dt, node, config ) {
-                                const sample = dt.rows('.selected').data()[0].Sample;
-                                showModelGraphs(sample)
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy',
+                    'csv',
+                    'excel',
+                    'pdf',
+                    'print',
+                    {
+                        extend: 'collection',
+                        text: 'Table control',
+                        buttons: [
+                            {
+                                text: "Enable AutoFill",
+                                action: function (e, dt) {
+                                    if (dt.autoFill().enabled()) {
+                                        this.autoFill().disable();
+                                        this.text('Enable AutoFill');
+                                    }
+                                    else {
+                                        this.autoFill().enable();
+                                        this.text('Disable AutoFill');
+                                    }
+                                }
                             }
-                        }
-                    ]
+                        ]
+                    },
+                    {
+                        extend: 'collection',
+                        text: 'Selection',
+                        autoClose: true,
+                        buttons: [
+                            {
+                                text: 'Show graphs',
+                                action: function ( e, dt, node, config ) {
+                                    const sample = dt.rows('.selected').data()[0].Sample;
+                                    showModelGraphs(sample)
+                                }
+                            }
+                        ]
+                    }
+                ],
+                columnDefs: [ {
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets:   0
+                } ],
+                select: {
+                    style:    'os',
+                    selector: 'td:first-child'
+                },
+                "initComplete": () => {
+                    /* Trigger selected class on row when click on checkbox */
+                    $(".editor-active").off("click").on("click", (e) => {
+                        $(e.target).closest("tr").toggleClass("selected");
+                    });
+                },
+                "fnCreatedRow": (nRow, aData) => {
+                    $(nRow).attr("id", aData.Sample);
                 }
-            ],
-            columnDefs: [ {
-                orderable: false,
-                className: 'select-checkbox',
-                targets:   0
-            } ],
-            select: {
-                style:    'os',
-                selector: 'td:first-child'
-            },
-            "initComplete": () => {
-                /* Trigger selected class on row when click on checkbox */
-                $(".editor-active").off("click").on("click", (e) => {
-                    $(e.target).closest("tr").toggleClass("selected");
-                });
-            },
-            "fnCreatedRow": (nRow, aData) => {
-                $(nRow).attr("id", aData.Sample);
-            }
-        } );
+            } );
+        }
     }
 
     /* Process chewBBACA data to load into the DataTable */

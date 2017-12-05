@@ -39,7 +39,7 @@ const processChewbbaca = (reports_data) => {
     ];
 
     chewbbacaHeaders.map((x) => {
-        if (x !== "") chewbbacaColumnMapping.push({"data": x});
+        if (x !== "") chewbbacaColumnMapping.push({"data": x, "title":x});
     });
 
     /* Get data for each strain to add to the table */

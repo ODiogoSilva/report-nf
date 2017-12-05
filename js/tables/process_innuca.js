@@ -287,7 +287,7 @@ const processInnuca = (reportsData, setMax) => {
 
     // Create mappings for column headers
     const mappings = innucaData.headers.slice(1).map((x) => {
-        return {"data": x};
+        return {"data": x, "title": x};
     });
 
     innucaData.columnMapping = [

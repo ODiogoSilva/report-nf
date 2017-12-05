@@ -20,10 +20,10 @@ const processProkka = (reportsData) => {
             },
             className: "dt-body-center"
         },
-        {"data": "ID"},
-        {"data": "GENE"},
-        {"data": "FUNCTION"},
-        {"data": "NAME"}
+        {"data": "ID", "title":"ID"},
+        {"data": "GENE", "title":"GENE"},
+        {"data": "FUNCTION", "title":"FUNCTION"},
+        {"data": "NAME", "title":"NAME"}
     ];
 
     prokkaData.data = [

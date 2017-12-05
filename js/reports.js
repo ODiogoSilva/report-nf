@@ -51,6 +51,7 @@ const initReports = (scope, results, setMax = true) => {
 
     /* Launch Tables */
     p1.then( async (r) => {
+        if (r.length === 0) return;
         const results_ch = await innuca_table.processInnuca(r, setMax);
         await innuca_table.addTableHeaders(scope, results_ch,
             "table_headers_innuca");
@@ -59,6 +60,7 @@ const initReports = (scope, results, setMax = true) => {
     });
 
     p1.then( async (r) => {
+        if (r.length === 0) return;
         const results_ch = await chewbbaca_table.processChewbbaca(r);
         await chewbbaca_table.addTableHeaders(scope, results_ch,
             "table_headers_chewbbaca");
@@ -67,6 +69,7 @@ const initReports = (scope, results, setMax = true) => {
     });
 
     p1.then( async (r) => {
+        if (r.length === 0) return;
         const results_ch = await prokka_table.processProkka(r);
         await prokka_table.addTableHeaders(scope, results_ch,
             "table_headers_prokka");
@@ -76,6 +79,7 @@ const initReports = (scope, results, setMax = true) => {
 
 
     p1.then( async (r) => {
+        if (r.length === 0) return;
         await charts.addReportData(r);
         await charts.buildSpadesGraphs();
     });
