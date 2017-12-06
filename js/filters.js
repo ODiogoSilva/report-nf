@@ -218,13 +218,17 @@ const checkFilter = (targetId) => {
     let activeFilters;
     let filterSelecteor;
     let tempFilters;
+    let changePopover;
+
     if ( targetId === "filter_by_name" ) {
         activeFilters = data_filters.sample.active.concat(data_filters.sample.temp)
         filterSelecteor = $("#" + "popover_filters_sample");
+        changePopover = $('#active_filters_name').data('bs.popover');
         tempFilters = data_filters.sample.temp;
     } else {
         activeFilters = data_filters.projectId.active.concat(data_filters.projectId.temp)
         filterSelecteor = $("#" + "popover_filters_project");
+        changePopover = $('#active_filters_projectid').data('bs.popover');
         tempFilters = data_filters.projectId.temp
     }
 
@@ -251,16 +255,23 @@ const checkFilter = (targetId) => {
 
     // If the current value passed all checks, add it to the filter selector
     // and to the data_filters object
-    const filterDiv = `<div class="input-group">
-                    <input class="form-control `+targetId+`" readonly value="${val}">
-                    <span class="input-group-addon btn btn-default remove_filter"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                </div>`;
+
+    // Random id for filter div
+    const filter_id = Math.random().toString(36).substring(7);
+
+    const filterDiv = `<div class="input-group" id="${filter_id}">
+                        <input class="form-control ${targetId}" readonly value="${val}">
+                        <span class="input-group-addon btn btn-default remove_filter"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                       </div>`;
 
     filterSelecteor.append(filterDiv);
     tempFilters.push(val);
 
     // Set value of input to empty
     target.val("");
+
+    // Set content of popover
+    changePopover.options.content = filterSelecteor.html();
 
     return showLabel(selector, spanSelector, helpSelector, "Filter successfully added!", "ok")
 

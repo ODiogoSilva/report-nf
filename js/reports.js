@@ -260,12 +260,22 @@ app.controller("reportsController", function($scope){
             content: function() {
                 return $('#popover_filters_sample').html();
             }
-        }).on('show.bs.popover', () => {
+        }).off('show.bs.popover').on('show.bs.popover', () => {
             setTimeout(() => {
                 r_filter = $(".remove_filter");
-                r_filter.off("click").on("click", () => {
-                    const val = r_filter.parent().find("input").val();
-                    r_filter.parent().remove();
+                r_filter.off("click").on("click", (e) => {
+
+                    const filters = $('#popover_filters_sample');
+                    const target = $(e.target);
+                    p_div_id = target.closest("div").attr("id");
+                    filters.find("#"+p_div_id).remove();
+
+                    // Dynamically set content of popover
+                    const popover = $('#active_filters_name').data('bs.popover');
+                    popover.options.content = filters.html();
+
+                    // Remove filter from temp and active filters
+                    const val = target.parent().find("input").val();
                     let toRemove = data_filters.sample.active.indexOf(val);
                     data_filters.sample.active.splice(toRemove, 1);
                     toRemove = data_filters.sample.temp.indexOf(val);
@@ -281,19 +291,30 @@ app.controller("reportsController", function($scope){
             content: function() {
                 return $('#popover_filters_project').html();
             }
-        }).on('show.bs.popover', () => {
+        }).off('show.bs.popover').on('show.bs.popover', () => {
             setTimeout(() => {
                 r_filter = $(".remove_filter");
-                r_filter.off("click").on("click", () => {
-                    const val = r_filter.parent().find("input").val();
-                    r_filter.parent().remove();
+                r_filter.off("click").on("click", (e) => {
+                    const filters = $('#popover_filters_project');
+                    const target = $(e.target);
+                    p_div_id = target.closest("div").attr("id");
+                    filters.find("#"+p_div_id).remove();
+
+                    // Dynamically set content of popover
+                    const popover = $('#active_filters_projectid').data('bs.popover');
+                    popover.options.content = filters.html();
+
+                    // Remove filter from temp and active filters
+                    const val = target.parent().find("input").val();
                     let toRemove = data_filters.projectId.active.indexOf(val);
                     data_filters.projectId.active.splice(toRemove, 1);
                     toRemove = data_filters.projectId.temp.indexOf(val);
                     data_filters.projectId.temp.splice(toRemove, 1);
+
                 });
             }, 200);
         });
+
 
         $("#sliderbp").slider({ id: "sliderbpc", min: 0, max: 10, range: true});
         $("#sliderrn").slider({ id: "sliderrnc", min: 0, max: 10, range: true});
