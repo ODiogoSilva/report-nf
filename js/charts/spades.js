@@ -62,6 +62,9 @@ const buildSpadesBoxPlot = (data, container, title) => {
         dataLabels.push(el[0])
     }
 
+    console.log(dataLabels)
+    console.log(data)
+
     const spades_size_bp = Highcharts.chart(container, {
         chart: {
             zoomType: "x",
@@ -88,7 +91,7 @@ const buildSpadesBoxPlot = (data, container, title) => {
             labels: {
                 rotation: -45,
                 enabled: true,
-                formatter: () => { return data[0][0]; }
+                formatter: function() { data[this.value][0] }
             }
         },
         yAxis: {
