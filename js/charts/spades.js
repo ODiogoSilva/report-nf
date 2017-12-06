@@ -91,7 +91,7 @@ const buildSpadesBoxPlot = (data, container, title) => {
             labels: {
                 rotation: -45,
                 enabled: true,
-                formatter: function() { data[this.value][0] }
+                formatter: function() { return data[this.value][0] }
             }
         },
         yAxis: {
