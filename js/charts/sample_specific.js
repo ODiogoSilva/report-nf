@@ -9,7 +9,7 @@ const populateHeader = (sample) => {
 
     // Get QC div and add to container
     const qc = innuca_table.getValue(sample, "qc");
-    $("#qcContainer").html(qc.clone());
+    $("#qcContainer").html(qc);
 
     // Base pairs
     const bp = innuca_table.getValue(sample, "bp")[0].innerText;
@@ -20,7 +20,7 @@ const populateHeader = (sample) => {
     $("#readsContainer").html(humanReadable(reads));
 
     // Coverage
-    const coverage = innuca_table.getValue(sample, "coverage1st")[0].innerText;
+    const coverage = innuca_table.getValue(sample, "coverage (2nd)")[0].innerText;
     $("#covContainer").html(humanReadable(coverage));
 
     // Contigs
@@ -28,7 +28,7 @@ const populateHeader = (sample) => {
     $("#contigsContainer").html(humanReadable(contigs));
 
     // Assembled bp
-    const assembledbp = innuca_table.getValue(sample, "assembledbp")[0].innerText;
+    const assembledbp = innuca_table.getValue(sample, "assembled bp")[0].innerText;
     $("#assembledContainer").html(humanReadable(assembledbp));
 
 };

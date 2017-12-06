@@ -69,7 +69,7 @@ class Table {
     }
 
     getValue(id, target) {
-        return $("#" + id).find("#" + target);
+        return $(this.tableData.filter( el => el.Sample === id)[0][target]);
     }
 
     /* Method to build DataTable */
