@@ -82,6 +82,7 @@ Workflow side bar elements
     font-size: 25px;
     color: grey;
     font-weight: bold;
+    padding: 0 15px;
     /*border-bottom: 1px solid grey;*/
 }
 
