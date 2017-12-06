@@ -146,6 +146,8 @@ const filterJson = (jsonResult, filterObject) => {
         }
     }
 
+    console.log(filterObject)
+
     // Filter JSON array
     let pid;
     for ( const po of jsonResult ) {

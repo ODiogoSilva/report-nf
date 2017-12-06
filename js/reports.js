@@ -346,7 +346,7 @@ app.controller("reportsController", function($scope){
         });
 
         /* Trigger filters reset */
-        $("#filter_button").off("click").on("click", () => {
+        $("#reset_filter_button").off("click").on("click", () => {
 
 
         });
