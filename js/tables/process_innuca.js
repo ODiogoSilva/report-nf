@@ -188,10 +188,10 @@ const processInnuca = (reportsData, setMax) => {
 
         // If the current json report has a table-row property, parse it
         // to the data table
-        if (jr.hasOwnProperty("table-row")) {
+        if (jr.hasOwnProperty("tableRow")) {
 
             // Add each individual cell from the current process id
-            for (const cell of jr["table-row"]) {
+            for (const cell of jr.tableRow) {
                 const header = cell.header.replace("_", " ");
                 storage.get(id).set(header, cell.value);
 
@@ -203,7 +203,7 @@ const processInnuca = (reportsData, setMax) => {
 
                 // If the current column has the column-bar attribute, add it
                 // to the column_bars array
-                if (cell.hasOwnProperty("column-bar")){
+                if (cell.hasOwnProperty("columnBar")){
                     if (!columnBars.hasOwnProperty(header)){
                         columnBars[header] = [cell.value]
                     } else {

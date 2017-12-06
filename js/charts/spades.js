@@ -14,7 +14,7 @@ const processSpadesData = async (raw_reports) => {
         const pid = `${r.sample_name}`;
 
         if (r.report_json.task === "pilon") {
-            storage_dist[pid] = r.report_json["plot-data"]["size_dist"];
+            storage_dist[pid] = r.report_json.plotData.size_dist;
             // storage_cov[pid] = r.report_json["plot-data"]["coverage_dist"];
         }
     }
