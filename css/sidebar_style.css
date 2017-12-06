@@ -41,15 +41,15 @@
 }
 
 #sidebar {
-    min-width: 250px;
-    max-width: 250px;
+    min-width: 260px;
+    max-width: 260px;
     height: 100vh;
     position: fixed;
     top: 0;
     right: 0;
     /* top layer */
     z-index: 9999;
-    margin-right: -250px;
+    margin-right: -260px;
 }
 
 #sidebar.active {
