@@ -63,6 +63,7 @@ button.m-bottom{
 #workflows_content {
     /* for the animation */
     transition: width 0.3s ease;
+    border-left: 1px solid #dadada;
 }
 
 .hide_button {
