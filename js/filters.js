@@ -59,7 +59,6 @@ const addToFilters = (po, array) => {
  */
 const updateFilterObject = (filterInstance) => {
 
-    console.log(filterInstance.sample)
 
     // Set the active sample filters and reset the temporary filters
     data_filters.sample.active = data_filters.sample.active.concat(filterInstance.sample);
@@ -76,8 +75,6 @@ const updateFilterObject = (filterInstance) => {
     data_filters["coverage (2nd)"].range = filterInstance["coverage (2nd)"];
     data_filters.contigs.range = filterInstance.contigs;
     data_filters["assembled bp"].range = filterInstance["assembled bp"];
-
-    console.log(data_filters)
 
     const scope = angular.element($("#outer")).scope();
     scope.$apply(() => {
@@ -228,7 +225,7 @@ const checkFilter = (targetId) => {
     } else {
         activeFilters = data_filters.projectId.active.concat(data_filters.projectId.temp)
         filterSelecteor = $("#" + "popover_filters_project");
-        tempFilters = data_filters.sample.temp
+        tempFilters = data_filters.projectId.temp
     }
 
     /* Begin checks here */
@@ -254,14 +251,17 @@ const checkFilter = (targetId) => {
 
     // If the current value passed all checks, add it to the filter selector
     // and to the data_filters object
-    filterDiv = `<div class="input-group">
-                    <input class="form-control" readonly value="${val}">
-                    <span class="input-group-addon btn btn-default"><i class="fa fa-minus" aria-hidden="true"></i></span>
+    const filterDiv = `<div class="input-group">
+                    <input class="form-control `+targetId+`" readonly value="${val}">
+                    <span class="input-group-addon btn btn-default remove_filter"><i class="fa fa-minus" aria-hidden="true"></i></span>
                 </div>`;
+
     filterSelecteor.append(filterDiv);
     tempFilters.push(val);
 
-    return showLabel(selector, spanSelector, helpSelector, "Filter successfully added!", "ok")
+    // Set value of input to empty
+    target.val("");
 
+    return showLabel(selector, spanSelector, helpSelector, "Filter successfully added!", "ok")
 
 };
