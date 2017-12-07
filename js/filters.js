@@ -236,6 +236,7 @@ const checkFilter = (targetId) => {
 
     /* Begin checks here */
 
+
     // Check if filter is not empty
     if ( val === "" ) {
         return showLabel(selector, spanSelector, helpSelector, "Empty filter", "error")
@@ -266,14 +267,24 @@ const checkFilter = (targetId) => {
                         <span class="input-group-addon btn btn-default remove_filter"><i class="fa fa-minus" aria-hidden="true"></i></span>
                        </div>`;
 
+    // Case first filter
+    if(tempFilters.length === 0 && activeFilters.length === 0){
+        filterSelecteor.empty();
+    }
+
     filterSelecteor.append(filterDiv);
     tempFilters.push(val);
 
     // Set value of input to empty
     target.val("");
 
+
     // Set content of popover
-    changePopover.options.content = filterSelecteor.html();
+    if(activeFilters.length === 0 && tempFilters.length === 0){
+        changePopover.options.content = "<div>No filters applied!</div>";
+    }
+    else changePopover.options.content = filterSelecteor.html();
+
 
     return showLabel(selector, spanSelector, helpSelector, "Filter successfully added!", "ok")
 
