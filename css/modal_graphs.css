@@ -5,7 +5,7 @@
 }
 
 .modal-row {
-    height: 180px;
+    /*height: 180px;*/
     margin: auto;
 }
 
@@ -53,4 +53,15 @@
 
 .sparkline-container {
     height: 180px;
+    vertical-align: middle;
+}
+
+.single-plot {
+    border-top: 1px solid #dadada;
+    margin-top: 1%;
+    height: 500px;
+}
+
+.card-summary-header {
+    font-weight: bold;
 }

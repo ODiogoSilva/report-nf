@@ -114,6 +114,66 @@ const sparkline = (sample, color) => {
 
 };
 
+
+/**
+ *
+ * @param sample
+ */
+sizeDistributionPlot = (sample) => {
+
+    let distData;
+
+    // Get BP data for current sample from report_json.plotData.sparkline
+    for ( const el of data ) {
+        if ( el.sample_name === sample && (el.report_json.plotData || {}).size_dist )  {
+            distData = el.report_json.plotData.size_dist
+        }
+    }
+
+    console.log(distData)
+
+    Highcharts.chart("distribution-size-container", {
+        chart: {
+            zoomType: "x",
+            height: "500px"
+        },
+        title: {
+            text: "Distribution of contig size"
+        },
+        xAxis: [{
+            title: { text: 'Data' },
+            reversed: true
+        }, {
+            title: { text: 'Histogram' },
+            opposite: true
+        }],
+
+        yAxis: [{
+            title: { text: 'Data' }
+        }, {
+            title: { text: 'Histogram' },
+            opposite: true
+        }],
+        series: [{
+            name: "Histogram",
+            type: "histogram",
+            xAxis: 1,
+            yAxis: 1,
+            baseSeries: "d",
+            zIndex: -1,
+        }, {
+            name: "Data",
+            type: "scatter",
+            data: distData,
+            id: "d",
+            marker: {
+                radius: 1.5
+            }
+        }]
+    })
+
+};
+
 /**
  *
  * @param sample
@@ -135,6 +195,9 @@ const showModelGraphs = (sample) => {
 
     // Generate sparkline
     sparkline(sample, qcColor);
+
+    // Generate contig size distribution plot
+    sizeDistributionPlot(sample)
 
     $("#modalGraphs").modal("show")
 

@@ -10,40 +10,48 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <div class="col-md-6">
-                        <div class="row modal-row">
+                    <div class="modal-row row">
+                        <div class="col-md-6">
+                            <h3 class="card-summary-header">Assembly summary</h3>
                             <div class="row">
-                                <div class=" summary-container">
-                                    <div class="summary-header">Sample quality</div>
-                                    <div id="qcContainer" class="summary-content"></div>
+                                <div class="row">
+                                    <div class=" summary-container">
+                                        <div class="summary-header">Sample quality</div>
+                                        <div id="qcContainer" class="summary-content"></div>
+                                    </div>
+                                    <div class=" summary-container">
+                                        <div class="summary-header">Reads</div>
+                                        <div id="readsContainer" class="summary-content"></div>
+                                    </div>
+                                    <div class=" summary-container">
+                                        <div class="summary-header">Base pairs</div>
+                                        <div id="bpContainer" class="summary-content"></div>
+                                    </div>
                                 </div>
-                                <div class=" summary-container">
-                                    <div class="summary-header">Reads</div>
-                                    <div id="readsContainer" class="summary-content"></div>
-                                </div>
-                                <div class=" summary-container">
-                                    <div class="summary-header">Base pairs</div>
-                                    <div id="bpContainer" class="summary-content"></div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="summary-container">
-                                    <div class="summary-header">Coverage</div>
-                                    <div id="covContainer" class="summary-content"></div>
-                                </div>
-                                <div class=" summary-container">
-                                    <div class="summary-header">Contigs</div>
-                                    <div id="contigsContainer" class="summary-content"></div>
-                                </div>
-                                <div class=" summary-container">
-                                    <div class="summary-header">Assembled BP</div>
-                                    <div id="assembledContainer" class="summary-content"></div>
+                                <div class="row">
+                                    <div class="summary-container">
+                                        <div class="summary-header">Coverage</div>
+                                        <div id="covContainer" class="summary-content"></div>
+                                    </div>
+                                    <div class=" summary-container">
+                                        <div class="summary-header">Contigs</div>
+                                        <div id="contigsContainer" class="summary-content"></div>
+                                    </div>
+                                    <div class=" summary-container">
+                                        <div class="summary-header">Assembled BP</div>
+                                        <div id="assembledContainer" class="summary-content"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <h3 class="card-summary-header" style="opacity: 0">l</h3>
+                            <div id="sparkline-container" class="sparkline-container">Teste</div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <div id="sparkline-container" class="sparkline-container">Teste</div>
+                    <div class="single-plot">
+                        <h3></h3>
+                        <div id="distribution-size-container"></div>
                     </div>
                 </div>
             </div>
