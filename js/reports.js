@@ -25,9 +25,9 @@ let projectIdMap = new Map();
 const charts = new Charts();
 
 // Init tables
-const innuca_table = new Table("master_table_innuca");
-const chewbbaca_table = new Table("master_table_chewbbaca");
-const prokka_table = new Table("master_table_prokka");
+const innucaTable = new Table("master_table_innuca");
+const chewbbacaTable = new Table("master_table_chewbbaca");
+const prokkaTable = new Table("master_table_prokka");
 
 /**
  * Function to build tables and graphs based on the reports
@@ -52,30 +52,30 @@ const initReports = (scope, results, append = true) => {
 
     /* Launch Tables */
     p1.then( async (r) => {
-        if (r.length === 0) return;
-        const results_ch = await innuca_table.processInnuca(r, append);
-        await innuca_table.addTableHeaders(scope, results_ch,
+        if ( r.length === 0 ) { return };
+        const resultsCh = await innucaTable.processInnuca(r, append);
+        await innucaTable.addTableHeaders(scope, resultsCh,
             "table_headers_innuca");
-        await innuca_table.addTableData(results_ch, append);
-        await innuca_table.buildDataTable(scope);
+        await innucaTable.addTableData(resultsCh, append);
+        await innucaTable.buildDataTable(scope);
     });
 
     p1.then( async (r) => {
         if (r.length === 0) return;
-        const results_ch = await chewbbaca_table.processChewbbaca(r);
-        await chewbbaca_table.addTableHeaders(scope, results_ch,
+        const results_ch = await chewbbacaTable.processChewbbaca(r);
+        await chewbbacaTable.addTableHeaders(scope, results_ch,
             "table_headers_chewbbaca");
-        await chewbbaca_table.addTableData(results_ch);
-        await chewbbaca_table.buildDataTable();
+        await chewbbacaTable.addTableData(results_ch);
+        await chewbbacaTable.buildDataTable();
     });
 
     p1.then( async (r) => {
         if (r.length === 0) return;
-        const results_ch = await prokka_table.processProkka(r);
-        await prokka_table.addTableHeaders(scope, results_ch,
+        const results_ch = await prokkaTable.processProkka(r);
+        await prokkaTable.addTableHeaders(scope, results_ch,
             "table_headers_prokka");
-        await prokka_table.addTableData(results_ch);
-        await prokka_table.buildDataTable();
+        await prokkaTable.addTableData(results_ch);
+        await prokkaTable.buildDataTable();
     });
 
 
@@ -94,42 +94,42 @@ const initReports = (scope, results, append = true) => {
 
 const modalAlert = (text, callback) => {
 
-    $('#buttonSub').off("click");
-    $('#buttonCancelAlert').off("click");
+    $("#buttonSub").off("click");
+    $("#buttonCancelAlert").off("click");
 
-    $('#modalAlert .modal-body').empty();
-    $('#modalAlert .modal-body').append("<p>"+text+"</p>");
+    $("#modalAlert .modal-body").empty();
+    $("#modalAlert .modal-body").append("<p>"+text+"</p>");
 
-    $('#buttonSub').one("click", function(){
-        $('#modalAlert').modal("hide");
+    $("#buttonSub").one("click", function(){
+        $("#modalAlert").modal("hide");
 
-        setTimeout(function(){return callback()}, 400);
+        setTimeout(function(){return callback();}, 400);
     });
 
-    $('#modalAlert').modal("show");
+    $("#modalAlert").modal("show");
 
 };
 
 /**
  * Populates the select picker options based on the species and the project name
  * @param container
- * @param species_data
+ * @param speciesData
  * @param data
  */
-const populateSelect = (container, species_data, data) => {
+const populateSelect = (container, speciesData, data) => {
     let options = "";
-    const sp_id_to_name = {};
+    const spIdToName = {};
 
-    species_data.map((sp) => {
-        sp_id_to_name[sp.id] = sp.name;
+    speciesData.map((sp) => {
+        spIdToName[sp.id] = sp.name;
     });
 
     data.map((entry) => {
-        options += "<option value='"+entry.id+"'>"+sp_id_to_name[entry.species_id] + " - " +entry.name+"</option>";
+        options += "<option value='"+entry.id+"'>"+spIdToName[entry.species_id] + " - " +entry.name+"</option>";
         projectIdMap.set(entry.id, entry.name)
     });
 
-    $("#"+container).empty().append(options).selectpicker('refresh').selectpicker('setStyle', 'btn-default');
+    $("#"+container).empty().append(options).selectpicker("refresh").selectpicker("setStyle", "btn-default");
 
 };
 
@@ -166,8 +166,8 @@ app.controller("reportsController", function($scope){
     /* Request to get all the available species */
     getSpecies().then((results) => {
        /* Request to get all the available projects */
-       getProjects().then((p_results) => {
-           populateSelect("project_select", results, p_results);
+       getProjects().then((pResults) => {
+           populateSelect("project_select", results, pResults);
 
            $("#submit_project").off("click").on("click", () => {
 
@@ -175,9 +175,9 @@ app.controller("reportsController", function($scope){
 
                $("#reset_project").off("click").on("click", () => {
                    charts.reportsData = [];
-                   chewbbaca_table.tableData = [];
-                   innuca_table.tableData = [];
-                   prokka_table.tableData = [];
+                   chewbbacaTable.tableData = [];
+                   innucaTable.tableData = [];
+                   prokkaTable.tableData = [];
 
                    $("#reset_project").css({display:"none"});
                    $("#row-main").css({display:"none"});
@@ -191,7 +191,7 @@ app.controller("reportsController", function($scope){
                }, () => {
                    modalAlert("No reports for that project.", function(){});
                });
-           })
+           });
        }, () => {
            modalAlert("No projects for that species", function(){});
            populateSelect("project_select", []);
@@ -206,7 +206,7 @@ app.controller("reportsController", function($scope){
     });
 
     /* Event to toggle workflows sidebar */
-    $('.toggle_sidebar').on("click", () => {
+    $(".toggle_sidebar").on("click", () => {
         /* to toggle the sidebar, just switch the CSS classes */
         $("#workflows_sidebar").toggleClass("collapsed_sidebar");
         $("#workflows_content").toggleClass("col-md-12 col-md-10");
@@ -218,40 +218,40 @@ app.controller("reportsController", function($scope){
     $("#body_container").css({display:"block"});
 
     setTimeout( () => {
-        $('#phyloviz_button').off("click").on("click", () => {
-            $('#sendToPHYLOViZModal').modal('show');
+        $("#phyloviz_button").off("click").on("click", () => {
+            $("#sendToPHYLOViZModal").modal("show");
         });
 
         // when opening the sidebar
-        $('#sidebar-button').on('click', function () {
+        $("#sidebar-button").on("click", function () {
             // open sidebar
-            $('#sidebar').addClass('active');
+            $("#sidebar").addClass("active");
             // fade in the overlay
-            $('.overlay').fadeIn();
-            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            $(".overlay").fadeIn();
+            $("a[aria-expanded=true]").attr("aria-expanded", "false");
         });
 
         /* Show/hide tabs of spades and its divs */
         $("#spades_ul li").click(function () {
             $("#spades_ul li").removeClass("active");
             $(this).addClass("active");
-            $('.box').hide().eq($(this).index()).show();  // hide all divs and show the current div
+            $(".box").hide().eq($(this).index()).show();  // hide all divs and show the current div
         });
 
         /* Trigger style of dropdowns */
-        $('.selectpicker').selectpicker({
-            style: 'btn-default',
+        $(".selectpicker").selectpicker({
+            style: "btn-default",
             size: 4
         });
 
 
         // if dismiss or overlay was clicked
-        $('#dismiss, .overlay').on('click', function () {
+        $("#dismiss, .overlay").on("click", function () {
             // hide the sidebar
-            $('#sidebar').removeClass('active');
+            $("#sidebar").removeClass("active");
             // fade out the overlay
-            $('.overlay').fadeOut();
-            $('.popover').removeClass("in");
+            $(".overlay").fadeOut();
+            $(".popover").removeClass("in");
         });
 
         // Get html to popover of sample filters
@@ -259,20 +259,20 @@ app.controller("reportsController", function($scope){
             html : true,
             trigger: "focus",
             content: function() {
-                return $('#popover_filters_sample').html();
+                return $("#popover_filters_sample").html();
             }
-        }).off('show.bs.popover').on('show.bs.popover', () => {
+        }).off("show.bs.popover").on("show.bs.popover", () => {
             setTimeout(() => {
                 r_filter = $(".remove_filter");
                 r_filter.off("click").on("click", (e) => {
 
-                    const filters = $('#popover_filters_sample');
+                    const filters = $("#popover_filters_sample");
                     const target = $(e.target);
                     p_div_id = target.closest("div").attr("id");
                     filters.find("#"+p_div_id).remove();
 
                     // Dynamically set content of popover
-                    const popover = $('#active_filters_name').data('bs.popover');
+                    const popover = $("#active_filters_name").data("bs.popover");
                     popover.options.content = filters.html();
 
                     // Remove filter from temp and active filters
@@ -290,19 +290,19 @@ app.controller("reportsController", function($scope){
             html : true,
             trigger: "focus",
             content: function() {
-                return $('#popover_filters_project').html();
+                return $("#popover_filters_project").html();
             }
-        }).off('show.bs.popover').on('show.bs.popover', () => {
+        }).off("show.bs.popover").on("show.bs.popover", () => {
             setTimeout(() => {
                 r_filter = $(".remove_filter");
                 r_filter.off("click").on("click", (e) => {
-                    const filters = $('#popover_filters_project');
+                    const filters = $("#popover_filters_project");
                     const target = $(e.target);
                     p_div_id = target.closest("div").attr("id");
                     filters.find("#"+p_div_id).remove();
 
                     // Dynamically set content of popover
-                    const popover = $('#active_filters_projectid').data('bs.popover');
+                    const popover = $("#active_filters_projectid").data("bs.popover");
                     popover.options.content = filters.html();
 
                     // Remove filter from temp and active filters

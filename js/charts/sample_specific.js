@@ -8,27 +8,27 @@ const humanReadable = (number) => {
 const populateHeader = (sample) => {
 
     // Get QC div and add to container
-    const qc = innuca_table.getValue(sample, "qc");
+    const qc = innucaTable.getValue(sample, "qc");
     $("#qcContainer").html(qc);
 
     // Base pairs
-    const bp = innuca_table.getValue(sample, "bp")[0].innerText;
+    const bp = innucaTable.getValue(sample, "bp")[0].innerText;
     $("#bpContainer").html(humanReadable(bp));
 
     // Reads
-    const reads = innuca_table.getValue(sample, "reads")[0].innerText;
+    const reads = innucaTable.getValue(sample, "reads")[0].innerText;
     $("#readsContainer").html(humanReadable(reads));
 
     // Coverage
-    const coverage = innuca_table.getValue(sample, "coverage (2nd)")[0].innerText;
+    const coverage = innucaTable.getValue(sample, "coverage (2nd)")[0].innerText;
     $("#covContainer").html(humanReadable(coverage));
 
     // Contigs
-    const contigs = innuca_table.getValue(sample, "contigs")[0].innerText;
+    const contigs = innucaTable.getValue(sample, "contigs")[0].innerText;
     $("#contigsContainer").html(humanReadable(contigs));
 
     // Assembled bp
-    const assembledbp = innuca_table.getValue(sample, "assembled bp")[0].innerText;
+    const assembledbp = innucaTable.getValue(sample, "assembled bp")[0].innerText;
     $("#assembledContainer").html(humanReadable(assembledbp));
 
 };

@@ -41,23 +41,23 @@ const sampleSelector = (x) => {
 
     // Get sample name from click event
     const sample = x.point.name;
-    for (const el of innuca_table.tableData){
+    for (const el of innucaTable.tableData){
         if (sample === el.Sample) {
             el.active = 1;
-            innuca_table.highlightRow(sample)
+            innucaTable.highlightRow(sample)
         }
     }
 
 };
 
 
-// console.log(innuca_table.tableData)
-// for (const el of innuca_table.tableData) {
+// console.log(innucaTable.tableData)
+// for (const el of innucaTable.tableData) {
 //     console.log(el.Sample, this.name)
 //     if (this.name === el.Sample) {
 //         console.log("here")
 //         el.active = 1;
-//         console.log(innuca_table.tableData)
+//         console.log(innucaTable.tableData)
 //     }
 // }
 /*
