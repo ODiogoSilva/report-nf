@@ -101,7 +101,7 @@ const getQc = (qcObject) => {
 };
 
 /**
- * Sets the maximum value for the data_filters
+ * Sets the maximum value for the dataFilters
  * @param header
  * @param value
  */
@@ -116,10 +116,10 @@ const setMaxFilters = (header, value) => {
     ]);
 
     // Skip, if header is not present in filters object
-    if (!data_filters.hasOwnProperty(header)) {return}
+    if (!dataFilters.hasOwnProperty(header)) {return}
 
-    if ( value > data_filters[header].max ) {
-        data_filters[header].max = value;
+    if ( value > dataFilters[header].max ) {
+        dataFilters[header].max = value;
         sliderMap.get(header).slider({max: value});
         sliderMap.get(header).slider("setValue", [0, value]);
     }

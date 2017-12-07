@@ -1,3 +1,4 @@
+/*global angular, Charts, Table, filterJson, getSpecies, getProjects getReportsByProject*/
 const app = angular.module("reportsApp", []);
 
 // Array of JSON files with the report data
@@ -5,7 +6,7 @@ let data = null;
 
 // Object with the project filters. Each value can be dynamically changed
 // during the app session
-let data_filters = {
+let dataFilters = {
     "sample": {"active": [], "temp": []},
     "projectId": {"active": [], "temp": []},
     "qc": [],
@@ -33,7 +34,7 @@ const prokka_table = new Table("master_table_prokka");
  * @param scope
  * @param results
  * @param {boolean} append - If true, the processInnuca method will update the
- * maximum values for the data_filters
+ * maximum values for the dataFilters
  */
 const initReports = (scope, results, append = true) => {
 
@@ -42,7 +43,7 @@ const initReports = (scope, results, append = true) => {
 
     // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve) => {
-            resolve(filterJson(results, data_filters));
+            resolve(filterJson(results, dataFilters));
         }
     );
 
@@ -276,10 +277,10 @@ app.controller("reportsController", function($scope){
 
                     // Remove filter from temp and active filters
                     const val = target.parent().find("input").val();
-                    let toRemove = data_filters.sample.active.indexOf(val);
-                    data_filters.sample.active.splice(toRemove, 1);
-                    toRemove = data_filters.sample.temp.indexOf(val);
-                    data_filters.sample.temp.splice(toRemove, 1);
+                    let toRemove = dataFilters.sample.active.indexOf(val);
+                    dataFilters.sample.active.splice(toRemove, 1);
+                    toRemove = dataFilters.sample.temp.indexOf(val);
+                    dataFilters.sample.temp.splice(toRemove, 1);
                 });
             }, 200);
         });
@@ -306,10 +307,10 @@ app.controller("reportsController", function($scope){
 
                     // Remove filter from temp and active filters
                     const val = target.parent().find("input").val();
-                    let toRemove = data_filters.projectId.active.indexOf(val);
-                    data_filters.projectId.active.splice(toRemove, 1);
-                    toRemove = data_filters.projectId.temp.indexOf(val);
-                    data_filters.projectId.temp.splice(toRemove, 1);
+                    let toRemove = dataFilters.projectId.active.indexOf(val);
+                    dataFilters.projectId.active.splice(toRemove, 1);
+                    toRemove = dataFilters.projectId.temp.indexOf(val);
+                    dataFilters.projectId.temp.splice(toRemove, 1);
 
                 });
             }, 200);
@@ -335,13 +336,13 @@ app.controller("reportsController", function($scope){
                 "coverage (2nd)": $("#sliderc").data("slider").getValue(),
                 "contigs": $("#slidercn").data("slider").getValue(),
                 "assembled bp": $("#sliderabp").data("slider").getValue(),
-                "sample": data_filters.sample.temp,
-                "projectId": data_filters.projectId.temp,
+                "sample": dataFilters.sample.temp,
+                "projectId": dataFilters.projectId.temp,
                 "qc": $( "#qc_select").find("option:selected" ).text()
 
             };
 
-            updateFilterObject(filterInstance, data_filters);
+            updateFilterObject(filterInstance, dataFilters);
 
         });
 

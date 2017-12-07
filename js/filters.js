@@ -52,29 +52,29 @@ const addToFilters = (po, array) => {
 
 
 /**
- * Assigns new values to the data_filters object according to the filters
+ * Assigns new values to the dataFilters object according to the filters
  * submitted by the user
  * @param filterInstance
- * @param data_filters
+ * @param dataFilters
  */
 const updateFilterObject = (filterInstance) => {
 
 
     // Set the active sample filters and reset the temporary filters
-    data_filters.sample.active = data_filters.sample.active.concat(filterInstance.sample);
-    data_filters.sample.temp = [];
+    dataFilters.sample.active = dataFilters.sample.active.concat(filterInstance.sample);
+    dataFilters.sample.temp = [];
     // Set the active project filters and reset the temporary filters
-    data_filters.projectId.active = data_filters.projectId.active.concat(filterInstance.projectId);
-    data_filters.projectId.temp = [];
+    dataFilters.projectId.active = dataFilters.projectId.active.concat(filterInstance.projectId);
+    dataFilters.projectId.temp = [];
 
-    if (filterInstance.qc !== "" && !data_filters.qc.includes(filterInstance.qc)){
-        data_filters.qc.push(filterInstance.qc);
+    if (filterInstance.qc !== "" && !dataFilters.qc.includes(filterInstance.qc)){
+        dataFilters.qc.push(filterInstance.qc);
     }
-    data_filters.bp.range = filterInstance.bp;
-    data_filters.reads.range = filterInstance.reads;
-    data_filters["coverage (2nd)"].range = filterInstance["coverage (2nd)"];
-    data_filters.contigs.range = filterInstance.contigs;
-    data_filters["assembled bp"].range = filterInstance["assembled bp"];
+    dataFilters.bp.range = filterInstance.bp;
+    dataFilters.reads.range = filterInstance.reads;
+    dataFilters["coverage (2nd)"].range = filterInstance["coverage (2nd)"];
+    dataFilters.contigs.range = filterInstance.contigs;
+    dataFilters["assembled bp"].range = filterInstance["assembled bp"];
 
     const scope = angular.element($("#outer")).scope();
     scope.$apply(() => {
@@ -223,15 +223,15 @@ const checkFilter = (targetId) => {
     let changePopover;
 
     if ( targetId === "filter_by_name" ) {
-        activeFilters = data_filters.sample.active.concat(data_filters.sample.temp)
+        activeFilters = dataFilters.sample.active.concat(dataFilters.sample.temp)
         filterSelecteor = $("#" + "popover_filters_sample");
         changePopover = $('#active_filters_name').data('bs.popover');
-        tempFilters = data_filters.sample.temp;
+        tempFilters = dataFilters.sample.temp;
     } else {
-        activeFilters = data_filters.projectId.active.concat(data_filters.projectId.temp)
+        activeFilters = dataFilters.projectId.active.concat(dataFilters.projectId.temp)
         filterSelecteor = $("#" + "popover_filters_project");
         changePopover = $('#active_filters_projectid').data('bs.popover');
-        tempFilters = data_filters.projectId.temp
+        tempFilters = dataFilters.projectId.temp
     }
 
     /* Begin checks here */
@@ -256,7 +256,7 @@ const checkFilter = (targetId) => {
     /* Checks ended here */
 
     // If the current value passed all checks, add it to the filter selector
-    // and to the data_filters object
+    // and to the dataFilters object
 
     // Random id for filter div
     const filter_id = Math.random().toString(36).substring(7);
