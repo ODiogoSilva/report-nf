@@ -38,8 +38,6 @@ const prokkaTable = new Table("master_table_prokka");
  */
 const initReports = (scope, results, append = true) => {
 
-    $("#waiting_gif").css({display:"block"});
-    $("#row-main").css({display:"none"});
 
     // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve) => {
@@ -88,9 +86,7 @@ const initReports = (scope, results, append = true) => {
     });
 
 
-    $("#waiting_gif").css({display:"none"});
-    $("#row-main").css({display:"block"});
-    $("#current_workflow").css({display:"block"});
+
 
 };
 
@@ -173,6 +169,9 @@ app.controller("reportsController", function($scope){
 
            $("#submit_project").off("click").on("click", () => {
 
+               $("#waiting_gif").css({display:"block"});
+               $("#row-main").css({display:"none"});
+
                $("#reset_project").css({display:"inline-block"});
 
                $("#reset_project").off("click").on("click", () => {
@@ -189,6 +188,9 @@ app.controller("reportsController", function($scope){
                /* Request to get the reports for a given project */
                getReportsByProject($("#project_select option:selected").val()).then((results) => {
                    initReports($scope, results);
+                   $("#waiting_gif").css({display:"none"});
+                   $("#row-main").css({display:"block"});
+                   $("#current_workflow").css({display:"block"});
 
                }, () => {
                    modalAlert("No reports for that project.", function(){});
