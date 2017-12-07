@@ -7,9 +7,12 @@ const humanReadable = (number) => {
 
 const populateHeader = (sample) => {
 
+    let qcColor;
+
     // Get QC div and add to container
     const qc = innucaTable.getValue(sample, "qc");
     $("#qcContainer").html(qc);
+    qcColor = qc.css("background-color")
 
     // Base pairs
     const bp = innucaTable.getValue(sample, "bp")[0].innerText;
@@ -31,24 +34,83 @@ const populateHeader = (sample) => {
     const assembledbp = innucaTable.getValue(sample, "assembled bp")[0].innerText;
     $("#assembledContainer").html(humanReadable(assembledbp));
 
+    return qcColor
+
 };
 
 
-const sparkline = (sample) => {
+const sparkline = (sample, color) => {
 
-    for (const el of data) {
+    let sparklineDataTemp = [];
+    let sparklineData;
+    let dataSeries;
+    let maxBp;
 
-
+    // Get BP data for current sample from report_json.plotData.sparkline
+    for ( const el of data ) {
         if ( el.sample_name === sample && (el.report_json.plotData || {}).sparkline )  {
-            console.log(el.report_json)
-            console.log(el.report_json.plotData.sparkline)
+            // Populate an array of arrays, with the processId and BP data
+            // this will allow the data to be sorted according to process ID
+            sparklineDataTemp.push([parseInt(el.process_id),
+                                    parseInt(el.report_json.plotData.sparkline)])
         }
-        // if ( el.report_json.hasOwnProperty("plotData") ) {
-        //     if ( el.report_json.plotData.hasOwnProperty("sparkline") ) {
-        //         console.log()
-        //     }
-        // }
     }
+
+    // Get sorted BP data
+    sparklineData = Array.from(sparklineDataTemp.sort(), x => x[1]);
+    // Get maximum value for sample
+    maxBp = Math.max(...sparklineData);
+    // Get data series, already in percentage
+    dataSeries = Array.from(sparklineData, x => parseFloat(x / maxBp))
+
+    console.log(maxBp)
+    console.log(dataSeries)
+
+    console.log(sparklineData)
+
+    Highcharts.chart("sparkline-container", {
+        chart: {
+            type: "area"
+        },
+        title: {
+            text: "Data loss sparkline"
+        },
+        xAxis: {
+            categories: ["Original", "Trimmomatic", "Spades", "Pilon"],
+            tickLength: 0,
+            min: 0.5,
+            max: 2.5,
+            labels: {
+                enabled: false
+            },
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            max: 1,
+            labels: {
+                enabled: true
+            },
+            title: {
+                text: null
+            }
+        },
+        tooltip: {
+            useHTML: true,
+            header: "DAFUQ",
+            valueDecimals: 2
+        },
+        legend: {
+            enabled: false
+        },
+        series: [{
+            name: sample,
+            data: dataSeries,
+            color: color
+        }]
+
+    })
 
 };
 
@@ -59,6 +121,8 @@ const sparkline = (sample) => {
  */
 const showModelGraphs = (sample) => {
 
+    let qcColor;
+
     if ( sample.hasOwnProperty("point") ) {
         sample = sample.point.name;
     }
@@ -67,9 +131,10 @@ const showModelGraphs = (sample) => {
     $("#modalTitle").html(`Hello there, ${sample}`);
 
     // Populate header row
-    populateHeader(sample);
+    qcColor = populateHeader(sample);
 
-    sparkline(sample);
+    // Generate sparkline
+    sparkline(sample, qcColor);
 
     $("#modalGraphs").modal("show")
 

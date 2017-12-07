@@ -21,6 +21,19 @@ function numSort(a,b) {
     return a - b;
 }
 
+/**
+ * Sorts array of arrays
+ * @param a
+ * @param b
+ * @returns {number}
+ * @constructor
+ */
+const Comparator = (a, b) => {
+    if (a[1] < b[1]) return -1;
+    if (a[1] > b[1]) return 1;
+    return 0;
+};
+
 /* Function to get boxplot values */
 function getBoxValues(data, sample) {
     const boxValues = [];
