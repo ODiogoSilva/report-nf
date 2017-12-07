@@ -10,22 +10,35 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <div id="summaryRow" class="container-fluid">
-                        <div class="row modal-row">
-                            <div class="col-sm-2 modal-cell top-cell">Sample quality:</div>
-                            <div class="col-sm-2 modal-cell top-cell">Reads</div>
-                            <div class="col-sm-2 modal-cell top-cell">Base pairs</div>
-                            <div class="col-sm-2 modal-cell top-cell">Coverage</div>
-                            <div class="col-sm-2 modal-cell top-cell">Contigs</div>
-                            <div class="col-sm-2 modal-cell top-cell">Assembled BP</div>
+
+                    <div class="row modal-row">
+                        <div class="row">
+                            <div class=" summary-container">
+                                <div class="summary-header">Sample quality</div>
+                                <div id="qcContainer" class="summary-content"></div>
+                            </div>
+                            <div class=" summary-container">
+                                <div class="summary-header">Reads</div>
+                                <div id="readsContainer" class="summary-content"></div>
+                            </div>
+                            <div class=" summary-container">
+                                <div class="summary-header">Base pairs</div>
+                                <div id="bpContainer" class="summary-content"></div>
+                            </div>
                         </div>
-                        <div class="row modal-row">
-                            <div id="qcContainer" class="col-sm-2 modal-cell bot-cell"></div>
-                            <div id="readsContainer" class="col-sm-2 modal-cell bot-cell"></div>
-                            <div id="bpContainer" class="col-sm-2 modal-cell bot-cell"></div>
-                            <div id="covContainer" class="col-sm-2 modal-cell bot-cell"></div>
-                            <div id="contigsContainer" class="col-sm-2 modal-cell bot-cell"></div>
-                            <div id="assembledContainer" class="col-sm-2 modal-cell bot-cell"></div>
+                        <div class="row">
+                            <div class="summary-container">
+                                <div class="summary-header">Coverage</div>
+                                <div id="covContainer" class="summary-content"></div>
+                            </div>
+                            <div class=" summary-container">
+                                <div class="summary-header">Contigs</div>
+                                <div id="contigsContainer" class="summary-content"></div>
+                            </div>
+                            <div class=" summary-container">
+                                <div class="summary-header">Assembled BP</div>
+                                <div id="assembledContainer" class="summary-content"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

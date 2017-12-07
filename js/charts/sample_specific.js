@@ -33,6 +33,25 @@ const populateHeader = (sample) => {
 
 };
 
+
+const sparkline = (sample) => {
+
+    for (const el of data) {
+
+
+        if ( el.sample_name === sample && (el.report_json.plotData || {}).sparkline )  {
+            console.log(el.report_json)
+            console.log(el.report_json.plotData.sparkline)
+        }
+        // if ( el.report_json.hasOwnProperty("plotData") ) {
+        //     if ( el.report_json.plotData.hasOwnProperty("sparkline") ) {
+        //         console.log()
+        //     }
+        // }
+    }
+
+};
+
 /**
  *
  * @param sample
@@ -49,6 +68,8 @@ const showModelGraphs = (sample) => {
 
     // Populate header row
     populateHeader(sample);
+
+    sparkline(sample);
 
     $("#modalGraphs").modal("show")
 

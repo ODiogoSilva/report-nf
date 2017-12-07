@@ -5,7 +5,8 @@
 }
 
 .modal-row {
-    height: 40px;
+    height: 180px;
+    margin: auto;
 }
 
 .modal-cell {
@@ -17,4 +18,35 @@
 .top-cell {
     color: #2b2b2b;
     font-weight: bold;
+}
+
+.summary-container {
+    padding: 5px;
+    display: inline-block;
+    border: 1px solid #d4d4d4;
+    border-bottom: 3px solid #8a8a8a;
+    border-radius: 5%;
+    width: 150px;
+    height: 80px;
+    margin: 5px;
+}
+
+.summary-header {
+    padding-top: 5px;
+    padding-left: 5px;
+    font-size: 16px;
+    color: #8f8f8f;
+    font-weight: bold;
+    height: 20px;
+    text-align: left;
+}
+
+.summary-content {
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    vertical-align: bottom;
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 10px;
 }

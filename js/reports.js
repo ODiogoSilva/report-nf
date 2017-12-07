@@ -47,6 +47,8 @@ const initReports = (scope, results, append = true) => {
         }
     );
 
+    console.log(results);
+
     // Update the data array with the new filtered results
     data = results;
 
