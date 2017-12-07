@@ -283,6 +283,10 @@ app.controller("reportsController", function($scope){
                     dataFilters.sample.active.splice(toRemove, 1);
                     toRemove = dataFilters.sample.temp.indexOf(val);
                     dataFilters.sample.temp.splice(toRemove, 1);
+
+                    if(dataFilters.sample.temp.length === 0 && dataFilters.sample.active.length === 0){
+                        popover.options.content = "<div>No filters applied!</div>";
+                    }
                 });
             }, 200);
         });
@@ -313,6 +317,10 @@ app.controller("reportsController", function($scope){
                     dataFilters.projectId.active.splice(toRemove, 1);
                     toRemove = dataFilters.projectId.temp.indexOf(val);
                     dataFilters.projectId.temp.splice(toRemove, 1);
+
+                    if(dataFilters.projectId.temp.length === 0 && dataFilters.projectId.active.length === 0){
+                        popover.options.content = "<div>No filters applied!</div>";
+                    }
 
                 });
             }, 200);
