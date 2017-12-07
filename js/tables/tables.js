@@ -12,6 +12,10 @@ class Table {
         this.columnMapping = [];
         this.container = container;
         this.tableObj = null;
+
+        // Stores the 'projectId.pipelineId' associated with each entry
+        // in the table. Is used to prevent duplications in the table
+        this.tableIds = [];
     }
 
     /*
@@ -26,12 +30,35 @@ class Table {
         this.columnMapping = table_object.columnMapping;
     }
 
-    /* Method to add data to the table */
-    addTableData(table_object, update) {
+    /**
+     * Method that updates the tableData and tableIds properties.
+     * The update argument determines whether :
+     *   - (true) The elements in the provided tableObject are added
+     *   to the existing tableData property, without inserting
+     *   duplicate entries based on the sample unique IDs.
+     *   This is used when adding more data from other projects.
+     *   - (false) The provided tableObject will overwrite the
+     *   existing tableData property.
+     *   This is used when filtering the current data set.
+     * @param {array} tableObject - Array of JSON objects with the
+     * table information.
+     * @param {boolean} update - Determines whether the tableData
+     * property will be updated (true) or overwritten (false)
+     */
+    addTableData(tableObject, update) {
+
         if ( update === true ) {
-            this.tableData = this.tableData.concat(table_object.data);
+            // Check for duplicate entries
+            for ( const el of tableObject.data ) {
+                // Only add unique IDs
+                if ( !this.tableIds.includes(el.id) ) {
+                    this.tableData.push(el);
+                    this.tableIds.push(el.id);
+                }
+            }
         } else {
-            this.tableData = table_object.data;
+            this.tableData = tableObject.data;
+            this.tableIds = tableObject.ids;
             this.clearTable();
         }
     }

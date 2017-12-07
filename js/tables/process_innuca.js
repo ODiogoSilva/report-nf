@@ -138,6 +138,7 @@ const processInnuca = (reportsData, setMax) => {
     };
 
     let storage = new Map();
+    let storageIds = [];
     let columns = new Map();
     let qcStorage = new Map();
 
@@ -171,6 +172,7 @@ const processInnuca = (reportsData, setMax) => {
                     ["id", `${projectId}.${pipelineId}`],
                     ["qc", ""]
                 ]));
+            storageIds.push(id);
             qcStorage.set(id, {"warnings": {}, "fails": {}});
         }
 
@@ -303,7 +305,9 @@ const processInnuca = (reportsData, setMax) => {
         },
     ].concat(mappings);
 
-    console.log(innucaData)
+    innucaData.ids = storageIds;
+
+    console.log(innucaData);
 
     return innucaData;
 
