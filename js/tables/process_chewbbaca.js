@@ -55,7 +55,7 @@ const processChewbbaca = (reports_data) => {
             });
 
             report.report_json.cagao[1][dataKey].map( (j, i) => {
-                data_object[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][data_key][i]
+                data_object[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][dataKey][i]
             });
             data_object["Profile"] = "<button class='btn btn-md btn-primary'>Profile</button>"
             chewbbacaDataArray.push(data_object);
