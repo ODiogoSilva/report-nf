@@ -221,13 +221,11 @@ const processInnuca = (reportsData, setMax) => {
     //
 
     // Sort the column headers according to the process id
+    columns = [...columns.entries()].sort( (a,b) => {return a[1] - b[1]});
     let sortedColumns = [];
-    for (let c of columns.keys()) {
-        sortedColumns.push(c);
+    for (let c of columns) {
+        sortedColumns.push(c[0]);
     }
-    sortedColumns.sort((x, y) => {
-        return x[1].length - y[1].length;
-    });
 
     // Add the final headers to the table data object
     innucaData.headers = startHeaders.concat(sortedColumns);
