@@ -22,8 +22,6 @@ const processChewbbaca = (reports_data) => {
         }
     }
 
-    chewbbacaHeaders.push("Profile");
-
     /* Set column mapping from the headers */
     let chewbbacaColumnMapping = [
         {
@@ -43,8 +41,12 @@ const processChewbbaca = (reports_data) => {
     });
 
     /* Get data for each strain to add to the table */
-    for (const report of reports_data) {
+
+    for (const [index, report] of reports_data.entries()) {
         if (report.report_json.task === "chewbbaca"){
+
+            chewbbacaToReportId[report.sample_name] = index;
+
             let data_object = {
                 "active": 0,
                 "id": report.sample_name
@@ -55,9 +57,9 @@ const processChewbbaca = (reports_data) => {
             });
 
             report.report_json.cagao[1][dataKey].map( (j, i) => {
-                data_object[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][data_key][i]
+                data_object[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][dataKey][i]
             });
-            data_object["Profile"] = "<button class='btn btn-md btn-primary'>Profile</button>"
+
             chewbbacaDataArray.push(data_object);
 
         }
@@ -68,5 +70,61 @@ const processChewbbaca = (reports_data) => {
     chewbbacaData.data = chewbbacaDataArray;
 
     return chewbbacaData;
+
+};
+
+/**
+ * Download profiles from chewbbaca in a tab-delimited format
+ */
+const downloadProfiles = () => {
+    const selectedData = chewbbacaTable.tableObj.rows('.selected').data();
+    let headers = ["FILE"];
+    let body = [];
+    let firstTime = true;
+    let dataKey;
+    let auxBody = [];
+
+    if (selectedData.length === 0) {
+        return false;
+    }
+
+    selectedData.each((value, i) =>{
+        for (const [index, report] of data.entries()){
+            if (index === chewbbacaToReportId[value.id]) {
+                auxBody = [];
+
+                if (firstTime) {
+                    firstTime = false;
+                    headers = headers.concat(report.report_json.cagao[0].header);
+                }
+
+                for (d in report.report_json.cagao[0]) {
+                    if (d !== "header"){
+                        dataKey = d;
+                        break;
+                    }
+                }
+
+                auxBody.push(report.sample_name);
+                auxBody = auxBody.concat(report.report_json.cagao[0][dataKey]);
+                body.push(auxBody);
+
+            }
+        }
+    });
+
+    // Create string for user to download
+    let downloadString = "";
+    downloadString += (headers.join("\t") + "\n");
+
+    for (const profile in body) {
+        downloadString += (body[profile].join("\t") + "\n")
+    }
+
+    // Send to download
+    const fileName = Math.random().toString(36).substring(7);
+    sendFile(fileName, downloadString);
+    return true;
+
 
 };

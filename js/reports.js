@@ -4,6 +4,9 @@ const app = angular.module("reportsApp", []);
 // Array of JSON files with the report data
 let data = null;
 
+// JSON mapping of report id with current chewbbaca procedures
+let chewbbacaToReportId = {};
+
 // Object with the project filters. Each value can be dynamically changed
 // during the app session
 let dataFilters = {
@@ -224,6 +227,13 @@ app.controller("reportsController", function($scope){
     setTimeout( () => {
         $("#phyloviz_button").off("click").on("click", () => {
             $("#sendToPHYLOViZModal").modal("show");
+        });
+
+        $("#download_profiles_button").off("click").on("click", () => {
+            const sent = downloadProfiles();
+            if (!sent){
+                modalAlert("Please select a sample for the table first.", () => {});
+            }
         });
 
         // when opening the sidebar
