@@ -226,7 +226,13 @@ const sincronizedSlidingWindow = (sample) => {
         if ( e.trigger !== "syncExtremes" ) {
             Highcharts.each(Highcharts.charts, function (chart) {
                 // Ignore undefined charts
-                if ( chart !== thisChart && chart.renderTo.id === "" ) {
+                if ( chart === undefined ) {
+                    return true
+                }
+                if ( chart.renderTo.id !== "" ) {
+                    return true
+                }
+                if ( chart !== thisChart ) {
                     // It is null while updating
                     if ( chart.xAxis[0].setExtremes ) {
                         chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: 'syncExtremes' });
