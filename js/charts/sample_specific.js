@@ -285,16 +285,18 @@ const sincronizedSlidingWindow = (sample) => {
             .appendTo("#sync-sliding-window")
             .highcharts({
                 chart: {
-                    marginLeft: 40,
-                    spacingTop: 20,
-                    spacingBottom: 20,
+                    marginLeft: 70,
+                    spacingTop: 10,
+                    spacingBottom: 10,
                     zoomType: "x",
                     panning: true,
                     panKey: "ctrl",
                     height: 300
                 },
                 title: {
-                    text: dataset.title
+                    text: dataset.title,
+                    margin: 5
+
                 },
                 legend: {
                     enabled: false
@@ -357,17 +359,17 @@ const sincronizedSlidingWindow = (sample) => {
         .appendTo("#sync-sliding-window")
         .highcharts({
             chart: {
-                marginLeft: 40,
-                spacingTop: 20,
-                spacingBottom: 20,
+                marginLeft: 70,
+                spacingTop: 10,
+                spacingBottom: 10,
                 zoomType: "x",
                 panning: true,
                 panKey: "ctrl",
-                height: 100
+                height: 130
             },
             title: {
-                text: "",
-                margin: 0
+                text: "Antimicrobial resistance and virulence annotation",
+                margin: 5
             },
             legend: {
                 enabled: false
@@ -387,18 +389,19 @@ const sincronizedSlidingWindow = (sample) => {
                 title: {
                     text: null
                 },
-                min: -0.1,
-                max: 0.1,
-                labels: {
-                    enabled: false
-                }
+                categories: ["Resfinder", "Card", "VFDB"],
+
+                // labels: {
+                //     enabled: false
+                // }
             },
             credits: {
                 enabled: false
             },
             series: [{
                 type: "xrange",
-                data: [{x:1, x2: 2, y: 0}, {x:4, x2:7, y: 0}]
+                data: [{x:1, x2: 2, y: 0}, {x:4, x2:7, y: 0}, {x:90, x2:90.5, y:0}, {x:3, x2:4, y: 1}, {x:8, x2:9, y: 2}],
+                pointWidth: 20
             }]
         })
 
