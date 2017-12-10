@@ -286,7 +286,7 @@ const sincronizedSlidingWindow = (sample) => {
             .highcharts({
                 chart: {
                     marginLeft: 70,
-                    spacingTop: 10,
+                    spacingTop: 20,
                     spacingBottom: 10,
                     zoomType: "x",
                     panning: true,
@@ -332,8 +332,7 @@ const sincronizedSlidingWindow = (sample) => {
                     borderWidth: 0,
                     backgroundColor: "none",
                     pointFormatter: function () {
-                        return "<span>Contig: <b>" + xLabels[this.x].split("_")[0] + "</b></span><br>" +
-                               "<span>Position: <b>" + xLabels[this.x].split("_")[1] + "</b></span><br>" +
+                        return "<span>Position: <b>" + xLabels[this.x].split("_")[1] + " (Contig: " + xLabels[this.x].split("_")[0] + ")" + "</b></span><br>" +
                                "<span>Value: <b>" + this.y + "</b></span>"
                     },
                     headerFormat: "",
