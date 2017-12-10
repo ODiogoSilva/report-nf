@@ -334,7 +334,12 @@ const sincronizedSlidingWindow = (sample) => {
                 },
                 series: [{
                     data: dataset.data,
-                    type: dataset.type
+                    type: dataset.type,
+                    states: {
+                        hover: {
+                            lineWidthPlus: 0
+                        }
+                    }
                 }]
             })
 
