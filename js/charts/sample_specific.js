@@ -98,7 +98,6 @@ const sparkline = (sample, color) => {
         },
         tooltip: {
             useHTML: true,
-            header: "DAFUQ",
             valueDecimals: 2
         },
         legend: {
@@ -174,6 +173,175 @@ sizeDistributionPlot = (sample) => {
 
 };
 
+const sincronizedSlidingWindow = (sample) => {
+    $("#sync-sliding-window").empty();
+    /**
+     * In order to synchronize tooltips and crosshairs, override the
+     * built-in events with handlers defined on the parent element.
+     */
+    $('#sync-sliding-window').bind('mousemove touchmove touchstart', function (e) {
+
+        let point,
+            event;
+
+        for ( const chart of Highcharts.charts) {
+
+            if ( chart === undefined) {
+                continue
+            }
+
+            if ( chart.renderTo.id === "" ) {
+                event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+                point = chart.series[0].searchPoint(event, true); // Get the hovered point
+
+                if (point) {
+                    point.highlight(e);
+                }
+            }
+        }
+    });
+    /**
+     * Override the reset function, we don't need to hide the tooltips and crosshairs.
+     */
+    Highcharts.Pointer.prototype.reset = function () {
+        return undefined;
+    };
+
+    /**
+     * Highlight a point by showing tooltip, setting hover state and draw crosshair
+     */
+    Highcharts.Point.prototype.highlight = function (event) {
+        this.onMouseOver(); // Show the hover marker
+        this.series.chart.tooltip.refresh(this); // Show the tooltip
+        this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
+    };
+
+    /**
+     * Synchronize zooming through the setExtremes event handler.
+     */
+    function syncExtremes(e) {
+        let thisChart = this.chart;
+
+        // Prevent feedback loop
+        if ( e.trigger !== "syncExtremes" ) {
+            Highcharts.each(Highcharts.charts, function (chart) {
+                // Ignore undefined charts
+                if ( chart !== thisChart && chart.renderTo.id === "" ) {
+                    // It is null while updating
+                    if ( chart.xAxis[0].setExtremes ) {
+                        chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: 'syncExtremes' });
+                    }
+                }
+            });
+        }
+    }
+
+    let gcData,
+        covData,
+        xLabels;
+
+    // Get data and labels
+    for ( const el of data ) {
+        if ( el.sample_name === sample && (el.report_json.plotData || {}).gcSliding )  {
+            xLabels = el.report_json.plotData.gcSliding[1];
+            xBars = el.report_json.plotData.gcSliding[2];
+            gcData = el.report_json.plotData.gcSliding[0];
+            covData = el.report_json.plotData.covSliding[0];
+        }
+    }
+
+    // Get plotlines for contig boundaries
+    let contigPlotLines = [];
+    for ( const c of xBars ) {
+        contigPlotLines.push({
+            value: c,
+            width: 0.15,
+            color: "grey"
+        })
+    }
+
+    let slidingData = [{
+        "data": gcData,
+        "title": "GC content",
+        "type": "line"
+    }, {
+        "data": covData,
+        "title": "Coverage",
+        "type": "area"
+    }];
+
+    $.each(slidingData, (i, dataset) => {
+
+        console.log(dataset)
+        console.log(i)
+
+        $('<div class="chart">')
+            .appendTo("#sync-sliding-window")
+            .highcharts({
+                chart: {
+                    marginLeft: 40,
+                    spacingTop: 20,
+                    spacingBottom: 20,
+                    zoomType: "x",
+                    panning: true,
+                    panKey: "ctrl"
+                },
+                title: {
+                    text: dataset.title
+                },
+                legend: {
+                    enabled: false
+                },
+                xAxis: {
+                    categories: Array.from(xLabels, x => parseInt(x.split("_")[1])),
+                    crosshair: {
+                        width: 10
+                    },
+                    plotLines: contigPlotLines,
+                    events: {
+                        setExtremes: syncExtremes
+                    },
+                    tickInterval: 100
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    positioner: function () {
+                        return {
+                            x: 30, // right aligned
+                            y: -10 // align to title
+                        };
+                    },
+                    borderWidth: 0,
+                    backgroundColor: "none",
+                    pointFormatter: function () {
+                        return "<span>Contig: <b>" + xLabels[this.x].split("_")[0] + "</b></span><br>" +
+                               "<span>Position: <b>" + xLabels[this.x].split("_")[1] + "</b></span><br>" +
+                               "<span>Value: <b>" + this.y + "</b></span>"
+                    },
+                    headerFormat: "",
+                    shadow: false,
+                    style: {
+                        fontSize: "12px"
+                    },
+                    valueDecimals: 2
+                },
+                series: [{
+                    data: dataset.data,
+                    type: dataset.type
+                }]
+            })
+
+    });
+
+};
+
 /**
  *
  * @param sample
@@ -197,7 +365,9 @@ const showModelGraphs = (sample) => {
     sparkline(sample, qcColor);
 
     // Generate contig size distribution plot
-    sizeDistributionPlot(sample)
+    sizeDistributionPlot(sample);
+
+    sincronizedSlidingWindow(sample);
 
     $("#modalGraphs").modal("show")
 
