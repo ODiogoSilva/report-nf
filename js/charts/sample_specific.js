@@ -342,6 +342,7 @@ const sincronizedSlidingWindow = (sample) => {
                     },
                     valueDecimals: 2
                 },
+
                 series: [{
                     data: dataset.data,
                     type: dataset.type,
@@ -364,7 +365,12 @@ const sincronizedSlidingWindow = (sample) => {
                 zoomType: "x",
                 panning: true,
                 panKey: "ctrl",
-                height: 130
+                height: 130,
+                events: {
+                    load: function(){
+                        this.myTooltip = new Highcharts.Tooltip(this, this.options.tooltip);
+                    }
+                }
             },
             title: {
                 text: "Antimicrobial resistance and virulence annotation",
@@ -372,6 +378,24 @@ const sincronizedSlidingWindow = (sample) => {
             },
             legend: {
                 enabled: false
+            },
+            tooltip: {
+                enabled: false,
+            },
+            plotOptions: {
+                series: {
+                    stickyTracking: false,
+                    events: {
+                        click: function(evt) {
+                            this.chart.myTooltip.options.enabled = true;
+                            this.chart.myTooltip.refresh(evt.point, evt);
+                        },
+                        mouseOut: function() {
+                            this.chart.myTooltip.hide();
+                            this.chart.myTooltip.options.enabled = false;
+                        }
+                    }
+                }
             },
             xAxis: {
                 plotLines: contigPlotLines,
