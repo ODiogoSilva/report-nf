@@ -203,9 +203,9 @@ const sincronizedSlidingWindow = (sample) => {
     /**
      * Override the reset function, we don't need to hide the tooltips and crosshairs.
      */
-    Highcharts.Pointer.prototype.reset = function () {
-        return undefined;
-    };
+    // Highcharts.Pointer.prototype.reset = function () {
+    //     return undefined;
+    // };
 
     /**
      * Highlight a point by showing tooltip, setting hover state and draw crosshair
@@ -290,7 +290,8 @@ const sincronizedSlidingWindow = (sample) => {
                     spacingBottom: 20,
                     zoomType: "x",
                     panning: true,
-                    panKey: "ctrl"
+                    panKey: "ctrl",
+                    height: 300
                 },
                 title: {
                     text: dataset.title
@@ -307,7 +308,9 @@ const sincronizedSlidingWindow = (sample) => {
                     events: {
                         setExtremes: syncExtremes
                     },
-                    tickInterval: 100
+                    tickInterval: 100,
+                    min: 0,
+                    max: xLabels.length
                 },
                 yAxis: {
                     title: {
@@ -348,8 +351,56 @@ const sincronizedSlidingWindow = (sample) => {
                     }
                 }]
             })
-
     });
+
+    $('<div class="chart">')
+        .appendTo("#sync-sliding-window")
+        .highcharts({
+            chart: {
+                marginLeft: 40,
+                spacingTop: 20,
+                spacingBottom: 20,
+                zoomType: "x",
+                panning: true,
+                panKey: "ctrl",
+                height: 100
+            },
+            title: {
+                text: "",
+                margin: 0
+            },
+            legend: {
+                enabled: false
+            },
+            xAxis: {
+                plotLines: contigPlotLines,
+                events: {
+                    setExtremes: syncExtremes
+                },
+                min: 0,
+                max: xLabels.length,
+                labels: {
+                    enabled: false
+                }
+            },
+            yAxis: {
+                title: {
+                    text: null
+                },
+                min: -0.1,
+                max: 0.1,
+                labels: {
+                    enabled: false
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                type: "xrange",
+                data: [{x:1, x2: 2, y: 0}, {x:4, x2:7, y: 0}]
+            }]
+        })
 
 };
 
