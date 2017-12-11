@@ -162,14 +162,13 @@ class Table {
                     style:    'os',
                     selector: 'td:first-child'
                 },
-                "initComplete": () => {
-                    /* Trigger selected class on row when click on checkbox */
-                    $(".editor-active").off("click").on("click", (e) => {
+                "fnCreatedRow": (nRow, aData) => {
+                    // Add ID to each row
+                    $(nRow).attr("id", aData.Sample);
+                    // Add onclick event for sample selection in checkbox
+                    $(nRow).find("input").off("click").on("click", (e) => {
                         $(e.target).closest("tr").toggleClass("selected");
                     });
-                },
-                "fnCreatedRow": (nRow, aData) => {
-                    $(nRow).attr("id", aData.Sample);
                 }
             } );
         }
