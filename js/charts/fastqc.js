@@ -33,9 +33,13 @@ const ProcessFastQcData = async (rawReports) => {
                     x => {return {x: parseInt(x[0]), y: parseFloat(x[1])}}));
 
             // Get data for sequence length distribution
-            const seqLen = plotData.sequence_length_dist;
-            sequenceLength.set(pid, Array.from(seqLen.data[0],
+            const seqLenData = plotData.sequence_length_dist;
+            sequenceLength.set(pid, Array.from(seqLenData.data[0],
                 x => { return {x: parseInt(x[0].split("-")[0]), y: parseFloat(x[1])} }));
+
+            // Get data for N content
+            const nContentData = plotData.base_n_content;
+            nContent.set(pid, Array.from(nContentData.data[0], x => parseFloat(x[1])));
 
             // Get data for GC content
             const gcData = plotData.base_gc_content;
@@ -51,6 +55,7 @@ const ProcessFastQcData = async (rawReports) => {
     processedData.sequenceQuality = await getLineSeries(sequenceQuality);
     processedData.gcContent = await getLineSeries(gcContent);
     processedData.sequenceLength = await getLineSeries(sequenceLength);
+    processedData.nContent = await getLineSeries(nContent);
 
     return processedData;
 };
@@ -77,7 +82,7 @@ const getLineSeries = (mapObject) => {
 };
 
 
-const buildFqGcContent = (data, container, title) => {
+const buildFqGenericLine = (data, container, title, axisTitles) => {
 
     const hPlot = Highcharts.chart(container, {
         chart: {
@@ -88,19 +93,21 @@ const buildFqGcContent = (data, container, title) => {
         },
         xAxis: {
             title: {
-                text: "waa"
+                text: axisTitles.x
             }
         },
         yAxis: {
             title: {
-                text: "waaa"
+                text: axisTitles.y
             }
         },
         legend: {
             enabled: false
         },
         series: data
-    })
+    });
+
+    return hPlot;
 
 };
 
@@ -125,6 +132,9 @@ const buildFqBaseQualPlot = (data, container, title) => {
         yAxis: {
             min: 0,
             max: 45,
+            title: {
+                text: "Quality score"
+            },
             plotBands: [{
                 color: "rgba(170,255,170,.3)",
                 from: 28,
@@ -149,7 +159,7 @@ const buildFqBaseQualPlot = (data, container, title) => {
 
 const buildFqQualPlot = (data, container, title) => {
 
-    console.log(data)
+    console.log(data);
 
     const fastqcLine = Highcharts.chart(container, {
         chart: {
@@ -160,7 +170,7 @@ const buildFqQualPlot = (data, container, title) => {
         },
         xAxis: {
             title: {
-                text: "Base pairs"
+                text: "Read count"
             },
             min: 0,
             max: 45,
@@ -182,7 +192,9 @@ const buildFqQualPlot = (data, container, title) => {
             enabled: false
         },
         yAxis: {
-
+            title: {
+                text: "Quality score"
+            }
         },
         series: data
     });

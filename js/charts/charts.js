@@ -48,12 +48,18 @@ class Charts {
             this.fastqcData.sequenceQualityPlot = buildFqQualPlot(
                 processedData.sequenceQuality, "fastqcSequenceQuality", "Per base sequence quality scores"
             );
-            this.fastqcData.gcContent = buildFqGcContent(
-                processedData.gcContent, "fastqcGcContent", "GC distribution over all sequences "
+            this.fastqcData.gcContent = buildFqGenericLine(
+                processedData.gcContent, "fastqcGcContent",
+                "GC distribution over all sequences ", {x: "GC percentage", y: "Read percentage"}
             );
-            this.fastqcData.gcContent = buildFqGcContent(
-                processedData.sequenceLength, "fastqcSequenceDistribution", "Distribution of sequence length"
-            )
+            this.fastqcData.gcContent = buildFqGenericLine(
+                processedData.sequenceLength, "fastqcSequenceDistribution",
+                "Distribution of sequence length", {x: "Base pair", y: "count"}
+            );
+            this.fastqcData.gcContent = buildFqGenericLine(
+                processedData.nContent, "fastqcBaseNContent",
+                "Per base N content", {x: "Base pair", y: "Count"}
+            );
         })
     }
 }
