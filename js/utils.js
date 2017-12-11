@@ -4,9 +4,15 @@
  * @param text
  */
 const sendFile = (filename, text) => {
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
+
+    window.URL = window.URL || window.webkitURL;
+
+    const csvData = new Blob([text], { type: "application/json" });
+    const csvUrl = window.URL.createObjectURL(csvData);
+
+    const element = document.createElement("a");
+    element.href =  csvUrl;
+    element.setAttribute("download", filename);
 
     element.style.display = 'none';
     document.body.appendChild(element);
@@ -14,4 +20,15 @@ const sendFile = (filename, text) => {
     element.click();
 
     document.body.removeChild(element);
+};
+
+const saveStatusFile = () => {
+    const fileName = $("#save_file_name").val();
+    if (fileName !== "") {
+        const dataString = JSON.stringify(data);
+        sendFile(fileName, dataString);
+    }
+    else {
+        modalAlert("Please select a file name first.");
+    }
 };

@@ -129,8 +129,10 @@
             </div>
             <div id="collapse3" class="panel-collapse collapse">
                 <div class="panel-body">
-                    Save to file
-                    Load from File (drag and drop)
+                    <div class="input-group">
+                        <input id="save_file_name" type="text" class="form-control" placeholder="Enter file name">
+                        <span class="input-group-addon button_side" id="save_status_file" onclick="saveStatusFile()">Save</span>
+                    </div>
                 </div>
             </div>
         </div>

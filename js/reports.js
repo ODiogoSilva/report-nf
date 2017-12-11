@@ -210,6 +210,13 @@ app.controller("reportsController", function($scope){
         /*
             Rebuild tables and graphs
          */
+        console.log(results);
+        data = results;
+        initReports($scope, results);
+        $("#waiting_gif").css({display:"none"});
+        $("#row-main").css({display:"block"});
+        $("#current_workflow").css({display:"block"});
+
     });
 
     /* Event to toggle workflows sidebar */
