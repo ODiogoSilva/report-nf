@@ -134,6 +134,9 @@ sizeDistributionPlot = (sample) => {
             zoomType: "x",
             height: "500px"
         },
+        exporting: {
+            sourceWidth: 1070,
+        },
         title: {
             text: "Distribution of contig size"
         },
@@ -158,9 +161,13 @@ sizeDistributionPlot = (sample) => {
             yAxis: 1,
             baseSeries: "d",
             zIndex: -1,
+            color: "grey",
             point: {
                 events: {
-                    mouseOver: function () {updateLabels(this, "bold", 0)},
+                    mouseOver: function () {
+                        updateLabels(this, "bold", 0);
+                        highLightScatter(this)
+                    },
                     mouseOut: function () {updateLabels(this, "normal", 0)},
                     click: function () {
                         highLightScatter(this)
@@ -172,6 +179,7 @@ sizeDistributionPlot = (sample) => {
             type: "scatter",
             data: distData,
             id: "d",
+            color: "black",
             marker: {
                 radius: 3
             },
@@ -219,11 +227,38 @@ const updateLabels = (el, fw, idx) => {
 const highLightScatter = (el) => {
 
     const cat = [el.x, el.x2];
+    const points = el.series.chart.series[1].data;
 
-    console.log(el)
+    // Exit if the scatter data series is absent
+    if ( points.length === 0 ) {
+        return
+    }
 
-    console.log(cat)
-}
+    // Check if each point is within range and modify style attributes
+    // accordingly
+    let modifiedPoints = [];
+    for (const p of points) {
+        if ( cat[0] <= p.y && p.y < cat[1] ) {
+            modifiedPoints.push({x: p.x, y: p.y, marker: {fillColor: "#84bcff", radius: 5, }})
+        } else {
+            modifiedPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}})
+        }
+    }
+
+    // Update scatter with modified points
+    el.series.chart.series[1].update({
+        data: modifiedPoints
+    });
+
+    // Highlight currently selected bar
+    for (const b of el.series.chart.series[0].data) {
+        if ( b.index === el.index ) {
+            b.update({"color": "#84bcff"})
+        } else {
+            b.update({"color": "grey"})
+        }
+    }
+};
 
 
 const sincronizedSlidingWindow = (sample) => {
