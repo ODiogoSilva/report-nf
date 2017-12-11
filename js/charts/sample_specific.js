@@ -63,11 +63,6 @@ const sparkline = (sample, color) => {
     // Get data series, already in percentage
     dataSeries = Array.from(sparklineData, x => parseFloat(x / maxBp))
 
-    console.log(maxBp)
-    console.log(dataSeries)
-
-    console.log(sparklineData)
-
     Highcharts.chart("sparkline-container", {
         chart: {
             type: "area"
@@ -135,7 +130,18 @@ sizeDistributionPlot = (sample) => {
             height: "500px"
         },
         exporting: {
-            sourceWidth: 1070,
+            sourceWidth: 1170,
+            buttons: {
+                clearHighlight: {
+                    text: "Clear highlights",
+                    onclick: function () {resetHighlight(this)},
+                    buttonSpacing: 8,
+                    theme: {
+                        // fill: "#84bcff",
+                        stroke: "#313131"
+                    }
+                }
+            }
         },
         title: {
             text: "Distribution of contig size"
@@ -162,16 +168,16 @@ sizeDistributionPlot = (sample) => {
             baseSeries: "d",
             zIndex: -1,
             color: "grey",
+            cursor: "pointer",
+            events: {
+                mouseOver: function () {updateLabels(this, "bold", 0)},
+                mouseOut: function () {updateLabels(this, "normal", 0)},
+            },
             point: {
                 events: {
-                    mouseOver: function () {
-                        updateLabels(this, "bold", 0);
-                        highLightScatter(this)
-                    },
-                    mouseOut: function () {updateLabels(this, "normal", 0)},
                     click: function () {
                         highLightScatter(this)
-                    }
+                    },
                 }
             }
         }, {
@@ -180,13 +186,19 @@ sizeDistributionPlot = (sample) => {
             data: distData,
             id: "d",
             color: "black",
+            cursor: "pointer",
             marker: {
                 radius: 3
             },
+            events: {
+                mouseOver: function () {updateLabels(this, "bold", 1)},
+                mouseOut: function () {updateLabels(this, "normal", 1)},
+            },
             point: {
                 events: {
-                    mouseOver: function () {updateLabels(this, "bold", 1)},
-                    mouseOut: function () {updateLabels(this, "normal", 1)}
+                    click: function () {
+                        highlightHist(this);
+                    }
                 }
             }
         }]
@@ -203,11 +215,6 @@ const updateLabels = (el, fw, idx) => {
                 fontWeight: fw,
             }
         },
-        labels: {
-            style: {
-                fontWeight: fw,
-            }
-        }
     };
 
     let AxisArray;
@@ -218,13 +225,18 @@ const updateLabels = (el, fw, idx) => {
         AxisArray = [AxisStyle, {}];
     }
 
-    el.series.chart.update({
+    el.chart.update({
         yAxis: AxisArray,
         xAxis: AxisArray
     })
 };
 
-const highLightScatter = (el) => {
+/**
+ *
+ * @param el
+ * @param reset
+ */
+const highLightScatter = (el, type) => {
 
     const cat = [el.x, el.x2];
     const points = el.series.chart.series[1].data;
@@ -251,13 +263,74 @@ const highLightScatter = (el) => {
     });
 
     // Highlight currently selected bar
+    let modifiedBar = [];
     for (const b of el.series.chart.series[0].data) {
         if ( b.index === el.index ) {
-            b.update({"color": "#84bcff"})
+            modifiedBar.push({"color": "#84bcff"})
         } else {
-            b.update({"color": "grey"})
+            modifiedBar.push({"color": "grey"})
         }
     }
+    el.series.chart.series[0].update({
+        data: modifiedBar
+    })
+};
+
+
+const highlightHist = (el) => {
+
+    const yval = el.y;
+    const bars = el.series.chart.series[0].data;
+    const points = el.series.chart.series[1].data;
+
+    if ( bars.length === 0 ){
+        return
+    }
+
+    let modifiedBars = [];
+    for ( const b of bars ){
+        if ( b.x <= yval && yval < b.x2 ) {
+            modifiedBars.push({"color": "#84bcff"});
+        } else {
+            modifiedBars.push({"color": "grey"})
+        }
+    }
+    el.series.chart.series[0].update({data: modifiedBars});
+
+    let modifiedPoints = [];
+    for ( const p of points ) {
+        if ( p.index === el.index ) {
+            modifiedPoints.push({x: p.x, y: p.y, marker: {fillColor: "#84bcff", radius: 5, }})
+        } else {
+            modifiedPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}})
+        }
+    }
+    el.series.chart.series[1].update({
+        data: modifiedPoints
+    })
+
+};
+
+
+const resetHighlight = (ch) => {
+
+    let points = ch.series[1].data;
+    let bars = ch.series[0].data;
+
+    let resetPoints = [];
+    let resetBars = [];
+
+    for ( const p of points ) {
+        resetPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}})
+    }
+
+    for ( const b of bars ) {
+        resetBars.push({"color": "grey"})
+    }
+
+    ch.series[1].update({data: resetPoints});
+    ch.series[0].update({data: resetBars})
+
 };
 
 
@@ -365,9 +438,6 @@ const sincronizedSlidingWindow = (sample) => {
     }];
 
     $.each(slidingData, (i, dataset) => {
-
-        console.log(dataset)
-        console.log(i)
 
         $('<div class="chart">')
             .appendTo("#sync-sliding-window")
