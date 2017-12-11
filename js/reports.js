@@ -86,6 +86,7 @@ const initReports = (scope, results, append = true) => {
         if (r.length === 0) return;
         await charts.addReportData(r, append);
         await charts.buildSpadesGraphs();
+        await charts.buildFastQcGraphs()
     });
 
 

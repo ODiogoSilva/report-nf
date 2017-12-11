@@ -8,6 +8,7 @@ class Charts {
     constructor() {
         this.reportsData = [];
         this.spadesData = {};
+        this.fastqcData = {};
     }
 
     /* Method to add reports to the global reports */
@@ -33,5 +34,15 @@ class Charts {
                 processed_data.storageDist, "container2", "Distribution of contig size"
             );
         });
+    }
+
+    /*
+        Method to build all Spades graphs
+        Available at charts/spades.js
+    */
+    buildFastQcGraphs() {
+        ProcessFastQcData(this.reportsData).then((processedData) => {
+            console.log(processedData)
+        })
     }
 }
