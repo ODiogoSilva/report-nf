@@ -141,6 +141,7 @@ app.controller("reportsController", function($scope){
     $scope.graph1_name = "Graph 1";
     $scope.graph2_name = "Graph 2";
     $scope.table_name = "Main table";
+    $scope.fastqcName = "FastQC"
 
     $scope.workflows = [
         ["Assembly", 14],
@@ -152,6 +153,7 @@ app.controller("reportsController", function($scope){
     $scope.workflow_charts = {
         "Assembly": [
             ["Main table", "table1_div"],
+            ["FastQC", "fastqcContainer"],
             ["Graph 1", "spades_graph_container"],
             ["Graph 2", "container2"]
 
@@ -255,11 +257,11 @@ app.controller("reportsController", function($scope){
         });
 
         /* Show/hide tabs of spades and its divs */
-        $("#spades_ul li").click(function () {
-            $("#spades_ul li").removeClass("active");
-            $(this).addClass("active");
-            $(".box").hide().eq($(this).index()).show();  // hide all divs and show the current div
-        });
+        // $("#spades_ul li").click(function () {
+        //     $("#spades_ul li").removeClass("active");
+        //     $(this).addClass("active");
+        //     $(".box").hide().eq($(this).index()).show();  // hide all divs and show the current div
+        // });
 
         /* Trigger style of dropdowns */
         $(".selectpicker").selectpicker({
@@ -404,7 +406,7 @@ app.directive('scrollSpy', function ($window) {
                 var highlightSpy, pos, spy, _i, _len, _ref;
                 highlightSpy = null;
                 _ref = scope.spies;
-                let offset = 200;
+                let offset = 250;
 
                 for (s of scope.spies) {
                     spyElems[s.id] = elem.find("#" + s.id)

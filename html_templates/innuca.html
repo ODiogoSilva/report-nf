@@ -20,6 +20,32 @@
     </div>
 </div>
 
+<!--
+FastQC plot containers
+-->
+<div class="container-fluid not_first">
+    <button type="button" class="btn btn-sm btn-info"
+            data-toggle="collapse"
+            data-target="#fastqcContainer">
+        <i class="fa fa-compress"aria-hidden="true"></i>
+    </button>
+    <ul class="nav nav-tabs"
+        style="float:right;display:inline-block;">
+        <li class="active"><a data-target="#fastqcBaseSequenceQuality" data-toggle="tab">Base sequence quality</a></li>
+        <li><a data-target="#fastqcSequenceQuality" data-toggle="tab">Sequence quality</a></li>
+        <li><a data-target="#fastqcGcContent" data-toggle="tab">GC content</a></li>
+    </ul>
+    <b style="display:inline-block">{{fastqcName}}</b>
+    <div id="fastqcContainer" class="tab-content collapse in" style="width:100%; height:600px;">
+        <div id="fastqcBaseSequenceQuality" class="tab-pane active" style="width:100%; height:600px;"></div>
+        <div id="fastqcSequenceQuality" class="tab-pane active" style="width:100%; height:600px;"></div>
+        <div id="fastqcGcContent" class="tab-pane" style="width:100%; height:600px;"></div>
+    </div>
+</div>
+
+<!--
+Assembly plot containers
+-->
 <div class="container-fluid not_first">
     <button type="button" class="btn btn-sm btn-info"
             data-toggle="collapse"
@@ -29,16 +55,12 @@
     <b style="display:inline-block">{{graph1_name}}</b>
     <ul id="spades_ul" class="nav nav-tabs"
         style="float:right;display:inline-block;">
-        <li id="spades_1_li"
-            class="active"><a href="">Spades 1</a></li>
-        <li id="spades_2_li" ><a href="">Spades
-            2</a></li>
+        <li id="spades_1_li" class="active"><a href="#spades_1">Spades 1</a></li>
+        <li id="spades_2_li" ><a href="#spades_2">Spades 2</a></li>
     </ul>
     <div id="spades_graph_container" class="collapse in" style="width:100%;height:600px;">
-        <div id="spades_1" class="box" style="width:100%;
-                            height:600px;"></div>
-        <div id="spades_2" class="box" style="width:100%;
-                            height:600px;display:none;"></div>
+        <div id="spades_1" class="box" style="width:100%; height:600px;"></div>
+        <div id="spades_2" class="box" style="width:100%; height:600px;display:none;"></div>
     </div>
 </div>
 <div class="container-fluid not_first">
@@ -50,5 +72,6 @@
     <b style="display:inline-block">{{graph2_name}}</b>
     <div id="container2"
          class="collapse in"
-         style="width:100%; height:400px;"></div>
+         style="width:100%; height:400px;">
+    </div>
 </div>

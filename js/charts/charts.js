@@ -42,7 +42,15 @@ class Charts {
     */
     buildFastQcGraphs() {
         ProcessFastQcData(this.reportsData).then((processedData) => {
-            console.log(processedData)
+            this.fastqcData.sequenceQualityPlot = buildFqBaseQualPlot(
+                processedData.baseSequenceQuality, "fastqcBaseSequenceQuality", "Per base sequence quality scores"
+            );
+            this.fastqcData.sequenceQualityPlot = buildFqQualPlot(
+                processedData.sequenceQuality, "fastqcSequenceQuality", "Per base sequence quality scores"
+            );
+            this.fastqcData.gcContent = buildFqGcContent(
+                processedData.gcContent, "fastqcGcContent", "GC distribution over all sequences "
+            )
         })
     }
 }
