@@ -210,9 +210,10 @@ app.controller("reportsController", function($scope){
         /*
             Rebuild tables and graphs
          */
-        console.log(results);
-        data = results;
-        initReports($scope, results);
+        data = results.data;
+        dataFilters = results.dataFilters;
+
+        initReports($scope, results.data);
         $("#waiting_gif").css({display:"none"});
         $("#row-main").css({display:"block"});
         $("#current_workflow").css({display:"block"});
