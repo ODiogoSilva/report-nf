@@ -50,6 +50,9 @@ class Charts {
             );
             this.fastqcData.gcContent = buildFqGcContent(
                 processedData.gcContent, "fastqcGcContent", "GC distribution over all sequences "
+            );
+            this.fastqcData.gcContent = buildFqGcContent(
+                processedData.sequenceLength, "fastqcSequenceDistribution", "Distribution of sequence length"
             )
         })
     }

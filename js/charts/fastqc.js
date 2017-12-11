@@ -32,7 +32,12 @@ const ProcessFastQcData = async (rawReports) => {
             sequenceQuality.set(pid, Array.from(seqQualData.data[0],
                     x => {return {x: parseInt(x[0]), y: parseFloat(x[1])}}));
 
-// Get data for GC content
+            // Get data for sequence length distribution
+            const seqLen = plotData.sequence_length_dist;
+            sequenceLength.set(pid, Array.from(seqLen.data[0],
+                x => { return {x: parseInt(x[0].split("-")[0]), y: parseFloat(x[1])} }));
+
+            // Get data for GC content
             const gcData = plotData.base_gc_content;
             // Normalize read counts across samples by averaging over the total bp
             const gcVals = Array.from(gcData.data[0], x => parseFloat(x[1]));
@@ -45,6 +50,7 @@ const ProcessFastQcData = async (rawReports) => {
     processedData.baseSequenceQuality = await getLineSeries(baseSequenceQuality);
     processedData.sequenceQuality = await getLineSeries(sequenceQuality);
     processedData.gcContent = await getLineSeries(gcContent);
+    processedData.sequenceLength = await getLineSeries(sequenceLength);
 
     return processedData;
 };
