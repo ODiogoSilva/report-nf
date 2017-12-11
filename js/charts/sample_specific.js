@@ -137,7 +137,6 @@ sizeDistributionPlot = (sample) => {
                     onclick: function () {resetHighlight(this)},
                     buttonSpacing: 8,
                     theme: {
-                        // fill: "#84bcff",
                         stroke: "#313131"
                     }
                 }
@@ -147,17 +146,17 @@ sizeDistributionPlot = (sample) => {
             text: "Distribution of contig size"
         },
         xAxis: [{
-            title: { text: 'Data' },
+            title: { text: 'Contig' },
             reversed: true
         }, {
-            title: { text: 'Histogram' },
+            title: { text: 'Contig size' },
             opposite: true
         }],
 
         yAxis: [{
-            title: { text: 'Data' }
+            title: { text: 'Contig size' }
         }, {
-            title: { text: 'Histogram' },
+            title: { text: 'Frequency' },
             opposite: true
         }],
         series: [{
