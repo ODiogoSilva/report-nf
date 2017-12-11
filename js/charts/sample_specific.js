@@ -129,8 +129,6 @@ sizeDistributionPlot = (sample) => {
         }
     }
 
-    console.log(distData)
-
     Highcharts.chart("distribution-size-container", {
         chart: {
             zoomType: "x",
@@ -160,18 +158,62 @@ sizeDistributionPlot = (sample) => {
             yAxis: 1,
             baseSeries: "d",
             zIndex: -1,
+            point: {
+                events: {
+                    mouseOver: function () {updateLabels(this, this.color, 0)},
+                    mouseOut: function () {updateLabels(this, "grey", 0)}
+                }
+            }
         }, {
             name: "Data",
             type: "scatter",
             data: distData,
             id: "d",
             marker: {
-                radius: 1.5
+                radius: 3
+            },
+            point: {
+                events: {
+                    mouseOver: function () {updateLabels(this, this.color, 1)},
+                    mouseOut: function () {updateLabels(this, "grey", 1)}
+                }
             }
         }]
     })
 
 };
+
+
+const updateLabels = (el, color, idx) => {
+
+    const AxisStyle = {
+        title: {
+            style: {
+                fontWeight: "bold",
+                color: color,
+            }
+        },
+        labels: {
+            style: {
+                color: color,
+            }
+        }
+    };
+
+    let AxisArray;
+
+    if ( idx === 0 ) {
+        AxisArray = [{title: {style: {fontWeight: "normal"}}}, AxisStyle];
+    } else {
+        AxisArray = [AxisStyle, {title: {style: {fontWeight: "normal"}}}];
+    }
+
+    el.series.chart.update({
+        yAxis: AxisArray,
+        xAxis: AxisArray
+    })
+};
+
 
 const sincronizedSlidingWindow = (sample) => {
     $("#sync-sliding-window").empty();
