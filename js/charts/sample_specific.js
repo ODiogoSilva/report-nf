@@ -160,8 +160,11 @@ sizeDistributionPlot = (sample) => {
             zIndex: -1,
             point: {
                 events: {
-                    mouseOver: function () {updateLabels(this, this.color, 0)},
-                    mouseOut: function () {updateLabels(this, "grey", 0)}
+                    mouseOver: function () {updateLabels(this, "bold", 0)},
+                    mouseOut: function () {updateLabels(this, "normal", 0)},
+                    click: function () {
+                        highLightScatter(this)
+                    }
                 }
             }
         }, {
@@ -174,8 +177,8 @@ sizeDistributionPlot = (sample) => {
             },
             point: {
                 events: {
-                    mouseOver: function () {updateLabels(this, this.color, 1)},
-                    mouseOut: function () {updateLabels(this, "grey", 1)}
+                    mouseOver: function () {updateLabels(this, "bold", 1)},
+                    mouseOut: function () {updateLabels(this, "normal", 1)}
                 }
             }
         }]
@@ -184,18 +187,17 @@ sizeDistributionPlot = (sample) => {
 };
 
 
-const updateLabels = (el, color, idx) => {
+const updateLabels = (el, fw, idx) => {
 
     const AxisStyle = {
         title: {
             style: {
-                fontWeight: "bold",
-                color: color,
+                fontWeight: fw,
             }
         },
         labels: {
             style: {
-                color: color,
+                fontWeight: fw,
             }
         }
     };
@@ -203,9 +205,9 @@ const updateLabels = (el, color, idx) => {
     let AxisArray;
 
     if ( idx === 0 ) {
-        AxisArray = [{title: {style: {fontWeight: "normal"}}}, AxisStyle];
+        AxisArray = [{}, AxisStyle];
     } else {
-        AxisArray = [AxisStyle, {title: {style: {fontWeight: "normal"}}}];
+        AxisArray = [AxisStyle, {}];
     }
 
     el.series.chart.update({
@@ -213,6 +215,15 @@ const updateLabels = (el, color, idx) => {
         xAxis: AxisArray
     })
 };
+
+const highLightScatter = (el) => {
+
+    const cat = [el.x, el.x2];
+
+    console.log(el)
+
+    console.log(cat)
+}
 
 
 const sincronizedSlidingWindow = (sample) => {
