@@ -4,7 +4,7 @@
 
 const ProcessFastQcData = async (rawReports) => {
 
-    let processedData = {};
+    let chartObject = {};
 
     let gcContent = new Map,
         nContent = new Map,
@@ -51,20 +51,219 @@ const ProcessFastQcData = async (rawReports) => {
 
     }
 
-    processedData.baseSequenceQuality = await getLineSeries(baseSequenceQuality);
-    processedData.sequenceQuality = await getLineSeries(sequenceQuality);
-    processedData.gcContent = await getLineSeries(gcContent);
-    processedData.sequenceLength = await getLineSeries(sequenceLength);
-    processedData.nContent = await getLineSeries(nContent);
+    chartObject.baseSequenceQuality = await getBaseSequenceQualityChart(baseSequenceQuality);
+    chartObject.sequenceQuality = await getSequenceQualityChart(sequenceQuality);
+    chartObject.gcContent = await getGcContentChart(gcContent);
+    chartObject.sequenceLength = await getSequenceLengthChart(sequenceLength);
+    chartObject.nContent = await getNContentChart(nContent);
 
-    return processedData;
+    return chartObject;
 };
+
+
+const getBaseSequenceQualityChart = async (mapObject) => {
+
+    const chartSeries = getLineSeries(mapObject).then((res) => {
+
+        return {
+            chart: {
+                zoomType: "x"
+            },
+            title: {
+                text: "Per base sequence quality"
+            },
+            xAxis: {
+                title: {
+                    text: "Base pairs"
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            yAxis: {
+                min: 0,
+                max: 45,
+                title: {
+                    text: "Quality score"
+                },
+                plotBands: [{
+                    color: "rgba(170,255,170,.3)",
+                    from: 28,
+                    to: 45,
+                }, {
+                    color: "rgba(255,255,170,.3)",
+                    from: 20,
+                    to: 28
+                }, {
+                    color: "rgba(255,170,170,.3)",
+                    from: 0,
+                    to: 20
+                }]
+            },
+            series: res
+        };
+    });
+
+    return chartSeries
+
+};
+
+
+const getSequenceQualityChart = (mapObject) => {
+
+    const chartSeries = getLineSeries(mapObject).then((res) => {
+
+        return {
+            chart: {
+                zoomType: "x"
+            },
+            title: {
+                text: "Per base sequence quality scores"
+            },
+            xAxis: {
+                title: {
+                    text: "Read count"
+                },
+                min: 0,
+                max: 45,
+                plotBands: [{
+                    color: "rgba(170,255,170,.3)",
+                    from: 28,
+                    to: 45,
+                }, {
+                    color: "rgba(255,255,170,.3)",
+                    from: 20,
+                    to: 28
+                }, {
+                    color: "rgba(255,170,170,.3)",
+                    from: 0,
+                    to: 20
+                }]
+            },
+            legend: {
+                enabled: false
+            },
+            yAxis: {
+                title: {
+                    text: "Quality score"
+                }
+            },
+            series: res
+        }
+    });
+
+    return chartSeries
+
+};
+
+
+const getGcContentChart = (mapObject) => {
+
+    const chartSeries = getLineSeries(mapObject).then((res) => {
+
+        return {
+            chart: {
+                zoomType: "x"
+            },
+            title: {
+                text: "GC distribution over all sequences "
+            },
+            xAxis: {
+                title: {
+                    text: "GC percentage"
+                }
+            },
+            yAxis: {
+                title: {
+                    text: "Read percentage"
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            series: res
+        }
+
+    });
+
+    return chartSeries
+
+};
+
+
+const getSequenceLengthChart = (mapObject) => {
+
+    const chartSeries = getLineSeries(mapObject).then((res) => {
+
+        return {
+            chart: {
+                zoomType: "x"
+            },
+            title: {
+                text: "Distribution of sequence length"
+            },
+            xAxis: {
+                title: {
+                    text: "Base pair"
+                }
+            },
+            yAxis: {
+                title: {
+                    text: "Count"
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            series: res
+        }
+
+    });
+
+    return chartSeries
+
+};
+
+
+const getNContentChart = (mapObject) => {
+
+    const chartSeries = getLineSeries(mapObject).then((res) => {
+
+        return {
+            chart: {
+                zoomType: "x"
+            },
+            title: {
+                text: "Per base N content"
+            },
+            xAxis: {
+                title: {
+                    text: "Base pair"
+                }
+            },
+            yAxis: {
+                title: {
+                    text: "Count"
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            series: res
+        }
+
+    });
+
+    return chartSeries
+
+};
+
 
 /**
  *
  * @param mapObject
  */
-const getLineSeries = (mapObject) => {
+const getLineSeries = async (mapObject) => {
 
     let seriesArray = [];
 
@@ -78,127 +277,5 @@ const getLineSeries = (mapObject) => {
     });
 
     return seriesArray;
-
-};
-
-
-const buildFqGenericLine = (data, container, title, axisTitles) => {
-
-    const hPlot = Highcharts.chart(container, {
-        chart: {
-            zoomType: "x"
-        },
-        title: {
-            text: title
-        },
-        xAxis: {
-            title: {
-                text: axisTitles.x
-            }
-        },
-        yAxis: {
-            title: {
-                text: axisTitles.y
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        series: data
-    });
-
-    return hPlot;
-
-};
-
-
-const buildFqBaseQualPlot = (data, container, title) => {
-
-    const fastqcLine = Highcharts.chart(container, {
-        chart: {
-            zoomType: "x"
-        },
-        title: {
-            text: title
-        },
-        xAxis: {
-            title: {
-                text: "Base pairs"
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        yAxis: {
-            min: 0,
-            max: 45,
-            title: {
-                text: "Quality score"
-            },
-            plotBands: [{
-                color: "rgba(170,255,170,.3)",
-                from: 28,
-                to: 45,
-            }, {
-                color: "rgba(255,255,170,.3)",
-                from: 20,
-                to: 28
-            }, {
-                color: "rgba(255,170,170,.3)",
-                from: 0,
-                to: 20
-            }]
-        },
-        series: data
-    });
-
-    return fastqcLine
-
-};
-
-
-const buildFqQualPlot = (data, container, title) => {
-
-    console.log(data);
-
-    const fastqcLine = Highcharts.chart(container, {
-        chart: {
-            zoomType: "x"
-        },
-        title: {
-            text: title
-        },
-        xAxis: {
-            title: {
-                text: "Read count"
-            },
-            min: 0,
-            max: 45,
-            plotBands: [{
-                color: "rgba(170,255,170,.3)",
-                from: 28,
-                to: 45,
-            }, {
-                color: "rgba(255,255,170,.3)",
-                from: 20,
-                to: 28
-            }, {
-                color: "rgba(255,170,170,.3)",
-                from: 0,
-                to: 20
-            }]
-        },
-        legend: {
-            enabled: false
-        },
-        yAxis: {
-            title: {
-                text: "Quality score"
-            }
-        },
-        series: data
-    });
-
-    return fastqcLine
 
 };

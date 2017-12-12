@@ -42,24 +42,17 @@ class Charts {
     */
     buildFastQcGraphs() {
         ProcessFastQcData(this.reportsData).then((processedData) => {
-            this.fastqcData.sequenceQualityPlot = buildFqBaseQualPlot(
-                processedData.baseSequenceQuality, "fastqcBaseSequenceQuality", "Per base sequence quality scores"
-            );
-            this.fastqcData.sequenceQualityPlot = buildFqQualPlot(
-                processedData.sequenceQuality, "fastqcSequenceQuality", "Per base sequence quality scores"
-            );
-            this.fastqcData.gcContent = buildFqGenericLine(
-                processedData.gcContent, "fastqcGcContent",
-                "GC distribution over all sequences ", {x: "GC percentage", y: "Read percentage"}
-            );
-            this.fastqcData.gcContent = buildFqGenericLine(
-                processedData.sequenceLength, "fastqcSequenceDistribution",
-                "Distribution of sequence length", {x: "Base pair", y: "count"}
-            );
-            this.fastqcData.gcContent = buildFqGenericLine(
-                processedData.nContent, "fastqcBaseNContent",
-                "Per base N content", {x: "Base pair", y: "Count"}
-            );
+            this.fastqcData = processedData;
+            this.buildPlot(processedData.baseSequenceQuality, "fastqcBaseSequenceQuality");
+            this.buildPlot(processedData.sequenceQuality, "fastqcSequenceQuality");
+            this.buildPlot(processedData.gcContent, "fastqcGcContent");
+            this.buildPlot(processedData.sequenceLength, "fastqcSequenceDistribution");
+            this.buildPlot(processedData.nContent, "fastqcBaseNContent");
         })
     }
+
+    buildPlot(chartObject, container) {
+        Highcharts.chart(container, chartObject)
+    }
+
 }
