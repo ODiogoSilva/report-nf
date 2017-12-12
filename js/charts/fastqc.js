@@ -21,8 +21,6 @@ const ProcessFastQcData = async (rawReports) => {
 
             const plotData = r.report_json.plotData;
 
-            console.log(plotData)
-
             // Get data for per base sequence quality
             const qualData = plotData.base_sequence_quality;
             baseSequenceQuality.set(pid, Array.from(qualData.data[0], x => parseFloat(x[1])));
@@ -48,7 +46,6 @@ const ProcessFastQcData = async (rawReports) => {
             const totalBp = gcVals.reduce((a, b) => a + b, 0);
             gcContent.set(pid, Array.from(gcVals, x => (x / totalBp) * 100));
         }
-
     }
 
     chartObject.baseSequenceQuality = await getBaseSequenceQualityChart(baseSequenceQuality);

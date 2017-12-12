@@ -29,21 +29,21 @@ FastQC plot containers
             data-target="#fastqcContainer">
         <i class="fa fa-compress"aria-hidden="true"></i>
     </button>
-    <ul class="nav nav-tabs"
+    <ul id="fastqcTabs" class="nav nav-tabs"
         style="float:right;display:inline-block;">
-        <li class="active"><a data-target="#fastqcBaseSequenceQuality" data-toggle="tab">Base sequence quality</a></li>
-        <li><a data-target="#fastqcSequenceQuality" data-toggle="tab">Sequence quality</a></li>
-        <li><a data-target="#fastqcGcContent" data-toggle="tab">GC content</a></li>
-        <li><a data-target="#fastqcSequenceDistribution" data-toggle="tab">Sequence length</a></li>
-        <li><a data-target="#fastqcBaseNContent" data-toggle="tab">Base N content</a></li>
+        <li class="active"><a data-target="#fastqcbaseSequenceQuality" data-toggle="tab">Base sequence quality</a></li>
+        <li><a data-target="#fastqcsequenceQuality" data-toggle="tab">Sequence quality</a></li>
+        <li><a data-target="#fastqcgcContent" data-toggle="tab">GC content</a></li>
+        <li><a data-target="#fastqcsequenceLength" data-toggle="tab">Sequence length</a></li>
+        <li><a data-target="#fastqcnContent" data-toggle="tab">Base N content</a></li>
     </ul>
     <b style="display:inline-block">{{fastqcName}}</b>
     <div id="fastqcContainer" class="tab-content collapse in" style="width:100%; height:600px;">
-        <div id="fastqcBaseSequenceQuality" class="tab-pane active" style="width:100%; height:600px;"></div>
-        <div id="fastqcSequenceQuality" class="tab-pane" style="width:100%; height:600px;"></div>
-        <div id="fastqcGcContent" class="tab-pane" style="width:100%; height:600px;"></div>
-        <div id="fastqcSequenceDistribution" class="tab-pane" style="width:100%; height:600px;"></div>
-        <div id="fastqcBaseNContent" class="tab-pane" style="width:100%; height:600px;"></div>
+        <div id="fastqcbaseSequenceQuality" class="tab-pane active" style="width:100%; height:600px;"></div>
+        <div id="fastqcsequenceQuality" class="tab-pane" style="width:100%; height:600px;"></div>
+        <div id="fastqcgcContent" class="tab-pane" style="width:100%; height:600px;"></div>
+        <div id="fastqcsequenceLength" class="tab-pane" style="width:100%; height:600px;"></div>
+        <div id="fastqcnContent" class="tab-pane" style="width:100%; height:600px;"></div>
     </div>
 </div>
 
@@ -57,14 +57,18 @@ Assembly plot containers
         <i class="fa fa-compress" aria-hidden="true"></i>
     </button>
     <b style="display:inline-block">{{graph1_name}}</b>
-    <ul id="spades_ul" class="nav nav-tabs"
+    <ul id="assemblyTabs" class="nav nav-tabs"
         style="float:right;display:inline-block;">
-        <li id="spades_1_li" class="active"><a href="#spades_1">Spades 1</a></li>
-        <li id="spades_2_li" ><a href="#spades_2">Spades 2</a></li>
+        <li class="nav-item active" id="spades_1_li">
+            <a class="nav-link" data-toggle="tab" data-target="#spades_1">Spades 1</a>
+        </li>
+        <li class="nav-item" id="spades_2_li" >
+            <a class="nav-link" data-toggle="tab" data-target="#spades_2">Spades 2</a>
+        </li>
     </ul>
-    <div id="spades_graph_container" class="collapse in" style="width:100%;height:600px;">
-        <div id="spades_1" class="box" style="width:100%; height:600px;"></div>
-        <div id="spades_2" class="box" style="width:100%; height:600px;display:none;"></div>
+    <div id="spades_graph_container" class="tab-content collapse in" style="width:100%;height:600px;">
+        <div id="spades_1" role="tabpanel" class="tab-pane active" style="width:100%; height:600px;"></div>
+        <div id="spades_2" role="tabpanel" class="tab-pane" style="width:100%; height:600px;display:none;"></div>
     </div>
 </div>
 <div class="container-fluid not_first">

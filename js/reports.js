@@ -141,7 +141,7 @@ app.controller("reportsController", function($scope){
     $scope.graph1_name = "Graph 1";
     $scope.graph2_name = "Graph 2";
     $scope.table_name = "Main table";
-    $scope.fastqcName = "FastQC"
+    $scope.fastqcName = "FastQC";
 
     $scope.workflows = [
         ["Assembly", 14],
@@ -256,12 +256,27 @@ app.controller("reportsController", function($scope){
             $("a[aria-expanded=true]").attr("aria-expanded", "false");
         });
 
+        // Render FastQC plots for the first time on demand by pressing the tabs
+        $("#fastqcTabs").on("shown.bs.tab", (e) => {
+            let container = $(e.target).attr("data-target");
+            let chart = $(container).highcharts();
+            if ( !chart ) {
+                let chartOpts = charts.fastqcData[container.replace("#fastqc", "")];
+                $(container).highcharts(chartOpts)
+            }
+        });
+
         /* Show/hide tabs of spades and its divs */
-        // $("#spades_ul li").click(function () {
+        // $("#spades_ul a").click(function () {
         //     $("#spades_ul li").removeClass("active");
         //     $(this).addClass("active");
         //     $(".box").hide().eq($(this).index()).show();  // hide all divs and show the current div
         // });
+
+        $("#assemblyTabs").find("a").click( (e) => {
+            e.preventDefault();
+            $(this).tab("show");
+        });
 
         /* Trigger style of dropdowns */
         $(".selectpicker").selectpicker({

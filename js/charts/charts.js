@@ -43,15 +43,15 @@ class Charts {
     buildFastQcGraphs() {
         ProcessFastQcData(this.reportsData).then((processedData) => {
             this.fastqcData = processedData;
-            this.buildPlot(processedData.baseSequenceQuality, "fastqcBaseSequenceQuality");
-            this.buildPlot(processedData.sequenceQuality, "fastqcSequenceQuality");
-            this.buildPlot(processedData.gcContent, "fastqcGcContent");
-            this.buildPlot(processedData.sequenceLength, "fastqcSequenceDistribution");
-            this.buildPlot(processedData.nContent, "fastqcBaseNContent");
+            // Build first plot only. The remaining plots will be built on demand
+            this.buildPlot(processedData.baseSequenceQuality, "fastqcbaseSequenceQuality");
         })
     }
 
     buildPlot(chartObject, container) {
+        // Add the container where the chart will be rendered
+        // chartObject.chart.renderTo = container;
+        // Build chart
         Highcharts.chart(container, chartObject)
     }
 
