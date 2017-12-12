@@ -175,7 +175,7 @@ const getGcContentChart = (mapObject) => {
             },
             yAxis: {
                 title: {
-                    text: "Read percentage"
+                    text: "Normalized read count"
                 }
             },
             legend: {
