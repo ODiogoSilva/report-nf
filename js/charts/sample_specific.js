@@ -49,7 +49,8 @@ const sparkline = (sample, color) => {
     console.log(data)
     // Get BP data for current sample from report_json.plotData.sparkline
     for ( const el of data ) {
-        if ( el.sample_name === sample && (el.report_json.plotData || {}).sparkline )  {
+        const pid = `${el.project_id}.${el.sample_name}`;
+        if ( pid === sample && (el.report_json.plotData || {}).sparkline )  {
             // Populate an array of arrays, with the processId and BP data
             // this will allow the data to be sorted according to process ID
             sparklineDataTemp.push([parseInt(el.process_id),
@@ -120,7 +121,8 @@ sizeDistributionPlot = (sample) => {
 
     // Get BP data for current sample from report_json.plotData.sparkline
     for ( const el of data ) {
-        if ( el.sample_name === sample && (el.report_json.plotData || {}).size_dist )  {
+        const pid = `${el.project_id}.${el.sample_name}`;
+        if ( pid === sample && (el.report_json.plotData || {}).size_dist )  {
             distData = el.report_json.plotData.size_dist
         }
     }
@@ -410,7 +412,8 @@ const sincronizedSlidingWindow = (sample) => {
 
     // Get data and labels
     for ( const el of data ) {
-        if ( el.sample_name === sample && (el.report_json.plotData || {}).gcSliding )  {
+        const pid = `${el.project_id}.${el.sample_name}`
+        if ( pid === sample && (el.report_json.plotData || {}).gcSliding )  {
             xLabels = el.report_json.plotData.gcSliding[1];
             xBars = el.report_json.plotData.gcSliding[2];
             gcData = el.report_json.plotData.gcSliding[0];
@@ -418,7 +421,7 @@ const sincronizedSlidingWindow = (sample) => {
         }
     }
 
-    console.log(data)
+    console.log(xBars)
 
     // Get plotlines for contig boundaries
     let contigPlotLines = [];

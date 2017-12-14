@@ -7,7 +7,7 @@ const processProkka = (reportsData) => {
 
     const prokkaData = {};
 
-    prokkaData.headers = ["", "ID", "GENE", "FUNCTION", "NAME"];
+    prokkaData.headers = ["", "id", "GENE", "FUNCTION", "NAME"];
 
     prokkaData.columnMapping = [
         {
@@ -20,7 +20,7 @@ const processProkka = (reportsData) => {
             },
             className: "dt-body-center"
         },
-        {"data": "ID", "title":"ID"},
+        {"data": "id", "title":"ID"},
         {"data": "GENE", "title":"GENE"},
         {"data": "FUNCTION", "title":"FUNCTION"},
         {"data": "NAME", "title":"NAME"}
@@ -29,21 +29,21 @@ const processProkka = (reportsData) => {
     prokkaData.data = [
         {
             "active": "0",
-            "ID": 1,
+            "id": "1",
             "GENE": "A",
             "FUNCTION": "Transfer",
             "NAME": "A1"
         },
         {
             "active": "0",
-            "ID": 2,
+            "id": "2",
             "GENE": "B",
             "FUNCTION": "Transfer1",
             "NAME": "B1"
         },
         {
             "active": "0",
-            "ID": 3,
+            "id": "3",
             "GENE": "C",
             "FUNCTION": "Transfer2",
             "NAME": "C1"

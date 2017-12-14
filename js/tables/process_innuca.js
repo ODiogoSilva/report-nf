@@ -35,7 +35,6 @@ const getQc = (qcObject) => {
                             </ul>
                         </div>
                     </span>${qcValue}</div>`;
-
         return qcMsg
     }
 

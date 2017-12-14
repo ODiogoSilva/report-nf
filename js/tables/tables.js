@@ -96,7 +96,13 @@ class Table {
     }
 
     getValue(id, target) {
-        return $(this.tableData.filter( el => el.Sample === id)[0][target]);
+        for (const el of this.tableData) {
+            const pid = el.id.split(".")[0] + "." + el.Sample;
+            if (pid === id) {
+                return $(el[target])
+            }
+        }
+        return $(this.tableData.filter( el => `${el[id].split(".")[0]}.${el.Sample}` === id)[0][target]);
     }
 
     /* Method to build DataTable */
@@ -163,8 +169,10 @@ class Table {
                     selector: 'td:first-child'
                 },
                 "fnCreatedRow": (nRow, aData) => {
+                    // Get ID based on pipeline id and sample name
+                    const pid = aData.id.split(".")[0] + "." + aData.Sample;
                     // Add ID to each row
-                    $(nRow).attr("id", aData.Sample);
+                    $(nRow).attr("id", pid);
                     // Add onclick event for sample selection in checkbox
                     $(nRow).find("input").off("click").on("click", (e) => {
                         $(e.target).closest("tr").toggleClass("selected");
