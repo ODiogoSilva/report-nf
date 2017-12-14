@@ -100,8 +100,6 @@ const bdFastqcGcContent = (rawData, path) => {
         chartData.set(pid, Array.from(gcVals, x => (x / totalBp) * 100))
     }
 
-    console.log(chartData)
-
     const charOptions = getLineSeries(chartData).then((res) => {
 
         const myChart = new Chart({
@@ -109,10 +107,40 @@ const bdFastqcGcContent = (rawData, path) => {
             axisLabels: {x: "Quality score", y: "Normalized read count"},
             series: res
         });
-        return myChart
+        return myChart.layout
     });
     return charOptions
 };
+
+
+const bdFastqcSequenceLength = (rawData, path) => {
+
+    const taskName = "fastqc";
+    const chartData = new Map;
+
+    // Get JSON report array
+    const dataObj = getTaskReport(rawData, taskName, path);
+
+    for (const [pid, data] of dataObj.entries()) {
+        chartData.set(pid, Array.from(data.data[0],
+                x => { return {
+                    x: parseInt(x[0].split("-")[0]),
+                    y: parseFloat(x[1])
+                }}))
+    }
+
+    const charOptions = getLineSeries(chartData).then((res) => {
+
+        const myChart = new Chart({
+            title: "Distribution of sequence length",
+            axisLabels: {x: "Base pair", y: "Count"},
+            series: res
+        });
+        return myChart.layout
+    });
+    return charOptions
+
+}
 
 /*
     Charts built with FastQC results

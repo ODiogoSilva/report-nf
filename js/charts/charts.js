@@ -45,6 +45,14 @@ class ChartManager {
                     chartOptions: null,
                     atInit: false
                 }
+            ],
+            ["fastqcsequenceLength",
+                {
+                    path: "plotData.sequence_length_dist",
+                    build: bdFastqcSequenceLength,
+                    chartOptions: null,
+                    atInit: false
+                }
             ]
         ]);
     }
