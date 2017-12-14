@@ -85,6 +85,35 @@ const bdFastqcSequenceQuality = (rawData, path) => {
     return charOptions
 };
 
+
+const bdFastqcGcContent = (rawData, path) => {
+
+    const taskName = "fastqc";
+    const chartData = new Map;
+
+    // Get JSON report array
+    const dataObj = getTaskReport(rawData, taskName, path);
+
+    for (const [pid, data] of dataObj.entries()) {
+        const gcVals = Array.from(data.data[0], x => parseFloat(x[1]));
+        const totalBp = gcVals.reduce((a, b) => a + b, 0);
+        chartData.set(pid, Array.from(gcVals, x => (x / totalBp) * 100))
+    }
+
+    console.log(chartData)
+
+    const charOptions = getLineSeries(chartData).then((res) => {
+
+        const myChart = new Chart({
+            title: "GC percentage",
+            axisLabels: {x: "Quality score", y: "Normalized read count"},
+            series: res
+        });
+        return myChart
+    });
+    return charOptions
+};
+
 /*
     Charts built with FastQC results
  */

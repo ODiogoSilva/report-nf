@@ -36,7 +36,16 @@ class ChartManager {
                     build: bdFastqcSequenceQuality,
                     chartOptions: null,
                     atInit: false,
-                }]
+                }
+            ],
+            ["fastqcgcContent",
+                {
+                    path: "plotData.base_gc_content",
+                    build: bdFastqcGcContent,
+                    chartOptions: null,
+                    atInit: false
+                }
+            ]
         ]);
     }
 
