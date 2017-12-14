@@ -20,6 +20,9 @@ class ChartManager {
                     path: "plotData.base_sequence_quality",
                     // Reference to the function that will build the chart
                     build: bdFastqcBaseSequenceQuality,
+                    // Reference to the function that will be called to
+                    // highlight samples
+                    highlight: HighlightLineSeries,
                     // Will store the JSON object with the necessary
                     // information to produce the chart
                     chartOptions: null,
@@ -34,6 +37,7 @@ class ChartManager {
                 {
                     path: "plotData.sequence_quality",
                     build: bdFastqcSequenceQuality,
+                    highlight: HighlightLineSeries,
                     chartOptions: null,
                     atInit: false,
                 }
@@ -42,6 +46,7 @@ class ChartManager {
                 {
                     path: "plotData.base_gc_content",
                     build: bdFastqcGcContent,
+                    highlight: HighlightLineSeries,
                     chartOptions: null,
                     atInit: false
                 }
@@ -50,6 +55,7 @@ class ChartManager {
                 {
                     path: "plotData.sequence_length_dist",
                     build: bdFastqcSequenceLength,
+                    highlight: HighlightLineSeries,
                     chartOptions: null,
                     atInit: false
                 }
@@ -58,6 +64,7 @@ class ChartManager {
                 {
                     path: "plotData.base_n_content",
                     build: bdFastqcNContent,
+                    highlight: HighlightLineSeries,
                     chartOptions: null,
                     atInit: false
                 }
@@ -66,6 +73,7 @@ class ChartManager {
                 {
                     path: "plotData.size_dist",
                     build: assemblyContigSize,
+                    highlight: highlightBoxPlot,
                     chartOptions: null,
                     atInit: true
                 }
@@ -102,18 +110,42 @@ class ChartManager {
             // Call the builder function and provide the rawData array
             const chartJson = await obj.build(this.rawData, obj.path);
             obj.chartOptions = chartJson;
-            console.log(chartJson)
             // Build plots scheduled for the init
             if (obj.atInit === true) {
-                this.buildPlot(container);
+                this.buildChart(container);
             }
         }
     }
 
-    buildPlot(container) {
+    buildChart(container) {
         // Get chart options for this container
         Highcharts.chart(container, this.charts.get(container).chartOptions);
     }
+
+    /**
+     *
+     * @param [Array] selection
+     */
+    async highlightCharts(selection){
+        for (const [container, opts] of this.charts.entries()) {
+
+            // Ignore charts that lack the highlight method
+            if (opts.highlight === undefined){
+                continue
+            }
+
+            // If the chart has not be initialized, force it
+            if (!$("#" + container).highcharts()) {
+                this.buildChart(container)
+            }
+
+            // Call the highlighter function
+            const chartObj = $("#" + container).highcharts();
+            opts.highlight(chartObj, [{samples: ["1.HSM742d0C1_S37"], color:"blue"}])
+
+        }
+    }
+
 }
 
 

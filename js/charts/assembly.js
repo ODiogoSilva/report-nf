@@ -54,3 +54,27 @@ const getBoxPlotSeries = async (data) => {
     }
     return series
 };
+
+
+/**
+ *
+ * @param chartObj
+ * @param selection
+ */
+const highlightBoxPlot = (chartObj, selection) => {
+
+    const highlightedSeries = [];
+
+    for (const group of selection) {
+        for (const point of chartObj.series[0].data) {
+            if (group.samples.includes(point.name)) {
+                highlightedSeries.push({color: group.color})
+            } else {
+                highlightedSeries.push({})
+            }
+        }
+    }
+    console.log(highlightedSeries)
+    chartObj.series[0].update({data: highlightedSeries})
+    console.log(chartObj)
+};
