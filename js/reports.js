@@ -266,8 +266,7 @@ app.controller("reportsController", function($scope){
             let container = $(e.target).attr("data-target");
             let chart = $(container).highcharts();
             if ( !chart ) {
-                let chartOpts = charts.fastqcData[container.replace("#fastqc", "")];
-                $(container).highcharts(chartOpts)
+                charts.buildPlot(container.replace("#", ""))
             }
         });
 

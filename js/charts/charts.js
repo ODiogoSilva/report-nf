@@ -8,8 +8,6 @@ class ChartManager {
 
     constructor () {
 
-        this.charts = [];
-
         // Stores the raw report data
         this.rawData = [];
 
@@ -21,7 +19,7 @@ class ChartManager {
                     // JSON 'location' of the data relevant to the plot
                     path: "plotData.base_sequence_quality",
                     // Reference to the function that will build the chart
-                    build: bdFastqcSequenceQuality,
+                    build: bdFastqcBaseSequenceQuality,
                     // Will store the JSON object with the necessary
                     // information to produce the chart
                     chartOptions: null,
@@ -31,7 +29,14 @@ class ChartManager {
                     // shown.
                     atInit: true
                 }
-            ]
+            ],
+            ["fastqcsequenceQuality",
+                {
+                    path: "plotData.sequence_quality",
+                    build: bdFastqcSequenceQuality,
+                    chartOptions: null,
+                    atInit: false,
+                }]
         ]);
     }
 
@@ -62,6 +67,7 @@ class ChartManager {
     async buildAllCharts() {
 
         for (const [container, obj] of this.charts.entries()) {
+            // Call the builder function and provide the rawData array
             const chartJson = await obj.build(this.rawData, obj.path);
             obj.chartOptions = chartJson;
             // Build plots scheduled for the init

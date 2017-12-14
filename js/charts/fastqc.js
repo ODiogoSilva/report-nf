@@ -1,4 +1,47 @@
 
+const bdFastqcBaseSequenceQuality = (rawData, path) => {
+
+    const taskName = "fastqc";
+    const chartData = new Map;
+
+    // Get JSON report array
+    const dataObj = getTaskReport(rawData, taskName, path);
+
+    for (const [pid, data] of dataObj.entries()) {
+        chartData.set(pid, Array.from(data.data[0], x => parseFloat(x[1])))
+    }
+
+    const charOptions = getLineSeries(chartData).then((res) => {
+
+        const myChart = new Chart({
+            title: "Per base sequence quality scores",
+            axisLabels: {x: "Position in read (bp)", y: "Quality score"},
+            series: res
+        });
+
+        myChart.extend("yAxis", {
+            min: 0,
+            max: 45,
+            plotBands: [{
+                color: "rgba(170,255,170,.3)",
+                from: 28,
+                to: 45,
+            }, {
+                color: "rgba(255,255,170,.3)",
+                from: 20,
+                to: 28
+            }, {
+                color: "rgba(255,170,170,.3)",
+                from: 0,
+                to: 20
+            }]
+        });
+        return myChart.layout
+    });
+    return charOptions
+};
+
+
 const bdFastqcSequenceQuality = (rawData, path) => {
 
     const taskName = "fastqc";
@@ -7,20 +50,20 @@ const bdFastqcSequenceQuality = (rawData, path) => {
     // Get JSON report array
     const dataObj = getTaskReport(rawData, taskName, path);
 
-    //
     for (const [pid, data] of dataObj.entries()) {
-        chartData.set(pid, Array.from(data.data[0], x => parseFloat(x[1])))
+        chartData.set(pid, Array.from(data.data[0],
+                x => {return {x: parseInt(x[0]), y: parseFloat(x[1])}}))
     }
 
     const charOptions = getLineSeries(chartData).then((res) => {
 
         const myChart = new Chart({
             title: "Per sequence quality scores",
-            axisLabels: {x: "Position in read (bp)", y: "Quality score"},
+            axisLabels: {x: "Quality score", y: "Position in read (bp)"},
             series: res
         });
 
-        myChart.extend("yAxis", {
+        myChart.extend("xAxis", {
             min: 0,
             max: 45,
             plotBands: [{
