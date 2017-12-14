@@ -53,6 +53,14 @@ class ChartManager {
                     chartOptions: null,
                     atInit: false
                 }
+            ],
+            ["fastqcnContent",
+                {
+                    path: "plotData.base_n_content",
+                    build: bdFastqcNContent,
+                    chartOptions: null,
+                    atInit: false
+                }
             ]
         ]);
     }

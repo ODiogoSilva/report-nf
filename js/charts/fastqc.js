@@ -11,7 +11,7 @@ const bdFastqcBaseSequenceQuality = (rawData, path) => {
         chartData.set(pid, Array.from(data.data[0], x => parseFloat(x[1])))
     }
 
-    const charOptions = getLineSeries(chartData).then((res) => {
+    return getLineSeries(chartData).then((res) => {
 
         const myChart = new Chart({
             title: "Per base sequence quality scores",
@@ -38,7 +38,6 @@ const bdFastqcBaseSequenceQuality = (rawData, path) => {
         });
         return myChart.layout
     });
-    return charOptions
 };
 
 
@@ -55,7 +54,7 @@ const bdFastqcSequenceQuality = (rawData, path) => {
                 x => {return {x: parseInt(x[0]), y: parseFloat(x[1])}}))
     }
 
-    const charOptions = getLineSeries(chartData).then((res) => {
+    return getLineSeries(chartData).then((res) => {
 
         const myChart = new Chart({
             title: "Per sequence quality scores",
@@ -82,7 +81,6 @@ const bdFastqcSequenceQuality = (rawData, path) => {
         });
         return myChart.layout
     });
-    return charOptions
 };
 
 
@@ -100,7 +98,7 @@ const bdFastqcGcContent = (rawData, path) => {
         chartData.set(pid, Array.from(gcVals, x => (x / totalBp) * 100))
     }
 
-    const charOptions = getLineSeries(chartData).then((res) => {
+    return getLineSeries(chartData).then((res) => {
 
         const myChart = new Chart({
             title: "GC percentage",
@@ -109,7 +107,6 @@ const bdFastqcGcContent = (rawData, path) => {
         });
         return myChart.layout
     });
-    return charOptions
 };
 
 
@@ -129,7 +126,7 @@ const bdFastqcSequenceLength = (rawData, path) => {
                 }}))
     }
 
-    const charOptions = getLineSeries(chartData).then((res) => {
+    return getLineSeries(chartData).then((res) => {
 
         const myChart = new Chart({
             title: "Distribution of sequence length",
@@ -138,9 +135,32 @@ const bdFastqcSequenceLength = (rawData, path) => {
         });
         return myChart.layout
     });
-    return charOptions
+};
 
-}
+
+const bdFastqcNContent = (rawData, path) => {
+
+    const taskName = "fastqc";
+    const chartData = new Map;
+
+    // Get JSON report array
+    const dataObj = getTaskReport(rawData, taskName, path);
+
+    for (const [pid, data] of dataObj.entries()) {
+        chartData.set(pid, Array.from(data.data[0],
+            x => parseFloat(x[1])))
+    }
+
+    return getLineSeries(chartData).then((res) => {
+
+        const myChart = new Chart({
+            title: "Distribution of sequence length",
+            axisLabels: {x: "Base pair", y: "Count"},
+            series: res
+        });
+        return myChart.layout
+    });
+};
 
 /*
     Charts built with FastQC results
