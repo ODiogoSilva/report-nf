@@ -25,7 +25,7 @@ let dataFilters = {
 let projectIdMap = new Map();
 
 // Init charts
-const charts = new Charts();
+const charts = new ChartManager();
 
 // Init tables
 const innucaTable = new Table("master_table_innuca");
@@ -43,10 +43,16 @@ const initReports = (scope, results, append = true) => {
 
 
     // Apply any existing filters to the JSON array results from the request
-    const p1 = new Promise( (resolve) => {
-            resolve(filterJson(results, dataFilters));
+    const p1 = new Promise( (resolve, reject) => {
+        const r = filterJson(results, dataFilters);
+        // Only resolve the promise when the results array is not empty
+        if (r.length !== 0) {
+            resolve(r)
+        } else {
+            alert("Warning: Empty report object")
         }
-    );
+
+    });
 
     console.log(results);
 
@@ -55,7 +61,6 @@ const initReports = (scope, results, append = true) => {
 
     /* Launch Tables */
     p1.then( async (r) => {
-        if ( r.length === 0 ) { return };
         const resultsCh = await innucaTable.processInnuca(r, append);
         await innucaTable.addTableHeaders(scope, resultsCh,
             "table_headers_innuca");
@@ -64,7 +69,6 @@ const initReports = (scope, results, append = true) => {
     });
 
     p1.then( async (r) => {
-        if (r.length === 0) return;
         const results_ch = await chewbbacaTable.processChewbbaca(r);
         await chewbbacaTable.addTableHeaders(scope, results_ch,
             "table_headers_chewbbaca");
@@ -73,7 +77,6 @@ const initReports = (scope, results, append = true) => {
     });
 
     p1.then( async (r) => {
-        if (r.length === 0) return;
         const results_ch = await prokkaTable.processProkka(r);
         await prokkaTable.addTableHeaders(scope, results_ch,
             "table_headers_prokka");
@@ -81,17 +84,16 @@ const initReports = (scope, results, append = true) => {
         await prokkaTable.buildDataTable();
     });
 
-
+    /* Launch charts */
     p1.then( async (r) => {
-        if (r.length === 0) return;
+        // if (r.length === 0) return;
+        // await charts.addReportData(r, append);
+        // await charts.buildSpadesGraphs();
+        // await charts.buildFastQcGraphs()
+        // if (r.length)
         await charts.addReportData(r, append);
-        await charts.buildSpadesGraphs();
-        await charts.buildFastQcGraphs()
+        await charts.buildAllCharts()
     });
-
-
-
-
 };
 
 const modalAlert = (text, callback) => {
@@ -193,7 +195,10 @@ app.controller("reportsController", function($scope){
 
                /* Request to get the reports for a given project */
                getReportsByProject($("#project_select option:selected").val()).then((results) => {
+
+                   // First initialization of the reports page
                    initReports($scope, results);
+
                    $("#waiting_gif").css({display:"none"});
                    $("#row-main").css({display:"block"});
                    $("#current_workflow").css({display:"block"});

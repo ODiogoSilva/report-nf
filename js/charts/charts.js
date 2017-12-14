@@ -1,58 +1,127 @@
-
-/* Charts Class
-    - Adds reports to the reports array
-    - Constructs charts based on the reportsData array
+/**
+ * Main chart manager and interface for:
+ *      - Add/Overwrite data from the reports array
+ *      - Triggers chart building and retains a reference to each existing chart
+ *      - Get/set specific charts
  */
-class Charts {
+class ChartManager {
 
-    constructor() {
-        this.reportsData = [];
-        this.spadesData = {};
-        this.fastqcData = {};
+    constructor () {
+
+        this.charts = [];
+
+        // Stores the raw report data
+        this.rawData = [];
+
+        // Map of the builder methods for each chart type/container
+        this.builder = new Map([
+            ["fastqcbaseSequenceQuality",
+                {
+                    path: "plotData.base_sequence_quality",
+                    build: bdFastqcSequenceQuality,
+                }
+            ]
+        ]);
     }
 
-    /* Method to add reports to the global reports */
-    async addReportData(reportsData, append) {
-        if ( append === "true" ) {
-            this.reportsData = await this.reportsData.concat(reportsData);
-        } else {
-            this.reportsData = reportsData
+    /**
+     * Inserts / appends data into the Charts object using the
+     * `addReportData` method by passing the reports array.
+     * @param {Array} reportsData - Report data as an array of JSON objects
+     * @param {boolean} [overwrite=false=>] append - Whether
+     * @returns {Promise.<void>}
+     */
+    async addReportData(reportsData, overwrite) {
+        // Set default value to append
+        if ( !overwrite ) {
+            overwrite = false;
         }
-        return true;
+
+        if ( overwrite === true ) {
+            this.rawData = await this.rawData.concat(reportsData);
+        } else {
+            this.rawData = reportsData;
+        }
+
     }
 
-    /*
-        Method to build all Spades graphs
-        Available at charts/spades.js
-    */
-    buildSpadesGraphs() {
-        processSpadesData(this.reportsData).then((processed_data) => {
-            this.spadesData.spadesBoxPlot = buildSpadesBoxPlot(
-                processed_data.boxplotSize, "spades_1", "Distribution of contig size"
-            );
-            this.spadesData.spadesSizeDist = buildSpadesDistribution(
-                processed_data.storageDist, "container2", "Distribution of contig size"
-            );
-        });
+    /**
+     *
+     */
+    async buildAllCharts() {
+
+        for (const [container, opts] of this.builder.entries()) {
+            const data = await opts.build(this.rawData, opts.path);
+            console.log(data)
+            Highcharts.chart(container, data)
+        }
+    }
+}
+
+
+class Chart {
+
+    /**
+     *
+     * @param chartOptions
+     */
+    constructor (opts) {
+
+        this.title = opts.title;
+        this.axisLabels = opts.axisLabels;
+        this.series = opts.series;
+
+        this.layout = {
+            chart: {
+                zoomType: "x"
+            },
+            title: {
+                text: this.title
+            },
+            legend: {
+                enabled: false
+            },
+            xAxis: {
+                title: {
+                    text: this.axisLabels.x
+                }
+            },
+            yAxis: {
+                title: {
+                    text: this.axisLabels.y
+                }
+            },
+            series: this.series
+        };
     }
 
-    /*
-        Method to build all Spades graphs
-        Available at charts/spades.js
-    */
-    buildFastQcGraphs() {
-        ProcessFastQcData(this.reportsData).then((processedData) => {
-            this.fastqcData = processedData;
-            // Build first plot only. The remaining plots will be built on demand
-            this.buildPlot(processedData.baseSequenceQuality, "fastqcbaseSequenceQuality");
-        })
-    }
+    extend(key, obj) {
 
-    buildPlot(chartObject, container) {
-        // Add the container where the chart will be rendered
-        // chartObject.chart.renderTo = container;
-        // Build chart
-        Highcharts.chart(container, chartObject)
+        $.extend(this.layout[key], obj);
+
     }
 
 }
+
+
+const getTaskReport = (rawData, task, path) => {
+
+    const getValue = (obj, path) => {
+        return path.split(".").reduce((prev, curr) => {
+            return prev ? prev[curr] : null
+        }, obj || self)
+    };
+
+    const data = new Map;
+
+    for (const r of rawData) {
+        // Get unique ID of project + sample name
+        const pid = `${r.project_id}.${r.sample_name}`;
+        // Find specified task and add plot data JSON to array
+        if (r.report_json.task === task) {
+            data.set(pid, getValue(r.report_json, path))
+        }
+    }
+
+    return data
+};

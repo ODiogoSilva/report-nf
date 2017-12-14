@@ -46,6 +46,7 @@ const sparkline = (sample, color) => {
     let dataSeries;
     let maxBp;
 
+    console.log(data)
     // Get BP data for current sample from report_json.plotData.sparkline
     for ( const el of data ) {
         if ( el.sample_name === sample && (el.report_json.plotData || {}).sparkline )  {
@@ -403,6 +404,7 @@ const sincronizedSlidingWindow = (sample) => {
     }
 
     let gcData,
+        xBars,
         covData,
         xLabels;
 
@@ -415,6 +417,8 @@ const sincronizedSlidingWindow = (sample) => {
             covData = el.report_json.plotData.covSliding[0];
         }
     }
+
+    console.log(data)
 
     // Get plotlines for contig boundaries
     let contigPlotLines = [];

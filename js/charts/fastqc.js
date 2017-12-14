@@ -1,3 +1,45 @@
+
+const bdFastqcSequenceQuality = (rawData, path) => {
+
+    const taskName = "fastqc";
+    const chartData = new Map;
+
+    // Get JSON report array
+    const dataObj = getTaskReport(rawData, taskName, path);
+
+    //
+    for (const [pid, data] of dataObj.entries()) {
+        chartData.set(pid, Array.from(data.data[0], x => parseFloat(x[1])))
+    }
+
+    const charOptions = getLineSeries(chartData).then((res) => {
+
+        const myChart = new Chart(
+            {title: "title", axisLabels: {x: "Position in read (bp)", y: "Quality score"}, series: res}
+        );
+
+        myChart.extend("yAxis", {
+            min: 0,
+            max: 45,
+            plotBands: [{
+                color: "rgba(170,255,170,.3)",
+                from: 28,
+                to: 45,
+            }, {
+                color: "rgba(255,255,170,.3)",
+                from: 20,
+                to: 28
+            }, {
+                color: "rgba(255,170,170,.3)",
+                from: 0,
+                to: 20
+            }]
+        });
+        return myChart.layout
+    });
+    return charOptions
+};
+
 /*
     Charts built with FastQC results
  */
@@ -23,28 +65,43 @@ const ProcessFastQcData = async (rawReports) => {
 
             // Get data for per base sequence quality
             const qualData = plotData.base_sequence_quality;
-            baseSequenceQuality.set(pid, Array.from(qualData.data[0], x => parseFloat(x[1])));
+            baseSequenceQuality.set(pid,{
+                data: Array.from(qualData.data[0], x => parseFloat(x[1])),
+                status: qualData.status
+            });
 
             // Get data for sequence quality
             const seqQualData = plotData.sequence_quality;
-            sequenceQuality.set(pid, Array.from(seqQualData.data[0],
-                    x => {return {x: parseInt(x[0]), y: parseFloat(x[1])}}));
+            sequenceQuality.set(pid, {
+                data: Array.from(seqQualData.data[0],
+                        x => {return {x: parseInt(x[0]), y: parseFloat(x[1])}}),
+                status: seqQualData.status
+            });
 
             // Get data for sequence length distribution
             const seqLenData = plotData.sequence_length_dist;
-            sequenceLength.set(pid, Array.from(seqLenData.data[0],
-                x => { return {x: parseInt(x[0].split("-")[0]), y: parseFloat(x[1])} }));
+            sequenceLength.set(pid, {
+                data: Array.from(seqLenData.data[0],
+                        x => { return {x: parseInt(x[0].split("-")[0]), y: parseFloat(x[1])} }),
+                status: seqLenData.status
+            });
 
             // Get data for N content
             const nContentData = plotData.base_n_content;
-            nContent.set(pid, Array.from(nContentData.data[0], x => parseFloat(x[1])));
+            nContent.set(pid, {
+                data: Array.from(nContentData.data[0], x => parseFloat(x[1])),
+                status: nContentData.status
+            });
 
             // Get data for GC content
             const gcData = plotData.base_gc_content;
             // Normalize read counts across samples by averaging over the total bp
             const gcVals = Array.from(gcData.data[0], x => parseFloat(x[1]));
             const totalBp = gcVals.reduce((a, b) => a + b, 0);
-            gcContent.set(pid, Array.from(gcVals, x => (x / totalBp) * 100));
+            gcContent.set(pid, {
+                data: Array.from(gcVals, x => (x / totalBp) * 100),
+                status: gcData.status
+            });
         }
     }
 
@@ -67,11 +124,11 @@ const getBaseSequenceQualityChart = async (mapObject) => {
                 zoomType: "x"
             },
             title: {
-                text: "Per base sequence quality"
+                text: "Per base sequence quality scores"
             },
             xAxis: {
                 title: {
-                    text: "Base pairs"
+                    text: "Position in read (bp)"
                 }
             },
             legend: {
@@ -264,14 +321,14 @@ const getLineSeries = async (mapObject) => {
 
     let seriesArray = [];
 
-        mapObject.forEach( (k, v) => {
+    for (const [k, v] of mapObject.entries()) {
         seriesArray.push({
-            name: v,
+            name: k,
             type: "line",
-            data: k,
+            data: v,
             color: "grey"
-        });
-    });
+        })
+    }
 
     return seriesArray;
 
