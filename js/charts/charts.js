@@ -61,6 +61,14 @@ class ChartManager {
                     chartOptions: null,
                     atInit: false
                 }
+            ],
+            ["assemblyContigSize",
+                {
+                    path: "plotData.size_dist",
+                    build: assemblyContigSize,
+                    chartOptions: null,
+                    atInit: true
+                }
             ]
         ]);
     }
@@ -83,7 +91,6 @@ class ChartManager {
         } else {
             this.rawData = reportsData;
         }
-
     }
 
     /**
@@ -95,6 +102,7 @@ class ChartManager {
             // Call the builder function and provide the rawData array
             const chartJson = await obj.build(this.rawData, obj.path);
             obj.chartOptions = chartJson;
+            console.log(chartJson)
             // Build plots scheduled for the init
             if (obj.atInit === true) {
                 this.buildPlot(container);
@@ -128,6 +136,7 @@ class Chart {
             title: {
                 text: this.title
             },
+            plotOptions: {},
             legend: {
                 enabled: false
             },
@@ -144,13 +153,9 @@ class Chart {
             series: this.series
         };
     }
-
     extend(key, obj) {
-
         $.extend(this.layout[key], obj);
-
     }
-
 }
 
 
