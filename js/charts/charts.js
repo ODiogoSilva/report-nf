@@ -14,11 +14,22 @@ class ChartManager {
         this.rawData = [];
 
         // Map of the builder methods for each chart type/container
-        this.builder = new Map([
+        this.charts = new Map([
+            // HTML container of the chart
             ["fastqcbaseSequenceQuality",
                 {
+                    // JSON 'location' of the data relevant to the plot
                     path: "plotData.base_sequence_quality",
+                    // Reference to the function that will build the chart
                     build: bdFastqcSequenceQuality,
+                    // Will store the JSON object with the necessary
+                    // information to produce the chart
+                    chartOptions: null,
+                    // Determine whether the plot should be built when calling
+                    // buildAllCharts or not. False values are for plots
+                    // that are in tabbed containers and are not immediately
+                    // shown.
+                    atInit: true
                 }
             ]
         ]);
@@ -50,11 +61,19 @@ class ChartManager {
      */
     async buildAllCharts() {
 
-        for (const [container, opts] of this.builder.entries()) {
-            const data = await opts.build(this.rawData, opts.path);
-            console.log(data)
-            Highcharts.chart(container, data)
+        for (const [container, obj] of this.charts.entries()) {
+            const chartJson = await obj.build(this.rawData, obj.path);
+            obj.chartOptions = chartJson;
+            // Build plots scheduled for the init
+            if (obj.atInit === true) {
+                this.buildPlot(container);
+            }
         }
+    }
+
+    buildPlot(container) {
+        // Get chart options for this container
+        Highcharts.chart(container, this.charts.get(container).chartOptions);
     }
 }
 

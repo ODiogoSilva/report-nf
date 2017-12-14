@@ -14,9 +14,11 @@ const bdFastqcSequenceQuality = (rawData, path) => {
 
     const charOptions = getLineSeries(chartData).then((res) => {
 
-        const myChart = new Chart(
-            {title: "title", axisLabels: {x: "Position in read (bp)", y: "Quality score"}, series: res}
-        );
+        const myChart = new Chart({
+            title: "Per sequence quality scores",
+            axisLabels: {x: "Position in read (bp)", y: "Quality score"},
+            series: res
+        });
 
         myChart.extend("yAxis", {
             min: 0,
