@@ -62,7 +62,7 @@ const sparkline = (sample, color) => {
     }
 
     // Get sorted BP data
-    sparklineData = Array.from(sparklineDataTemp.sort(), x => x[1]);
+    sparklineData = Array.from(sparklineDataTemp.sort(), (x) => x[1]);
     // Get maximum value for sample
     maxBp = Math.max(...sparklineData);
     // Get data series, already in percentage
@@ -125,7 +125,7 @@ const highLightScatter = (el, type) => {
 
     // Exit if the scatter data series is absent
     if ( points.length === 0 ) {
-        return
+        return;
     }
 
     // Check if each point is within range and modify style attributes
@@ -133,9 +133,9 @@ const highLightScatter = (el, type) => {
     let modifiedPoints = [];
     for (const p of points) {
         if ( cat[0] <= p.y && p.y < cat[1] ) {
-            modifiedPoints.push({x: p.x, y: p.y, marker: {fillColor: "#84bcff", radius: 5, }})
+            modifiedPoints.push({x: p.x, y: p.y, marker: {fillColor: "#84bcff", radius: 5, }});
         } else {
-            modifiedPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}})
+            modifiedPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}});
         }
     }
 
@@ -148,14 +148,14 @@ const highLightScatter = (el, type) => {
     let modifiedBar = [];
     for (const b of el.series.chart.series[0].data) {
         if ( b.index === el.index ) {
-            modifiedBar.push({"color": "#84bcff"})
+            modifiedBar.push({"color": "#84bcff"});
         } else {
-            modifiedBar.push({"color": "grey"})
+            modifiedBar.push({"color": "grey"});
         }
     }
     el.series.chart.series[0].update({
         data: modifiedBar
-    })
+    });
 };
 
 
@@ -174,7 +174,7 @@ const highlightHist = (el) => {
         if ( b.x <= yval && yval < b.x2 ) {
             modifiedBars.push({"color": "#84bcff"});
         } else {
-            modifiedBars.push({"color": "grey"})
+            modifiedBars.push({"color": "grey"});
         }
     }
     el.series.chart.series[0].update({data: modifiedBars});
@@ -203,15 +203,15 @@ const resetHighlight = (ch) => {
     let resetBars = [];
 
     for ( const p of points ) {
-        resetPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}})
+        resetPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}});
     }
 
     for ( const b of bars ) {
-        resetBars.push({"color": "grey"})
+        resetBars.push({"color": "grey"});
     }
 
     ch.series[1].update({data: resetPoints});
-    ch.series[0].update({data: resetBars})
+    ch.series[0].update({data: resetBars});
 
 };
 
@@ -227,7 +227,7 @@ const sizeDistributionPlot = (sample) => {
     for ( const el of data ) {
         const pid = `${el.project_id}.${el.sample_name}`;
         if ( pid === sample && (el.report_json.plotData || {}).size_dist )  {
-            distData = el.report_json.plotData.size_dist
+            distData = el.report_json.plotData.size_dist;
         }
     }
 
@@ -241,7 +241,7 @@ const sizeDistributionPlot = (sample) => {
             buttons: {
                 clearHighlight: {
                     text: "Clear highlights",
-                    onclick: function () {resetHighlight(this)},
+                    onclick() {resetHighlight(this);},
                     buttonSpacing: 8,
                     theme: {
                         stroke: "#313131"
@@ -253,17 +253,17 @@ const sizeDistributionPlot = (sample) => {
             text: "Distribution of contig size"
         },
         xAxis: [{
-            title: { text: 'Contig' },
+            title: { text: "Contig" },
             reversed: true
         }, {
-            title: { text: 'Contig size' },
+            title: { text: "Contig size" },
             opposite: true
         }],
 
         yAxis: [{
-            title: { text: 'Contig size' }
+            title: { text: "Contig size" }
         }, {
-            title: { text: 'Frequency' },
+            title: { text: "Frequency" },
             opposite: true
         }],
         series: [{
@@ -310,31 +310,6 @@ const sizeDistributionPlot = (sample) => {
         }]
     })
 
-};
-
-
-const updateLabels = (el, fw, idx) => {
-
-    const AxisStyle = {
-        title: {
-            style: {
-                fontWeight: fw,
-            }
-        },
-    };
-
-    let AxisArray;
-
-    if ( idx === 0 ) {
-        AxisArray = [{}, AxisStyle];
-    } else {
-        AxisArray = [AxisStyle, {}];
-    }
-
-    el.chart.update({
-        yAxis: AxisArray,
-        xAxis: AxisArray
-    })
 };
 
 
