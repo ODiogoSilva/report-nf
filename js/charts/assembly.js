@@ -1,3 +1,25 @@
+/*global getTaskReport, Chart, showModelGraphs */
+
+/**
+ *
+ * @param data
+ * @returns {Promise.<Array>}
+ */
+const getBoxPlotSeries = async (data) => {
+    const series = [];
+
+    for (const [pid, val] of data.entries()) {
+        series.push(getBoxValues(val, pid))
+    }
+    return series
+};
+
+/**
+ *
+ * @param rawData
+ * @param path
+ * @returns {Promise.<TResult>}
+ */
 const assemblyContigSize = (rawData, path) => {
 
     const taskName = "pilon";
@@ -21,7 +43,7 @@ const assemblyContigSize = (rawData, path) => {
         myChart.extend("xAxis", {labels: {
             rotation: -45,
             enabled: true,
-            formatter: function() {return res[this.value][0]}
+            formatter() {return res[this.value][0];}
         }});
         myChart.extend("yAxis", {min:0});
 
@@ -40,19 +62,8 @@ const assemblyContigSize = (rawData, path) => {
                 }
             }
         };
-
-        return myChart.layout
+        return myChart.layout;
     });
-};
-
-
-const getBoxPlotSeries = async (data) => {
-    const series = [];
-
-    for (const [pid, val] of data.entries()) {
-        series.push(getBoxValues(val, pid))
-    }
-    return series
 };
 
 
@@ -68,13 +79,13 @@ const highlightBoxPlot = (chartObj, selection) => {
     for (const group of selection) {
         for (const point of chartObj.series[0].data) {
             if (group.samples.includes(point.name)) {
-                highlightedSeries.push({color: group.color})
+                highlightedSeries.push({color: group.color});
             } else {
-                highlightedSeries.push({})
+                highlightedSeries.push({});
             }
         }
     }
-    console.log(highlightedSeries)
-    chartObj.series[0].update({data: highlightedSeries})
-    console.log(chartObj)
+
+    chartObj.series[0].update({data: highlightedSeries});
+
 };
