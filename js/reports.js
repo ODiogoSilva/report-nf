@@ -339,12 +339,12 @@ app.controller("reportsController", function($scope){
             }
         }).off("show.bs.popover").on("show.bs.popover", () => {
             setTimeout(() => {
-                r_filter = $(".remove_filter");
-                r_filter.off("click").on("click", (e) => {
+                const rFilter = $(".remove_filter");
+                rFilter.off("click").on("click", (e) => {
                     const filters = $("#popover_filters_project");
                     const target = $(e.target);
-                    p_div_id = target.closest("div").attr("id");
-                    filters.find("#"+p_div_id).remove();
+                    const pDivId = target.closest("div").attr("id");
+                    filters.find("#"+pDivId).remove();
 
                     // Dynamically set content of popover
                     const popover = $("#active_filters_projectid").data("bs.popover");
