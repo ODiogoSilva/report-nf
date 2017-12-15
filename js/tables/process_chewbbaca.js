@@ -26,7 +26,7 @@ const processChewbbaca = (reports_data) => {
     let chewbbacaColumnMapping = [
         {
             data: "active",
-            render: function (data, type, row) {
+            render(data, type, row) {
                 if (type === 'display') {
                     return '<input type="checkbox" class="editor-active">';
                 }
@@ -50,7 +50,7 @@ const processChewbbaca = (reports_data) => {
             let data_object = {
                 "active": 0,
                 "id": report.sample_name
-            }
+            };
 
             Object.keys(report.report_json.cagao[1]).map((key) => {
                 if (key !== "header") dataKey = key;

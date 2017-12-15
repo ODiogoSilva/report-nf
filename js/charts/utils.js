@@ -2,6 +2,11 @@
     File with utils used to construct the reports
  */
 
+//because .sort() doesn't sort numbers correctly
+function numSort(a,b) {
+    return a - b;
+}
+
 //get any percentile from an array
 function getPercentile(data, percentile) {
     data.sort(numSort);
@@ -14,11 +19,6 @@ function getPercentile(data, percentile) {
         result = data[Math.floor(index)];
     }
     return result;
-}
-
-//because .sort() doesn't sort numbers correctly
-function numSort(a,b) {
-    return a - b;
 }
 
 /**
