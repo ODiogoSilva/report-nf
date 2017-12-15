@@ -1,4 +1,4 @@
-/*global getTaskReport, Chart, showModelGraphs */
+/*global getTaskReport, Chart, showModelGraphs, getBoxValues */
 
 /**
  *

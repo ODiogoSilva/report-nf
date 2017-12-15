@@ -1,6 +1,6 @@
 const allowDrop = (ev) => {
     ev.preventDefault();
-    $("#body_container").css({opacity: 0.5})
+    $("#body_container").css({opacity: 0.5});
 };
 
 const leaveDrop = (ev) => {

@@ -25,7 +25,7 @@ const sendFile = (filename, text) => {
 const saveStatusFile = () => {
     const fileName = $("#save_file_name").val();
     if (fileName !== "") {
-        const saveObject = {"data": data, "dataFilters": dataFilters}
+        const saveObject = {"data": data, "dataFilters": dataFilters};
         const dataString = JSON.stringify(saveObject);
         sendFile(fileName, dataString);
     }

@@ -1,4 +1,4 @@
-
+/*globals chewbbacaToReportId */
 /*
     Function to process chewBBACA data to load into the DataTable
  */
@@ -47,7 +47,7 @@ const processChewbbaca = (reports_data) => {
 
             chewbbacaToReportId[report.sample_name] = index;
 
-            let data_object = {
+            let dataObject = {
                 "active": 0,
                 "id": report.sample_name
             };
@@ -57,10 +57,10 @@ const processChewbbaca = (reports_data) => {
             });
 
             report.report_json.cagao[1][dataKey].map( (j, i) => {
-                data_object[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][dataKey][i]
+                dataObject[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][dataKey][i]
             });
 
-            chewbbacaDataArray.push(data_object);
+            chewbbacaDataArray.push(dataObject);
 
         }
     }
@@ -88,7 +88,7 @@ const downloadProfiles = () => {
         return false;
     }
 
-    selectedData.each((value, i) =>{
+    selectedData.each((value, i) => {
         for (const [index, report] of data.entries()){
             if (index === chewbbacaToReportId[value.id]) {
                 auxBody = [];

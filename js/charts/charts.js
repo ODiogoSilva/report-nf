@@ -251,7 +251,7 @@ const getTaskReport = (rawData, task, path) => {
 
     const getValue = (obj, path) => {
         return path.split(".").reduce((prev, curr) => {
-            return prev ? prev[curr] : null
+            return prev ? prev[curr] : null;
         }, obj || self)
     };
 
@@ -262,9 +262,9 @@ const getTaskReport = (rawData, task, path) => {
         const pid = `${r.project_id}.${r.sample_name}`;
         // Find specified task and add plot data JSON to array
         if (r.report_json.task === task) {
-            data.set(pid, getValue(r.report_json, path))
+            data.set(pid, getValue(r.report_json, path));
         }
     }
 
-    return data
+    return data;
 };

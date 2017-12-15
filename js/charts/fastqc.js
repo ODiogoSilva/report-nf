@@ -73,7 +73,7 @@ const bdFastqcSequenceQuality = (rawData, path) => {
 
     for (const [pid, data] of dataObj.entries()) {
         chartData.set(pid, Array.from(data.data[0],
-            (x) => {return {x: parseInt(x[0]), y: parseFloat(x[1])}}));
+            (x) => {return {x: parseInt(x[0]), y: parseFloat(x[1])};}));
     }
 
     return getLineSeries(chartData).then((res) => {
