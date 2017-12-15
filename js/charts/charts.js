@@ -1,3 +1,5 @@
+/*globals Highcharts, bdFastqcBaseSequenceQuality, HighlightLineSeries, bdFastqcSequenceQuality, bdFastqcGcContent, bdFastqcSequenceLength, bdFastqcNContent, assemblyContigSize, highlightBoxPlot */
+
 /**
  * Main chart manager and interface for:
  *      - Add/Overwrite data from the reports array
@@ -147,17 +149,17 @@ class ChartManager {
 
             // Ignore charts that lack the highlight method
             if (opts.highlight === undefined){
-                continue
+                continue;
             }
 
             // If the chart has not be initialized, force it
             if (!$("#" + container).highcharts()) {
-                this.buildChart(container)
+                this.buildChart(container);
             }
 
             // Call the highlighter function
             const chartObj = $("#" + container).highcharts();
-            opts.highlight(chartObj, [{samples: ["1.HSM742d0C1_S37"], color:"blue"}])
+            opts.highlight(chartObj, [{samples: ["1.HSM742d0C1_S37"], color:"blue"}]);
 
         }
     }
