@@ -329,7 +329,7 @@ const sizeDistributionPlot = (sample) => {
                 }
             }
         }]
-    })
+    });
 
 };
 
@@ -515,7 +515,7 @@ const sincronizedSlidingWindow = (sample) => {
             })
     });
 
-    $('<div class="chart">')
+    $("<div class='chart'>")
         .appendTo("#sync-sliding-window")
         .highcharts({
             chart: {

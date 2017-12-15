@@ -4,7 +4,7 @@
  * Main chart manager and interface for:
  *      - Add/Overwrite data from the reports array
  *      - Triggers chart building and retains a reference to each existing chart
- *      - Get/set specific charts
+ *      - Highlight samples/series for charts
  */
 class ChartManager {
 
@@ -84,10 +84,11 @@ class ChartManager {
     }
 
     /**
-     * Inserts / appends data into the Charts object using the
+     * Inserts/appends data into the Charts object using the
      * `addReportData` method by passing the reports array.
      * @param {Array} reportsData - Report data as an array of JSON objects
-     * @param {boolean} [overwrite=false=>] append - Whether
+     * @param {boolean} [overwrite=false=>] append - When true, overwrites the
+     * `rawData` property with the provided reports. Otherwise, appends to it.
      * @returns {Promise.<void>}
      */
     async addReportData(reportsData, overwrite) {
@@ -104,7 +105,16 @@ class ChartManager {
     }
 
     /**
+     * Wrapper that builds all plots stored in the `charts` Map object.
+     * Each value in the `charts` Map is expected to be a JSON object with
+     * the `build` key that contains the build function as a value. This
+     * means that all charts can be built by using simply:
      *
+     *      this.chart.get("SomeChart").build(*args)
+     *
+     * After each chart is built, the chartOptions is updated with the new
+     * chart and the chart is rendered into the corresponding container if
+     * the `atInit` property of the JSON is true.
      */
     async buildAllCharts() {
 
@@ -119,6 +129,22 @@ class ChartManager {
         }
     }
 
+    /**
+     * Renders a chart to the corresponding container.
+     *
+     * The only required information is the `container` argument. This
+     * method will fetch the `chartOptions` for the corresponding
+     * container from the `charts` property.
+     *
+     * By default the chart is not rendered if it is already present
+     * in the HTML. The `redraw` options allows forcing the redrawing
+     * of the chart, which triggers the animation.
+     *
+     * @param {String} container - ID of the HTML container where
+     * the chart should be rendered.
+     * @param {boolean} redraw - If true, forces the chart redrawing
+     * even if it was already rendered.
+     */
     buildChart(container, redraw) {
 
         // Set default value for redraw to not repeat the drawing
@@ -141,6 +167,18 @@ class ChartManager {
     }
 
     /**
+     * Wrapper that highlights/selects of any number of samples
+     *
+     * If the charts in the `charts` property have the `highlight` key,
+     * the function in the corresponding value will be called to
+     * do the highlighting/selection of that chart. If the chart does not
+     * have a `highlight` key, then it is ignored.
+     *
+     * The required argument is an array of objects that must contain two
+     * key:value pairs:
+     *
+     *      [{samples: ["A", "B", "C"], color: "red"},
+     *       {samples: ["D", "E"], color: "blue"}]
      *
      * @param [Array] selection
      */
