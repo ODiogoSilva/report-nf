@@ -1,4 +1,4 @@
-/*global dataFilters, projectIdMap, initReports */
+/*globals dataFilters, projectIdMap, initReports */
 
 /**
  * Tests for the presence of a regular expression in any element of an array
@@ -248,7 +248,7 @@ const checkFilter = (targetId) => {
 
     // Check if val can be a regular expression
     try {
-        const re = new RegExp(val)
+        const re = new RegExp(val);
     } catch(err) {
         return showLabel(selector, spanSelector, helpSelector, "Invalid expression", "error");
     }

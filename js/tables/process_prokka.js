@@ -1,4 +1,5 @@
 /*globals data */
+
 /*
     Function to process prokka data to load into the DataTable
  */
@@ -12,7 +13,7 @@ const processProkka = (reportsData) => {
     prokkaData.columnMapping = [
         {
             data:   "active",
-            render: function ( data, type, row ) {
+            render( data, type, row ) {
                 if ( type === "display" ) {
                     return "<input type='checkbox' class='editor-active'>";
                 }

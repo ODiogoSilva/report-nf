@@ -1,3 +1,5 @@
+/*globals data */
+
 /*
     File with utils used to construct the reports
  */

@@ -252,7 +252,7 @@ const getTaskReport = (rawData, task, path) => {
     const getValue = (obj, path) => {
         return path.split(".").reduce((prev, curr) => {
             return prev ? prev[curr] : null;
-        }, obj || self)
+        }, obj || self);
     };
 
     const data = new Map;

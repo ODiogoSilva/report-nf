@@ -1,4 +1,4 @@
-/*globals chewbbacaToReportId */
+/*globals chewbbacaToReportId, chewbbacaTable, data, sendFile */
 /*
     Function to process chewBBACA data to load into the DataTable
  */
@@ -57,7 +57,7 @@ const processChewbbaca = (reportsData) => {
             });
 
             report.report_json.cagao[1][dataKey].map( (j, i) => {
-                dataObject[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][dataKey][i]
+                dataObject[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][dataKey][i];
             });
 
             chewbbacaDataArray.push(dataObject);
@@ -118,7 +118,7 @@ const downloadProfiles = () => {
     downloadString += (headers.join("\t") + "\n");
 
     for (const profile of body) {
-        downloadString += (profile.join("\t") + "\n")
+        downloadString += (profile.join("\t") + "\n");
     }
 
     // Send to download

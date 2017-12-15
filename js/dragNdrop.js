@@ -8,7 +8,7 @@ const leaveDrop = (ev) => {
 };
 
 const drag = (ev) => {
-    ev.dataTransfer.dropEffect = 'copy';
+    ev.dataTransfer.dropEffect = "copy";
 };
 
 const drop = async (ev) => {
@@ -19,8 +19,8 @@ const drop = async (ev) => {
     const reader = new FileReader();
 
     reader.onload = (e) => {
-        const reports_data = JSON.parse(e.target.result);
-        $("#body_container").trigger("dropFile",[reports_data]);
+        const reportsData = JSON.parse(e.target.result);
+        $("#body_container").trigger("dropFile",[reportsData]);
     };
 
     reader.readAsText(data[0]);
