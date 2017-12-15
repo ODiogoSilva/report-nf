@@ -1,4 +1,4 @@
-/*global angular, Charts, Table, filterJson, getSpecies, getProjects getReportsByProject*/
+/*global angular, ChartManager, Table, filterJson, getSpecies, getProjects, getReportsByProject, downloadProfiles, updateFilterObject*/
 const app = angular.module("reportsApp", []);
 
 // Array of JSON files with the report data
@@ -47,9 +47,9 @@ const initReports = (scope, results, append = true) => {
         const r = filterJson(results, dataFilters);
         // Only resolve the promise when the results array is not empty
         if (r.length !== 0) {
-            resolve(r)
+            resolve(r);
         } else {
-            alert("Warning: Empty report object")
+            alert("Warning: Empty report object");
         }
 
     });
@@ -69,18 +69,18 @@ const initReports = (scope, results, append = true) => {
     });
 
     p1.then( async (r) => {
-        const results_ch = await chewbbacaTable.processChewbbaca(r);
-        await chewbbacaTable.addTableHeaders(scope, results_ch,
+        const resultsCh = await chewbbacaTable.processChewbbaca(r);
+        await chewbbacaTable.addTableHeaders(scope, resultsCh,
             "table_headers_chewbbaca");
-        await chewbbacaTable.addTableData(results_ch);
+        await chewbbacaTable.addTableData(resultsCh);
         await chewbbacaTable.buildDataTable();
     });
 
     p1.then( async (r) => {
-        const results_ch = await prokkaTable.processProkka(r);
-        await prokkaTable.addTableHeaders(scope, results_ch,
+        const resultsCh = await prokkaTable.processProkka(r);
+        await prokkaTable.addTableHeaders(scope, resultsCh,
             "table_headers_prokka");
-        await prokkaTable.addTableData(results_ch);
+        await prokkaTable.addTableData(resultsCh);
         await prokkaTable.buildDataTable();
     });
 
@@ -92,7 +92,7 @@ const initReports = (scope, results, append = true) => {
         // await charts.buildFastQcGraphs()
         // if (r.length)
         await charts.addReportData(r, append);
-        await charts.buildAllCharts()
+        await charts.buildAllCharts();
     });
 };
 
@@ -130,7 +130,7 @@ const populateSelect = (container, speciesData, data) => {
 
     data.map((entry) => {
         options += "<option value='"+entry.id+"'>"+spIdToName[entry.species_id] + " - " +entry.name+"</option>";
-        projectIdMap.set(entry.id, entry.name)
+        projectIdMap.set(entry.id, entry.name);
     });
 
     $("#"+container).empty().append(options).selectpicker("refresh").selectpicker("setStyle", "btn-default");
@@ -140,9 +140,9 @@ const populateSelect = (container, speciesData, data) => {
 /* Angular controller to control the DOM elements from the index.html file */
 app.controller("reportsController", function($scope){
 
-    $scope.graph1_name = "Graph 1";
-    $scope.graph2_name = "Graph 2";
-    $scope.table_name = "Main table";
+    $scope.graph1Name = "Graph 1";
+    $scope.graph2Name = "Graph 2";
+    $scope.tableName = "Main table";
     $scope.fastqcName = "FastQC";
 
     $scope.workflows = [
@@ -152,7 +152,7 @@ app.controller("reportsController", function($scope){
         ["Pathotyping", 1]
     ];
 
-    $scope.workflow_charts = {
+    $scope.workflowCharts = {
         "Assembly": [
             ["Main table", "table1_div"],
             ["FastQC", "fastqcContainer"],
@@ -167,7 +167,7 @@ app.controller("reportsController", function($scope){
         "Pathotyping": []
     };
 
-    $scope.qc_levels = ["A", "B", "C", "D", "F"];
+    $scope.qcLevels = ["A", "B", "C", "D", "F"];
 
     /* Request to get all the available species */
     getSpecies().then((results) => {
@@ -299,18 +299,18 @@ app.controller("reportsController", function($scope){
         $("#active_filters_name").popover({
             html : true,
             trigger: "focus",
-            content: function() {
+            content() {
                 return $("#popover_filters_sample").html();
             }
         }).off("show.bs.popover").on("show.bs.popover", () => {
             setTimeout(() => {
-                r_filter = $(".remove_filter");
-                r_filter.off("click").on("click", (e) => {
+                const rFilter = $(".remove_filter");
+                rFilter.off("click").on("click", (e) => {
 
                     const filters = $("#popover_filters_sample");
                     const target = $(e.target);
-                    p_div_id = target.closest("div").attr("id");
-                    filters.find("#"+p_div_id).remove();
+                    const pDivId = target.closest("div").attr("id");
+                    filters.find("#"+pDivId).remove();
 
                     // Dynamically set content of popover
                     const popover = $("#active_filters_name").data("bs.popover");
@@ -405,27 +405,27 @@ app.controller("reportsController", function($scope){
 
 });
 
-app.directive('scrollSpy', function ($window) {
+app.directive("scrollSpy", function ($window) {
     return {
-        restrict: 'A',
-        controller: function ($scope) {
+        restrict: "A",
+        controller($scope) {
             $scope.spies = [];
             this.addSpy = function (spyObj) {
                 $scope.spies.push(spyObj);
             };
         },
-        link: function (scope, elem, attrs) {
+        link(scope, elem, attrs) {
             var spyElems;
             spyElems = [];
 
-            $($window).on('scroll', function () {
+            $($window).on("scroll", function () {
                 var highlightSpy, pos, spy, _i, _len, _ref;
                 highlightSpy = null;
                 _ref = scope.spies;
                 let offset = 250;
 
-                for (s of scope.spies) {
-                    spyElems[s.id] = elem.find("#" + s.id)
+                for (const s of scope.spies) {
+                    spyElems[s.id] = elem.find("#" + s.id);
                 }
 
                 // cycle through `spy` elements to find which to highlight
@@ -457,24 +457,20 @@ app.directive('scrollSpy', function ($window) {
     };
 });
 
-app.directive('spy', function ($location, $anchorScroll) {
+app.directive("spy", function ($location, $anchorScroll) {
     return {
         restrict: "A",
         require: "^scrollSpy",
-        link: function(scope, elem, attrs, affix) {
-            // elem.click(function () {
-                // $location.hash(attrs.spy);
-                // $anchorScroll();
-            // });
+        link(scope, elem, attrs, affix) {
 
             affix.addSpy({
                 id: attrs.spy,
-                in: function() {
-                    elem.addClass('active');
-                    elem.parent().parent().addClass("active")
+                in() {
+                    elem.addClass("active");
+                    elem.parent().parent().addClass("active");
                 },
-                out: function() {
-                    elem.removeClass('active');
+                out() {
+                    elem.removeClass("active");
                 }
             });
         }

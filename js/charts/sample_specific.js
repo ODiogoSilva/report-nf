@@ -134,7 +134,7 @@ const updateLabels = (el, fw, idx) => {
     el.chart.update({
         yAxis: AxisArray,
         xAxis: AxisArray
-    })
+    });
 };
 
 
