@@ -1,3 +1,5 @@
+/*globals sliderMap, dataFilters */
+
 /**
  *
  * @param qcObject
@@ -35,7 +37,7 @@ const getQc = (qcObject) => {
                             </ul>
                         </div>
                     </span>${qcValue}</div>`;
-        return qcMsg
+        return qcMsg;
     }
 
     // If the sample has not yet finished but did not fail, return the loader
@@ -115,7 +117,7 @@ const setMaxFilters = (header, value) => {
     ]);
 
     // Skip, if header is not present in filters object
-    if (!dataFilters.hasOwnProperty(header)) {return}
+    if (!dataFilters.hasOwnProperty(header)) {return;}
 
     if ( value > dataFilters[header].max ) {
         dataFilters[header].max = value;
@@ -206,9 +208,9 @@ const processInnuca = (reportsData, setMax) => {
                 // to the column_bars array
                 if (cell.hasOwnProperty("columnBar")){
                     if (!columnBars.hasOwnProperty(header)){
-                        columnBars[header] = [cell.value]
+                        columnBars[header] = [cell.value];
                     } else {
-                        columnBars[header].push(cell.value)
+                        columnBars[header].push(cell.value);
                     }
                 }
             }
@@ -220,7 +222,7 @@ const processInnuca = (reportsData, setMax) => {
     //
 
     // Sort the column headers according to the process id
-    columns = [...columns.entries()].sort( (a,b) => {return a[1] - b[1]});
+    columns = [...columns.entries()].sort( (a,b) => {return a[1] - b[1];});
     let sortedColumns = [];
     for (let c of columns) {
         sortedColumns.push(c[0]);
@@ -257,7 +259,7 @@ const processInnuca = (reportsData, setMax) => {
                 v.set(f,
                     "<div class='table-cell'>" +
                         "<div class='table-bar-text'>NA</div>" +
-                    "</div>")
+                    "</div>");
             // The field exists, do some pre-processing
             } else {
                 let prop;
@@ -266,12 +268,12 @@ const processInnuca = (reportsData, setMax) => {
                 // based on its value
                 if (columnBars.hasOwnProperty(f)){
                     if (f === "trimmed"){
-                        prop = parseFloat(v.get(f))
+                        prop = parseFloat(v.get(f));
                     } else {
-                        maxValue = Math.max(...columnBars[f]);
+                        const maxValue = Math.max(...columnBars[f]);
                         prop = (parseFloat(v.get(f)) / maxValue) * 100;
                         // Set/Update maximum filters value
-                        if ( setMax === true ) {setMaxFilters(f, maxValue)}
+                        if ( setMax === true ) {setMaxFilters(f, maxValue);}
                     }
                     const outDiv = `<div id="${f.replace(/ |\(|\)/g, "")}" class='table-cell'><div class='table-bar' style='width:${prop}%'></div>${v.get(f)}</div>`;
                     v.set(f, outDiv);
@@ -280,7 +282,7 @@ const processInnuca = (reportsData, setMax) => {
         });
 
         // Convert Map to object data type
-        v.forEach((v, k) => { dataObject[k] = v });
+        v.forEach((v, k) => { dataObject[k] = v ;});
         innucaData.data.push(dataObject);
     });
 
@@ -292,9 +294,9 @@ const processInnuca = (reportsData, setMax) => {
     innucaData.columnMapping = [
         {
             data:   "active",
-            render: function ( data, type, row ) {
+            render( data, type, row ) {
                 if ( type === "display" ) {
-                    return '<input type="checkbox" class="editor-active">';
+                    return "<input type='checkbox' class='editor-active'>";
                 }
                 return data;
             },
