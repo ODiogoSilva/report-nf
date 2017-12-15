@@ -117,9 +117,25 @@ class ChartManager {
         }
     }
 
-    buildChart(container) {
-        // Get chart options for this container
-        Highcharts.chart(container, this.charts.get(container).chartOptions);
+    buildChart(container, redraw) {
+
+        // Set default value for redraw to not repeat the drawing
+        // of a chart
+        if (!redraw) {
+            redraw = false;
+        }
+
+        const c = $("#" + container).highcharts();
+
+        if (c) {
+           if (redraw === true) {
+               c.destroy();
+               this.buildChart(container);
+           }
+        } else {
+            // Get chart options for this container
+            Highcharts.chart(container, this.charts.get(container).chartOptions);
+        }
     }
 
     /**

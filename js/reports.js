@@ -264,10 +264,7 @@ app.controller("reportsController", function($scope){
         // Render FastQC plots for the first time on demand by pressing the tabs
         $("#fastqcTabs").on("shown.bs.tab", (e) => {
             let container = $(e.target).attr("data-target");
-            let chart = $(container).highcharts();
-            if ( !chart ) {
-                charts.buildChart(container.replace("#", ""))
-            }
+            charts.buildChart(container.replace("#", ""), true)
         });
 
         /* Show/hide tabs of spades and its divs */
