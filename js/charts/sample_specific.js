@@ -1,7 +1,11 @@
+/*global innucaTable, data, Highcharts */
+
 const humanReadable = (number) => {
     const suffix = ["", "KB", "MB", "GB", "TB"];
     const i = parseInt(Math.floor(Math.log(number) / Math.log(1000)));
-    if (i === 0) return number + " " + suffix[i];
+    if (i === 0) {
+        return number + " " + suffix[i];
+    }
     return (number / Math.pow(1000, i)).toFixed(1) + " " + suffix[i];
 };
 
@@ -12,7 +16,7 @@ const populateHeader = (sample) => {
     // Get QC div and add to container
     const qc = innucaTable.getValue(sample, "qc");
     $("#qcContainer").html(qc);
-    qcColor = qc.css("background-color")
+    qcColor = qc.css("background-color");
 
     // Base pairs
     const bp = innucaTable.getValue(sample, "bp")[0].innerText;
@@ -34,7 +38,7 @@ const populateHeader = (sample) => {
     const assembledbp = innucaTable.getValue(sample, "assembled bp")[0].innerText;
     $("#assembledContainer").html(humanReadable(assembledbp));
 
-    return qcColor
+    return qcColor;
 
 };
 
@@ -46,7 +50,6 @@ const sparkline = (sample, color) => {
     let dataSeries;
     let maxBp;
 
-    console.log(data)
     // Get BP data for current sample from report_json.plotData.sparkline
     for ( const el of data ) {
         const pid = `${el.project_id}.${el.sample_name}`;
@@ -54,7 +57,7 @@ const sparkline = (sample, color) => {
             // Populate an array of arrays, with the processId and BP data
             // this will allow the data to be sorted according to process ID
             sparklineDataTemp.push([parseInt(el.process_id),
-                                    parseInt(el.report_json.plotData.sparkline)])
+                                    parseInt(el.report_json.plotData.sparkline)]);
         }
     }
 
@@ -63,7 +66,7 @@ const sparkline = (sample, color) => {
     // Get maximum value for sample
     maxBp = Math.max(...sparklineData);
     // Get data series, already in percentage
-    dataSeries = Array.from(sparklineData, x => parseFloat(x / maxBp))
+    dataSeries = Array.from(sparklineData, (x) => parseFloat(x / maxBp));
 
     Highcharts.chart("sparkline-container", {
         chart: {
@@ -103,19 +106,120 @@ const sparkline = (sample, color) => {
         series: [{
             name: sample,
             data: dataSeries,
-            color: color
+            color
         }]
 
+    });
+
+};
+
+/**
+ *
+ * @param el
+ * @param reset
+ */
+const highLightScatter = (el, type) => {
+
+    const cat = [el.x, el.x2];
+    const points = el.series.chart.series[1].data;
+
+    // Exit if the scatter data series is absent
+    if ( points.length === 0 ) {
+        return
+    }
+
+    // Check if each point is within range and modify style attributes
+    // accordingly
+    let modifiedPoints = [];
+    for (const p of points) {
+        if ( cat[0] <= p.y && p.y < cat[1] ) {
+            modifiedPoints.push({x: p.x, y: p.y, marker: {fillColor: "#84bcff", radius: 5, }})
+        } else {
+            modifiedPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}})
+        }
+    }
+
+    // Update scatter with modified points
+    el.series.chart.series[1].update({
+        data: modifiedPoints
+    });
+
+    // Highlight currently selected bar
+    let modifiedBar = [];
+    for (const b of el.series.chart.series[0].data) {
+        if ( b.index === el.index ) {
+            modifiedBar.push({"color": "#84bcff"})
+        } else {
+            modifiedBar.push({"color": "grey"})
+        }
+    }
+    el.series.chart.series[0].update({
+        data: modifiedBar
+    })
+};
+
+
+const highlightHist = (el) => {
+
+    const yval = el.y;
+    const bars = el.series.chart.series[0].data;
+    const points = el.series.chart.series[1].data;
+
+    if ( bars.length === 0 ){
+        return
+    }
+
+    let modifiedBars = [];
+    for ( const b of bars ){
+        if ( b.x <= yval && yval < b.x2 ) {
+            modifiedBars.push({"color": "#84bcff"});
+        } else {
+            modifiedBars.push({"color": "grey"})
+        }
+    }
+    el.series.chart.series[0].update({data: modifiedBars});
+
+    let modifiedPoints = [];
+    for ( const p of points ) {
+        if ( p.index === el.index ) {
+            modifiedPoints.push({x: p.x, y: p.y, marker: {fillColor: "#84bcff", radius: 5, }})
+        } else {
+            modifiedPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}})
+        }
+    }
+    el.series.chart.series[1].update({
+        data: modifiedPoints
     })
 
 };
 
 
+const resetHighlight = (ch) => {
+
+    let points = ch.series[1].data;
+    let bars = ch.series[0].data;
+
+    let resetPoints = [];
+    let resetBars = [];
+
+    for ( const p of points ) {
+        resetPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}})
+    }
+
+    for ( const b of bars ) {
+        resetBars.push({"color": "grey"})
+    }
+
+    ch.series[1].update({data: resetPoints});
+    ch.series[0].update({data: resetBars})
+
+};
+
 /**
  *
  * @param sample
  */
-sizeDistributionPlot = (sample) => {
+const sizeDistributionPlot = (sample) => {
 
     let distData;
 
@@ -231,108 +335,6 @@ const updateLabels = (el, fw, idx) => {
         yAxis: AxisArray,
         xAxis: AxisArray
     })
-};
-
-/**
- *
- * @param el
- * @param reset
- */
-const highLightScatter = (el, type) => {
-
-    const cat = [el.x, el.x2];
-    const points = el.series.chart.series[1].data;
-
-    // Exit if the scatter data series is absent
-    if ( points.length === 0 ) {
-        return
-    }
-
-    // Check if each point is within range and modify style attributes
-    // accordingly
-    let modifiedPoints = [];
-    for (const p of points) {
-        if ( cat[0] <= p.y && p.y < cat[1] ) {
-            modifiedPoints.push({x: p.x, y: p.y, marker: {fillColor: "#84bcff", radius: 5, }})
-        } else {
-            modifiedPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}})
-        }
-    }
-
-    // Update scatter with modified points
-    el.series.chart.series[1].update({
-        data: modifiedPoints
-    });
-
-    // Highlight currently selected bar
-    let modifiedBar = [];
-    for (const b of el.series.chart.series[0].data) {
-        if ( b.index === el.index ) {
-            modifiedBar.push({"color": "#84bcff"})
-        } else {
-            modifiedBar.push({"color": "grey"})
-        }
-    }
-    el.series.chart.series[0].update({
-        data: modifiedBar
-    })
-};
-
-
-const highlightHist = (el) => {
-
-    const yval = el.y;
-    const bars = el.series.chart.series[0].data;
-    const points = el.series.chart.series[1].data;
-
-    if ( bars.length === 0 ){
-        return
-    }
-
-    let modifiedBars = [];
-    for ( const b of bars ){
-        if ( b.x <= yval && yval < b.x2 ) {
-            modifiedBars.push({"color": "#84bcff"});
-        } else {
-            modifiedBars.push({"color": "grey"})
-        }
-    }
-    el.series.chart.series[0].update({data: modifiedBars});
-
-    let modifiedPoints = [];
-    for ( const p of points ) {
-        if ( p.index === el.index ) {
-            modifiedPoints.push({x: p.x, y: p.y, marker: {fillColor: "#84bcff", radius: 5, }})
-        } else {
-            modifiedPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}})
-        }
-    }
-    el.series.chart.series[1].update({
-        data: modifiedPoints
-    })
-
-};
-
-
-const resetHighlight = (ch) => {
-
-    let points = ch.series[1].data;
-    let bars = ch.series[0].data;
-
-    let resetPoints = [];
-    let resetBars = [];
-
-    for ( const p of points ) {
-        resetPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}})
-    }
-
-    for ( const b of bars ) {
-        resetBars.push({"color": "grey"})
-    }
-
-    ch.series[1].update({data: resetPoints});
-    ch.series[0].update({data: resetBars})
-
 };
 
 
