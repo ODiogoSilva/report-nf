@@ -145,7 +145,7 @@ const bdFastqcSequenceLength = (rawData, path) => {
             (x) => { return {
                     x: parseInt(x[0].split("-")[0]),
                     y: parseFloat(x[1])
-                }}));
+                };}));
     }
 
     return getLineSeries(chartData).then((res) => {
@@ -194,7 +194,7 @@ const HighlightLineSeries = (chartObj, selection) => {
             if (group.samples.includes(series.name)) {
                 highlightedSeries.push({color: group.color, zIndex: 100});
             } else {
-                highlightedSeries.push({zIndex: 1})
+                highlightedSeries.push({zIndex: 1});
             }
         }
     }

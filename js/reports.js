@@ -264,7 +264,7 @@ app.controller("reportsController", function($scope){
         // Render FastQC plots for the first time on demand by pressing the tabs
         $("#fastqcTabs").on("shown.bs.tab", (e) => {
             let container = $(e.target).attr("data-target");
-            charts.buildChart(container.replace("#", ""), true);
+            charts.buildChart(container.replace("#", ""));
         });
 
         /* Show/hide tabs of spades and its divs */
@@ -334,7 +334,7 @@ app.controller("reportsController", function($scope){
         $("#active_filters_projectid").popover({
             html : true,
             trigger: "focus",
-            content: function() {
+            content() {
                 return $("#popover_filters_project").html();
             }
         }).off("show.bs.popover").on("show.bs.popover", () => {

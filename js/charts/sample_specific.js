@@ -426,7 +426,7 @@ const sincronizedSlidingWindow = (sample) => {
             value: c,
             width: 0.15,
             color: "grey"
-        })
+        });
     }
 
     let slidingData = [{

@@ -3,7 +3,7 @@
     Function to process chewBBACA data to load into the DataTable
  */
 
-const processChewbbaca = (reports_data) => {
+const processChewbbaca = (reportsData) => {
 
     const chewbbacaData = {};
     let chewbbacaHeaders = ["", "id"];
@@ -12,7 +12,7 @@ const processChewbbaca = (reports_data) => {
 
     /* Get headers */
     let firstTime = true;
-    for (const report of reports_data) {
+    for (const report of reportsData) {
         if (report.report_json.task === "chewbbaca"){
             if (firstTime) {
                 chewbbacaHeaders = chewbbacaHeaders.concat(report.report_json.cagao[1].header);
@@ -42,7 +42,7 @@ const processChewbbaca = (reports_data) => {
 
     /* Get data for each strain to add to the table */
 
-    for (const [index, report] of reports_data.entries()) {
+    for (const [index, report] of reportsData.entries()) {
         if (report.report_json.task === "chewbbaca"){
 
             chewbbacaToReportId[report.sample_name] = index;
@@ -98,7 +98,7 @@ const downloadProfiles = () => {
                     headers = headers.concat(report.report_json.cagao[0].header);
                 }
 
-                for (d in report.report_json.cagao[0]) {
+                for (const d in report.report_json.cagao[0]) {
                     if (d !== "header"){
                         dataKey = d;
                         break;
@@ -117,8 +117,8 @@ const downloadProfiles = () => {
     let downloadString = "";
     downloadString += (headers.join("\t") + "\n");
 
-    for (const profile in body) {
-        downloadString += (body[profile].join("\t") + "\n")
+    for (const profile of body) {
+        downloadString += (profile.join("\t") + "\n")
     }
 
     // Send to download

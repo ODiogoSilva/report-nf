@@ -1,4 +1,4 @@
-/*global dataFilters, projectIdMap, intReports */
+/*global dataFilters, projectIdMap, initReports */
 
 /**
  * Tests for the presence of a regular expression in any element of an array
@@ -287,9 +287,11 @@ const checkFilter = (targetId) => {
     if(activeFilters.length === 0 && tempFilters.length === 0){
         changePopover.options.content = "<div>No filters applied!</div>";
     }
-    else changePopover.options.content = filterSelecteor.html();
+    else {
+        changePopover.options.content = filterSelecteor.html();
+    }
 
 
-    return showLabel(selector, spanSelector, helpSelector, "Filter successfully added!", "ok")
+    return showLabel(selector, spanSelector, helpSelector, "Filter successfully added!", "ok");
 
 };
