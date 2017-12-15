@@ -1,3 +1,25 @@
+/*globals getTaskReport, Chart */
+
+/**
+ *
+ * @param mapObject
+ */
+const getLineSeries = async (mapObject) => {
+
+    let seriesArray = [];
+
+    for (const [k, v] of mapObject.entries()) {
+        seriesArray.push({
+            name: k,
+            type: "line",
+            data: v,
+            color: "grey"
+        });
+    }
+
+    return seriesArray;
+
+};
 
 const bdFastqcBaseSequenceQuality = (rawData, path) => {
 
@@ -8,7 +30,7 @@ const bdFastqcBaseSequenceQuality = (rawData, path) => {
     const dataObj = getTaskReport(rawData, taskName, path);
 
     for (const [pid, data] of dataObj.entries()) {
-        chartData.set(pid, Array.from(data.data[0], x => parseFloat(x[1])))
+        chartData.set(pid, Array.from(data.data[0], (x) => parseFloat(x[1])));
     }
 
     return getLineSeries(chartData).then((res) => {
@@ -36,7 +58,7 @@ const bdFastqcBaseSequenceQuality = (rawData, path) => {
                 to: 20
             }]
         });
-        return myChart.layout
+        return myChart.layout;
     });
 };
 
@@ -51,7 +73,7 @@ const bdFastqcSequenceQuality = (rawData, path) => {
 
     for (const [pid, data] of dataObj.entries()) {
         chartData.set(pid, Array.from(data.data[0],
-                x => {return {x: parseInt(x[0]), y: parseFloat(x[1])}}))
+            (x) => {return {x: parseInt(x[0]), y: parseFloat(x[1])}}));
     }
 
     return getLineSeries(chartData).then((res) => {
@@ -79,7 +101,7 @@ const bdFastqcSequenceQuality = (rawData, path) => {
                 to: 20
             }]
         });
-        return myChart.layout
+        return myChart.layout;
     });
 };
 
@@ -93,9 +115,9 @@ const bdFastqcGcContent = (rawData, path) => {
     const dataObj = getTaskReport(rawData, taskName, path);
 
     for (const [pid, data] of dataObj.entries()) {
-        const gcVals = Array.from(data.data[0], x => parseFloat(x[1]));
+        const gcVals = Array.from(data.data[0], (x) => parseFloat(x[1]));
         const totalBp = gcVals.reduce((a, b) => a + b, 0);
-        chartData.set(pid, Array.from(gcVals, x => (x / totalBp) * 100))
+        chartData.set(pid, Array.from(gcVals, (x) => (x / totalBp) * 100));
     }
 
     return getLineSeries(chartData).then((res) => {
@@ -105,7 +127,7 @@ const bdFastqcGcContent = (rawData, path) => {
             axisLabels: {x: "Quality score", y: "Normalized read count"},
             series: res
         });
-        return myChart.layout
+        return myChart.layout;
     });
 };
 
@@ -120,10 +142,10 @@ const bdFastqcSequenceLength = (rawData, path) => {
 
     for (const [pid, data] of dataObj.entries()) {
         chartData.set(pid, Array.from(data.data[0],
-                x => { return {
+            (x) => { return {
                     x: parseInt(x[0].split("-")[0]),
                     y: parseFloat(x[1])
-                }}))
+                }}));
     }
 
     return getLineSeries(chartData).then((res) => {
@@ -133,7 +155,7 @@ const bdFastqcSequenceLength = (rawData, path) => {
             axisLabels: {x: "Base pair", y: "Count"},
             series: res
         });
-        return myChart.layout
+        return myChart.layout;
     });
 };
 
@@ -148,7 +170,7 @@ const bdFastqcNContent = (rawData, path) => {
 
     for (const [pid, data] of dataObj.entries()) {
         chartData.set(pid, Array.from(data.data[0],
-            x => parseFloat(x[1])))
+            (x) => parseFloat(x[1])));
     }
 
     return getLineSeries(chartData).then((res) => {
@@ -158,29 +180,8 @@ const bdFastqcNContent = (rawData, path) => {
             axisLabels: {x: "Base pair", y: "Count"},
             series: res
         });
-        return myChart.layout
+        return myChart.layout;
     });
-};
-
-/**
- *
- * @param mapObject
- */
-const getLineSeries = async (mapObject) => {
-
-    let seriesArray = [];
-
-    for (const [k, v] of mapObject.entries()) {
-        seriesArray.push({
-            name: k,
-            type: "line",
-            data: v,
-            color: "grey"
-        })
-    }
-
-    return seriesArray;
-
 };
 
 
@@ -198,7 +199,7 @@ const HighlightLineSeries = (chartObj, selection) => {
         }
     }
 
-    chartObj.update({series: highlightedSeries})
+    chartObj.update({series: highlightedSeries});
 
     // return chartObj
 };
