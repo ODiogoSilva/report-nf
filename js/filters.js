@@ -1,3 +1,5 @@
+/*global dataFilters, projectIdMap */
+
 /**
  * Tests for the presence of a regular expression in any element of an array
  * @param array
@@ -10,10 +12,12 @@ const testArray = (array, testString) => {
 
     array.forEach((r) => {
         re = new RegExp(r);
-        if ( re.test(testString) === true ) {found = true}
+        if ( re.test(testString) === true ) {
+            found = true;
+        }
     });
 
-    return found
+    return found;
 };
 
 /**
@@ -28,15 +32,17 @@ const testRowValue = (rg, tableRow, header) => {
     let val = null;
     for (const x of tableRow)  {
         if ( x.header === header ) {
-            val = x.value
+            val = x.value;
         }
     }
 
     // Test if value is within range
-    if ( rg[0] !== null && val < rg[0] ) {return false}
-    if ( rg[1] !== null && val > rg[1] ) {return false}
+    if ( rg[0] !== null && val < rg[0] ) {
+        return false;
+    }
+    return !(rg[1] !== null && val > rg[1]);
 
-    return true;
+
 };
 
 const addToFilters = (po, array) => {
@@ -44,10 +50,10 @@ const addToFilters = (po, array) => {
     // Define id and push to array if it's not there
     const pid = `${po.project_id}${po.pipeline_id}`;
     if (!array.includes(pid)) {
-        array.push(pid)
+        array.push(pid);
     }
 
-    return array
+    return array;
 };
 
 
@@ -78,7 +84,7 @@ const updateFilterObject = (filterInstance) => {
 
     const scope = angular.element($("#outer")).scope();
     scope.$apply(() => {
-        initReports(scope, data, false)
+        initReports(scope, data, false);
     });
 
 
@@ -115,7 +121,7 @@ const filterJson = (jsonResult, filterObject) => {
             // Filter for base pairs
             if ( !testRowValue(filterObject.bp.range,
                     po.report_json.tableRow, "bp") === true ) {
-                filteredIds = addToFilters(po, filteredIds)
+                filteredIds = addToFilters(po, filteredIds);
             }
             // Filter for number of reads
             if ( !testRowValue(filterObject.reads.range,
@@ -146,19 +152,17 @@ const filterJson = (jsonResult, filterObject) => {
         }
     }
 
-    console.log(filterObject)
-
     // Filter JSON array
     let pid;
     for ( const po of jsonResult ) {
         // Get combination id of current sample
         pid = `${po.project_id}${po.pipeline_id}`;
         if ( !filteredIds.includes(pid) ) {
-            filteredJson.push(po)
+            filteredJson.push(po);
         }
     }
 
-    return filteredJson
+    return filteredJson;
 };
 
 /**
@@ -171,17 +175,17 @@ const showLabel = (selector, spanSelector, helpSelector, msg, type) => {
     spanSelector.removeClass("glyphicon-remove glyphicon-ok");
     spanSelector.removeClass("text-danger text-success");
     helpSelector.removeClass("text-danger text-success");
-    selector.removeClass("has-error has-success")
+    selector.removeClass("has-error has-success");
 
     // Depending on the provided type, show the message as an error or success
     if ( type === "error" ) {
         selector.addClass("has-error has-feedback");
         helpSelector.addClass("text-danger");
-        spanSelector.addClass("glyphicon-remove")
+        spanSelector.addClass("glyphicon-remove");
     } else {
         selector.addClass("has-success has-feedback");
         helpSelector.addClass("text-success");
-        spanSelector.addClass("glyphicon-ok")
+        spanSelector.addClass("glyphicon-ok");
 
     }
 
@@ -223,15 +227,15 @@ const checkFilter = (targetId) => {
     let changePopover;
 
     if ( targetId === "filter_by_name" ) {
-        activeFilters = dataFilters.sample.active.concat(dataFilters.sample.temp)
+        activeFilters = dataFilters.sample.active.concat(dataFilters.sample.temp);
         filterSelecteor = $("#" + "popover_filters_sample");
-        changePopover = $('#active_filters_name').data('bs.popover');
+        changePopover = $("#active_filters_name").data("bs.popover");
         tempFilters = dataFilters.sample.temp;
     } else {
-        activeFilters = dataFilters.projectId.active.concat(dataFilters.projectId.temp)
+        activeFilters = dataFilters.projectId.active.concat(dataFilters.projectId.temp);
         filterSelecteor = $("#" + "popover_filters_project");
-        changePopover = $('#active_filters_projectid').data('bs.popover');
-        tempFilters = dataFilters.projectId.temp
+        changePopover = $("#active_filters_projectid").data("bs.popover");
+        tempFilters = dataFilters.projectId.temp;
     }
 
     /* Begin checks here */
@@ -239,19 +243,19 @@ const checkFilter = (targetId) => {
 
     // Check if filter is not empty
     if ( val === "" ) {
-        return showLabel(selector, spanSelector, helpSelector, "Empty filter", "error")
+        return showLabel(selector, spanSelector, helpSelector, "Empty filter", "error");
     }
 
     // Check if val can be a regular expression
     try {
-        re = new RegExp(val)
+        const re = new RegExp(val)
     } catch(err) {
-        return showLabel(selector, spanSelector, helpSelector, "Invalid expression", "error")
+        return showLabel(selector, spanSelector, helpSelector, "Invalid expression", "error");
     }
 
     // Check for duplicate filter terms
     if ( activeFilters.includes(val) ) {
-        return showLabel(selector, spanSelector, helpSelector, "Filter already applied", "error")
+        return showLabel(selector, spanSelector, helpSelector, "Filter already applied", "error");
     }
 
     /* Checks ended here */
@@ -260,9 +264,9 @@ const checkFilter = (targetId) => {
     // and to the dataFilters object
 
     // Random id for filter div
-    const filter_id = Math.random().toString(36).substring(7);
+    const filterId = Math.random().toString(36).substring(7);
 
-    const filterDiv = `<div class="input-group" id="${filter_id}">
+    const filterDiv = `<div class="input-group" id="${filterId}">
                         <input class="form-control ${targetId}" readonly value="${val}">
                         <span class="input-group-addon btn btn-default remove_filter"><i class="fa fa-minus" aria-hidden="true"></i></span>
                        </div>`;
