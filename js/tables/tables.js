@@ -1,4 +1,4 @@
-
+/*global showModelGraphs, processChewbbaca, processInnuca, processPathotyping, processProkka */
 /* Table Class
     - Process table data
     - Load table
@@ -22,12 +22,12 @@ class Table {
         Method to add table headers and column mapping
         Needs the scope to modify the html table headers
     */
-    addTableHeaders(scope, table_object, headers_v_name) {
+    addTableHeaders(scope, tableObject, headersName) {
         scope.$apply( () => {
-            scope[headers_v_name] = table_object.headers;
+            scope[headersName] = tableObject.headers;
         });
-        this.tableHeaders = table_object.headers;
-        this.columnMapping = table_object.columnMapping;
+        this.tableHeaders = tableObject.headers;
+        this.columnMapping = tableObject.columnMapping;
     }
 
     /**
@@ -64,7 +64,7 @@ class Table {
     }
 
     emptyTable() {
-        if ( $.fn.DataTable.isDataTable('#'+this.container)) {
+        if ( $.fn.DataTable.isDataTable("#"+this.container)) {
             this.tableObj.empty();
 
         }
@@ -81,7 +81,7 @@ class Table {
 
     /* Method to clear the DataTable */
     clearTable(){
-        if ( $.fn.DataTable.isDataTable('#'+this.container)) {
+        if ( $.fn.DataTable.isDataTable("#"+this.container)) {
             this.tableObj.clear().draw();
         }
     }
@@ -92,17 +92,17 @@ class Table {
     }
 
     highlightRow(id) {
-        $("#" + id).toggleClass("selected", "")
+        $("#" + id).toggleClass("selected", "");
     }
 
     getValue(id, target) {
         for (const el of this.tableData) {
             const pid = el.id.split(".")[0] + "." + el.Sample;
             if (pid === id) {
-                return $(el[target])
+                return $(el[target]);
             }
         }
-        return $(this.tableData.filter( el => `${el[id].split(".")[0]}.${el.Sample}` === id)[0][target]);
+        return $(this.tableData.filter( (el) => `${el[id].split(".")[0]}.${el.Sample}` === id)[0][target]);
     }
 
     /* Method to build DataTable */
@@ -112,48 +112,48 @@ class Table {
             this.tableObj.rows.add(this.tableData).draw();
         }
         else{
-            this.tableObj = $('#'+this.container).DataTable( {
+            this.tableObj = $("#"+this.container).DataTable( {
                 "data": this.tableData,
                 "columns" : this.columnMapping,
                 autoFill: {
                     enable: false
                 },
-                dom: 'Bfrtip',
+                dom: "Bfrtip",
                 buttons: [
-                    'copy',
-                    'csv',
-                    'excel',
-                    'pdf',
-                    'print',
+                    "copy",
+                    "csv",
+                    "excel",
+                    "pdf",
+                    "print",
                     {
-                        extend: 'collection',
-                        text: 'Table control',
+                        extend: "collection",
+                        text: "Table control",
                         buttons: [
                             {
                                 text: "Enable AutoFill",
-                                action: function (e, dt) {
+                                action(e, dt) {
                                     if (dt.autoFill().enabled()) {
                                         this.autoFill().disable();
-                                        this.text('Enable AutoFill');
+                                        this.text("Enable AutoFill");
                                     }
                                     else {
                                         this.autoFill().enable();
-                                        this.text('Disable AutoFill');
+                                        this.text("Disable AutoFill");
                                     }
                                 }
                             }
                         ]
                     },
                     {
-                        extend: 'collection',
-                        text: 'Selection',
+                        extend: "collection",
+                        text: "Selection",
                         autoClose: true,
                         buttons: [
                             {
-                                text: 'Show graphs',
-                                action: function ( e, dt, node, config ) {
-                                    const sample = dt.rows('.selected').data()[0].Sample;
-                                    showModelGraphs(sample)
+                                text: "Show graphs",
+                                action( e, dt, node, config ) {
+                                    const sample = dt.rows(".selected").data()[0].Sample;
+                                    showModelGraphs(sample);
                                 }
                             }
                         ]
@@ -161,12 +161,12 @@ class Table {
                 ],
                 columnDefs: [ {
                     orderable: false,
-                    className: 'select-checkbox',
+                    className: "select-checkbox",
                     targets:   0
                 } ],
                 select: {
-                    style:    'os',
-                    selector: 'td:first-child'
+                    style:    "os",
+                    selector: "td:first-child"
                 },
                 "fnCreatedRow": (nRow, aData) => {
                     // Get ID based on pipeline id and sample name
