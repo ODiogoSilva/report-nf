@@ -166,7 +166,7 @@ const highlightHist = (el) => {
     const points = el.series.chart.series[1].data;
 
     if ( bars.length === 0 ){
-        return
+        return;
     }
 
     let modifiedBars = [];
@@ -182,14 +182,14 @@ const highlightHist = (el) => {
     let modifiedPoints = [];
     for ( const p of points ) {
         if ( p.index === el.index ) {
-            modifiedPoints.push({x: p.x, y: p.y, marker: {fillColor: "#84bcff", radius: 5, }})
+            modifiedPoints.push({x: p.x, y: p.y, marker: {fillColor: "#84bcff", radius: 5, }});
         } else {
-            modifiedPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}})
+            modifiedPoints.push({x: p.x, y:p.y, marker: {fillColor: "black", radius: 3}});
         }
     }
     el.series.chart.series[1].update({
         data: modifiedPoints
-    })
+    });
 
 };
 
@@ -276,14 +276,12 @@ const sizeDistributionPlot = (sample) => {
             color: "grey",
             cursor: "pointer",
             events: {
-                mouseOver: function () {updateLabels(this, "bold", 0)},
-                mouseOut: function () {updateLabels(this, "normal", 0)},
+                mouseOver() {updateLabels(this, "bold", 0);},
+                mouseOut() {updateLabels(this, "normal", 0);},
             },
             point: {
                 events: {
-                    click: function () {
-                        highLightScatter(this)
-                    },
+                    click() {highLightScatter(this);},
                 }
             }
         }, {
@@ -297,14 +295,12 @@ const sizeDistributionPlot = (sample) => {
                 radius: 3
             },
             events: {
-                mouseOver: function () {updateLabels(this, "bold", 1)},
-                mouseOut: function () {updateLabels(this, "normal", 1)},
+                mouseOver() {updateLabels(this, "bold", 1);},
+                mouseOut() {updateLabels(this, "normal", 1);},
             },
             point: {
                 events: {
-                    click: function () {
-                        highlightHist(this);
-                    }
+                    click() {highlightHist(this);}
                 }
             }
         }]
@@ -319,7 +315,7 @@ const sincronizedSlidingWindow = (sample) => {
      * In order to synchronize tooltips and crosshairs, override the
      * built-in events with handlers defined on the parent element.
      */
-    $('#sync-sliding-window').bind('mousemove touchmove touchstart', function (e) {
+    $("#sync-sliding-window").bind("mousemove touchmove touchstart", function (e) {
 
         let point,
             event;
@@ -327,7 +323,7 @@ const sincronizedSlidingWindow = (sample) => {
         for ( const chart of Highcharts.charts) {
 
             if ( chart === undefined) {
-                continue
+                continue;
             }
 
             if ( chart.renderTo.id === "" ) {
@@ -367,15 +363,15 @@ const sincronizedSlidingWindow = (sample) => {
             Highcharts.each(Highcharts.charts, function (chart) {
                 // Ignore undefined charts
                 if ( chart === undefined ) {
-                    return true
+                    return true;
                 }
                 if ( chart.renderTo.id !== "" ) {
-                    return true
+                    return true;
                 }
                 if ( chart !== thisChart ) {
                     // It is null while updating
                     if ( chart.xAxis[0].setExtremes ) {
-                        chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: 'syncExtremes' });
+                        chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: "syncExtremes" });
                     }
                 }
             });
@@ -389,7 +385,7 @@ const sincronizedSlidingWindow = (sample) => {
 
     // Get data and labels
     for ( const el of data ) {
-        const pid = `${el.project_id}.${el.sample_name}`
+        const pid = `${el.project_id}.${el.sample_name}`;
         if ( pid === sample && (el.report_json.plotData || {}).gcSliding )  {
             xLabels = el.report_json.plotData.gcSliding[1];
             xBars = el.report_json.plotData.gcSliding[2];
@@ -397,8 +393,6 @@ const sincronizedSlidingWindow = (sample) => {
             covData = el.report_json.plotData.covSliding[0];
         }
     }
-
-    console.log(xBars)
 
     // Get plotlines for contig boundaries
     let contigPlotLines = [];
@@ -422,7 +416,7 @@ const sincronizedSlidingWindow = (sample) => {
 
     $.each(slidingData, (i, dataset) => {
 
-        $('<div class="chart">')
+        $("<div class='chart'>")
             .appendTo("#sync-sliding-window")
             .highcharts({
                 chart: {
@@ -443,7 +437,7 @@ const sincronizedSlidingWindow = (sample) => {
                     enabled: false
                 },
                 xAxis: {
-                    categories: Array.from(xLabels, x => parseInt(x.split("_")[1])),
+                    categories: Array.from(xLabels, (x) => parseInt(x.split("_")[1])),
                     crosshair: {
                         width: 10
                     },
@@ -464,7 +458,7 @@ const sincronizedSlidingWindow = (sample) => {
                     enabled: false
                 },
                 tooltip: {
-                    positioner: function () {
+                    positioner() {
                         return {
                             x: 30, // right aligned
                             y: -10 // align to title
@@ -472,9 +466,9 @@ const sincronizedSlidingWindow = (sample) => {
                     },
                     borderWidth: 0,
                     backgroundColor: "none",
-                    pointFormatter: function () {
+                    pointFormatter() {
                         return "<span>Position: <b>" + xLabels[this.x].split("_")[1] + " (Contig: " + xLabels[this.x].split("_")[0] + ")" + "</b></span><br>" +
-                               "<span>Value: <b>" + this.y + "</b></span>"
+                               "<span>Value: <b>" + this.y + "</b></span>";
                     },
                     headerFormat: "",
                     shadow: false,
@@ -508,7 +502,7 @@ const sincronizedSlidingWindow = (sample) => {
                 panKey: "ctrl",
                 height: 130,
                 events: {
-                    load: function(){
+                    load(){
                         this.myTooltip = new Highcharts.Tooltip(this, this.options.tooltip);
                     }
                 }
@@ -527,11 +521,11 @@ const sincronizedSlidingWindow = (sample) => {
                 series: {
                     stickyTracking: false,
                     events: {
-                        click: function(evt) {
+                        click(evt) {
                             this.chart.myTooltip.options.enabled = true;
                             this.chart.myTooltip.refresh(evt.point, evt);
                         },
-                        mouseOut: function() {
+                        mouseOut() {
                             this.chart.myTooltip.hide();
                             this.chart.myTooltip.options.enabled = false;
                         }
@@ -598,6 +592,6 @@ const showModelGraphs = (sample) => {
 
     sincronizedSlidingWindow(sample);
 
-    $("#modalGraphs").modal("show")
+    $("#modalGraphs").modal("show");
 
 };
