@@ -137,6 +137,30 @@ const populateSelect = (container, speciesData, data) => {
 
 };
 
+
+const populateFilter = (data) => {
+    let optionsName = "";
+    let optionsDate = "";
+    let totalDates = [];
+    let totalNames = [];
+
+    data.map((entry) => {
+        if(totalDates.indexOf(entry.timestamp) < 0){
+            optionsDate += "<option value='"+entry.timestamp+"'>"+entry.timestamp+"</option>";
+            totalDates.push(entry.timestamp);
+        }
+        if(totalNames.indexOf(entry.sample_name) < 0){
+            optionsName += "<option value='"+entry.sample_name+"'>"+entry.sample_name+"</option>";
+            totalNames.push(entry.sample_name);
+        }
+    });
+
+    $("#f_by_date").empty().append(optionsDate).selectpicker("refresh").selectpicker("setStyle", "btn-default");
+    $("#f_by_name").empty().append(optionsName).selectpicker("refresh").selectpicker("setStyle", "btn-default");
+    $("#operator_by_date").selectpicker("refresh").selectpicker("setStyle", "btn-default");
+
+};
+
 /* Angular controller to control the DOM elements from the index.html file */
 app.controller("reportsController", function($scope){
 
@@ -175,38 +199,72 @@ app.controller("reportsController", function($scope){
        getProjects().then((pResults) => {
            populateSelect("project_select", results, pResults);
 
-           $("#submit_project").off("click").on("click", () => {
+           $("#project_select").off("change").on("change", () => {
+               getReportInfo($("#project_select option:selected").val()).then((results) => {
+                   populateFilter(results);
+                   $("#project_filter").css({display: "block"});
+                   $("#submit_project").css({display: "inline-block"});
 
-               $("#waiting_gif").css({display:"block"});
-               $("#row-main").css({display:"none"});
+                   $("#submit_project").off("click").on("click", () => {
 
-               $("#reset_project").css({display:"inline-block"});
+                       $("#waiting_gif").css({display:"block"});
+                       $("#row-main").css({display:"none"});
 
-               $("#reset_project").off("click").on("click", () => {
-                   charts.reportsData = [];
-                   chewbbacaTable.tableData = [];
-                   innucaTable.tableData = [];
-                   prokkaTable.tableData = [];
+                       $("#reset_project").css({display:"inline-block"});
 
-                   $("#reset_project").css({display:"none"});
-                   $("#row-main").css({display:"none"});
-                   $("#current_workflow").css({display:"none"});
-               });
+                       $("#reset_project").off("click").on("click", () => {
+                           charts.reportsData = [];
+                           chewbbacaTable.tableData = [];
+                           innucaTable.tableData = [];
+                           prokkaTable.tableData = [];
 
-               /* Request to get the reports for a given project */
-               getReportsByProject($("#project_select option:selected").val()).then((results) => {
+                           $("#reset_project").css({display:"none"});
+                           $("#row-main").css({display:"none"});
+                           $("#current_workflow").css({display:"none"});
+                       });
 
-                   // First initialization of the reports page
-                   initReports($scope, results);
+                       let fByNameVal = $("#f_by_name option:selected").val();
+                       let fByDateVal = $("#f_by_date option:selected").val();
+                       let projectIDSelected = $("#project_select option:selected").val();
+                       let operatorFilter = $("#operator_by_date option:selected").val();
 
-                   $("#waiting_gif").css({display:"none"});
-                   $("#row-main").css({display:"block"});
-                   $("#current_workflow").css({display:"block"});
+                       if(fByDateVal !== "" || fByNameVal !== ""){
+                           //Get only reports on filter
+                           getReportByFilter({project_id:projectIDSelected, nameFilter:fByNameVal, dateFilter:fByDateVal, operatorFilter:operatorFilter}).then((results) => {
+
+                               // First initialization of the reports page
+                               initReports($scope, results);
+
+                               $("#waiting_gif").css({display:"none"});
+                               $("#row-main").css({display:"block"});
+                               $("#current_workflow").css({display:"block"});
+                           });
+                       }
+                       else{
+                           //Get ALL reports for the Project
+                           /* Request to get the reports for a given project */
+                           getReportsByProject(projectIDSelected).then((results) => {
+
+                               // First initialization of the reports page
+                               initReports($scope, results);
+
+                               $("#waiting_gif").css({display:"none"});
+                               $("#row-main").css({display:"block"});
+                               $("#current_workflow").css({display:"block"});
+
+                           }, () => {
+                               modalAlert("No reports for that project.", function(){});
+                           });
+                       }
+                   });
+
 
                }, () => {
                    modalAlert("No reports for that project.", function(){});
                });
            });
+
+
        }, () => {
            modalAlert("No projects for that species", function(){});
            populateSelect("project_select", []);

@@ -59,9 +59,33 @@
                                         title="Select one Project" data-live-search="true" data-style="btn-default">
                                 </select>
                             </div>
+                            <div id="project_filter" style="display: none;">
+                                <div>
+                                    <div style="display: inline-block;"><h4>Filter by:</h4></div>
+                                    <div style="display: inline-block;">
+                                    <select id="f_by_name" multiple
+                                            title="Select strains" data-live-search="true" data-style="btn-default">
+                                    </select>
+                                    </div>
+                                    <div style="display: inline-block;"><h4>OR by date</h4></div>
+                                    <div style="display: inline-block;">
+                                    <select id="operator_by_date"
+                                            title="Select dates" data-live-search="true" data-style="btn-default">
+                                        <option value=">">></option>
+                                        <option value=">=">>=</option>
+                                        <option value="<"><</option>
+                                        <option value="<="><=</option>
+                                        <option value="=">=</option>
+                                    </select>
+                                    <select id="f_by_date"
+                                            title="Select dates" data-live-search="true" data-style="btn-default">
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div style="margin-top: 10px;">
                                 <div class="row">
-                                    <button id="submit_project" style="display:inline-block;"class="btn btn-info">Submit</button>
+                                    <button id="submit_project" style="display:none;"class="btn btn-info">Submit</button>
                                     <button id="reset_project" style="display:none;" class="btn btn-danger">Reset</button>
                                 </div>
                             </div>
@@ -133,6 +157,7 @@
     <script src="./bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
     <script src="./bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="config.js"></script>
     <script src="js/charts/charts.js"></script>
     <script src="js/charts/assembly.js"></script>
     <script src="js/charts/fastqc.js"></script>

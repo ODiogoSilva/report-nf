@@ -1,38 +1,35 @@
 
-// const Requests = ($http) => {
-//     return {
-//         get_reports_by_project: async function get_reports_by_project(project_id){
-//             console.log(project_id);
-//             req = {
-// 		        url:'https://192.92.149.157/app/api/v1.0/reports/project/',
-// 		        method:'GET',
-// 		        params: { project_id: project_id }
-// 		    };
-//
-// 		    return await $http(req).then(function(response){
-// 		    	return response;
-// 		    }, function(response){
-// 		    	return response;
-// 		    });
-//         }
-//     }
-// };
 
 const getSpecies = async () => {
     return await $.get(
-        'https://192.92.149.157/app/api/v1.0/species/'
+        reportsRoute+"app/api/v1.0/species/"
     );
 };
 
 const getProjects = async () => {
     return await $.get(
-        'https://192.92.149.157/app/api/v1.0/projects/all/'
+        reportsRoute+"app/api/v1.0/projects/all/"
     );
 };
 
 const getReportsByProject = async (project_id) => {
     return await $.get(
-		'https://192.92.149.157/app/api/v1.0/reports/project/',
+		reportsRoute+"app/api/v1.0/reports/project/",
         { project_id: project_id },
 	);
+};
+
+const getReportInfo = async (project_id) => {
+    return await $.get(
+        reportsRoute+"app/api/v1.0/reports/project/info",
+        { project_id: project_id },
+    );
+};
+
+const getReportByFilter = async (filter) => {
+    console.log(filter);
+    return await $.get(
+        reportsRoute+"app/api/v1.0/reports/project/filter",
+        filter,
+    );
 };
