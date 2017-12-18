@@ -413,7 +413,7 @@ const sincronizedSlidingWindow = (sample) => {
         const pid = `${el.project_id}.${el.sample_name}`;
         if ( pid === sample && (el.report_json.plotData || {}).gcSliding )  {
             xLabels = el.report_json.plotData.gcSliding[1];
-            xBars = el.report_json.plotData.gcSliding[2];
+            xBars = Array.from(el.report_json.plotData.gcSliding[2], (x) => x.position);
             gcData = el.report_json.plotData.gcSliding[0];
             covData = el.report_json.plotData.covSliding[0];
         }
