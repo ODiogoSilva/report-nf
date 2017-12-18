@@ -60,27 +60,40 @@
                                 </select>
                             </div>
                             <div id="project_filter" style="display: none;">
-                                <div>
-                                    <div style="display: inline-block;"><h4>Filter by:</h4></div>
-                                    <div style="display: inline-block;">
-                                    <select id="f_by_name" multiple
-                                            title="Select strains" data-live-search="true" data-style="btn-default">
-                                    </select>
+                                <div style="text-align:center; margin-left: 20%; margin-right: 20%;">
+                                    <br>
+                                    <ul class="nav nav-tabs">
+                                        <li><a data-toggle="tab" href="#filterName">Filter By name</a></li>
+                                        <li><a data-toggle="tab" href="#filterDate">Filter By date</a></li>
+                                    </ul>
+                                    <br>
+                                    <div class="tab-content">
+                                        <div id="filterName" class="tab-pane fade">
+                                            <div style="display: inline-block;">Select strains</div>
+                                            <div style="display: inline-block;">
+                                                <select id="f_by_name" multiple
+                                                        title="Select strains" data-live-search="true" data-style="btn-default">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div id="filterDate" class="tab-pane fade">
+                                            <div style="display: inline-block;">Select dates</div>
+                                            <div style="display: inline-block;">
+                                                <select id="operator_by_date"
+                                                        title="Select dates" data-live-search="true" data-style="btn-default">
+                                                    <option value=">">></option>
+                                                    <option value=">=">>=</option>
+                                                    <option value="<"><</option>
+                                                    <option value="<="><=</option>
+                                                    <option value="=">=</option>
+                                                </select>
+                                                <select id="f_by_date"
+                                                        title="Select dates" data-live-search="true" data-style="btn-default">
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div style="display: inline-block;"><h4>OR by date</h4></div>
-                                    <div style="display: inline-block;">
-                                    <select id="operator_by_date"
-                                            title="Select dates" data-live-search="true" data-style="btn-default">
-                                        <option value=">">></option>
-                                        <option value=">=">>=</option>
-                                        <option value="<"><</option>
-                                        <option value="<="><=</option>
-                                        <option value="=">=</option>
-                                    </select>
-                                    <select id="f_by_date"
-                                            title="Select dates" data-live-search="true" data-style="btn-default">
-                                    </select>
-                                    </div>
+
                                 </div>
                             </div>
                             <div style="margin-top: 10px;">

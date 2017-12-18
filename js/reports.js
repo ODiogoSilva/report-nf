@@ -223,10 +223,12 @@ app.controller("reportsController", function($scope){
                            $("#current_workflow").css({display:"none"});
                        });
 
-                       let fByNameVal = $("#f_by_name option:selected").val();
-                       let fByDateVal = $("#f_by_date option:selected").val();
-                       let projectIDSelected = $("#project_select option:selected").val();
-                       let operatorFilter = $("#operator_by_date option:selected").val();
+                       let fByNameVal = $("#f_by_name option:selected").val() === "" ? undefined: $("#f_by_name option:selected").val();
+                       let fByDateVal = $("#f_by_date option:selected").val() === "" ? undefined: $("#f_by_date option:selected").val();
+                       let projectIDSelected = $("#project_select option:selected").val() === "" ? undefined: $("#project_select option:selected").val();
+                       let operatorFilter = $("#operator_by_date option:selected").val() === "" ? undefined: $("#operator_by_date option:selected").val();;
+
+                       console.log(fByNameVal, fByDateVal, operatorFilter)
 
                        if(fByDateVal !== "" || fByNameVal !== ""){
                            //Get only reports on filter
