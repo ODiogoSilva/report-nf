@@ -580,6 +580,9 @@ const sincronizedSlidingWindow = (sample) => {
                         }
                     }
                 },
+                lang: {
+                    noData: "No annotation data"
+                },
                 title: {
                     text: "Antimicrobial resistance and virulence annotation",
                     margin: 5
@@ -621,10 +624,6 @@ const sincronizedSlidingWindow = (sample) => {
                         text: null
                     },
                     categories: res.categories,
-
-                    // labels: {
-                    //     enabled: false
-                    // }
                 },
                 credits: {
                     enabled: false
@@ -636,7 +635,6 @@ const sincronizedSlidingWindow = (sample) => {
                 }]
             })
     });
-
 };
 
 /**
