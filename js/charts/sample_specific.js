@@ -240,6 +240,18 @@ const resetHighlight = (ch) => {
 
 };
 
+
+const getAbricateReport = async (sample) => {
+
+    for (const el of data) {
+        const pid = `${el.project_id}.${el.sample_name}`;
+        if (pid === sample && el.report_json.task === "abricate") {
+            console.log(el.report_json)
+        }
+    }
+
+};
+
 /**
  *
  * @param sample
@@ -335,6 +347,7 @@ const sizeDistributionPlot = (sample) => {
 
 
 const sincronizedSlidingWindow = (sample) => {
+
     $("#sync-sliding-window").empty();
     /**
      * In order to synchronize tooltips and crosshairs, override the
@@ -441,6 +454,7 @@ const sincronizedSlidingWindow = (sample) => {
 
     $.each(slidingData, (i, dataset) => {
 
+        // Append the GC content and coverage charts
         $("<div class='chart'>")
             .appendTo("#sync-sliding-window")
             .highcharts({
@@ -515,6 +529,9 @@ const sincronizedSlidingWindow = (sample) => {
             })
     });
 
+    getAbricateReport(sample);
+
+    // Append the  chart
     $("<div class='chart'>")
         .appendTo("#sync-sliding-window")
         .highcharts({
