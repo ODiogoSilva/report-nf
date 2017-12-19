@@ -241,15 +241,40 @@ const resetHighlight = (ch) => {
 };
 
 
-const getAbricateReport = async (sample) => {
+const convertXPosition = (value, contig, xbars) => {
+
+    for (const el of xbars) {
+        if (parseInt(contig) === parseInt(el.contig)) {
+            return (el.absPosition + value) / el.window;
+        }
+    }
+};
+
+
+const getAbricateReport = async (sample, xbars) => {
+
+    let categories = [],
+        seriesData = [];
+    let counter = 0;
 
     for (const el of data) {
         const pid = `${el.project_id}.${el.sample_name}`;
         if (pid === sample && el.report_json.task === "abricate") {
-            console.log(el.report_json)
+            for (const [key, val] of Object.entries(el.report_json.plotData)) {
+
+                tempData = Array.from(val, (x) => {return {
+                    x: convertXPosition(x.seqRange[0], x.contig, xbars),
+                    x2: convertXPosition(x.seqRange[1], x.contig, xbars),
+                    y: counter
+                }});
+
+                categories.push(key);
+                seriesData = seriesData.concat(tempData);
+                counter += 1;
+            }
         }
     }
-
+    return {categories, seriesData}
 };
 
 /**
@@ -426,11 +451,15 @@ const sincronizedSlidingWindow = (sample) => {
         const pid = `${el.project_id}.${el.sample_name}`;
         if ( pid === sample && (el.report_json.plotData || {}).gcSliding )  {
             xLabels = el.report_json.plotData.gcSliding[1];
+            // console.log(el.report_json.gcSliding[2])
             xBars = Array.from(el.report_json.plotData.gcSliding[2], (x) => x.position);
+            contigBoundaries = el.report_json.plotData.gcSliding[2];
             gcData = el.report_json.plotData.gcSliding[0];
             covData = el.report_json.plotData.covSliding[0];
         }
     }
+
+    console.log(xBars)
 
     // Get plotlines for contig boundaries
     let contigPlotLines = [];
@@ -529,81 +558,84 @@ const sincronizedSlidingWindow = (sample) => {
             })
     });
 
-    getAbricateReport(sample);
+    getAbricateReport(sample, contigBoundaries).then((res) => {
 
-    // Append the  chart
-    $("<div class='chart'>")
-        .appendTo("#sync-sliding-window")
-        .highcharts({
-            chart: {
-                marginLeft: 70,
-                spacingTop: 10,
-                spacingBottom: 10,
-                zoomType: "x",
-                panning: true,
-                panKey: "ctrl",
-                height: 130,
-                events: {
-                    load(){
-                        this.myTooltip = new Highcharts.Tooltip(this, this.options.tooltip);
-                    }
-                }
-            },
-            title: {
-                text: "Antimicrobial resistance and virulence annotation",
-                margin: 5
-            },
-            legend: {
-                enabled: false
-            },
-            tooltip: {
-                enabled: false,
-            },
-            plotOptions: {
-                series: {
-                    stickyTracking: false,
+        console.log(res);
+
+        // Append the  chart
+        $("<div class='chart'>")
+            .appendTo("#sync-sliding-window")
+            .highcharts({
+                chart: {
+                    marginLeft: 70,
+                    spacingTop: 10,
+                    spacingBottom: 10,
+                    zoomType: "x",
+                    panning: true,
+                    panKey: "ctrl",
+                    height: 130,
                     events: {
-                        click(evt) {
-                            this.chart.myTooltip.options.enabled = true;
-                            this.chart.myTooltip.refresh(evt.point, evt);
-                        },
-                        mouseOut() {
-                            this.chart.myTooltip.hide();
-                            this.chart.myTooltip.options.enabled = false;
+                        load(){
+                            this.myTooltip = new Highcharts.Tooltip(this, this.options.tooltip);
                         }
                     }
-                }
-            },
-            xAxis: {
-                plotLines: contigPlotLines,
-                events: {
-                    setExtremes: syncExtremes
                 },
-                min: 0,
-                max: xLabels.length,
-                labels: {
-                    enabled: false
-                }
-            },
-            yAxis: {
                 title: {
-                    text: null
+                    text: "Antimicrobial resistance and virulence annotation",
+                    margin: 5
                 },
-                categories: ["Resfinder", "Card", "VFDB"],
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    enabled: false,
+                },
+                plotOptions: {
+                    series: {
+                        stickyTracking: false,
+                        events: {
+                            click(evt) {
+                                this.chart.myTooltip.options.enabled = true;
+                                this.chart.myTooltip.refresh(evt.point, evt);
+                            },
+                            mouseOut() {
+                                this.chart.myTooltip.hide();
+                                this.chart.myTooltip.options.enabled = false;
+                            }
+                        }
+                    }
+                },
+                xAxis: {
+                    plotLines: contigPlotLines,
+                    events: {
+                        setExtremes: syncExtremes
+                    },
+                    min: 0,
+                    max: xLabels.length,
+                    labels: {
+                        enabled: false
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    categories: res.categories,
 
-                // labels: {
-                //     enabled: false
-                // }
-            },
-            credits: {
-                enabled: false
-            },
-            series: [{
-                type: "xrange",
-                data: [{x:1, x2: 2, y: 0}, {x:4, x2:7, y: 0}, {x:90, x2:90.5, y:0}, {x:3, x2:4, y: 1}, {x:8, x2:9, y: 2}],
-                pointWidth: 20
-            }]
-        })
+                    // labels: {
+                    //     enabled: false
+                    // }
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    type: "xrange",
+                    data: res.seriesData,
+                    pointWidth: 20
+                }]
+            })
+    });
 
 };
 
