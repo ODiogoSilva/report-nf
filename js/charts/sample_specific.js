@@ -277,6 +277,30 @@ const getAbricateReport = async (sample, xbars) => {
     return {categories, seriesData}
 };
 
+
+const getSlidingReport = async (sample) => {
+
+    let gcData,
+        xBars,
+        covData,
+        xLabels;
+
+    // Get data and labels
+    for ( const el of data ) {
+        const pid = `${el.project_id}.${el.sample_name}`;
+        if ( pid === sample && (el.report_json.plotData || {}).gcSliding )  {
+            xLabels = el.report_json.plotData.gcSliding[1];
+            xBars = Array.from(el.report_json.plotData.gcSliding[2], (x) => x.position);
+            contigBoundaries = el.report_json.plotData.gcSliding[2];
+            gcData = el.report_json.plotData.gcSliding[0];
+            covData = el.report_json.plotData.covSliding[0];
+        }
+    }
+
+    return {gcData, xBars, covData, xLabels};
+
+};
+
 /**
  *
  * @param sample
@@ -441,200 +465,185 @@ const sincronizedSlidingWindow = (sample) => {
         }
     }
 
-    let gcData,
-        xBars,
-        covData,
-        xLabels;
 
-    // Get data and labels
-    for ( const el of data ) {
-        const pid = `${el.project_id}.${el.sample_name}`;
-        if ( pid === sample && (el.report_json.plotData || {}).gcSliding )  {
-            xLabels = el.report_json.plotData.gcSliding[1];
-            // console.log(el.report_json.gcSliding[2])
-            xBars = Array.from(el.report_json.plotData.gcSliding[2], (x) => x.position);
-            contigBoundaries = el.report_json.plotData.gcSliding[2];
-            gcData = el.report_json.plotData.gcSliding[0];
-            covData = el.report_json.plotData.covSliding[0];
+    getSlidingReport(sample).then((res) => {
+
+        // Get plotlines for contig boundaries
+        let contigPlotLines = [];
+        for ( const c of res.xBars ) {
+            contigPlotLines.push({
+                value: c,
+                width: 0.15,
+                color: "grey"
+            });
         }
-    }
 
-    console.log(xBars)
+        let slidingData = [{
+            "data": res.gcData,
+            "title": "GC content",
+            "type": "line"
+        }, {
+            "data": res.covData,
+            "title": "Coverage",
+            "type": "area"
+        }];
 
-    // Get plotlines for contig boundaries
-    let contigPlotLines = [];
-    for ( const c of xBars ) {
-        contigPlotLines.push({
-            value: c,
-            width: 0.15,
-            color: "grey"
-        });
-    }
+        $.each(slidingData, (i, dataset) => {
 
-    let slidingData = [{
-        "data": gcData,
-        "title": "GC content",
-        "type": "line"
-    }, {
-        "data": covData,
-        "title": "Coverage",
-        "type": "area"
-    }];
-
-    $.each(slidingData, (i, dataset) => {
-
-        // Append the GC content and coverage charts
-        $("<div class='chart'>")
-            .appendTo("#sync-sliding-window")
-            .highcharts({
-                chart: {
-                    marginLeft: 70,
-                    spacingTop: 20,
-                    spacingBottom: 10,
-                    zoomType: "x",
-                    panning: true,
-                    panKey: "ctrl",
-                    height: 300
-                },
-                title: {
-                    text: dataset.title,
-                    margin: 5
-
-                },
-                legend: {
-                    enabled: false
-                },
-                xAxis: {
-                    categories: Array.from(xLabels, (x) => parseInt(x.split("_")[1])),
-                    crosshair: {
-                        width: 10
+            // Append the GC content and coverage charts
+            $("<div class='chart'>")
+                .appendTo("#sync-sliding-window")
+                .highcharts({
+                    chart: {
+                        marginLeft: 70,
+                        spacingTop: 20,
+                        spacingBottom: 10,
+                        zoomType: "x",
+                        panning: true,
+                        panKey: "ctrl",
+                        height: 300
                     },
-                    plotLines: contigPlotLines,
-                    events: {
-                        setExtremes: syncExtremes
-                    },
-                    tickInterval: 100,
-                    min: 0,
-                    max: xLabels.length
-                },
-                yAxis: {
                     title: {
-                        text: null
-                    }
-                },
-                credits: {
-                    enabled: false
-                },
-                tooltip: {
-                    positioner() {
-                        return {
-                            x: 30, // right aligned
-                            y: -10 // align to title
-                        };
+                        text: dataset.title,
+                        margin: 5
+
                     },
-                    borderWidth: 0,
-                    backgroundColor: "none",
-                    pointFormatter() {
-                        return "<span>Position: <b>" + xLabels[this.x].split("_")[1] + " (Contig: " + xLabels[this.x].split("_")[0] + ")" + "</b></span><br>" +
-                               "<span>Value: <b>" + this.y + "</b></span>";
+                    legend: {
+                        enabled: false
                     },
-                    headerFormat: "",
-                    shadow: false,
-                    style: {
-                        fontSize: "12px"
-                    },
-                    valueDecimals: 2
-                },
-
-                series: [{
-                    data: dataset.data,
-                    type: dataset.type,
-                    states: {
-                        hover: {
-                            lineWidthPlus: 0
-                        }
-                    }
-                }]
-            })
-    });
-
-    getAbricateReport(sample, contigBoundaries).then((res) => {
-
-        console.log(res);
-
-        // Append the  chart
-        $("<div class='chart'>")
-            .appendTo("#sync-sliding-window")
-            .highcharts({
-                chart: {
-                    marginLeft: 70,
-                    spacingTop: 10,
-                    spacingBottom: 10,
-                    zoomType: "x",
-                    panning: true,
-                    panKey: "ctrl",
-                    height: 130,
-                    events: {
-                        load(){
-                            this.myTooltip = new Highcharts.Tooltip(this, this.options.tooltip);
-                        }
-                    }
-                },
-                lang: {
-                    noData: "No annotation data"
-                },
-                title: {
-                    text: "Antimicrobial resistance and virulence annotation",
-                    margin: 5
-                },
-                legend: {
-                    enabled: false
-                },
-                tooltip: {
-                    enabled: false,
-                },
-                plotOptions: {
-                    series: {
-                        stickyTracking: false,
+                    xAxis: {
+                        categories: Array.from(res.xLabels, (x) => parseInt(x.split("_")[1])),
+                        crosshair: {
+                            width: 10
+                        },
+                        plotLines: contigPlotLines,
                         events: {
-                            click(evt) {
-                                this.chart.myTooltip.options.enabled = true;
-                                this.chart.myTooltip.refresh(evt.point, evt);
-                            },
-                            mouseOut() {
-                                this.chart.myTooltip.hide();
-                                this.chart.myTooltip.options.enabled = false;
+                            setExtremes: syncExtremes
+                        },
+                        tickInterval: 100,
+                        min: 0,
+                        max: res.xLabels.length
+                    },
+                    yAxis: {
+                        title: {
+                            text: null
+                        }
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    tooltip: {
+                        positioner() {
+                            return {
+                                x: 30, // right aligned
+                                y: -10 // align to title
+                            };
+                        },
+                        borderWidth: 0,
+                        backgroundColor: "none",
+                        pointFormatter() {
+                            return "<span>Position: <b>" + res.xLabels[this.x].split("_")[1] + " (Contig: " + res.xLabels[this.x].split("_")[0] + ")" + "</b></span><br>" +
+                                   "<span>Value: <b>" + this.y + "</b></span>";
+                        },
+                        headerFormat: "",
+                        shadow: false,
+                        style: {
+                            fontSize: "12px"
+                        },
+                        valueDecimals: 2
+                    },
+
+                    series: [{
+                        data: dataset.data,
+                        type: dataset.type,
+                        states: {
+                            hover: {
+                                lineWidthPlus: 0
                             }
                         }
-                    }
-                },
-                xAxis: {
-                    plotLines: contigPlotLines,
-                    events: {
-                        setExtremes: syncExtremes
+                    }]
+                })
+        });
+
+        getAbricateReport(sample, contigBoundaries).then((abrRes) => {
+
+            console.log(abrRes);
+
+            // Append the  chart
+            $("<div class='chart'>")
+                .appendTo("#sync-sliding-window")
+                .highcharts({
+                    chart: {
+                        marginLeft: 70,
+                        spacingTop: 10,
+                        spacingBottom: 10,
+                        zoomType: "x",
+                        panning: true,
+                        panKey: "ctrl",
+                        height: 130,
+                        events: {
+                            load(){
+                                this.myTooltip = new Highcharts.Tooltip(this, this.options.tooltip);
+                            }
+                        }
                     },
-                    min: 0,
-                    max: xLabels.length,
-                    labels: {
-                        enabled: false
-                    }
-                },
-                yAxis: {
+                    lang: {
+                        noData: "No annotation data"
+                    },
                     title: {
-                        text: null
+                        text: "Antimicrobial resistance and virulence annotation",
+                        margin: 5
                     },
-                    categories: res.categories,
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    type: "xrange",
-                    data: res.seriesData,
-                    pointWidth: 20
-                }]
-            })
+                    legend: {
+                        enabled: false
+                    },
+                    tooltip: {
+                        enabled: false,
+                    },
+                    plotOptions: {
+                        series: {
+                            stickyTracking: false,
+                            events: {
+                                click(evt) {
+                                    this.chart.myTooltip.options.enabled = true;
+                                    this.chart.myTooltip.refresh(evt.point, evt);
+                                },
+                                mouseOut() {
+                                    this.chart.myTooltip.hide();
+                                    this.chart.myTooltip.options.enabled = false;
+                                }
+                            }
+                        }
+                    },
+                    xAxis: {
+                        plotLines: contigPlotLines,
+                        events: {
+                            setExtremes: syncExtremes
+                        },
+                        min: 0,
+                        max: res.xLabels.length,
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: null
+                        },
+                        categories: abrRes.categories,
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        type: "xrange",
+                        data: abrRes.seriesData,
+                        pointWidth: 20
+                    }]
+                })
+        });
     });
+
 };
 
 /**
