@@ -14,7 +14,7 @@ function getPercentile(data, percentile) {
     data.sort(numSort);
     const index = (percentile/100) * data.length;
     let result;
-    if (Math.floor(index) == index) {
+    if (Math.floor(index) === index) {
         result = (data[(index-1)] + data[index])/2;
     }
     else {
