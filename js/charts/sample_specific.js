@@ -254,7 +254,8 @@ const convertXPosition = (value, contig, xbars) => {
 const getAbricateReport = async (sample, xbars) => {
 
     let categories = [],
-        seriesData = [];
+        seriesFinal = [];
+
     let counter = 0;
 
     for (const el of data) {
@@ -269,12 +270,14 @@ const getAbricateReport = async (sample, xbars) => {
                 }});
 
                 categories.push(key);
-                seriesData = seriesData.concat(tempData);
+                seriesFinal.push({"name": key, "data": tempData, "pointWidth": 15});
                 counter += 1;
             }
         }
     }
-    return {categories, seriesData}
+    console.log(seriesFinal)
+    // return {categories, seriesData}
+    return {categories, seriesFinal}
 };
 
 
@@ -414,11 +417,37 @@ const sincronizedSlidingWindow = (sample) => {
             }
 
             if ( chart.renderTo.id === "" ) {
-                event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-                point = chart.series[0].searchPoint(event, true); // Get the hovered point
 
-                if (point) {
-                    point.highlight(e);
+                // if (chart.userOptions.chart.type === "xrange"){
+                //     continue
+                // }
+
+                event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+
+                // Provide custom "crosshair" for each y series in the
+                // xrange chart
+                if (chart.userOptions.chart.type === "xrange"){
+                    for (const s of chart.series) {
+                        // Remove previous path
+                        $("#" + s.userOptions.name).remove();
+                        // Get nearest point for current series
+                        point = s.searchPoint(event, true)
+                        // Get corrected coordinates for crosshairs
+                        const crossX = point.plotX + chart.plotBox.x;
+                        const crossY = point.plotY + chart.plotBox.y - 10;
+                        const crossOffSet = point.plotY + chart.plotBox.y + 10;
+                        chart.renderer.path(["M", crossX, crossY, "V", crossOffSet])
+                            .attr({"stroke-width": 5, stroke: point.color, id:s.userOptions.name, zIndex: -1, opacity: .7})
+                            .add()
+                    }
+
+                } else {
+
+                    // Get the hovered point
+                    point = chart.series[0].searchPoint(event, true);
+                    if (point) {
+                        point.highlight(e);
+                    }
                 }
             }
         }
@@ -567,7 +596,7 @@ const sincronizedSlidingWindow = (sample) => {
 
         getAbricateReport(sample, contigBoundaries).then((abrRes) => {
 
-            console.log(abrRes);
+            const seriesHeight = 20;
 
             // Append the  chart
             $("<div class='chart'>")
@@ -580,40 +609,33 @@ const sincronizedSlidingWindow = (sample) => {
                         zoomType: "x",
                         panning: true,
                         panKey: "ctrl",
-                        height: 130,
-                        events: {
-                            load(){
-                                this.myTooltip = new Highcharts.Tooltip(this, this.options.tooltip);
-                            }
-                        }
+                        height: 110 + (seriesHeight * abrRes.categories.length),
+                        type: "xrange",
                     },
-                    lang: {
-                        noData: "No annotation data"
+                    // lang: {
+                    //     noData: "No annotation data"
+                    // },
+                    tooltip: {
+                        enabled: false
                     },
                     title: {
                         text: "Antimicrobial resistance and virulence annotation",
                         margin: 5
                     },
-                    legend: {
-                        enabled: false
-                    },
-                    tooltip: {
-                        enabled: false,
-                    },
                     plotOptions: {
-                        series: {
-                            stickyTracking: false,
-                            events: {
-                                click(evt) {
-                                    this.chart.myTooltip.options.enabled = true;
-                                    this.chart.myTooltip.refresh(evt.point, evt);
-                                },
-                                mouseOut() {
-                                    this.chart.myTooltip.hide();
-                                    this.chart.myTooltip.options.enabled = false;
-                                }
-                            }
-                        }
+                       series: {
+                           cursor: "pointer",
+                           animation: false,
+                           dataGrouping: {
+                               enabled: false
+                           },
+                           events: {
+                               click(evt) {
+                                   console.log(this)
+                                   console.log(evt)
+                               }
+                           }
+                       }
                     },
                     xAxis: {
                         crosshair: {
@@ -639,11 +661,7 @@ const sincronizedSlidingWindow = (sample) => {
                     credits: {
                         enabled: false
                     },
-                    series: [{
-                        type: "xrange",
-                        data: abrRes.seriesData,
-                        pointWidth: 20
-                    }]
+                    series: abrRes.seriesFinal
                 })
         });
     });
