@@ -617,8 +617,8 @@ const sincronizedSlidingWindow = (sample) => {
                     },
                     xAxis: {
                         crosshair: {
-                            width: 10,
-                            color: "#a1a0a0"
+                            width: 5,
+                            color: "#cbcaca"
                         },
                         plotLines: contigPlotLines,
                         events: {
