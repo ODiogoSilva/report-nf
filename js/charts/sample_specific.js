@@ -635,6 +635,9 @@ const sincronizedSlidingWindow = (sample) => {
                     legend: {
                         enabled: false
                     },
+                    exporting: {
+                        enabled: false
+                    },
                     xAxis: {
                         min: 0,
                         max: res.xLabels.length,
