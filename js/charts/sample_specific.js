@@ -266,16 +266,15 @@ const getAbricateReport = async (sample, xbars) => {
                 tempData = Array.from(val, (x) => {return {
                     x: convertXPosition(x.seqRange[0], x.contig, xbars),
                     x2: convertXPosition(x.seqRange[1], x.contig, xbars),
-                    y: counter
+                    y: counter,
                 }});
 
                 categories.push(key);
-                seriesFinal.push({"name": key, "data": tempData, "pointWidth": 15});
+                seriesFinal.push({name: key, data: tempData, pointWidth: 12, pointRange: 0});
                 counter += 1;
             }
         }
     }
-    console.log(seriesFinal)
     // return {categories, seriesData}
     return {categories, seriesFinal}
 };
@@ -431,11 +430,17 @@ const sincronizedSlidingWindow = (sample) => {
                         // Remove previous path
                         $("#" + s.userOptions.name).remove();
                         // Get nearest point for current series
-                        point = s.searchPoint(event, true)
+                        point = s.searchPoint(event, true);
+
+                        if (!point) {
+                            continue
+                        }
+
                         // Get corrected coordinates for crosshairs
                         const crossX = point.plotX + chart.plotBox.x;
                         const crossY = point.plotY + chart.plotBox.y - 10;
                         const crossOffSet = point.plotY + chart.plotBox.y + 10;
+
                         chart.renderer.path(["M", crossX, crossY, "V", crossOffSet])
                             .attr({"stroke-width": 5, stroke: point.color, id:s.userOptions.name, zIndex: -1, opacity: .7})
                             .add()
@@ -598,6 +603,8 @@ const sincronizedSlidingWindow = (sample) => {
 
             const seriesHeight = 20;
 
+            console.log(abrRes)
+
             // Append the  chart
             $("<div class='chart'>")
                 .appendTo("#sync-sliding-window")
@@ -609,14 +616,11 @@ const sincronizedSlidingWindow = (sample) => {
                         zoomType: "x",
                         panning: true,
                         panKey: "ctrl",
-                        height: 110 + (seriesHeight * abrRes.categories.length),
+                        height: 60 + (seriesHeight * abrRes.categories.length),
                         type: "xrange",
                     },
-                    // lang: {
-                    //     noData: "No annotation data"
-                    // },
-                    tooltip: {
-                        enabled: false
+                    lang: {
+                        noData: "No annotation data"
                     },
                     title: {
                         text: "Antimicrobial resistance and virulence annotation",
@@ -625,38 +629,28 @@ const sincronizedSlidingWindow = (sample) => {
                     plotOptions: {
                        series: {
                            cursor: "pointer",
-                           animation: false,
-                           dataGrouping: {
-                               enabled: false
-                           },
-                           events: {
-                               click(evt) {
-                                   console.log(this)
-                                   console.log(evt)
-                               }
-                           }
+                           borderColor: "#fff",
                        }
                     },
+                    legend: {
+                        enabled: false
+                    },
                     xAxis: {
-                        crosshair: {
-                            width: 5,
-                            color: "#cbcaca"
-                        },
+                        min: 0,
+                        max: res.xLabels.length,
                         plotLines: contigPlotLines,
                         events: {
                             setExtremes: syncExtremes
                         },
-                        min: 0,
-                        max: res.xLabels.length,
                         labels: {
                             enabled: false
                         }
                     },
                     yAxis: {
+                        categories: abrRes.categories,
                         title: {
                             text: null
                         },
-                        categories: abrRes.categories,
                     },
                     credits: {
                         enabled: false
