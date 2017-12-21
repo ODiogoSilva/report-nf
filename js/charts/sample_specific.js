@@ -397,114 +397,39 @@ const sizeDistributionPlot = (sample) => {
 };
 
 
-const sincronizedSlidingWindow = (sample) => {
+/**
+ * Synchronize zooming through the setExtremes event handler.
+ */
+function syncExtremes(e) {
+    let thisChart = this.chart;
 
-    $("#sync-sliding-window").empty();
-    /**
-     * In order to synchronize tooltips and crosshairs, override the
-     * built-in events with handlers defined on the parent element.
-     */
-    $("#sync-sliding-window").bind("mousemove touchmove touchstart", function (e) {
-
-        let point,
-            event;
-
-        for ( const chart of Highcharts.charts) {
-
-            if ( chart === undefined) {
-                continue;
+    // Prevent feedback loop
+    if ( e.trigger !== "syncExtremes" ) {
+        Highcharts.each(Highcharts.charts, function (chart) {
+            // Ignore undefined charts
+            if ( chart === undefined ) {
+                return true;
             }
-
-            if ( chart.renderTo.id === "" ) {
-
-                // if (chart.userOptions.chart.type === "xrange"){
-                //     continue
-                // }
-
-                event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-
-                // Provide custom "crosshair" for each y series in the
-                // xrange chart
-                if (chart.userOptions.chart.type === "xrange"){
-                    for (const s of chart.series) {
-                        // Remove previous path
-                        $("#" + s.userOptions.name).remove();
-                        // Get nearest point for current series
-                        point = s.searchPoint(event, true);
-
-                        if (!point) {
-                            continue
-                        }
-
-                        // Get corrected coordinates for crosshairs
-                        const crossX = point.plotX + chart.plotBox.x;
-                        const crossY = point.plotY + chart.plotBox.y - 10;
-                        const crossOffSet = point.plotY + chart.plotBox.y + 10;
-
-                        chart.renderer.path(["M", crossX, crossY, "V", crossOffSet])
-                            .attr({"stroke-width": 5, stroke: point.color, id:s.userOptions.name, zIndex: -1, opacity: .7})
-                            .add()
-                    }
-
-                } else {
-
-                    // Get the hovered point
-                    point = chart.series[0].searchPoint(event, true);
-                    if (point) {
-                        point.highlight(e);
-                    }
+            if ( chart.renderTo.id !== "" ) {
+                return true;
+            }
+            if ( chart !== thisChart ) {
+                // It is null while updating
+                if ( chart.xAxis[0].setExtremes ) {
+                    chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: "syncExtremes" });
                 }
             }
-        }
-    });
-    /**
-     * Override the reset function, we don't need to hide the tooltips and crosshairs.
-     */
-    // Highcharts.Pointer.prototype.reset = function () {
-    //     return undefined;
-    // };
-
-    /**
-     * Highlight a point by showing tooltip, setting hover state and draw crosshair
-     */
-    Highcharts.Point.prototype.highlight = function (event) {
-        this.onMouseOver(); // Show the hover marker
-        this.series.chart.tooltip.refresh(this); // Show the tooltip
-        this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
-    };
-
-    /**
-     * Synchronize zooming through the setExtremes event handler.
-     */
-    function syncExtremes(e) {
-        let thisChart = this.chart;
-
-        // Prevent feedback loop
-        if ( e.trigger !== "syncExtremes" ) {
-            Highcharts.each(Highcharts.charts, function (chart) {
-                // Ignore undefined charts
-                if ( chart === undefined ) {
-                    return true;
-                }
-                if ( chart.renderTo.id !== "" ) {
-                    return true;
-                }
-                if ( chart !== thisChart ) {
-                    // It is null while updating
-                    if ( chart.xAxis[0].setExtremes ) {
-                        chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: "syncExtremes" });
-                    }
-                }
-            });
-        }
+        });
     }
+}
 
+const slidingReport = (sample) => {
 
-    getSlidingReport(sample).then((res) => {
+    const finalRes = getSlidingReport(sample).then((res) => {
 
         // Get plotlines for contig boundaries
         let contigPlotLines = [];
-        for ( const c of res.xBars ) {
+        for (const c of res.xBars) {
             contigPlotLines.push({
                 value: c,
                 width: 0.15,
@@ -521,6 +446,8 @@ const sincronizedSlidingWindow = (sample) => {
             "title": "Coverage",
             "type": "area"
         }];
+
+        res.contingPlotLines = contigPlotLines;
 
         $.each(slidingData, (i, dataset) => {
 
@@ -577,7 +504,7 @@ const sincronizedSlidingWindow = (sample) => {
                         backgroundColor: "none",
                         pointFormatter() {
                             return "<span>Position: <b>" + res.xLabels[this.x].split("_")[1] + " (Contig: " + res.xLabels[this.x].split("_")[0] + ")" + "</b></span><br>" +
-                                   "<span>Value: <b>" + this.y + "</b></span>";
+                                "<span>Value: <b>" + this.y + "</b></span>";
                         },
                         headerFormat: "",
                         shadow: false,
@@ -598,70 +525,249 @@ const sincronizedSlidingWindow = (sample) => {
                     }]
                 })
         });
+        return res
+    });
+    return finalRes
+};
 
-        getAbricateReport(sample, contigBoundaries).then((abrRes) => {
 
-            const seriesHeight = 20;
+const prokkaReport = (sample, res) => {
 
-            console.log(abrRes)
+    const seriesHeight = 20;
+    // const chartHeight = 60 + (seriesHeight * abrRes.categories.length);
 
-            // Append the  chart
-            $("<div class='chart'>")
-                .appendTo("#sync-sliding-window")
-                .highcharts({
-                    chart: {
-                        marginLeft: 70,
-                        spacingTop: 10,
-                        spacingBottom: 10,
-                        zoomType: "x",
-                        panning: true,
-                        panKey: "ctrl",
-                        height: 60 + (seriesHeight * abrRes.categories.length),
-                        type: "xrange",
-                    },
-                    lang: {
-                        noData: "No annotation data"
-                    },
-                    title: {
-                        text: "Antimicrobial resistance and virulence annotation",
-                        margin: 5
-                    },
-                    plotOptions: {
-                       series: {
-                           cursor: "pointer",
-                           borderColor: "#fff",
-                       }
-                    },
-                    legend: {
-                        enabled: false
-                    },
-                    exporting: {
-                        enabled: false
-                    },
-                    xAxis: {
-                        min: 0,
-                        max: res.xLabels.length,
-                        plotLines: contigPlotLines,
-                        events: {
-                            setExtremes: syncExtremes
-                        },
-                        labels: {
-                            enabled: false
+    $(".sync-plots").height((i, h) => {
+        return (h + 60)
+    });
+
+    // Append the  chart
+    $("<div class='chart'>")
+        .appendTo("#sync-sliding-window")
+        .highcharts({
+            chart: {
+                marginLeft: 70,
+                spacingTop: 20,
+                spacingBottom: 10,
+                zoomType: "x",
+                panning: true,
+                panKey: "ctrl",
+                height: 60,
+                type: "xrange"
+            },
+            title: {
+                text: "Prokka Annotation",
+                margin: 5
+            },
+            lang: {
+                noData: "No annotation data"
+            },
+            exporting: {
+                enabled: false
+            }
+        })
+};
+
+
+const chewbbacaReport = (sample, res) => {
+
+    const seriesHeight = 20;
+    // const chartHeight = 60 + (seriesHeight * abrRes.categories.length);
+
+    $(".sync-plots").height((i, h) => {
+        return (h + 60)
+    });
+
+    // Append the  chart
+    $("<div class='chart'>")
+        .appendTo("#sync-sliding-window")
+        .highcharts({
+            chart: {
+                marginLeft: 70,
+                spacingTop: 20,
+                spacingBottom: 10,
+                zoomType: "x",
+                panning: true,
+                panKey: "ctrl",
+                height: 60,
+                type: "xrange"
+            },
+            title: {
+                text: "Chewbbaca",
+                margin: 5
+            },
+            lang: {
+                noData: "No MLST data"
+            },
+            exporting: {
+                enabled: false
+            }
+        })
+};
+
+
+const abricateReport = (sample, res) => {
+
+    getAbricateReport(sample, contigBoundaries).then((abrRes) => {
+
+        const seriesHeight = 20;
+        const chartHeight = 60 + (seriesHeight * abrRes.categories.length);
+
+        $(".sync-plots").height((i, h) => {
+            return (h + chartHeight)
+        });
+
+        // Append the  chart
+        $("<div class='chart'>")
+            .appendTo("#sync-sliding-window")
+            .highcharts({
+                chart: {
+                    marginLeft: 70,
+                    spacingTop: 10,
+                    spacingBottom: 10,
+                    zoomType: "x",
+                    panning: true,
+                    panKey: "ctrl",
+                    height: chartHeight,
+                    type: "xrange",
+                },
+                lang: {
+                    noData: "No annotation data"
+                },
+                title: {
+                    text: "Antimicrobial resistance and virulence annotation",
+                    margin: 5
+                },
+                plotOptions: {
+                    series: {
+                        cursor: "pointer",
+                        borderColor: "#fff",
+                        dataGrouping: {
+                            enabled: false,
                         }
                     },
-                    yAxis: {
-                        categories: abrRes.categories,
-                        title: {
-                            text: null
-                        },
+                    xrange: {
+                        point: {
+                            events: {
+                                click(evt) {
+                                    console.log(this)
+                                    console.log(evt)
+                                }
+                            }
+                        }
+                    }
+
+                },
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                xAxis: {
+                    min: 0,
+                    max: res.xLabels.length,
+                    plotLines: res.contigPlotLines,
+                    events: {
+                        setExtremes: syncExtremes
                     },
-                    credits: {
+                    labels: {
                         enabled: false
+                    }
+                },
+                yAxis: {
+                    categories: abrRes.categories,
+                    title: {
+                        text: null
                     },
-                    series: abrRes.seriesFinal
-                })
-        });
+                },
+                credits: {
+                    enabled: false
+                },
+                series: abrRes.seriesFinal
+            })
     });
+};
+
+
+const sincronizedSlidingWindow = async (sample) => {
+
+    $("#sync-sliding-window").empty();
+    /**
+     * In order to synchronize tooltips and crosshairs, override the
+     * built-in events with handlers defined on the parent element.
+     */
+    $("#sync-sliding-window").bind("mousemove touchmove touchstart", function (e) {
+
+        let point,
+            event;
+
+        for ( const chart of Highcharts.charts) {
+
+            if ( chart === undefined) {
+                continue;
+            }
+
+            if ( chart.renderTo.id === "" ) {
+
+                // if (chart.userOptions.chart.type === "xrange"){
+                //     continue
+                // }
+
+                event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+
+                // Provide custom "crosshair" for each y series in the
+                // xrange chart
+                if (chart.userOptions.chart.type === "xrange"){
+                    for (const s of chart.series) {
+                        // Remove previous path
+                        $("#" + s.userOptions.name).remove();
+                        // Get nearest point for current series
+
+                        if (!s) {
+                            continue
+                        }
+
+                        point = s.searchPoint(event, true);
+
+                        if (!point) {
+                            continue
+                        }
+
+                        // Get corrected coordinates for crosshairs
+                        const crossX = point.plotX + chart.plotBox.x;
+                        const crossY = point.plotY + chart.plotBox.y - 10;
+                        const crossOffSet = point.plotY + chart.plotBox.y + 10;
+
+                        chart.renderer.path(["M", crossX, crossY, "V", crossOffSet])
+                            .attr({"stroke-width": 5, stroke: point.color, id:s.userOptions.name, zIndex: -1, opacity: .7})
+                            .add()
+                    }
+
+                } else {
+
+                    // Get the hovered point
+                    point = chart.series[0].searchPoint(event, true);
+                    if (point) {
+                        point.highlight(e);
+                    }
+                }
+            }
+        }
+    });
+
+    /**
+     * Highlight a point by showing tooltip, setting hover state and draw crosshair
+     */
+    Highcharts.Point.prototype.highlight = function (event) {
+        this.onMouseOver(); // Show the hover marker
+        this.series.chart.tooltip.refresh(this); // Show the tooltip
+        this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
+    };
+
+    const res = await slidingReport(sample);
+    await abricateReport(sample, res);
+    await prokkaReport(sample, res);
+    await chewbbacaReport(sample, res);
 
 };
 

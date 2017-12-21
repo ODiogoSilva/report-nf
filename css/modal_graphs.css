@@ -1,6 +1,6 @@
 #modalGraphs .modal-dialog{
-    width: 80%;
-    height:80%;
+    width: 90%;
+    /*height:80%;*/
     margin-top: 5%;
 }
 
@@ -64,7 +64,7 @@
 
 .sync-plots {
     border-top: 1px solid #dadada;
-    height: 800px;
+    height: 650px;
 }
 
 .card-summary-header {
