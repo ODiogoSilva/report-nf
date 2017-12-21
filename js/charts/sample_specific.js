@@ -563,7 +563,10 @@ const prokkaReport = (sample, res) => {
             },
             exporting: {
                 enabled: false
-            }
+            },
+            credits: {
+                enabled: false
+            },
         })
 };
 
@@ -600,7 +603,10 @@ const chewbbacaReport = (sample, res) => {
             },
             exporting: {
                 enabled: false
-            }
+            },
+            credits: {
+                enabled: false
+            },
         })
 };
 
