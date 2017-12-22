@@ -64,9 +64,15 @@
 
 .sync-plots {
     border-top: 1px solid #dadada;
-    height: 650px;
+    height: 1000px;
 }
 
 .card-summary-header {
     font-weight: bold;
+}
+
+.abricate-report {
+    display: none;
+    height: 0;
+    transition: height 0.5s ease-in
 }

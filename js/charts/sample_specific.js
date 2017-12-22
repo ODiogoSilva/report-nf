@@ -427,6 +427,18 @@ function syncExtremes(e) {
     }
 }
 
+const toggleAbricateReport = (sel) => {
+
+    const reportHeight = 80;
+
+    if (sel.height() === reportHeight) {
+        sel.animate({height: 0}, 100, "linear")
+    } else {
+        sel.animate({height: reportHeight}, 100, "linear").show()
+    }
+
+};
+
 const coco = () => {
 
     $("#bruta").show();
@@ -631,15 +643,10 @@ const slidingReport = (sample) => {
 const prokkaReport = (sample, res) => {
 
     const seriesHeight = 20;
-    // const chartHeight = 60 + (seriesHeight * abrRes.categories.length);
-
-    $(".sync-plots").height((i, h) => {
-        return (h + 60)
-    });
 
     // Append the  chart
     $("<div class='chart'>")
-        .appendTo("#sync-sliding-window")
+        .appendTo("#sync-sw-prokka")
         .highcharts({
             chart: {
                 marginLeft: 70,
@@ -673,13 +680,9 @@ const chewbbacaReport = (sample, res) => {
     const seriesHeight = 20;
     // const chartHeight = 60 + (seriesHeight * abrRes.categories.length);
 
-    $(".sync-plots").height((i, h) => {
-        return (h + 60)
-    });
-
     // Append the  chart
     $("<div class='chart'>")
-        .appendTo("#sync-sliding-window")
+        .appendTo("#sync-sw-chewbbaca")
         .highcharts({
             chart: {
                 marginLeft: 70,
@@ -715,13 +718,9 @@ const abricateReport = (sample, res) => {
         const seriesHeight = 20;
         const chartHeight = 60 + (seriesHeight * abrRes.categories.length);
 
-        $(".sync-plots").height((i, h) => {
-            return (h + chartHeight)
-        });
-
         // Append the  chart
         $("<div class='chart'>")
-            .appendTo("#sync-sliding-window")
+            .appendTo("#sync-sw-abricate")
             .highcharts({
                 chart: {
                     marginLeft: 70,
@@ -762,8 +761,7 @@ const abricateReport = (sample, res) => {
                         point: {
                             events: {
                                 click(evt) {
-                                    console.log(this)
-                                    console.log(evt)
+                                    toggleAbricateReport($(".abricate-report"));
                                 }
                             }
                         }
@@ -804,11 +802,14 @@ const abricateReport = (sample, res) => {
 const sincronizedSlidingWindow = async (sample) => {
 
     $("#sync-sliding-window").empty();
+    $("#sync-sw-abricate").empty();
+    $("#sync-sw-prokka").empty();
+    $("#sync-sw-chewbbaca").empty();
     /**
      * In order to synchronize tooltips and crosshairs, override the
      * built-in events with handlers defined on the parent element.
      */
-    $("#sync-sliding-window").bind("mousemove", function (e) {
+    $(".sync-plots").bind("mousemove", function (e) {
 
         let point,
             event;
