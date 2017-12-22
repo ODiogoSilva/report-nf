@@ -267,6 +267,10 @@ const getAbricateReport = async (sample, xbars) => {
                     x: convertXPosition(x.seqRange[0], x.contig, xbars),
                     x2: convertXPosition(x.seqRange[1], x.contig, xbars),
                     y: counter,
+                    gene: x.gene,
+                    accession: x.accession,
+                    coverage: x.coverage,
+                    ident: x["identity"]
                 }});
 
                 categories.push(key);
@@ -422,6 +426,99 @@ function syncExtremes(e) {
         });
     }
 }
+
+const coco = () => {
+
+    $("#bruta").show();
+    console.log($("#bruta"))
+    console.log("show")
+
+    Highcharts.chart("coverageGauge", {
+        chart: {
+            type: "solidgauge",
+            backgroundColor: "transparent"
+        },
+        title: null,
+        pane: {
+            center: ['50%', '70%'],
+            size: '130%',
+            startAngle: -90,
+            endAngle: 90,
+            background: {
+                backgroundColor: '#fff',
+                innerRadius: '75%',
+                outerRadius: '100%',
+                shape: 'arc',
+                borderColor: 'transparent'
+            }
+        },
+        tooltip: {
+            enabled: false
+        },
+        yAxis: {
+            min: 0,
+            max: 100,
+            stops: [
+                [0.1, '#e74c3c'], // red
+                [0.5, '#f1c40f'], // yellow
+                [0.9, '#2ecc71'] // green
+            ],
+            minorTickInterval: null,
+            tickPixelInterval: 400,
+            tickWidth: 0,
+            gridLineWidth: 0,
+            gridLineColor: 'transparent',
+            labels: {
+                enabled: false
+            },
+            title: {
+                enabled: false
+            }
+        },
+
+        credits: {
+            enabled: false
+        },
+
+        plotOptions: {
+            solidgauge: {
+                innerRadius: '75%',
+                dataLabels: {
+                    y: -45,
+                    borderWidth: 0,
+                    useHTML: true
+                }
+            }
+        },
+
+        series: [{
+            data: [83],
+            dataLabels: {
+                format: '<p style="text-align:center;">{y}%</p>'
+            }
+        }]
+    });
+}
+
+const generatePopover = (el) => {
+    const template = $("#abricate-popover").html();
+    Mustache.parse(template);
+
+    const options = {
+        gene: el.gene,
+        geneLength: 0,
+        genomicPosition: 0-0,
+        database: el.yCategory,
+        accession: el.accession
+    };
+
+    const res = Mustache.render(template, options);
+
+    console.log(res)
+
+    return res
+};
+
 
 const slidingReport = (sample) => {
 
@@ -643,15 +740,25 @@ const abricateReport = (sample, res) => {
                     text: "Antimicrobial resistance and virulence annotation",
                     margin: 5
                 },
+                tooltip: {
+                    positioner() {
+                        return {
+                            x: 30,
+                            y: 0
+                        };
+                    },
+                    pointFormatter() {
+                        return `<span>Gene: <b>${this.gene}</b> (Click for details)</span>`
+                    },
+                    borderWidth: 0,
+                    backgroundColor: "none",
+                    headerFormat: "",
+                    shadow: false
+                },
                 plotOptions: {
                     series: {
                         cursor: "pointer",
                         borderColor: "#fff",
-                        dataGrouping: {
-                            enabled: false,
-                        }
-                    },
-                    xrange: {
                         point: {
                             events: {
                                 click(evt) {
@@ -660,8 +767,7 @@ const abricateReport = (sample, res) => {
                                 }
                             }
                         }
-                    }
-
+                    },
                 },
                 legend: {
                     enabled: false
@@ -702,7 +808,7 @@ const sincronizedSlidingWindow = async (sample) => {
      * In order to synchronize tooltips and crosshairs, override the
      * built-in events with handlers defined on the parent element.
      */
-    $("#sync-sliding-window").bind("mousemove touchmove touchstart", function (e) {
+    $("#sync-sliding-window").bind("mousemove", function (e) {
 
         let point,
             event;
