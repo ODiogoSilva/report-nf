@@ -81,3 +81,16 @@
     display: none;
     width: 400px;
 }
+
+.report-header {
+    font-size: 14px;
+    color: #313131;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.report-div {
+    line-height: 25px;
+    padding-bottom: 8px;
+    vertical-align: middle;
+}

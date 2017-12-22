@@ -254,7 +254,8 @@ const convertXPosition = (value, contig, xbars) => {
 const getAbricateReport = async (sample, xbars) => {
 
     let categories = [],
-        seriesFinal = [];
+        seriesFinal = [],
+        windowSize = xbars[0].window;
 
     let counter = 0;
 
@@ -263,6 +264,8 @@ const getAbricateReport = async (sample, xbars) => {
         if (pid === sample && el.report_json.task === "abricate") {
             for (const [key, val] of Object.entries(el.report_json.plotData)) {
 
+                console.log(xbars)
+
                 tempData = Array.from(val, (x) => {return {
                     x: convertXPosition(x.seqRange[0], x.contig, xbars),
                     x2: convertXPosition(x.seqRange[1], x.contig, xbars),
@@ -270,7 +273,8 @@ const getAbricateReport = async (sample, xbars) => {
                     gene: x.gene,
                     accession: x.accession,
                     coverage: x.coverage,
-                    ident: x["identity"]
+                    ident: x["identity"],
+                    windowSize
                 }});
 
                 categories.push(key);
@@ -430,7 +434,8 @@ function syncExtremes(e) {
 
 const abricatePopover = (el) => {
 
-    // coco(el);
+    buildGauge(el.coverage, "coverageGauge", "coverage");
+    buildGauge(el.ident, "identityGauge", "identity");
     populateAbricateReport(el);
 
     return function(){return $(".abricate-popover").html()}
@@ -439,26 +444,31 @@ const abricatePopover = (el) => {
 
 const populateAbricateReport = (el) => {
 
-    $("#abr-gene-name").html(el.gene)
-    $("#abr-gene-length").html(el.coverage)
-
+    $("#abr-gene-name").html(el.gene);
+    $("#abr-gene-length").html(Math.round((el.x2 - el.x) * el.windowSize), 0);
+    $("#abr-gene-position").html(`${Math.round(el.x * el.windowSize)} - ${Math.round(el.x2 * el.windowSize)}`);
+    $("#abr-database").html(el.yCategory);
+    $("#abr-accession").html(el.accession)
 
 };
 
 
-const coco = (el) => {
+const buildGauge = (value, container, title) => {
 
     console.log("here")
 
-    const chart = $("#coverageGauge").highcharts();
-    console.log(chart)
-
-    Highcharts.chart("coverageGauge", {
+    Highcharts.chart(container, {
         chart: {
             type: "solidgauge",
-            backgroundColor: "transparent"
+            backgroundColor: "transparent",
+            height: 80,
         },
-        title: null,
+        // title: null,
+        title: {
+            text: title,
+            margin: 2,
+            style: {"fontSize": "11px", fontWeight: "bold"}
+        },
         pane: {
             center: ['50%', '70%'],
             size: '130%',
@@ -475,19 +485,23 @@ const coco = (el) => {
         tooltip: {
             enabled: false
         },
+        exporting: {
+            enabled: false
+        },
         yAxis: {
             min: 0,
             max: 100,
             stops: [
-                [0.1, '#e74c3c'], // red
-                [0.5, '#f1c40f'], // yellow
-                [0.9, '#2ecc71'] // green
+                [0.1, "#e74c3c"], // red
+                [0.5, "#f1c40f"], // yellow
+                [0.9, "#2ecc71"] // green
             ],
             minorTickInterval: null,
             tickPixelInterval: 400,
             tickWidth: 0,
             gridLineWidth: 0,
-            gridLineColor: 'transparent',
+            gridLineColor: "transparent",
+            padding: 0,
             labels: {
                 enabled: false
             },
@@ -495,14 +509,12 @@ const coco = (el) => {
                 enabled: false
             }
         },
-
         credits: {
             enabled: false
         },
-
         plotOptions: {
             solidgauge: {
-                innerRadius: '75%',
+                innerRadius: "75%",
                 dataLabels: {
                     y: -45,
                     borderWidth: 0,
@@ -513,36 +525,15 @@ const coco = (el) => {
                 }
             }
         },
-
         series: [{
-            data: [el.coverage],
+            data: [value],
             dataLabels: {
-                // format: <p style="text-align:center;">{y}%</p>'
-                format: `<p style="text-align:center;">${el.accession}</p>`
+                format: "<p style='text-align:center;'>{y}%</p>",
+                y: 33
             }
         }]
     });
 };
-
-const generatePopover = (el) => {
-    const template = $("#abricate-popover").html();
-    Mustache.parse(template);
-
-    const options = {
-        gene: el.gene,
-        geneLength: 0,
-        genomicPosition: 0-0,
-        database: el.yCategory,
-        accession: el.accession
-    };
-
-    const res = Mustache.render(template, options);
-
-    console.log(res)
-
-    return res
-};
-
 
 const slidingReport = (sample) => {
 
@@ -773,14 +764,14 @@ const abricateReport = (sample, res) => {
                         point: {
                             events: {
                                 click() {
+                                    console.log(this)
                                     const sel = $(this.graphic.element);
                                     sel.webuiPopover({
-                                        title: this.accession,
-                                        width: "400",
+                                        title: "Abricate summary report",
+                                        width: "450",
                                         animation: "pop",
                                         trigger: "manual",
                                         content: abricatePopover(this),
-                                        onShow: coco(this, sel),
                                         closeable: true,
                                     }).webuiPopover("show");
                                 }

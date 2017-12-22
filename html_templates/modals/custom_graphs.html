@@ -77,11 +77,11 @@
 <div class="abricate-popover">
     <div class="row">
         <div class="col-md-8">
-            <div>Gene name: </div><span id="abr-gene-name"> </span>
-            <div>Gene length: </div><span id="abr-gene-length"></span>
-            <div>Genomic position: {{ genomicPosition }}</div>
-            <div>Database: {{ database }}</div>
-            <div>Accession: {{ accession }}</div>
+            <div class="report-div"><span class="report-header">Name: </span><span  id="abr-gene-name"> </span></div>
+            <div class="report-div"><span class="report-header">Length: </span><span id="abr-gene-length"></span></div>
+            <div class="report-div"><span class="report-header">Position: {{ genomicPosition }}</span><span id="abr-gene-position"></span></div>
+            <div class="report-div"><span class="report-header">Database: {{ database }}</span><span id="abr-database"></span></div>
+            <div class="report-div"><span class="report-header">Accession: {{ accession }}</span><span id="abr-accession"></span></div>
         </div>
         <div class="col-md-4">
             <div id="coverageGauge" style="height: 80px"></div>
