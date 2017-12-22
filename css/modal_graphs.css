@@ -71,10 +71,9 @@
     font-weight: bold;
 }
 
-.abricate-report {
-    display: none;
-    height: 0;
-    transition: height 0.5s ease-in
+.abricate-navigation {
+    text-align: center;
+    margin: auto;
 }
 
 .abricate-popover {
@@ -93,4 +92,8 @@
     line-height: 25px;
     padding-bottom: 8px;
     vertical-align: middle;
+}
+
+.search-field {
+    width: 200px;
 }
