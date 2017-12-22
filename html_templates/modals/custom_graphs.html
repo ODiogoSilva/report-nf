@@ -59,7 +59,6 @@
                         <div id="sync-sliding-window"></div>
                         <div id="sync-sw-abricate"></div>
                         <div class="abricate-report">
-                            Making a test!
                         </div>
                         <div id="sync-sw-prokka"></div>
                         <div id="sync-sw-chewbbaca"></div>
@@ -73,19 +72,20 @@
         </div>
 
     </div>
-    <div class="abricate-popover">
-        <div class="row">
-            <div class="col-md-8">
-                <div>Gene name: {{ gene }}</div>
-                <div>Gene length: {{ geneLength }}</div>
-                <div>Genomic position: {{ genomicPosition }}</div>
-                <div>Database: {{ database }}</div>
-                <div>Accession: {{ accession }}</div>
-            </div>
-            <div class="col-md-4">
-                <div id="coverageGauge" style="height: 60px"></div>
-                <div id="identityGauge" style="height: 60px"></div>
-            </div>
+</div>
+
+<div class="abricate-popover">
+    <div class="row">
+        <div class="col-md-8">
+            <div>Gene name: </div><span id="abr-gene-name"> </span>
+            <div>Gene length: </div><span id="abr-gene-length"></span>
+            <div>Genomic position: {{ genomicPosition }}</div>
+            <div>Database: {{ database }}</div>
+            <div>Accession: {{ accession }}</div>
+        </div>
+        <div class="col-md-4">
+            <div id="coverageGauge" style="height: 80px"></div>
+            <div id="identityGauge" style="height: 80px"></div>
         </div>
     </div>
 </div>

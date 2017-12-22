@@ -406,6 +406,7 @@ const sizeDistributionPlot = (sample) => {
  */
 function syncExtremes(e) {
     let thisChart = this.chart;
+    WebuiPopovers.hideAll();
 
     // Prevent feedback loop
     if ( e.trigger !== "syncExtremes" ) {
@@ -427,23 +428,30 @@ function syncExtremes(e) {
     }
 }
 
-const toggleAbricateReport = (sel) => {
+const abricatePopover = (el) => {
 
-    const reportHeight = 80;
+    // coco(el);
+    populateAbricateReport(el);
 
-    if (sel.height() === reportHeight) {
-        sel.animate({height: 0}, 100, "linear")
-    } else {
-        sel.animate({height: reportHeight}, 100, "linear").show()
-    }
+    return function(){return $(".abricate-popover").html()}
 
 };
 
-const coco = () => {
+const populateAbricateReport = (el) => {
 
-    $("#bruta").show();
-    console.log($("#bruta"))
-    console.log("show")
+    $("#abr-gene-name").html(el.gene)
+    $("#abr-gene-length").html(el.coverage)
+
+
+};
+
+
+const coco = (el) => {
+
+    console.log("here")
+
+    const chart = $("#coverageGauge").highcharts();
+    console.log(chart)
 
     Highcharts.chart("coverageGauge", {
         chart: {
@@ -499,18 +507,22 @@ const coco = () => {
                     y: -45,
                     borderWidth: 0,
                     useHTML: true
+                },
+                animation: {
+                    duration: 0
                 }
             }
         },
 
         series: [{
-            data: [83],
+            data: [el.coverage],
             dataLabels: {
-                format: '<p style="text-align:center;">{y}%</p>'
+                // format: <p style="text-align:center;">{y}%</p>'
+                format: `<p style="text-align:center;">${el.accession}</p>`
             }
         }]
     });
-}
+};
 
 const generatePopover = (el) => {
     const template = $("#abricate-popover").html();
@@ -760,8 +772,17 @@ const abricateReport = (sample, res) => {
                         borderColor: "#fff",
                         point: {
                             events: {
-                                click(evt) {
-                                    toggleAbricateReport($(".abricate-report"));
+                                click() {
+                                    const sel = $(this.graphic.element);
+                                    sel.webuiPopover({
+                                        title: this.accession,
+                                        width: "400",
+                                        animation: "pop",
+                                        trigger: "manual",
+                                        content: abricatePopover(this),
+                                        onShow: coco(this, sel),
+                                        closeable: true,
+                                    }).webuiPopover("show");
                                 }
                             }
                         }

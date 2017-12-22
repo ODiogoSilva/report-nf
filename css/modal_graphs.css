@@ -76,3 +76,8 @@
     height: 0;
     transition: height 0.5s ease-in
 }
+
+.abricate-popover {
+    display: none;
+    width: 400px;
+}

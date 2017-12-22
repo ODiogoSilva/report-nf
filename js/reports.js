@@ -339,6 +339,8 @@ app.controller("reportsController", function($scope){
             $(this).tab("show");
         });
 
+        $("#modalGraphs").on("hidden.bs.modal scroll", () => {WebuiPopovers.hideAll()})
+
         /* Trigger style of dropdowns */
         $(".selectpicker").selectpicker({
             style: "btn-default",
