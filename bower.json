@@ -27,6 +27,7 @@
     "datatables.net-buttons-dt": "^1.4.2",
     "bootstrap-select": "^1.12.4",
     "components-font-awesome": "^4.7.0",
-    "seiyria-bootstrap-slider": "^10.0.0"
+    "seiyria-bootstrap-slider": "^10.0.0",
+    "webui-popover": "^2.1.15"
   }
 }
