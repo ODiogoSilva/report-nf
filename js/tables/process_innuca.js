@@ -27,24 +27,30 @@ const getQc = (qcObject, sample) => {
         qcColor = qcPicker.fail[0];
         qcValue = qcPicker.fail[1];
         let failMsg = Object.values(qcObject.fails).toString().replace(/_/g, " ");
-        qcMsg = `<div id=${sample} class='badge-qc tooltip-qc' 
+        qcDiv = `<div id=${sample} class='badge-qc tooltip-qc' 
                        style="background: ${qcColor}">
-                    <span class='tooltip-qc-text'>
+                    ${qcValue}</div>`;
+        qcMsg = `<span class='tooltip-qc-text'>
                         <div>
                             <ul>
                                 <li>Fail reason:</li>
                                     <ul><li>${failMsg}</li></ul>
                             </ul>
                         </div>
-                    </span>${qcValue}</div>`;
-        return qcMsg;
+                    </span>`;
+        return {
+            qcDiv,
+            qcMsg
+        };
     }
 
     // If the sample has not yet finished but did not fail, return the loader
     // div
     if (qcObject.status === "pending"){
-        qcMsg = "<div class='loader'></div>";
-        return qcMsg;
+        qcDiv = "<div class='loader'></div>";
+        return {
+            qcDiv
+        };
     }
 
     // If the sample has finished without failing or errors, evaluate the
@@ -83,8 +89,9 @@ const getQc = (qcObject, sample) => {
         qcValue = qcPicker.low[1];
     }
 
-    qcMsg = `<div id=${sample} class='badge-qc tooltip-qc' style="background: ${qcColor}">
-                <span class='tooltip-qc-text'>
+    qcDiv = `<div id=${sample} class='badge-qc tooltip-qc' style="background: ${qcColor}">
+                ${qcValue}</div>`;
+    qcMsg = `<span class='tooltip-qc-text'>
                     <div>
                         <ul>
                             <li>Low severity:</li>
@@ -95,9 +102,12 @@ const getQc = (qcObject, sample) => {
                                 <ul>${high.join("")}</ul>
                         </ul>
                     </div>
-                </span>${qcValue}</div>`;
+                </span>`;
 
-    return qcMsg;
+    return {
+        qcDiv,
+        qcMsg
+    };
 
 };
 
@@ -277,6 +287,7 @@ const parseReport = (reportJSON) => {
 const createTableData = (parsedJson, setMax) => {
 
     let data = [];
+    let qcMap = new Map();
 
     for (const [k, v] of parsedJson.storage.entries()) {
 
@@ -291,8 +302,9 @@ const createTableData = (parsedJson, setMax) => {
         }
 
         // Get QC message for a sample
-        let qcMsg = getQc(parsedJson.qcStorage.get(k), v.get("Sample"));
-        v.set("qc", qcMsg);
+        let qcObj = getQc(parsedJson.qcStorage.get(k), v.get("Sample"));
+        v.set("qc", qcObj.qcDiv);
+        qcMap.set(k, qcObj.qcMsg);
 
         // Iterate over all expected columns in the table. If one or more
         // columns are missing from any given taxa, those columns are filled
@@ -328,6 +340,7 @@ const createTableData = (parsedJson, setMax) => {
 
         // Convert Map to object data type
         v.forEach((v, k) => { dataObject[k] = v ;});
+        dataObject.qcMsg = qcObj.qcMsg;
         data.push(dataObject);
 
     }
@@ -339,7 +352,8 @@ const createTableData = (parsedJson, setMax) => {
 
     return {
         data,
-        mappings
+        mappings,
+        qcMap
     }
 
 };
@@ -365,6 +379,7 @@ const processInnuca = async (reportsData, setMax) => {
     innucaData.data = tableData.data;
     innucaData.ids = parsedJson.storageIds;
     innucaData.headers = parsedJson.headers;
+    innucaData.qcMap = tableData.qcMap;
     innucaData.columnMapping = [
         {
             data:   "active",

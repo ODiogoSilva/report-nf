@@ -195,63 +195,7 @@ th {
     text-align: center;
     vertical-align: middle;
     font-size: 15px;
-}
-
-.tooltip-qc {
-    position: relative;
-    display: inline-block;
-}
-
-.tooltip-qc .tooltip-qc-text {
-    position: absolute;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 1s;
-    z-index: 9;
-    /* Size and Position */
-    width: 300px;
-    padding: 5px;
-    top: -5px;
-    right: 110%;
-    margin-right: 5px;
-    /* Borders */
-    border-radius: 6px;
-    border: 2px solid #555;
-    /* Colors */
-    background-color: #fff;
-    color: #555;
-    /* Text style */
-    text-align: left;
-    font-size: 12px;
-}
-
-.tooltip-qc .tooltip-qc-text::after {
-    top: 18px;
-    left: 100.5%;
-    margin-top: -5px;
-    position: absolute;
-    border: 5px solid transparent;
-    border-left-color: #555;
-    content: " ";
-}
-
-.tooltip-qc:hover .tooltip-qc-text {
-    visibility: visible;
-    opacity: 1;
-}
-
-.tooltip-qc-text li {
-    list-style-type: none;
-    line-height: 20px;
-}
-
-.tooltip-qc-text ul {
-    margin: 0 0;
-}
-
-.tooltip-qc-text ul {
-    padding-left: 10px;
-    font-size: 10px;
+    cursor: pointer;
 }
 
 .loader {

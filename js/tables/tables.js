@@ -177,6 +177,17 @@ class Table {
                     $(nRow).find("input").off("click").on("click", (e) => {
                         $(e.target).closest("tr").toggleClass("selected");
                     });
+
+                    // Set QC popover
+                    $(nRow).find(".badge-qc").webuiPopover(
+                        {
+                            title: "Quality control summary",
+                            content: aData.qcMsg,
+                            placement: "right",
+                            animation: "pop",
+                            closeable: true
+                        }
+                    )
                 }
             } );
         }

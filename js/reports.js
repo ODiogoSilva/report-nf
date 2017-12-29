@@ -41,7 +41,6 @@ const prokkaTable = new Table("master_table_prokka");
  */
 const initReports = (scope, results, append = true) => {
 
-
     // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve, reject) => {
         const r = filterJson(results, dataFilters);
@@ -86,11 +85,6 @@ const initReports = (scope, results, append = true) => {
 
     /* Launch charts */
     p1.then( async (r) => {
-        // if (r.length === 0) return;
-        // await charts.addReportData(r, append);
-        // await charts.buildSpadesGraphs();
-        // await charts.buildFastQcGraphs()
-        // if (r.length)
         await charts.addReportData(r, append);
         await charts.buildAllCharts();
     });
