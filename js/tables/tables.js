@@ -102,7 +102,6 @@ class Table {
                 return $(el[target]);
             }
         }
-        return $(this.tableData.filter( (el) => `${el[id].split(".")[0]}.${el.Sample}` === id)[0][target]);
     }
 
     /* Method to build DataTable */
@@ -152,8 +151,9 @@ class Table {
                             {
                                 text: "Show graphs",
                                 action( e, dt, node, config ) {
-                                    const sample = dt.rows(".selected").data()[0].Sample;
-                                    showModelGraphs(sample);
+                                    const row = dt.rows(".selected").data()[0];
+                                    const pid = `${row.id.split(".")[0]}.${row.Sample}`
+                                    showModelGraphs(pid);
                                 }
                             }
                         ]
