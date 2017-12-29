@@ -4,7 +4,7 @@
  *
  * @param qcObject
  */
-const getQc = (qcObject) => {
+const getQc = (qcObject, sample) => {
 
     let low = [];
     let moderate = [];
@@ -27,7 +27,7 @@ const getQc = (qcObject) => {
         qcColor = qcPicker.fail[0];
         qcValue = qcPicker.fail[1];
         let failMsg = Object.values(qcObject.fails).toString().replace(/_/g, " ");
-        qcMsg = `<div id="qc" class='badge-qc tooltip-qc' 
+        qcMsg = `<div id=${sample} class='badge-qc tooltip-qc' 
                        style="background: ${qcColor}">
                     <span class='tooltip-qc-text'>
                         <div>
@@ -83,7 +83,7 @@ const getQc = (qcObject) => {
         qcValue = qcPicker.low[1];
     }
 
-    qcMsg = `<div id="qc" class='badge-qc tooltip-qc' style="background: ${qcColor}">
+    qcMsg = `<div id=${sample} class='badge-qc tooltip-qc' style="background: ${qcColor}">
                 <span class='tooltip-qc-text'>
                     <div>
                         <ul>
@@ -128,28 +128,49 @@ const setMaxFilters = (header, value) => {
 };
 
 /**
- * Function to process INNuca data to load into the DataTable
- * @param reportsData
+ * Parses the raw JSON report data and returns processed data for building
+ * the summary table.
+ *
+ * @param reportJSON (Array): Array of objects containing the report JSON data
+ * @returns {{storage: Map, sortedColumns: Array, storageIds: Array, qcStorage: Map, columnBars: {}, headers: Array}}
+ *
+ *      - storage (Map): Maps each sample id (sample name + pipeline id) to
+ *      another Map object containing the key:value pairs for each cell in the
+ *      table. Example: [("active", 0), ("Sample", "Sample A") ... ]
+ *
+ *      - sortedColumns (Array): Sorted array of the table column headers,
+ *      except for the starting headers ("qc", "id" and "sample")
+ *
+ *      - storageIds (Array): Stores the sample ids (sample name + pipeline id)
+ *
+ *      - qcStorage (Map): Maps each sample id to an object containing the
+ *      warnings and fail information
+ *
+ *      - columnBars (Object): Contains the table headers that should be filled
+ *      with a column bar and an array of their values. This is used to
+ *      calculate the maximum value for each column and set the correct
+ *      proportions for each cell
+ *
+ *      - headers (Array): Array with the complete set of table headers
+ *
  */
-const processInnuca = (reportsData, setMax) => {
-
-    // Instantiate the object with the table data
-    const innucaData = {
-        "data": {}
-    };
+const parseReport = (reportJSON) => {
 
     let storage = new Map();
     let storageIds = [];
     let columns = new Map();
     let qcStorage = new Map();
+    let sortedColumns = [];
+
+    // These headers are always present in the beginning of the table
+    // The first element corresponds to the select checkbox column
+    let startHeaders = ["", "qc", "id", "Sample"];
 
     // Holds an object containing the table headers tha should be filled with
     // a column bar and an array of their values
     let columnBars = {};
-    // These headers are always present in the beginning of the table
-    let startHeaders = ["", "qc", "id", "Sample"];
 
-    for (const report of reportsData) {
+    for (const report of reportJSON) {
 
         const projectId = report.project_id;
         const sampleName = report.sample_name;
@@ -168,11 +189,11 @@ const processInnuca = (reportsData, setMax) => {
             // This object is create with a few table items that are always
             // present in the table
             storage.set(id, new Map([
-                    ["active", 0],
-                    ["Sample", sampleName],
-                    ["id", `${projectId}.${pipelineId}`],
-                    ["qc", ""]
-                ]));
+                ["active", 0],
+                ["Sample", sampleName],
+                ["id", `${projectId}.${pipelineId}`],
+                ["qc", ""]
+            ]));
             storageIds.push(id);
             qcStorage.set(id, {"warnings": {}, "fails": {}});
         }
@@ -217,80 +238,133 @@ const processInnuca = (reportsData, setMax) => {
         }
     }
 
-    //
-    // At this point, the table data and headers were already gathered.
-    //
-
     // Sort the column headers according to the process id
     columns = [...columns.entries()].sort( (a,b) => {return a[1] - b[1];});
-    let sortedColumns = [];
     for (let c of columns) {
         sortedColumns.push(c[0]);
     }
 
     // Add the final headers to the table data object
-    innucaData.headers = startHeaders.concat(sortedColumns);
+    let headers = startHeaders.concat(sortedColumns);
 
-    innucaData.data = [];
-    // Populate table data
-    storage.forEach((v, k) => {
+    return {
+        storage,
+        sortedColumns,
+        storageIds,
+        qcStorage,
+        columnBars,
+        headers
+    };
+
+};
+
+/**
+ * From an object with the processed JSON information from the `parseReport`
+ * function, create/set the HTML div elements for the final table
+ *
+ * @param parsedJson (Object) : Processed JSON report. See `parseReport`
+ * documentation
+ * @param setMax (boolean) : Determines whether the report app filters should
+ * be updated with this new data or not. This should be set to false when
+ * the table is being created after a filtering instruction, in which it is
+ * not desirable to update the min/max values of the filters.
+ * @returns {{data: Array, mappings}}
+ *
+ *      - data (Array): Array of JSON objects ready for jquery data table
+ *      - mappings (Array): Array of objects ready for jquery data table
+ *      mappings
+ */
+const createTableData = (parsedJson, setMax) => {
+
+    let data = [];
+
+    for (const [k, v] of parsedJson.storage.entries()) {
 
         let dataObject = {};
 
         // Check if current sample has finished
-        const lastHeader = innucaData.headers[innucaData.headers.length - 1];
+        const lastHeader = parsedJson.headers[parsedJson.headers.length - 1];
         if (v.has(lastHeader)) {
-            qcStorage.get(k).status = "finished";
+            parsedJson.qcStorage.get(k).status = "finished";
         } else {
-            qcStorage.get(k).status = "pending";
+            parsedJson.qcStorage.get(k).status = "pending";
         }
 
         // Get QC message for a sample
-        let qcMsg = getQc(qcStorage.get(k));
+        let qcMsg = getQc(parsedJson.qcStorage.get(k), v.get("Sample"));
         v.set("qc", qcMsg);
 
         // Iterate over all expected columns in the table. If one or more
         // columns are missing from any given taxa, those columns are filled
         // with NA. This occurs when the pipeline stopped in the middle of the
         // run
-        sortedColumns.map((f) => {
+        parsedJson.sortedColumns.map((col) => {
             // The field does not exist, fill with NA
-            if (!(v.has(f))){
-                v.set(f,
+            if (!(v.has(col))){
+                v.set(col,
                     "<div class='table-cell'>" +
-                        "<div class='table-bar-text'>NA</div>" +
+                    "<div class='table-bar-text'>NA</div>" +
                     "</div>");
-            // The field exists, do some pre-processing
+                // The field exists, do some pre-processing
             } else {
                 let prop;
                 // Check if the current column has the column-bar attribute.
                 // If so, change the value cell to display a column bar
                 // based on its value
-                if (columnBars.hasOwnProperty(f)){
-                    if (f === "trimmed"){
-                        prop = parseFloat(v.get(f));
+                if (parsedJson.columnBars.hasOwnProperty(col)){
+                    if (col === "trimmed"){
+                        prop = parseFloat(v.get(col));
                     } else {
-                        const maxValue = Math.max(...columnBars[f]);
-                        prop = (parseFloat(v.get(f)) / maxValue) * 100;
+                        const maxValue = Math.max(...parsedJson.columnBars[col]);
+                        prop = (parseFloat(v.get(col)) / maxValue) * 100;
                         // Set/Update maximum filters value
-                        if ( setMax === true ) {setMaxFilters(f, maxValue);}
+                        if ( setMax === true ) {setMaxFilters(col, maxValue);}
                     }
-                    const outDiv = `<div id="${f.replace(/ |\(|\)/g, "")}" class='table-cell'><div class='table-bar' style='width:${prop}%'></div>${v.get(f)}</div>`;
-                    v.set(f, outDiv);
+                    const outDiv = `<div id="${col.replace(/ |\(|\)/g, "")}" class='table-cell'><div class='table-bar' style='width:${prop}%'></div>${v.get(col)}</div>`;
+                    v.set(col, outDiv);
                 }
             }
         });
 
         // Convert Map to object data type
         v.forEach((v, k) => { dataObject[k] = v ;});
-        innucaData.data.push(dataObject);
-    });
+        data.push(dataObject);
+
+    }
 
     // Create mappings for column headers
-    const mappings = innucaData.headers.slice(1).map((x) => {
+    const mappings = parsedJson.headers.slice(1).map((x) => {
         return {"data": x, "title": x};
     });
 
+    return {
+        data,
+        mappings
+    }
+
+};
+
+
+/**
+ * Function to process INNuca data to load into the DataTable
+ * @param reportsData
+ */
+const processInnuca = async (reportsData, setMax) => {
+
+    // Instantiate the object with the table data
+    const innucaData = {};
+
+    // Parse the raw report JSON array into an object with several
+    // properties required for building the table
+    const parsedJson = await parseReport(reportsData);
+
+    // Process the parsed JSON and prepare the table data
+    const tableData = await createTableData(parsedJson, setMax);
+
+    // Set table data and return
+    innucaData.data = tableData.data;
+    innucaData.ids = parsedJson.storageIds;
+    innucaData.headers = parsedJson.headers;
     innucaData.columnMapping = [
         {
             data:   "active",
@@ -302,9 +376,7 @@ const processInnuca = (reportsData, setMax) => {
             },
             className: "dt-body-center"
         },
-    ].concat(mappings);
-
-    innucaData.ids = storageIds;
+    ].concat(tableData.mappings);
 
     console.log(innucaData);
 
