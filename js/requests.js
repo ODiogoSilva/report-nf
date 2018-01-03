@@ -31,13 +31,14 @@ const getReportInfo = async (projectIds) => {
 
     let res = [];
 
-    for (const el of projectIds) {
-        const info = await $.get(
-            reportsRoute+"app/api/v1.0/reports/project/info",
-            { project_id: el }
-        );
-        res = res.concat(info)
-    }
+    const projectIdsString = projectIds.join();
+    console.log(projectIdsString);
+
+    const info = await $.get(
+        reportsRoute+"app/api/v1.0/reports/project/info",
+        { project_id: projectIdsString }
+    );
+    res = res.concat(info);
 
     return res
 };
