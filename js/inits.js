@@ -99,7 +99,7 @@ const populateFilter = (data) => {
 
     $("#timeFilterRange").datepicker({
         autoclose: true,
-        format: "dd/mm/yyyy",
+        format: "yyyy-mm-dd",
         startDate: minDate,
         autoApply: true,
         endDate: maxDate,

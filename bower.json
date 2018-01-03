@@ -30,6 +30,7 @@
     "seiyria-bootstrap-slider": "^10.0.0",
     "webui-popover": "^2.1.15",
     "bootstrap-datepicker": "^1.7.1",
-    "popper.js": "^1.12.9"
+    "popper.js": "^1.12.9",
+    "mustache.js": "mustache#^2.3.0"
   }
 }

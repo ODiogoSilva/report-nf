@@ -55,10 +55,22 @@
                 <!-- Data region -->
                 <div class="row" id="row-main" style="display:none;" scroll-spy>
 
-                    <nav class="navbar  navbar-fixed-top report-nav">
-                        <div class="container">
+                    <nav class="navbar  navbar-fixed-top navbar-default report-nav">
+                        <div class="container-fluid" style="padding: 0">
                             <div class="navbar-header">
-                                <button type="button" class=""></button>
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#reportNav">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                            </div>
+
+                            <div class="collapse navbar-collapse report-nav-inner" id="reportNav">
+                                <ul class="nav navbar-nav">
+                                    <li><a class="report-nav-btn"><i class="fa fa-bars fa-2x"></i></a></li>
+                                    <li><a class="report-nav-btn"><i class="fa fa-home fa-2x"></i></a></li>
+                                </ul>
                             </div>
                         </div>
                     </nav>
