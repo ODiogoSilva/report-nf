@@ -60,41 +60,6 @@ button.m-bottom{
     margin-top: 70px;
 }
 
-.report-nav {
-    background-color: #cbcbcb;
-    height: 60px;
-    box-shadow: 1px 2px 8px #626262;
-    opacity: .99;
-}
-
-#reportNav {
-    height: 60px!important;
-}
-
-.report-nav-text {
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 60px;
-    vertical-align: middle;
-}
-
-.report-nav-btn {
-    height: 60px;
-    width: 60px;
-    color: #4f4f4f;
-}
-
-.report-nav-inner > ul > li > .report-nav-btn:hover {
-    color: #fff;
-}
-
-.report-nav-inner > ul > li {
-    border-right: 1px solid #e7e7e7;
-    /*border-left: 1px solid #4f4f4f;*/
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
 #workflows_content {
     /* for the animation */
     transition: width 0.3s ease;

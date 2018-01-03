@@ -44,11 +44,6 @@
     vertical-align: middle;
 }
 
-/*.primary-bts:active {*/
-    /*background-color: #337ab7;*/
-    /*color: white;*/
-/*}*/
-
 .p1 {
     margin-top: 10px;
     font-weight: bold;
@@ -94,4 +89,12 @@
 
 #alertDiv{
     padding: 1% 15% 1% 15%;
+}
+
+.nav-project-picker {
+    display: inline-block;
+    width: 200px;
+    height: 60px;
+    vertical-align: middle;
+    margin: auto;
 }

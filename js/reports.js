@@ -172,12 +172,14 @@ app.controller("reportsController", async ($scope) => {
 
     // Populate dropdown with species/project info
     populateSelect("project_select", spResults, pResults);
+    // Populate dropdown with species/project info for navbar
+    populateSelect("navProjectPicker", spResults, pResults);
 
     // Initialize the behaviour of the toggle buttons
     // in the home screen for selecting/loading projects
     initHomeButtonsToggle();
 
-    // Initialize the Project selection picker
+    // Initialize the Project selection picker and filter elements
     initProjectSelection();
 
     // Initialize the project selection submission

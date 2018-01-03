@@ -1,0 +1,83 @@
+.report-nav {
+    background-color: #000000;
+    height: 60px;
+    box-shadow: 1px 2px 8px #626262;
+    opacity: .99;
+    border-color: #4b4b4b;
+}
+
+#reportNav {
+    height: 60px!important;
+}
+
+.report-nav-text {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 60px;
+    vertical-align: middle;
+}
+
+.report-nav-inner > ul > li >.report-nav-btn {
+    height: 60px;
+    width: 60px;
+    color: #ffffff;
+}
+
+.navbar-nav > ul > li > a {
+    color: #ffffff
+}
+
+.report-nav-inner > ul > li > .report-nav-btn:hover {
+    color: #007bff;
+}
+
+.report-nav-inner > ul > li > .btn {
+    font-weight: bold;
+}
+
+.report-nav-inner > ul > li {
+    border-right: 1px solid #4b4b4b;
+    /*border-left: 1px solid #4f4f4f;*/
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.report-nav-inner > ul >  .nav-project {
+    min-width: 340px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.report-nav-inner > ul > .nav-resubmit {
+    min-width: 100px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-text-header {
+    /*display: inline-block;*/
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    width: 110px;
+}
+
+.nav-project-picker {
+    display: flex;
+    width: 180px;
+    height: 60px;
+    align-items: center;
+    padding-right: 0;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.nav-counter {
+    position: relative;
+    font-size: 10px;
+    top: -15px;
+    border-radius: 25%;
+}
+

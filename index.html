@@ -24,9 +24,13 @@
     <link rel="stylesheet" href="css/stylesheet.css">
     <link rel="stylesheet" href="css/modal_graphs.css">
     <link rel="stylesheet" href="css/innuendo_home.css">
+    <link rel="stylesheet" href="css/nav.css">
 
     <link rel="stylesheet"
           href="./bower_components/components-font-awesome/css/font-awesome.css">
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -68,6 +72,32 @@
                                 <ul class="nav navbar-nav">
                                     <li><a id="sidebar-button" class="report-nav-btn sidebar-button"><i class="fa fa-bars fa-2x"></i></a></li>
                                     <li><a onclick="goHome()" class="report-nav-btn"><i class="fa fa-home fa-2x"></i></a></li>
+                                    <li class="nav-project">
+                                        <div class="nav-text-header">Projects <span id="navProjectCounter" class="label label-success nav-counter"></span></div>
+                                        <div class="nav-project-picker">
+                                            <select id="navProjectPicker" class="selectpicker" multiple data-actions-box="true" data-width="100%"
+                                                    title="Select projects" data-live-search="true" data-style="btn-default" data-selected-text-format="count > 3">
+                                            </select>
+                                        </div>
+                                    </li>
+                                    <li class="nav-project">
+                                        <div class="nav-text-header">Samples <span id="navSampleCounter" class="label label-success nav-counter"></span></div>
+                                        <div class="nav-project-picker">
+                                            <select id="navSamplePicker" class="selectpicker" multiple data-actions-box="true"
+                                                    title="Select samples" data-live-search="true" data-style="btn-default" data-selected-text-format="count > 3" data-width="100%">
+                                            </select>
+                                        </div>
+                                        <div class="nav-project-picker" style="width: 200px">
+                                            <div id="navTimeFilterRange" class="input-daterange input-group">
+                                                <input id="navMinTimeFilter" type="text" class="input-sm form-control" name="start">
+                                                <span class="input-group-addon">to</span>
+                                                <input id="navMaxTimeFilter" type="text" class="input-sm form-control" name="end">
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="nav-resubmit">
+                                        <button class="btn btn-success">Re-submit</button>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -118,7 +148,6 @@
 
     <img id="waiting_gif" src="./images/waiting_gif.gif" class="centered" width="200" height="120" style="display:none;">
 
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <!--<script src="bower_components/popper.js/dist/umd/popper.min.js"></script>-->
     <script src="bower_components/webui-popover/dist/jquery.webui-popover.min.js"></script>
     <script src="bower_components/mustache.js/mustache.min.js"></script>
@@ -132,7 +161,6 @@
     <script src="bower_components/datatables.net-buttons/js/buttons.print.js"></script>
     <script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
     <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
-    <script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="bower_components/highcharts/highstock.js"></script>
     <script src="bower_components/highcharts/highcharts-more.js"></script>

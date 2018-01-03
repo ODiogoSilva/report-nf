@@ -59,8 +59,13 @@ const convertDateInverse = (date) => {
  * 'sample_name'
  */
 const populateProjectIndicator = (projectNum, reportInfo) => {
+
+    // Home screen elements
     const projectDiv = $("#projectCounter");
     const sampleDiv = $("#sampleCounter");
+    // Navbar elements
+    const navProjectDiv = $("#navProjectCounter");
+    const navSampleDiv = $("#navSampleCounter");
 
     let samples = [];
     for (const el of reportInfo) {
@@ -69,8 +74,12 @@ const populateProjectIndicator = (projectNum, reportInfo) => {
         }
     }
 
+    // Home screen update
     sampleDiv.html(`Samples: ${samples.length}`);
     projectDiv.html(`Projects: ${projectNum}`);
+    // Navbar update
+    navSampleDiv.html(`${samples.length}`);
+    navProjectDiv.html(`${projectNum}`);
 };
 
 
@@ -94,22 +103,30 @@ const populateFilter = (data) => {
     const maxDate = new Date(Math.max.apply(null, totalDates));
     const minDate = new Date(Math.min.apply(null, totalDates));
 
+    // Populate home screen elements
     $("#maxTimeFilter").attr("value", convertDateInverse(maxDate));
     $("#minTimeFilter").attr("value", convertDateInverse(minDate));
+    // Populate navbar elements
+    $("#navMaxTimeFilter").attr("value", convertDateInverse(maxDate));
+    $("#navMinTimeFilter").attr("value", convertDateInverse(minDate));
 
-    $("#timeFilterRange").datepicker({
+    const datepickerOpts = {
         autoclose: true,
         format: "yyyy-mm-dd",
         startDate: minDate,
         autoApply: true,
         endDate: maxDate,
         keepEmptyValues: true
-    });
+    };
+
+    $("#timeFilterRange").datepicker(datepickerOpts);
+    $("#navTimeFilterRange").datepicker(datepickerOpts);
 
     /*
         Select all values of selectpicker by default. All sample names are selected.
      */
     $("#f_by_name").empty().append(optionsName).selectpicker("refresh").selectpicker("selectAll");
+    $("#navSamplePicker").empty().append(optionsName).selectpicker("refresh").selectpicker("selectAll");
 
 };
 
@@ -156,16 +173,25 @@ const initProjectSelection = () => {
         // name information
         const selectedOpts = $("#project_select").val();
 
+        // Only proceed when at least one project has been selected
         if (selectedOpts.length > 0) {
+
+            // Get report information for the selected projects
+            // (sample names and time stamps)
             reportInfo = await getReportInfo(selectedOpts);
 
+            // Use the report information to populate the filter elements
             populateFilter(reportInfo);
+            // Update project and sample number indicators
             populateProjectIndicator(selectedOpts.length, reportInfo);
 
+            // Display filter elements and submission button
             $("#submitDiv").css({display: "inline-block"});
             $("#homeFilters").css({display: "block"});
             $(".pcounter").css({display: "inline-block"})
         } else {
+            // When no valid projects are selected, hide the filter elements
+            // and submission button
             $("#submitDiv").css({display: "none"});
             $("#homeFilters").css({display: "none"});
             $(".pcounter").css({display: "none"});
@@ -183,11 +209,15 @@ const initProjectSubmission = (scope) => {
 
     $("#submitProject").on("click", async () => {
 
-        $("#waiting_gif").css({display: "block"});
+        const loadingGif = $("#waiting_gif");
+        const projectSelect = $("#project_select");
+        const sampleSelect = $("#f_by_name");
+
+        loadingGif.css({display: "block"});
         $("#homeInnuendo").css({display: "none"});
 
-        const selectedProjects = $("#project_select").val().join();
-        const selectedStrains = $("#f_by_name").val();
+        const selectedProjects = projectSelect.val().join();
+        const selectedStrains = sampleSelect.val();
         const maxTimeFilter = $("#maxTimeFilter").val();
         const minTimeFilter = $("#minTimeFilter").val();
 
@@ -209,12 +239,17 @@ const initProjectSubmission = (scope) => {
             }
         );
 
+        // Update navbar project picker
+        $("#navProjectPicker").val(projectSelect.val()).selectpicker("refresh");
+        $("#navSamplePicker").val(sampleSelect.val()).selectpicker("refresh");
+
         await initReports(scope, res, false);
 
-        $("#waiting_gif").css({display: "none"});
+        loadingGif.css({display: "none"});
         $("#row-main").css({display: "block"});
         $("#current_workflow").css({display:"block"});
 
         console.log(res)
     })
 };
+
