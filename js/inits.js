@@ -183,7 +183,7 @@ const initProjectSubmission = (scope) => {
             }
         );
 
-        await initReports(scope, res);
+        await initReports(scope, res, false);
 
         $("#waiting_gif").css({display: "none"});
         $("#row-main").css({display: "block"});
