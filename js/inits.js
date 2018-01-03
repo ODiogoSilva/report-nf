@@ -157,14 +157,12 @@ const readReportFile = (files) => {
 };
 
 
+let reportInfo = "";
 /**
  * Initialize the project selection picker. This function provides controls
  * the appearance of the filters and submission button when one or more
  * projects are selected.
  */
-
-let reportInfo = "";
-
 const initProjectSelection = () => {
 
     // Trigger events when the main project dropdown is closed
@@ -197,6 +195,32 @@ const initProjectSelection = () => {
             $(".pcounter").css({display: "none"});
         }
     });
+
+};
+
+
+const initNavSelection = () => {
+
+    $("#navProjectPicker").on("hide.bs.select", async () => {
+
+        const selectedOpts = $("#navProjectPicker").val();
+
+        // Only proceed when at least one project has been selected
+        if (selectedOpts.length > 0) {
+
+            // Get report information for the selected projects
+            // (sample names and time stamps)
+            reportInfo = await getReportInfo(selectedOpts);
+
+            // Use the report information to populate the filter elements
+            populateFilter(reportInfo);
+            // Update project and sample number indicators
+            populateProjectIndicator(selectedOpts.length, reportInfo);
+        } else {
+            alert("oOOOPs")
+        }
+
+    })
 
 };
 
@@ -283,7 +307,9 @@ const initResubmit = (scope) => {
             }
         );
 
-        await initReports(scope, res, false)
+        console.log(res)
+
+        await initReports(scope, res, false);
 
         loadingGif.css({display: "none"})
 

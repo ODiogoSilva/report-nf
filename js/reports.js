@@ -181,94 +181,13 @@ app.controller("reportsController", async ($scope) => {
 
     // Initialize the Project selection picker and filter elements
     initProjectSelection();
+    initNavSelection();
 
     // Initialize the project selection submission
     initProjectSubmission($scope);
 
     // Initialize the project resubmission in the navbar
     initResubmit($scope);
-
-    // /* Request to get all the available species */
-    // getSpecies().then((results) => {
-    //    /* Request to get all the available projects */
-    //    getProjects().then((pResults) => {
-    //        populateSelect("project_select", results, pResults);
-    //
-    //        $("#project_select").off("change").on("change", () => {
-    //            getReportInfo($("#project_select option:selected").val()).then((results) => {
-    //                populateFilter(results);
-    //                $("#project_filter").css({display: "block"});
-    //                $("#submit_project").css({display: "inline-block"});
-    //
-    //                $("#submit_project").off("click").on("click", () => {
-    //
-    //                    $("#waiting_gif").css({display:"block"});
-    //                    $("#row-main").css({display:"none"});
-    //
-    //                    $("#reset_project").css({display:"inline-block"});
-    //
-    //                    $("#reset_project").off("click").on("click", () => {
-    //                        charts.reportsData = [];
-    //                        chewbbacaTable.tableData = [];
-    //                        innucaTable.tableData = [];
-    //                        prokkaTable.tableData = [];
-    //
-    //                        $("#reset_project").css({display:"none"});
-    //                        $("#row-main").css({display:"none"});
-    //                        $("#current_workflow").css({display:"none"});
-    //                    });
-    //
-    //                    let fByNameVal = $("#f_by_name option:selected").val() === "" ? undefined: $("#f_by_name option:selected").val();
-    //                    let fByDateVal = $("#f_by_date option:selected").val() === "" ? undefined: $("#f_by_date option:selected").val();
-    //                    let projectIDSelected = $("#project_select option:selected").val() === "" ? undefined: $("#project_select option:selected").val();
-    //                    let operatorFilter = $("#operator_by_date option:selected").val() === "" ? undefined: $("#operator_by_date option:selected").val();;
-    //
-    //                    console.log(fByNameVal, fByDateVal, operatorFilter)
-    //
-    //                    if(fByDateVal !== "" || fByNameVal !== ""){
-    //                        //Get only reports on filter
-    //                        getReportByFilter({project_id:projectIDSelected, nameFilter:fByNameVal, dateFilter:fByDateVal, operatorFilter:operatorFilter}).then((results) => {
-    //
-    //                            // First initialization of the reports page
-    //                            initReports($scope, results);
-    //
-    //                            $("#waiting_gif").css({display:"none"});
-    //                            $("#row-main").css({display:"block"});
-    //                            $("#current_workflow").css({display:"block"});
-    //                            $("#homeInnuendo").css({"max-height": 0});
-    //                        });
-    //                    }
-    //                    else{
-    //                        //Get ALL reports for the Project
-    //                        /* Request to get the reports for a given project */
-    //                        getReportsByProject(projectIDSelected).then((results) => {
-    //
-    //                            // First initialization of the reports page
-    //                            initReports($scope, results);
-    //
-    //                            $("#waiting_gif").css({display:"none"});
-    //                            $("#row-main").css({display:"block"});
-    //                            $("#current_workflow").css({display:"block"});
-    //                            $("#homeInnuendo").css({display: "none"});
-    //
-    //                        }, () => {
-    //                            modalAlert("No reports for that project.", function(){});
-    //                        });
-    //                    }
-    //                });
-    //
-    //
-    //            }, () => {
-    //                modalAlert("No reports for that project.", function(){});
-    //            });
-    //        });
-    //
-    //
-    //    }, () => {
-    //        modalAlert("No projects for that species", function(){});
-    //        populateSelect("project_select", []);
-    //    });
-    // });
 
     /* Event to be triggered when a file is dropped into the body of the page */
     $("#body_container").on("dropFile", async (ev, results) => {
