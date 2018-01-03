@@ -252,14 +252,6 @@ th {
     border-bottom: 3px solid #000;
 }
 
-.sidebar-button {
-    cursor: pointer;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display:block;
-    z-index: 1;
-}
 
 /* Affix functionality of side navbar */
 .affix-top {
@@ -268,8 +260,8 @@ th {
 
 .affix {
     width: 16.6666667%;
-    padding-right: 33px;
-    top: 30px;
+    padding-right: 30px;
+    top: 70px;
     bottom: 90px;
     min-height: 50px;
 }

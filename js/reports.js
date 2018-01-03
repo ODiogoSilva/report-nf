@@ -281,7 +281,8 @@ app.controller("reportsController", async ($scope) => {
     });
 
     /* Event to toggle workflows sidebar */
-    $(".toggle_sidebar").on("click", () => {
+    $(".toggle_sidebar").on("click", (e) => {
+        console.log(e.target);
         /* to toggle the sidebar, just switch the CSS classes */
         $("#workflows_sidebar").toggleClass("collapsed_sidebar");
         $("#workflows_content").toggleClass("col-md-12 col-md-10");

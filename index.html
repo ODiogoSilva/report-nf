@@ -47,8 +47,6 @@
 
         <div class="col-md-12" id="results_div">
 
-            <a id="sidebar-button" href="#" class="btn btn-primary btn-md sidebar-button" role="button" data-placement="left"><i class="fa fa-bars" aria-hidden="true"></i></a>
-
             <div id="dragNdropdiv" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
 
                 <div id="homeInnuendo" ng-include="'./html_templates/innuendo_home.html'"></div>
@@ -68,7 +66,7 @@
 
                             <div class="collapse navbar-collapse report-nav-inner" id="reportNav">
                                 <ul class="nav navbar-nav">
-                                    <li><a class="report-nav-btn"><i class="fa fa-bars fa-2x"></i></a></li>
+                                    <li><a id="sidebar-button" class="report-nav-btn sidebar-button"><i class="fa fa-bars fa-2x"></i></a></li>
                                     <li><a class="report-nav-btn"><i class="fa fa-home fa-2x"></i></a></li>
                                 </ul>
                             </div>
@@ -77,7 +75,7 @@
 
                     <!-- Workflow sidebar -->
                     <div class="col-md-2 sidebar" id="workflows_sidebar">
-                        <ul class="nav nav-stacked nav-tour" data-spy="affix" data-offset-top="360">
+                        <ul class="nav nav-stacked nav-tour" data-spy="affix" data-offset-top="5">
                             <li id="workflow-header">Workflows</li>
                             <li spy="{{workflow[0]}}" ng-repeat="workflow in workflows">
                                 <a href="#{{workflow[0]}}">{{workflow[0]}}</a>
