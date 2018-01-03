@@ -1,0 +1,93 @@
+#homeInnuendo {
+    max-height: 1000px;
+    transition: max-height .5s;
+}
+
+#submitDiv {
+    width: 100%;
+    display: none;
+    margin-top: 15px;
+}
+
+.pcounter {
+    display: none;
+    float: right;
+    margin-right: 5px;
+    border-radius: 1em;
+}
+
+.rule1 {
+    border-top: 2px solid #313131;
+}
+
+.rule2 {
+    border-top: 1px solid #313131;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/*Overwrites the text color of the initial bootstrap dropdown menu*/
+.bootstrap-select > .dropdown-toggle.bs-placeholder {
+    color: #313131;
+}
+
+.primary-bts {
+    display: inline-block;
+    height: 50px;
+    line-height: 35px;
+    font-weight: bold;
+    font-size: 18px;
+    width: 50%;
+    min-width: 150px;
+    color: #337ab7;
+    background-color: white;
+    vertical-align: middle;
+}
+
+/*.primary-bts:active {*/
+    /*background-color: #337ab7;*/
+    /*color: white;*/
+/*}*/
+
+.p1 {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #313131;
+}
+
+.primary-bts:hover {
+    opacity: .8;
+}
+
+.banner-row {
+    margin: 20px;
+    height: 300px;
+    padding-left: 15%;
+    padding-right: 15%;
+    text-align: center;
+}
+
+.banner-header {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: bold;
+    color: #4f4f4f;
+}
+
+.filter-header {
+    font-weight: bold;
+    color: #4f4f4f;
+}
+
+.banner {
+    display: none;
+    text-align: center;
+    /*border: 1px solid #313131;*/
+    border-radius: 1%;
+    width: 70%;
+    min-width: 300px;
+    box-shadow: 1px 2px 8px #626262;
+    padding: 10px;
+    vertical-align: middle;
+}

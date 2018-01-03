@@ -17,10 +17,13 @@
           href="./bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css">
     <link rel="stylesheet"
           href="bower_components/webui-popover/dist/jquery.webui-popover.min.css">
+    <link rel="stylesheet"
+          href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.min.css">
 
     <link rel="stylesheet" href="css/sidebar_style.css">
     <link rel="stylesheet" href="css/stylesheet.css">
     <link rel="stylesheet" href="css/modal_graphs.css">
+    <link rel="stylesheet" href="css/innuendo_home.css">
 
     <link rel="stylesheet"
           href="./bower_components/components-font-awesome/css/font-awesome.css">
@@ -48,71 +51,18 @@
 
             <div id="dragNdropdiv" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)">
 
-                <!-- Jumbotron region -->
-                <div class="row">
-                    <div class="jumbotron">
-                        <div class="container" style="text-align: center;">
-                            <h1>Reports Page</h1>
-                            <p>Reports app from the INNUENDO Platform</p>
-                            <h4>Select a Project</h4>
-
-                            <div>
-                                <select id="project_select" class="selectpicker"
-                                        title="Select one Project" data-live-search="true" data-style="btn-default">
-                                </select>
-                            </div>
-                            <div id="project_filter" style="display: none;">
-                                <div style="text-align:center; margin-left: 20%; margin-right: 20%;">
-                                    <br>
-                                    <ul class="nav nav-tabs">
-                                        <li><a data-toggle="tab" href="#filterName">Filter By name</a></li>
-                                        <li><a data-toggle="tab" href="#filterDate">Filter By date</a></li>
-                                    </ul>
-                                    <br>
-                                    <div class="tab-content">
-                                        <div id="filterName" class="tab-pane fade">
-                                            <div style="display: inline-block;">Select strains</div>
-                                            <div style="display: inline-block;">
-                                                <select id="f_by_name" multiple
-                                                        title="Select strains" data-live-search="true" data-style="btn-default">
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div id="filterDate" class="tab-pane fade">
-                                            <div style="display: inline-block;">Select dates</div>
-                                            <div style="display: inline-block;">
-                                                <select id="operator_by_date"
-                                                        title="Select dates" data-live-search="true" data-style="btn-default">
-                                                    <option value=">">></option>
-                                                    <option value=">=">>=</option>
-                                                    <option value="<"><</option>
-                                                    <option value="<="><=</option>
-                                                    <option value="=">=</option>
-                                                </select>
-                                                <select id="f_by_date"
-                                                        title="Select dates" data-live-search="true" data-style="btn-default">
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div style="margin-top: 10px;">
-                                <div class="row">
-                                    <button id="submit_project" style="display:none;"class="btn btn-info">Submit</button>
-                                    <button id="reset_project" style="display:none;" class="btn btn-danger">Reset</button>
-                                </div>
-                            </div>
-                            <!--<div id="current_workflow" style="margin-top: 10px;display:none;">
-                                <p><b>Workflow: </b>{{workflow_name}}</p>
-                            </div>-->
-                        </div>
-                    </div>
-                </div>
-
+                <div id="homeInnuendo" ng-include="'./html_templates/innuendo_home.html'"></div>
                 <!-- Data region -->
                 <div class="row" id="row-main" style="display:none;" scroll-spy>
+
+                    <nav class="navbar  navbar-fixed-top report-nav">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class=""></button>
+                            </div>
+                        </div>
+                    </nav>
+
                     <!-- Workflow sidebar -->
                     <div class="col-md-2 sidebar" id="workflows_sidebar">
                         <ul class="nav nav-stacked nav-tour" data-spy="affix" data-offset-top="360">
@@ -131,11 +81,10 @@
 
                     <div class="col-md-10" id="workflows_content">
                         <span style="float: left;">
-                          <button
-                                  class="btn btn-xs btn-default toggle_sidebar hide_button">
-                              <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                          </button>
-                      </span>
+                            <button class="btn btn-xs btn-default toggle_sidebar hide_button">
+                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                            </button>
+                        </span>
 
                         <!-- INNUca content: tables and graphs -->
                         <div ng-include="'./html_templates/innuca.html'"></div>
@@ -157,10 +106,10 @@
 
     </div>
 
-    <img id="waiting_gif" src="./images/waiting_gif.gif" class="centered"
-    width="200" height="120" style="display:none;">
+    <img id="waiting_gif" src="./images/waiting_gif.gif" class="centered" width="200" height="120" style="display:none;">
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <!--<script src="bower_components/popper.js/dist/umd/popper.min.js"></script>-->
     <script src="bower_components/webui-popover/dist/jquery.webui-popover.min.js"></script>
     <script src="bower_components/mustache.js/mustache.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -173,6 +122,7 @@
     <script src="bower_components/datatables.net-buttons/js/buttons.print.js"></script>
     <script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
     <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
+    <script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="bower_components/highcharts/highstock.js"></script>
     <script src="bower_components/highcharts/highcharts-more.js"></script>
@@ -199,6 +149,7 @@
     <script src="js/dragNdrop.js"></script>
     <script src="js/requests.js"></script>
     <script src="js/filters.js"></script>
+    <script src="js/inits.js"></script>
 
 </body>
 </html>

@@ -1,6 +1,4 @@
 html, body {
-    margin: 5px;
-    height: 100%;
 }
 
 div.not_first {
@@ -58,6 +56,24 @@ button.m-bottom{
 #row-main {
     /* necessary to hide collapsed sidebar */
     overflow-x: hidden;
+    /* Space for navbar */
+    margin-top: 70px;
+}
+
+.report-nav {
+    background-color: #cbcbcb;
+    height: 60px;
+    box-shadow: 1px 2px 8px #626262;
+    opacity: .99;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+.report-nav-text {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 60px;
+    vertical-align: middle;
 }
 
 #workflows_content {
@@ -81,7 +97,7 @@ Workflow side bar elements
 /* Style for side navbar */
 #workflow-header {
     font-size: 25px;
-    color: grey;
+    color: #808080;
     font-weight: bold;
     padding: 0 15px;
     /*border-bottom: 1px solid grey;*/

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- Jumbotron region -->
+    <div class="row">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1>INNUENDO reports</h1>
+                <p class="lead">Interactive report of bacterial genome assemblies and annotation</p>
+                <hr class="rule1">
+            </div>
+        </div>
+
+        <div class="col-md-12 banner-row" style="text-align: center">
+            <div class="btn-group" data-toggle="buttons" style="width: 80%">
+                <label id="btProjectSelect" class="btn btn-primary primary-bts" data-target="projectSelect"><input type="radio">Select project</label>
+                <label id="btProjectLoad" class="btn btn-primary primary-bts" data-target="projectLoad"><input type="radio">Load from file</label>
+            </div>
+            <p class="p1">Or simply drag and drop a report JSON file</p>
+            <div id="optsContainer" style="text-align: center">
+                <div id="projectSelect" class="banner">
+                    <h4 class="banner-header">Choose projects <span id="projectCounter" class="label label-success pcounter"></span><span id="sampleCounter" class="label label-success pcounter"></span></h4>
+                    <!--<hr class="rule2">-->
+                    <div>
+                        <select id="project_select" class="selectpicker" multiple data-actions-box="true" data-width="50%"
+                        title="Select projects" data-live-search="true" data-style="btn-default" multiple data-selected-text-format="count > 3">
+                        </select>
+                    </div>
+                    <div id="homeFilters" class="collapse">
+                        <h4 class="banner-header">Specify filters <span class="bg-danger badge">Optional</span></h4>
+                            <div class="col-md-4">
+                                <div id="sampleFilter">
+                                    <div class="filter-header">Sample filter</div>
+                                    <select id="f_by_name" class="selectpicker" multiple title="Select strains" data-live-search="true" data-style="btn-default"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-1"></div>
+                            <div class="col-md-7">
+                                <div id="timeFilter">
+                                    <div class="filter-header">Date filter</div>
+                                    <div id="timeFilterRange" class="input-daterange input-group">
+                                        <input id="minTimeFilter" type="text" class="input-sm form-control" name="start">
+                                        <span class="input-group-addon">to</span>
+                                        <input id="maxTimeFilter" type="text" class="input-sm form-control" name="end">
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div id="submitDiv">
+                        <hr class="rule2">
+                        <div class="row">
+                            <button id="submitProject" class="btn btn-primary">Submit</button>
+                            <button id="reset_project" class="btn btn-danger">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="projectLoad" class="banner">
+                    <div class="form-group">
+                        <!--<input type="file" name="img[]" class="file">-->
+                        <div class="input-group col-xs-12">
+                            <input type="text" class="form-control input-lg" disabled placeholder="Select file">
+                            <span class="input-group-btn">
+                                <button class="browse btn btn-primary input-lg" type="button">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="row banner-row">-->
+            <!--<div class="col-md-6">-->
+                <!--<div class="col-md-12 banner">-->
+                    <!--<h3 class="banner-header">Select a project </h3>-->
+                    <!--<hr class="rule2">-->
+                    <!--<div>-->
+                        <!--<select id="project_select" class="selectpicker" multiple data-actions-box="true" data-width="auto"-->
+                                <!--title="Select projects" data-live-search="true" data-style="btn-default" multiple data-selected-text-format="count > 3">-->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-6">-->
+                <!--<div class="col-md-12 banner">-->
+                    <!--<h3 class="banner-header">Load project file</h3>-->
+                    <!--<hr class="rule2">-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</body>
+
+<div id="project_filter" style="display: none;">
+    <div style="text-align:center; margin-left: 20%; margin-right: 20%;">
+        <br>
+        <ul class="nav nav-tabs">
+            <li><a data-toggle="tab" href="#filterName">Filter By name</a></li>
+            <li><a data-toggle="tab" href="#filterDate">Filter By date</a></li>
+        </ul>
+        <br>
+        <div class="tab-content">
+            <div id="filterName" class="tab-pane fade">
+                <div style="display: inline-block;">Select strains</div>
+                <div style="display: inline-block;">
+                    <!--<select id="f_by_name" multiple-->
+                            <!--title="Select strains" data-live-search="true" data-style="btn-default">-->
+                    <!--</select>-->
+                </div>
+            </div>
+            <div id="filterDate" class="tab-pane fade">
+                <div style="display: inline-block;">Select dates</div>
+                <div style="display: inline-block;">
+                    <select id="operator_by_date"
+                            title="Select dates" data-live-search="true" data-style="btn-default">
+                        <option value=">">></option>
+                        <option value=">=">>=</option>
+                        <option value="<"><</option>
+                        <option value="<="><=</option>
+                        <option value="=">=</option>
+                    </select>
+                    <select id="f_by_date"
+                            title="Select dates" data-live-search="true" data-style="btn-default">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div style="margin-top: 10px;">
+
+</div>
+
+</html>

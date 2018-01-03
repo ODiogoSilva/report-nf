@@ -28,6 +28,8 @@
     "bootstrap-select": "^1.12.4",
     "components-font-awesome": "^4.7.0",
     "seiyria-bootstrap-slider": "^10.0.0",
-    "webui-popover": "^2.1.15"
+    "webui-popover": "^2.1.15",
+    "bootstrap-datepicker": "^1.7.1",
+    "popper.js": "^1.12.9"
   }
 }
