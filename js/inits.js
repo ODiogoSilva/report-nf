@@ -201,6 +201,38 @@ const initProjectSelection = () => {
 };
 
 
+const submissionRoutine = async (selectorIds) => {
+
+    // Set selector objects according to the ids provided in
+    // selectorIds
+    const projectSelect = $(selectorIds.projectSelect);
+    const selectedProjects = projectSelect.val().join();
+    const selectedStrains = $(selectorIds.sampleSelect).val();
+    const maxTimeFilter = $(selectorIds.maxTime).val();
+    const minTimeFilter = $(selectorIds.minTime).val();
+
+    const strainsForRequest = [];
+
+    for (const el of reportInfo){
+        if (selectedStrains.includes(el.sample_name)){
+            if (el.timestamp >= minTimeFilter && el.timestamp <= maxTimeFilter && !strainsForRequest.includes(el.sample_name)){
+                strainsForRequest.push(el.sample_name);
+            }
+        }
+    }
+
+    const res = await getReportByFilter(
+        {
+            selectedProjects: selectedProjects,
+            selectedStrains:strainsForRequest.join()
+        }
+    );
+
+    return res
+
+};
+
+
 /**
  * Initializes the behaviour of the submit button in the project selection
  * div of the home page.
@@ -210,46 +242,50 @@ const initProjectSubmission = (scope) => {
     $("#submitProject").on("click", async () => {
 
         const loadingGif = $("#waiting_gif");
-        const projectSelect = $("#project_select");
-        const sampleSelect = $("#f_by_name");
 
         loadingGif.css({display: "block"});
         $("#homeInnuendo").css({display: "none"});
 
-        const selectedProjects = projectSelect.val().join();
-        const selectedStrains = sampleSelect.val();
-        const maxTimeFilter = $("#maxTimeFilter").val();
-        const minTimeFilter = $("#minTimeFilter").val();
-
-        //const res = await getReportsByProject(selectedProjects);
-        const strainsForRequest = [];
-
-        for (const el of reportInfo){
-            if (selectedStrains.includes(el.sample_name)){
-                if (el.timestamp >= minTimeFilter && el.timestamp <= maxTimeFilter && !strainsForRequest.includes(el.sample_name)){
-                    strainsForRequest.push(el.sample_name);
-                }
-            }
-        }
-
-        const res = await getReportByFilter(
+        const res = await submissionRoutine(
             {
-                selectedProjects: selectedProjects,
-                selectedStrains:strainsForRequest.join()
-            }
-        );
+                projectSelect: "#project_select",
+                sampleSelect: "#f_by_name",
+                maxTime: "#maxTimeFilter",
+                minTime: "#minTimeFilter"
+            });
 
         // Update navbar project picker
-        $("#navProjectPicker").val(projectSelect.val()).selectpicker("refresh");
-        $("#navSamplePicker").val(sampleSelect.val()).selectpicker("refresh");
+        $("#navProjectPicker").val($("#project_select").val()).selectpicker("refresh");
+        $("#navSamplePicker").val($("#f_by_name").val()).selectpicker("refresh");
 
         await initReports(scope, res, false);
 
         loadingGif.css({display: "none"});
         $("#row-main").css({display: "block"});
         $("#current_workflow").css({display:"block"});
-
-        console.log(res)
     })
 };
 
+
+const initResubmit = (scope) => {
+    $("#resubmitProjects").on("click", async () => {
+
+        const loadingGif = $("#waiting_gif");
+
+        loadingGif.css({display: "block"});
+
+        const res = await submissionRoutine(
+            {
+                projectSelect: "#navProjectPicker",
+                sampleSelect: "#navSamplePicker",
+                maxTime: "#navMaxTimeFilter",
+                minTime: "#navMinTimeFilter"
+            }
+        );
+
+        await initReports(scope, res, false)
+
+        loadingGif.css({display: "none"})
+
+    })
+};

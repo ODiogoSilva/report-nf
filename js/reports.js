@@ -185,6 +185,9 @@ app.controller("reportsController", async ($scope) => {
     // Initialize the project selection submission
     initProjectSubmission($scope);
 
+    // Initialize the project resubmission in the navbar
+    initResubmit($scope);
+
     // /* Request to get all the available species */
     // getSpecies().then((results) => {
     //    /* Request to get all the available projects */
