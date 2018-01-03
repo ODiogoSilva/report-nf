@@ -119,6 +119,9 @@ const populateFilter = (data) => {
  * the appearance of the filters and submission button when one or more
  * projects are selected.
  */
+
+let reportInfo = "";
+
 const initProjectSelection = () => {
 
     // Trigger events when the main project dropdown is closed
@@ -128,7 +131,7 @@ const initProjectSelection = () => {
         const selectedOpts = $("#project_select").val();
 
         if (selectedOpts.length > 0) {
-            const reportInfo = await getReportInfo(selectedOpts);
+            reportInfo = await getReportInfo(selectedOpts);
 
             populateFilter(reportInfo);
             populateProjectIndicator(selectedOpts.length, reportInfo);
@@ -158,22 +161,28 @@ const initProjectSubmission = (scope) => {
         $("#homeInnuendo").css({display: "none"});
 
         const selectedProjects = $("#project_select").val().join();
-        const selectedStrains = $("#f_by_name").val().join();
+        const selectedStrains = $("#f_by_name").val();
         const maxTimeFilter = $("#maxTimeFilter").val();
         const minTimeFilter = $("#minTimeFilter").val();
 
-        console.log(selectedProjects)
-
         //const res = await getReportsByProject(selectedProjects);
+        const strainsForRequest = [];
+
+        for (const el of reportInfo){
+            if (selectedStrains.includes(el.sample_name)){
+                if (el.timestamp >= minTimeFilter && el.timestamp <= maxTimeFilter && !strainsForRequest.includes(el.sample_name)){
+                    strainsForRequest.push(el.sample_name);
+                }
+            }
+        }
+
         const res = await getReportByFilter(
             {
                 selectedProjects: selectedProjects,
-                selectedStrains:selectedStrains,
-                maxTimeFilter:maxTimeFilter,
-                minTimeFilter:minTimeFilter
+                selectedStrains:strainsForRequest.join()
             }
         );
-        console.log(res);
+
         await initReports(scope, res);
 
         $("#waiting_gif").css({display: "none"});
