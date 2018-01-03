@@ -113,6 +113,32 @@ const populateFilter = (data) => {
 
 };
 
+/**
+ * This function reads a file from the Load from file option on the Home page
+ */
+const readReportFile = (files) => {
+    const data = files;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        let reportsData;
+        try{
+            reportsData = JSON.parse(e.target.result);
+        }
+        catch(e){
+            const alertText = "<div class='alert alert-danger alert-dismissable fade in' aria-label='close'>" +
+                "<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a>Unsupported file format</div>";
+
+            $("#alertDiv").empty().append(alertText).css({"display":"block"});
+            return;
+        }
+        $("#body_container").trigger("dropFile",[reportsData]);
+    };
+
+    reader.readAsText(data[0]);
+};
+
 
 /**
  * Initialize the project selection picker. This function provides controls

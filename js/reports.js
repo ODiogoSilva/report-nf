@@ -266,14 +266,18 @@ app.controller("reportsController", async ($scope) => {
     // });
 
     /* Event to be triggered when a file is dropped into the body of the page */
-    $("#body_container").on("dropFile", (ev, results) => {
+    $("#body_container").on("dropFile", async (ev, results) => {
         /*
             Rebuild tables and graphs
          */
+        $("#waiting_gif").css({display: "block"});
+        $("#homeInnuendo").css({display: "none"});
+
         data = results.data;
         dataFilters = results.dataFilters;
 
-        initReports($scope, results.data);
+        await initReports($scope, results.data);
+
         $("#waiting_gif").css({display:"none"});
         $("#row-main").css({display:"block"});
         $("#current_workflow").css({display:"block"});
@@ -418,6 +422,26 @@ app.controller("reportsController", async ($scope) => {
 
                 });
             }, 200);
+        });
+
+        /**
+         *  This function set the trigger for changes in the input loaded from a file in the Home page
+         */
+        $(document).on('change', ':file', function() {
+            const input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+
+            readReportFile(input.get(0).files);
+        });
+
+        $(document).ready( function() {
+            $(':file').on('fileselect', function(event, numFiles, label) {
+                const input = $(this).parents('.input-group').find(':text');
+                input.val(label);
+
+            });
         });
 
         $("#sliderbp").slider({ id: "sliderbpc", min: 0, max: 10, range: true});

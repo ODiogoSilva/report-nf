@@ -62,16 +62,17 @@
                     <div class="form-group">
                         <!--<input type="file" name="img[]" class="file">-->
                         <div class="input-group col-xs-12">
-                            <input type="text" class="form-control input-lg" disabled placeholder="Select file">
-                            <span class="input-group-btn">
-                                <button class="browse btn btn-primary input-lg" type="button">
-                                    <i class="glyphicon glyphicon-search"></i>
-                                </button>
-                            </span>
+                            <input type="text" class="form-control" readonly>
+                            <label class="input-group-btn">
+                                <span class="btn btn-primary">
+                                    <i class="glyphicon glyphicon-search"></i><input type="file" style="display: none;">
+                                </span>
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
+            <div id="alertDiv" style="display:none;">
         </div>
 
         <!--<div class="row banner-row">-->

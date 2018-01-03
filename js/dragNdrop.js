@@ -19,7 +19,17 @@ const drop = async (ev) => {
     const reader = new FileReader();
 
     reader.onload = (e) => {
-        const reportsData = JSON.parse(e.target.result);
+        let reportsData;
+        try{
+            reportsData = JSON.parse(e.target.result);
+        }
+        catch(e){
+            const alertText = "<div class='alert alert-danger alert-dismissable fade in' aria-label='close'>" +
+                "<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a>Unsupported file format</div>";
+
+            $("#alertDiv").empty().append(alertText).css({"display":"block"});
+            return;
+        }
         $("#body_container").trigger("dropFile",[reportsData]);
     };
 
