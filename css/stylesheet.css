@@ -19,6 +19,7 @@ button.m-bottom{
 
 #workflows_sidebar {
     /* for the animation */
+    padding-top: 40px;
     transition: margin 0.3s ease;
 }
 
@@ -81,7 +82,7 @@ Workflow side bar elements
 /* Style for side navbar */
 #workflow-header {
     font-size: 25px;
-    color: #808080;
+    color: #000000;
     font-weight: bold;
     padding: 0 15px;
     /*border-bottom: 1px solid grey;*/
@@ -98,7 +99,8 @@ Workflow side bar elements
 }
 
 .nav-tour a {
-    color: grey;
+    font-weight: bold;
+    color: #000000;
 }
 
 .nav-tour > li > a {
@@ -226,7 +228,7 @@ th {
 .affix {
     width: 16.6666667%;
     padding-right: 30px;
-    top: 70px;
+    top: 110px;
     bottom: 90px;
     min-height: 50px;
 }
