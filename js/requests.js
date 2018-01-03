@@ -15,14 +15,13 @@ const getProjects = async () => {
 const getReportsByProject = async (projectIds) => {
 
     let res = [];
+    const projectIdsString = projectIds.join();
 
-    for (const el of projectIds) {
-        const info = await $.get(
-            reportsRoute+"app/api/v1.0/reports/project/",
-            { project_id: el },
-        );
-        res = res.concat(info)
-    }
+    const info = await $.get(
+        reportsRoute+"app/api/v1.0/reports/project/",
+        { project_id: projectIdsString },
+    );
+    res = res.concat(info)
 
     return res
 };
@@ -30,9 +29,7 @@ const getReportsByProject = async (projectIds) => {
 const getReportInfo = async (projectIds) => {
 
     let res = [];
-
     const projectIdsString = projectIds.join();
-    console.log(projectIdsString);
 
     const info = await $.get(
         reportsRoute+"app/api/v1.0/reports/project/info",
@@ -42,6 +39,16 @@ const getReportInfo = async (projectIds) => {
 
     return res
 };
+
+/*
+const getReportByFilter = async (filter) => {
+    console.log(filter);
+    return await $.get(
+        reportsRoute+"app/api/v1.0/reports/project/filter",
+        filter,
+    );
+};
+*/
 
 const getReportByFilter = async (filter) => {
     console.log(filter);

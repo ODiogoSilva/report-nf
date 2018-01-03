@@ -45,6 +45,10 @@ const convertDate = (date) => {
     return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
 };
 
+const convertDateInverse = (date) => {
+    return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+};
+
 
 /**
  * Populates the sample and project counter indicators in the home page when
@@ -89,8 +93,10 @@ const populateFilter = (data) => {
 
     const maxDate = new Date(Math.max.apply(null, totalDates));
     const minDate = new Date(Math.min.apply(null, totalDates));
-    $("#maxTimeFilter").attr("value", convertDate(maxDate));
-    $("#minTimeFilter").attr("value", convertDate(minDate));
+
+    $("#maxTimeFilter").attr("value", convertDateInverse(maxDate));
+    $("#minTimeFilter").attr("value", convertDateInverse(minDate));
+
     $("#timeFilterRange").datepicker({
         autoclose: true,
         format: "dd/mm/yyyy",
@@ -100,7 +106,10 @@ const populateFilter = (data) => {
         keepEmptyValues: true
     });
 
-    $("#f_by_name").empty().append(optionsName).selectpicker("refresh");
+    /*
+        Select all values of selectpicker by default. All sample names are selected.
+     */
+    $("#f_by_name").empty().append(optionsName).selectpicker("refresh").selectpicker("selectAll");
 
 };
 
@@ -148,11 +157,23 @@ const initProjectSubmission = (scope) => {
         $("#waiting_gif").css({display: "block"});
         $("#homeInnuendo").css({display: "none"});
 
-        const selectedProjects = $("#project_select").val();
+        const selectedProjects = $("#project_select").val().join();
+        const selectedStrains = $("#f_by_name").val().join();
+        const maxTimeFilter = $("#maxTimeFilter").val();
+        const minTimeFilter = $("#minTimeFilter").val();
 
         console.log(selectedProjects)
 
-        const res = await getReportsByProject(selectedProjects);
+        //const res = await getReportsByProject(selectedProjects);
+        const res = await getReportByFilter(
+            {
+                selectedProjects: selectedProjects,
+                selectedStrains:selectedStrains,
+                maxTimeFilter:maxTimeFilter,
+                minTimeFilter:minTimeFilter
+            }
+        );
+        console.log(res);
         await initReports(scope, res);
 
         $("#waiting_gif").css({display: "none"});
