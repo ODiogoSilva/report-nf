@@ -27,7 +27,9 @@
     color: #ffffff
 }
 
-.report-nav-inner > ul > li > .report-nav-btn:hover {
+/* The :not(.nohover) pseudo-class prevents the hover effect from
+ being triggered when the button is active */
+.report-nav-inner > ul > li > .report-nav-btn:not(.report-green):hover {
     color: #28a745;
 }
 

@@ -74,7 +74,7 @@ const initReports = (scope, globalResults, append = true) => {
     })();
 
     p1.then( async (r) => {
-        const resultsCh = await innucaTable.processInnuca(r, append);
+        const resultsCh = await innucaTable.processInnuca(r, !append);
         await innucaTable.addTableHeaders(scope, resultsCh,
             "table_headers_innuca");
         await innucaTable.addTableData(resultsCh, append);
@@ -184,6 +184,9 @@ app.controller("reportsController", async ($scope) => {
     // Initialize the project resubmission in the navbar
     initResubmit($scope);
 
+    // Initialize sidebar toggle behaviour
+    initToggleSidebar();
+
     /* Event to be triggered when a file is dropped into the body of the page */
     $("#body_container").on("dropFile", async (ev, results) => {
         /*
@@ -228,13 +231,10 @@ app.controller("reportsController", async ($scope) => {
             }
         });
 
-        // when opening the sidebar
-        $("#sidebar-button").on("click", function () {
-            // open sidebar
-            $("#sidebar").addClass("active");
-            // fade in the overlay
-            $(".overlay").fadeIn();
-            $("a[aria-expanded=true]").attr("aria-expanded", "false");
+        // if dismiss or overlay was clicked
+        $("#dismiss, .overlay").on("click", function () {
+            // hide the sidebar
+            $("#sidebar-button").trigger("click");
         });
 
         // Render FastQC plots for the first time on demand by pressing the tabs
@@ -263,15 +263,6 @@ app.controller("reportsController", async ($scope) => {
         //     size: 4
         // });
 
-
-        // if dismiss or overlay was clicked
-        $("#dismiss, .overlay").on("click", function () {
-            // hide the sidebar
-            $("#sidebar").removeClass("active");
-            // fade out the overlay
-            $(".overlay").fadeOut();
-            $(".popover").removeClass("in");
-        });
 
         // Get html to popover of sample filters
         $("#active_filters_name").popover({
