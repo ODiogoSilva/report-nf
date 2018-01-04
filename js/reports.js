@@ -166,6 +166,9 @@ app.controller("reportsController", async ($scope) => {
     // Initialize the project resubmission in the navbar
     initResubmit($scope);
 
+    // Initialize sidebar toggle behaviour
+    initToggleSidebar();
+
     /* Event to be triggered when a file is dropped into the body of the page */
     $("#body_container").on("dropFile", async (ev, results) => {
         /*
@@ -208,28 +211,6 @@ app.controller("reportsController", async ($scope) => {
             if (!sent){
                 modalAlert("Please select a sample for the table first.", () => {});
             }
-        });
-
-        // when opening the sidebar
-        $("#sidebar-button").on("click", () => {
-
-            const sidebarSel = $("#sidebar");
-            const sidebarBtn = $("#sidebar-button");
-
-            if (sidebarSel.hasClass("active")) {
-                sidebarBtn.css({color: "#ffffff"});
-                $(".overlay").fadeOut();
-                $(".popover").removeClass("in");
-            } else {
-                sidebarBtn.css({color: "#28a745"});
-                // fade in the overlay
-                $(".overlay").fadeIn();
-                $("a[aria-expanded=true]").attr("aria-expanded", "false");
-            }
-
-            // open sidebar
-            sidebarSel.toggleClass("active");
-
         });
 
         // if dismiss or overlay was clicked
