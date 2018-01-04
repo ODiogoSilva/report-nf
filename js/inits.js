@@ -7,7 +7,7 @@ const resetHomeOpts = () => {
 
     const optsDiv = $("#optsContainer");
     for (const el of optsDiv.children()) {
-        $(el).css({"display": "none"})
+        $(el).css({"display": "none"});
     }
 };
 
@@ -41,10 +41,48 @@ const initHomeButtonsToggle = () => {
 };
 
 
-const convertDate = (date) => {
-    return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
+/**
+ * Populates the select picker options based on the species and the project name
+ *
+ * @param {String} container - Id of the container that will be populated
+ * @param {Array} speciesData - Array of objects with the ID and name of the
+ * available species
+ * @param {Array} projectsData - Array of objects with several informative
+ * properties of each available project
+ */
+const populateSelect = (container, speciesData, projectsData) => {
+    let options = "";
+    const spIdToName = {};
+
+    speciesData.map((sp) => {
+        spIdToName[sp.id] = sp.name;
+    });
+
+    projectsData.map((entry) => {
+        options += "<option value='"+entry.id+"'>"+spIdToName[entry.species_id] + " - " +entry.name+"</option>";
+        projectIdMap.set(entry.id, entry.name);
+    });
+
+    $("#"+container).empty().append(options).selectpicker("refresh");
+
 };
 
+/**
+ * Converts a Date object to string format in dd-mm-yyyy
+ *
+ * @param {Date} date - Date object
+ * @returns {string} - Date string in dd-mm-yyyy
+ */
+const convertDate = (date) => {
+    return date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+};
+
+/**
+ * Converts a Date object to string format in yyyy-mm-dd
+ *
+ * @param {Date} date - Date object
+ * @returns {string} - Date string in yyyy-mm-dd
+ */
 const convertDateInverse = (date) => {
     return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
 };
@@ -82,14 +120,23 @@ const populateProjectIndicator = (projectNum, reportInfo) => {
     navProjectDiv.html(`${projectNum}`);
 };
 
-
-const populateFilter = (data) => {
+/**
+ * Populates the sample and date picker filters according to the data from the
+ * selected projects.
+ *
+ * This function is responsible for updating the pickers of both home and
+ * navbar elements.
+ *
+ * @param {Array} projectsData - Array of objects, each with information of
+ * a project
+ */
+const populateFilter = (projectsData) => {
     let optionsName = "";
     let optionsDate = "";
     let totalDates = [];
     let totalNames = [];
 
-    data.map((entry) => {
+    projectsData.map((entry) => {
         if(totalDates.indexOf(entry.timestamp) < 0){
             optionsDate += "<option value='"+entry.timestamp+"'>"+entry.timestamp+"</option>";
             totalDates.push(new Date(entry.timestamp));
@@ -159,9 +206,13 @@ const readReportFile = (files) => {
 
 let reportInfo = "";
 /**
- * Initialize the project selection picker. This function provides controls
- * the appearance of the filters and submission button when one or more
- * projects are selected.
+ * Initialize the project selection picker. This function is responsible
+ * for several tasks:
+ *
+ *      - Controls the appearance/removal of filter and submission elements
+ *      - Populates the filter sample and date pickers according to the
+ *      selected projects
+ *      - Populates the project and sample counter indicators
  */
 const initProjectSelection = () => {
 
@@ -199,6 +250,11 @@ const initProjectSelection = () => {
 };
 
 
+/**
+ * Initializes the project resubmission button in the navbar. Like the
+ * initProjectSelection function, this function is responsible for updating
+ * the filter and indicator elements.
+ */
 const initNavSelection = () => {
 
     $("#navProjectPicker").on("hide.bs.select", async () => {
@@ -224,7 +280,15 @@ const initNavSelection = () => {
 
 };
 
-
+/**
+ * Wrapper of the routine used to submit a request for project/sample data.
+ * It receives the Ids of the relevant picker elements and returns the
+ * request result.
+ *
+ * @param {Object} selectorIds - The Ids of the picker elements used to fetch
+ * the project, sample and date information for sending the request.
+ * @returns {Promise.<Array>} - Array of JSON objects with the request result
+ */
 const submissionRoutine = async (selectorIds) => {
 
     // Set selector objects according to the ids provided in
@@ -260,6 +324,7 @@ const submissionRoutine = async (selectorIds) => {
 /**
  * Initializes the behaviour of the submit button in the project selection
  * div of the home page.
+ * @param scope - Angular $scope object
  */
 const initProjectSubmission = (scope) => {
 
@@ -290,7 +355,10 @@ const initProjectSubmission = (scope) => {
     })
 };
 
-
+/**
+ * Initializes the behaviour of the re-submission button in the navbar
+ * @param scope - Angular $scope object
+ */
 const initResubmit = (scope) => {
     $("#resubmitProjects").on("click", async () => {
 
@@ -307,7 +375,9 @@ const initResubmit = (scope) => {
             }
         );
 
-        console.log(res)
+        // Update home page pickers
+        $("#project_select").val($("#navProjectPicker").val()).selectpicker("refresh");
+        $("#f_by_name").val($("#navSamplePicker").val()).selectpicker("refresh");
 
         await initReports(scope, res, false);
 

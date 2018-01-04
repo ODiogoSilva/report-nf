@@ -108,29 +108,6 @@ const modalAlert = (text, callback) => {
 
 };
 
-/**
- * Populates the select picker options based on the species and the project name
- * @param container
- * @param speciesData
- * @param data
- */
-const populateSelect = (container, speciesData, data) => {
-    let options = "";
-    const spIdToName = {};
-
-    speciesData.map((sp) => {
-        spIdToName[sp.id] = sp.name;
-    });
-
-    data.map((entry) => {
-        options += "<option value='"+entry.id+"'>"+spIdToName[entry.species_id] + " - " +entry.name+"</option>";
-        projectIdMap.set(entry.id, entry.name);
-    });
-
-    $("#"+container).empty().append(options).selectpicker("refresh");
-
-};
-
 /* Angular controller to control the DOM elements from the index.html file */
 app.controller("reportsController", async ($scope) => {
 
