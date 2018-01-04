@@ -7,6 +7,7 @@
     width: 100%;
     display: none;
     margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .pcounter {
@@ -46,6 +47,7 @@
 
 .p1 {
     margin-top: 10px;
+    margin-bottom: 20px;
     font-weight: bold;
     color: #313131;
 }
@@ -64,7 +66,7 @@
 
 .banner-header {
     margin-top: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     text-align: left;
     font-weight: bold;
     color: #323232;
