@@ -131,8 +131,9 @@ Workflow side bar elements
 /* Style for active submenu itens */
 .nav-tour > .active > .nav > .active > a,
 .nav-tour > .active > .nav > .active > a:hover {
-    font-weight: bold;
-    border-right: 2px solid dimgrey;;
+    /*font-weight: bold;*/
+    /*color: #28a745;*/
+    border-right: 2px solid #28a745;
     margin-right: 0px;
 }
 
@@ -151,14 +152,14 @@ Workflow side bar elements
 .nav-tour > .active > a,
 .nav-tour > .active > a:hover {
     font-weight: bold;
-    border-right: 2px solid dimgrey;
+    border-right: 2px solid #28a745;
 }
 
 /* when hovering over inactive menus */
 .nav-tour > .active > .nav > li > a:hover,
 .nav-tour > .active > .nav > li > a:focus,
 .nav-tour > li > a:hover {
-    border-right: 1px solid dimgrey;
+    border-right: 1px solid #28a745;
     background-color: transparent;
 }
 
