@@ -5,8 +5,6 @@
 
 const processMetadata = (reportsData) => {
 
-    console.log(reportsData);
-
     const titleMapping = {
         "id": "id",
         "species_id": "SpeciesID",
@@ -24,18 +22,34 @@ const processMetadata = (reportsData) => {
     }
 
     const Metadata = {};
-    let metadataHeaders = ["", "id"];
     const metadataDataArray = [];
 
     /* Get headers */
-    let firstTime = true;
+    const metadataHeaders = [
+        "",
+        "id",
+        "Primary",
+        "source_Source",
+        "Location",
+        "SamplingDate",
+        "SampleReceivedDate",
+        "species_id",
+        "Owner",
+        "Food-Bug",
+        "Submitter",
+        "File_1",
+        "File_2",
+        "AdditionalInformation"
+    ]
+    /*let firstTime = true;
+
     for (const report of reportsData) {
         if (firstTime) {
             metadataHeaders = metadataHeaders.concat(JSON.parse(report.fields).metadata_fields);
             firstTime = false;
             break;
         }
-    }
+    }*/
 
     /* Set column mapping from the headers */
     const metadataColumnMapping = [

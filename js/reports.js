@@ -59,8 +59,6 @@ const initReports = (scope, globalResults, append = true) => {
 
     });
 
-    console.log(results);
-
     // Update the data array with the new filtered results
     data = results;
 
@@ -127,7 +125,6 @@ app.controller("reportsController", async ($scope) => {
 
     $scope.graph1Name = "Graph 1";
     $scope.graph2Name = "Graph 2";
-    $scope.tableName = "Main table";
     $scope.fastqcName = "FastQC";
 
     $scope.workflows = [
