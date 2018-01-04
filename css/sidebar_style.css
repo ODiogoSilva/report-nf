@@ -4,6 +4,15 @@
     background: #e0e0e0;
     color: #000;
     transition: all 0.3s;
+    min-width: 260px;
+    max-width: 260px;
+    height: 100vh;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    /* top layer */
+    z-index: 9999;
+    margin-left: -260px;
 }
 
 #sidebar .sidebar-header {
@@ -47,18 +56,6 @@
     text-align: center;
 }
 
-#sidebar {
-    min-width: 260px;
-    max-width: 260px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    /* top layer */
-    z-index: 9999;
-    margin-left: -260px;
-}
-
 #sidebar.active {
     margin-left: 0;
 }
@@ -68,7 +65,7 @@
     width: 100vw;
     height: 100vh;
     /* transparent black */
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0);
     position: fixed;
     top: 0;
     left: 0;

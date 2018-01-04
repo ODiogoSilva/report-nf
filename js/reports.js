@@ -211,12 +211,31 @@ app.controller("reportsController", async ($scope) => {
         });
 
         // when opening the sidebar
-        $("#sidebar-button").on("click", function () {
+        $("#sidebar-button").on("click", () => {
+
+            const sidebarSel = $("#sidebar");
+            const sidebarBtn = $("#sidebar-button");
+
+            if (sidebarSel.hasClass("active")) {
+                sidebarBtn.css({color: "#ffffff"});
+                $(".overlay").fadeOut();
+                $(".popover").removeClass("in");
+            } else {
+                sidebarBtn.css({color: "#28a745"});
+                // fade in the overlay
+                $(".overlay").fadeIn();
+                $("a[aria-expanded=true]").attr("aria-expanded", "false");
+            }
+
             // open sidebar
-            $("#sidebar").addClass("active");
-            // fade in the overlay
-            $(".overlay").fadeIn();
-            $("a[aria-expanded=true]").attr("aria-expanded", "false");
+            sidebarSel.toggleClass("active");
+
+        });
+
+        // if dismiss or overlay was clicked
+        $("#dismiss, .overlay").on("click", function () {
+            // hide the sidebar
+            $("#sidebar-button").trigger("click");
         });
 
         // Render FastQC plots for the first time on demand by pressing the tabs
@@ -245,15 +264,6 @@ app.controller("reportsController", async ($scope) => {
         //     size: 4
         // });
 
-
-        // if dismiss or overlay was clicked
-        $("#dismiss, .overlay").on("click", function () {
-            // hide the sidebar
-            $("#sidebar").removeClass("active");
-            // fade out the overlay
-            $(".overlay").fadeOut();
-            $(".popover").removeClass("in");
-        });
 
         // Get html to popover of sample filters
         $("#active_filters_name").popover({
