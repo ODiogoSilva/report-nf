@@ -60,7 +60,7 @@ const initReports = (scope, results, append = true) => {
 
     /* Launch Tables */
     p1.then( async (r) => {
-        const resultsCh = await innucaTable.processInnuca(r, append);
+        const resultsCh = await innucaTable.processInnuca(r, !append);
         await innucaTable.addTableHeaders(scope, resultsCh,
             "table_headers_innuca");
         await innucaTable.addTableData(resultsCh, append);
