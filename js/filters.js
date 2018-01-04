@@ -197,6 +197,70 @@ const showLabel = (selector, spanSelector, helpSelector, msg, type) => {
 };
 
 
+const removeDataFilters = (popoverId, val) => {
+
+    // Determines from which property is the val going to be removed
+    let objId;
+    if (popoverId === "active_filters_name") {
+        objId = "sample"
+    } else if (popoverId === "active_filters_projectid") {
+        objId = "projectId"
+    }
+
+    // Removes val from both active and temp arrays
+    let toRemove = dataFilters[objId].active.indexOf(val);
+    dataFilters[objId].active.splice(toRemove, 1);
+    toRemove = dataFilters[objId].temp.indexOf(val);
+    dataFilters[objId].temp.splice(toRemove, 1);
+
+};
+
+/**
+ * Function that gives functionality to the remove buttons in the filter
+ * and highlight popovers
+ *
+ * @param {String} popoverContentId - ID of the popover content div
+ * @param {String} removeId - ID of the remove button element
+ * @param {String} popoverId - ID of the div associated with the popover
+ * @param {String} val - Value that is going to be removed
+ */
+const removeFilterButton = (popoverContentId, removeId, popoverId, val) => {
+
+    // Selector for the popover content div
+    const filters = $("#" + popoverContentId);
+    // Selector for the popover element
+    const popover = $("#" + popoverId).data("bs.popover");
+
+    // Remove the input-group from the popover content div based on the
+    // ID of the removal button
+    filters.find("#" + removeId).remove();
+
+    // Get the html content from the popover content div
+    const updatedContent = filters.html();
+
+    // If the content is empty, update the popover selector with a
+    // default div
+    if (updatedContent) {
+        popover.options.content = updatedContent;
+    } else {
+        popover.options.content = "<div>No filters applied!</div>";
+    }
+
+    // Update and redraw the popover
+    popover.setContent();
+    popover.hide();
+    popover.show();
+
+    // Perform changes to data filters, if the popoverId is among the
+    // expected Ids for the filter popovers
+    const filterIds = ["active_filters_name", "active_filters_projectid"];
+
+    if (filterIds.includes(popoverId)) {
+        removeDataFilters(popoverId, val)
+    }
+};
+
+
 /**
  *
  * @param targetId
@@ -225,21 +289,26 @@ const checkFilter = (targetId) => {
     let filterSelecteor;
     let tempFilters;
     let changePopover;
+    let popoverContentId;
+    let popoverId;
 
     if ( targetId === "filter_by_name" ) {
         activeFilters = dataFilters.sample.active.concat(dataFilters.sample.temp);
         filterSelecteor = $("#" + "popover_filters_sample");
+        popoverContentId = "popover_filters_sample";
+        popoverId = "active_filters_name";
         changePopover = $("#active_filters_name").data("bs.popover");
         tempFilters = dataFilters.sample.temp;
     } else {
         activeFilters = dataFilters.projectId.active.concat(dataFilters.projectId.temp);
         filterSelecteor = $("#" + "popover_filters_project");
+        popoverContentId = "popover_filters_project";
+        popoverId = "active_filters_projectid";
         changePopover = $("#active_filters_projectid").data("bs.popover");
         tempFilters = dataFilters.projectId.temp;
     }
 
     /* Begin checks here */
-
 
     // Check if filter is not empty
     if ( val === "" ) {
@@ -266,10 +335,19 @@ const checkFilter = (targetId) => {
     // Random id for filter div
     const filterId = Math.random().toString(36).substring(7);
 
-    const filterDiv = `<div class="input-group" id="${filterId}">
-                        <input class="form-control ${targetId}" readonly value="${val}">
-                        <span class="input-group-addon btn btn-default remove_filter"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                       </div>`;
+    const filterTemplate = '<div class="input-group" id="{{ fId }}">' +
+                        '<input class="form-control {{ targetId }}" readonly value="{{ val }}">' +
+                        '<span onclick="removeFilterButton(\'{{ tId }}\',\'{{ fId }}\', \'{{ pop }}\', \'{{ val }}\')" class="input-group-addon btn btn-default remove_filter"><i class="fa fa-minus" aria-hidden="true"></i></span>' +
+                       '</div>';
+
+    const filterDiv = Mustache.to_html(filterTemplate, {
+        fId: filterId,
+        tId: popoverContentId,
+        val,
+        pop: popoverId
+    });
+
+    console.log(filterDiv)
 
     // Case first filter
     if(tempFilters.length === 0 && activeFilters.length === 0){

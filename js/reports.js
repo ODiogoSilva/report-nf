@@ -184,6 +184,10 @@ app.controller("reportsController", async ($scope) => {
     // Initialize sidebar toggle behaviour
     initToggleSidebar();
 
+    // SIDEBAR //
+    // Behaviour for filter popovers
+    filterPopovers();
+
     /* Event to be triggered when a file is dropped into the body of the page */
     $("#body_container").on("dropFile", async (ev, results) => {
         /*
@@ -261,76 +265,6 @@ app.controller("reportsController", async ($scope) => {
         // });
 
 
-        // Get html to popover of sample filters
-        $("#active_filters_name").popover({
-            html : true,
-            trigger: "focus",
-            content() {
-                return $("#popover_filters_sample").html();
-            }
-        }).off("show.bs.popover").on("show.bs.popover", () => {
-            setTimeout(() => {
-                const rFilter = $(".remove_filter");
-                rFilter.off("click").on("click", (e) => {
-
-                    const filters = $("#popover_filters_sample");
-                    const target = $(e.target);
-                    const pDivId = target.closest("div").attr("id");
-                    filters.find("#"+pDivId).remove();
-
-                    // Dynamically set content of popover
-                    const popover = $("#active_filters_name").data("bs.popover");
-                    popover.options.content = filters.html();
-
-                    // Remove filter from temp and active filters
-                    const val = target.parent().find("input").val();
-                    let toRemove = dataFilters.sample.active.indexOf(val);
-                    dataFilters.sample.active.splice(toRemove, 1);
-                    toRemove = dataFilters.sample.temp.indexOf(val);
-                    dataFilters.sample.temp.splice(toRemove, 1);
-
-                    if(dataFilters.sample.temp.length === 0 && dataFilters.sample.active.length === 0){
-                        popover.options.content = "<div>No filters applied!</div>";
-                    }
-                });
-            }, 200);
-        });
-
-        // Get html to popover of project filters
-        $("#active_filters_projectid").popover({
-            html : true,
-            trigger: "focus",
-            content() {
-                return $("#popover_filters_project").html();
-            }
-        }).off("show.bs.popover").on("show.bs.popover", () => {
-            setTimeout(() => {
-                const rFilter = $(".remove_filter");
-                rFilter.off("click").on("click", (e) => {
-                    const filters = $("#popover_filters_project");
-                    const target = $(e.target);
-                    const pDivId = target.closest("div").attr("id");
-                    filters.find("#"+pDivId).remove();
-
-                    // Dynamically set content of popover
-                    const popover = $("#active_filters_projectid").data("bs.popover");
-                    popover.options.content = filters.html();
-
-                    // Remove filter from temp and active filters
-                    const val = target.parent().find("input").val();
-                    let toRemove = dataFilters.projectId.active.indexOf(val);
-                    dataFilters.projectId.active.splice(toRemove, 1);
-                    toRemove = dataFilters.projectId.temp.indexOf(val);
-                    dataFilters.projectId.temp.splice(toRemove, 1);
-
-                    if(dataFilters.projectId.temp.length === 0 && dataFilters.projectId.active.length === 0){
-                        popover.options.content = "<div>No filters applied!</div>";
-                    }
-
-                });
-            }, 200);
-        });
-
         /**
          *  This function set the trigger for changes in the input loaded from a file in the Home page
          */
@@ -385,6 +319,18 @@ app.controller("reportsController", async ($scope) => {
 
 
         });
+
+        //
+        // $('body').on('click', function (e) {
+        //     $('[data-toggle="popover"],[data-original-title]').each(function () {
+        //         //the 'is' for buttons that trigger popups
+        //         //the 'has' for icons within a button that triggers a popup
+        //         if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+        //             (($(this).popover('hide').data('bs.popover')||{}).inState||{}).click = false  // fix for BS 3.3.6
+        //         }
+        //
+        //     });
+        // });
 
     }, 100);
 
