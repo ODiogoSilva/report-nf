@@ -288,6 +288,25 @@ const initNavSelection = () => {
 
 };
 
+
+const getMetadataMapping = (reportInfo) => {
+
+    let projectAr = [];
+    let sampleAr = [];
+
+    for (const el of reportInfo) {
+        projectAr.push(el.project_id);
+        sampleAr.push(el.sample_name);
+    }
+
+    const projectStr = projectAr.join();
+    const sampleStr = sampleAr.join();
+
+    return [projectStr, sampleStr]
+
+};
+
+
 /**
  * Wrapper of the routine used to submit a request for project/sample data.
  * It receives the Ids of the relevant picker elements and returns the
@@ -309,29 +328,32 @@ const submissionRoutine = async (selectorIds) => {
 
     const strainsForRequest = [];
 
-        for (const el of reportInfo){
-            if (selectedStrains.includes(el.sample_name)){
-                const dt = new Date(el.timestamp);
-                const mind = new Date(minTimeFilter);
-                const maxd = new Date(maxTimeFilter);
-                if (dt >= mind && dt <= maxd && !strainsForRequest.includes(el.sample_name)){
-                    strainsForRequest.push(el.sample_name);
-                }
+    const projectSampleMap = await getMetadataMapping(reportInfo);
+
+    for (const el of reportInfo){
+        if (selectedStrains.includes(el.sample_name)){
+            const dt = new Date(el.timestamp);
+            const mind = new Date(minTimeFilter);
+            const maxd = new Date(maxTimeFilter);
+            if (dt >= mind && dt <= maxd && !strainsForRequest.includes(el.sample_name)){
+                strainsForRequest.push(el.sample_name);
             }
         }
+    }
 
-        const res = await getReportByFilter(
-            {
-                selectedProjects: selectedProjects,
-                selectedStrains: strainsForRequest.join()
-            }
-        );
+    const res = await getReportByFilter(
+        {
+            selectedProjects: selectedProjects,
+            selectedStrains: strainsForRequest.join()
+        }
+    );
 
-        const resMetadata = await getStrainsMetadata(
-            {
-                selectedStrains: strainsForRequest.join()
-            }
-        );
+    const resMetadata = await getStrainsMetadata(
+        {
+            selectedProjects: projectSampleMap[0],
+            selectedStrains: projectSampleMap[1]
+        }
+    );
 
         console.log(resMetadata);
 

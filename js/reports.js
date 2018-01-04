@@ -36,9 +36,9 @@ const prokkaTable = new Table("master_table_prokka");
 /**
  * Function to build tables and graphs based on the reports
  * @param scope
- * @param results
  * @param {boolean} append - If true, the processInnuca method will update the
  * maximum values for the dataFilters
+ * @param globalResults
  */
 const initReports = (scope, globalResults, append = true) => {
 
@@ -49,7 +49,7 @@ const initReports = (scope, globalResults, append = true) => {
 
     // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve, reject) => {
-        const r = filterJson(results, dataFilters);
+        const r = filterJson(results, metadataResults, dataFilters);
         // Only resolve the promise when the results array is not empty
         if (r.length !== 0) {
             resolve(r);
@@ -60,19 +60,19 @@ const initReports = (scope, globalResults, append = true) => {
     });
 
     // Update the data array with the new filtered results
-    data = results;
+    data = [results, metadataResults];
 
     /* Launch Tables */
-    (async () => {
-        const resultsCh = await metadataTable.processMetadata(metadataResults, append);
+    p1.then( async (r) => {
+        const resultsCh = await metadataTable.processMetadata(r.filteredMetadata, append);
         await metadataTable.addTableHeaders(scope, resultsCh,
             "table_headers_innuca");
         await metadataTable.addTableData(resultsCh, append);
         await metadataTable.buildDataTable(scope);
-    })();
+    });
 
     p1.then( async (r) => {
-        const resultsCh = await innucaTable.processInnuca(r, !append);
+        const resultsCh = await innucaTable.processInnuca(r.filteredJson, !append);
         await innucaTable.addTableHeaders(scope, resultsCh,
             "table_headers_innuca");
         await innucaTable.addTableData(resultsCh, append);
@@ -80,7 +80,7 @@ const initReports = (scope, globalResults, append = true) => {
     });
 
     p1.then( async (r) => {
-        const resultsCh = await chewbbacaTable.processChewbbaca(r);
+        const resultsCh = await chewbbacaTable.processChewbbaca(r.filteredJson);
         await chewbbacaTable.addTableHeaders(scope, resultsCh,
             "table_headers_chewbbaca");
         await chewbbacaTable.addTableData(resultsCh);
@@ -88,7 +88,7 @@ const initReports = (scope, globalResults, append = true) => {
     });
 
     p1.then( async (r) => {
-        const resultsCh = await prokkaTable.processProkka(r);
+        const resultsCh = await prokkaTable.processProkka(r.filteredJson);
         await prokkaTable.addTableHeaders(scope, resultsCh,
             "table_headers_prokka");
         await prokkaTable.addTableData(resultsCh);
@@ -97,7 +97,7 @@ const initReports = (scope, globalResults, append = true) => {
 
     /* Launch charts */
     p1.then( async (r) => {
-        await charts.addReportData(r, append);
+        await charts.addReportData(r.filteredJson, append);
         await charts.buildAllCharts();
     });
 };
@@ -161,6 +161,9 @@ app.controller("reportsController", async ($scope) => {
     // Query information about available species and projects
     const spResults = await getSpecies();
     const pResults = await getProjects();
+
+    console.log(spResults)
+    console.log(pResults)
 
     // Populate dropdown with species/project info
     populateSelect("project_select", spResults, pResults);

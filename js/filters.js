@@ -48,7 +48,7 @@ const testRowValue = (rg, tableRow, header) => {
 const addToFilters = (po, array) => {
 
     // Define id and push to array if it's not there
-    const pid = `${po.project_id}${po.pipeline_id}`;
+    const pid = `${po.project_id}${po.sample_name}`;
     if (!array.includes(pid)) {
         array.push(pid);
     }
@@ -94,11 +94,14 @@ const updateFilterObject = (filterInstance) => {
  *
  * @param jsonResult
  * @param filterObject
+ * @param metadataJson
+ * @return {Object}
  */
-const filterJson = (jsonResult, filterObject) => {
+const filterJson = (jsonResult, metadataJson, filterObject) => {
 
     // Will store the filtered array
     let filteredJson = [];
+    let filteredMetadata = [];
     // Stores the sample combination of projectid and sampleid that will be
     // filtered
     let filteredIds = [];
@@ -156,13 +159,24 @@ const filterJson = (jsonResult, filterObject) => {
     let pid;
     for ( const po of jsonResult ) {
         // Get combination id of current sample
-        pid = `${po.project_id}${po.pipeline_id}`;
+        pid = `${po.project_id}${po.sample_name}`;
         if ( !filteredIds.includes(pid) ) {
             filteredJson.push(po);
         }
     }
 
-    return filteredJson;
+    for (const po of metadataJson) {
+        const strainMeta = JSON.parse(po.strain_metadata);
+        pid = `${po.project_id}${strainMeta.Primary}`;
+        if (!filteredIds.includes(pid)) {
+            filteredMetadata.push(po);
+        }
+    }
+
+    return {
+        filteredJson,
+        filteredMetadata
+    };
 };
 
 /**
