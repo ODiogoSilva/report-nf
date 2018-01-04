@@ -28,6 +28,7 @@ let projectIdMap = new Map();
 const charts = new ChartManager();
 
 // Init tables
+const metadataTable = new Table("master_table_metadata");
 const innucaTable = new Table("master_table_innuca");
 const chewbbacaTable = new Table("master_table_chewbbaca");
 const prokkaTable = new Table("master_table_prokka");
@@ -39,7 +40,12 @@ const prokkaTable = new Table("master_table_prokka");
  * @param {boolean} append - If true, the processInnuca method will update the
  * maximum values for the dataFilters
  */
-const initReports = (scope, results, append = true) => {
+const initReports = (scope, globalResults, append = true) => {
+
+    //globalResults has reports and metadata
+    //NOTE: Filters only working on reports, not on metadata
+    const results = globalResults[0];
+    const metadataResults = globalResults[1];
 
     // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve, reject) => {
@@ -59,6 +65,14 @@ const initReports = (scope, results, append = true) => {
     data = results;
 
     /* Launch Tables */
+    (async () => {
+        const resultsCh = await metadataTable.processMetadata(metadataResults, append);
+        await metadataTable.addTableHeaders(scope, resultsCh,
+            "table_headers_innuca");
+        await metadataTable.addTableData(resultsCh, append);
+        await metadataTable.buildDataTable(scope);
+    })();
+
     p1.then( async (r) => {
         const resultsCh = await innucaTable.processInnuca(r, append);
         await innucaTable.addTableHeaders(scope, resultsCh,
@@ -117,6 +131,7 @@ app.controller("reportsController", async ($scope) => {
     $scope.fastqcName = "FastQC";
 
     $scope.workflows = [
+        ["Metadata", 14],
         ["Assembly", 14],
         ["Annotation", 2],
         ["chewBBACA", 2],
@@ -124,6 +139,9 @@ app.controller("reportsController", async ($scope) => {
     ];
 
     $scope.workflowCharts = {
+        "Metadata": [
+            ["Strains metadata", "table_metadata_div"]
+        ],
         "Assembly": [
             ["Main table", "table1_div"],
             ["FastQC", "fastqcContainer"],

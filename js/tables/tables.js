@@ -170,7 +170,14 @@ class Table {
                 },
                 "fnCreatedRow": (nRow, aData) => {
                     // Get ID based on pipeline id and sample name
-                    const pid = aData.id.split(".")[0] + "." + aData.Sample;
+                    let pid;
+                    try {
+                        //Only in case of INNUca table
+                        pid = aData.id.split(".")[0] + "." + aData.Sample;
+                    }
+                    catch(e){
+                        return;
+                    }
                     // Add ID to each row
                     $(nRow).attr("id", pid);
                     // Add onclick event for sample selection in checkbox
@@ -211,5 +218,10 @@ class Table {
     /* Process Prokka data to load into the DataTable */
     async processProkka(reports) {
         return await processProkka(reports);
+    }
+
+    /* Process Metadata to load into the DataTable */
+    async processMetadata(reports) {
+        return await processMetadata(reports);
     }
 }

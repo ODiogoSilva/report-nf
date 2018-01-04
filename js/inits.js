@@ -84,7 +84,15 @@ const convertDate = (date) => {
  * @returns {string} - Date string in yyyy-mm-dd
  */
 const convertDateInverse = (date) => {
-    return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+    let dd = date.getDate();
+    let mm = date.getMonth()+1;
+    if(dd<10){
+        dd='0'+dd;
+    }
+    if(mm<10){
+        mm='0'+mm;
+    }
+    return date.getFullYear() + '-' + mm + '-' + dd
 };
 
 
@@ -301,22 +309,33 @@ const submissionRoutine = async (selectorIds) => {
 
     const strainsForRequest = [];
 
-    for (const el of reportInfo){
-        if (selectedStrains.includes(el.sample_name)){
-            if (el.timestamp >= minTimeFilter && el.timestamp <= maxTimeFilter && !strainsForRequest.includes(el.sample_name)){
-                strainsForRequest.push(el.sample_name);
+        for (const el of reportInfo){
+            if (selectedStrains.includes(el.sample_name)){
+                const dt = new Date(el.timestamp);
+                const mind = new Date(minTimeFilter);
+                const maxd = new Date(maxTimeFilter);
+                if (dt >= mind && dt <= maxd && !strainsForRequest.includes(el.sample_name)){
+                    strainsForRequest.push(el.sample_name);
+                }
             }
         }
-    }
 
-    const res = await getReportByFilter(
-        {
-            selectedProjects: selectedProjects,
-            selectedStrains:strainsForRequest.join()
-        }
-    );
+        const res = await getReportByFilter(
+            {
+                selectedProjects: selectedProjects,
+                selectedStrains: strainsForRequest.join()
+            }
+        );
 
-    return res
+        const resMetadata = await getStrainsMetadata(
+            {
+                selectedStrains: strainsForRequest.join()
+            }
+        );
+
+        console.log(resMetadata);
+
+    return [res, resMetadata]
 
 };
 

@@ -126,6 +126,8 @@
                             </button>
                         </span>
 
+                        <!-- Metadata content: tables and graphs -->
+                        <div ng-include="'./html_templates/metadata.html'"></div>
                         <!-- INNUca content: tables and graphs -->
                         <div ng-include="'./html_templates/innuca.html'"></div>
                         <!-- Prokka content: tables and graphs -->
@@ -181,6 +183,7 @@
     <script src="js/tables/process_innuca.js"></script>
     <script src="js/tables/process_pathotyping.js"></script>
     <script src="js/tables/process_prokka.js"></script>
+    <script src="js/tables/process_metadata.js"></script>
     <script src="js/tables/tables.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/reports.js"></script>
