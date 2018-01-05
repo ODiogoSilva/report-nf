@@ -18,7 +18,7 @@ const processMetadata = (reportsData) => {
         "Food-Bug": "Food-Bug",
         "Submitter": "Submitter",
         "Location": "Location",
-    }
+    };
 
     const Metadata = {};
     const metadataDataArray = [];
@@ -38,7 +38,7 @@ const processMetadata = (reportsData) => {
         "File_1",
         "File_2",
         "AdditionalInformation"
-    ]
+    ];
     /*let firstTime = true;
 
     for (const report of reportsData) {
@@ -88,8 +88,6 @@ const processMetadata = (reportsData) => {
     Metadata.headers = metadataHeaders;
     Metadata.columnMapping = metadataColumnMapping;
     Metadata.data = metadataDataArray;
-
-    console.log(Metadata);
 
     return Metadata;
 

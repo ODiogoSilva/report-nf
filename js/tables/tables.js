@@ -218,4 +218,9 @@ class Table {
     async processMetadata(reports) {
         return await processMetadata(reports);
     }
+
+    /* Process Trees to load into the DataTable */
+    async processTrees(treesReports) {
+        return await processTrees(treesReports);
+    }
 }

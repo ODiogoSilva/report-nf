@@ -4,6 +4,9 @@ const app = angular.module("reportsApp", []);
 // Array of JSON files with the report data
 let data = null;
 
+//array with trees inofmration
+let trees = null;
+
 // JSON mapping of report id with current chewbbaca procedures
 let chewbbacaToReportId = {};
 
@@ -32,6 +35,7 @@ const metadataTable = new Table("master_table_metadata");
 const innucaTable = new Table("master_table_innuca");
 const chewbbacaTable = new Table("master_table_chewbbaca");
 const prokkaTable = new Table("master_table_prokka");
+const treesTable = new Table("master_table_trees");
 
 /**
  * Function to build tables and graphs based on the reports
@@ -64,10 +68,19 @@ const initReports = (scope, globalResults, append = true) => {
     data = [results, metadataResults];
 
     /* Launch Tables */
+
+    ( async () => {
+        const resultsCh = await treesTable.processTrees(trees, append);
+        await treesTable.addTableHeaders(scope, resultsCh,
+            "table_headers_trees");
+        await treesTable.addTableData(resultsCh, append);
+        await treesTable.buildDataTable(true);
+    } )();
+
     p1.then( async (r) => {
         const resultsCh = await metadataTable.processMetadata(r.filteredMetadata, append);
         await metadataTable.addTableHeaders(scope, resultsCh,
-            "table_headers_innuca");
+            "table_headers_metadata");
         await metadataTable.addTableData(resultsCh, append);
         await metadataTable.buildDataTable(true);
     });
@@ -139,6 +152,10 @@ app.controller("reportsController", async ($scope) => {
         ["Pathotyping", 1]
     ];
 
+    $scope.trees = [
+        ["PHYLOVIZ", 14],
+    ];
+
     $scope.workflowCharts = {
         "Metadata": [
             ["Strains metadata", "table_metadata_div"]
@@ -154,7 +171,10 @@ app.controller("reportsController", async ($scope) => {
             ["Table 3", "table3_div"]
         ],
         "ChewBBACA": [],
-        "Pathotyping": []
+        "Pathotyping": [],
+        "PHYLOVIZ": [
+            ["PHYLOViZ Table", "table_trees_div"]
+        ]
     };
 
     $scope.qcLevels = ["A", "B", "C", "D", "F"];
@@ -169,9 +189,6 @@ app.controller("reportsController", async ($scope) => {
     // Query information about available species and projects
     const spResults = await getSpecies();
     const pResults = await getProjects();
-
-    console.log(spResults)
-    console.log(pResults)
 
     // Populate dropdown with species/project info
     populateSelect("project_select", spResults, pResults);
@@ -204,7 +221,8 @@ app.controller("reportsController", async ($scope) => {
     // Behaviour for filter popovers
     filterPopovers();
 
-
+    //Get user Trees
+    trees = await getPHYLOViZTrees();
 
     /* Event to toggle workflows sidebar */
     $(".toggle_sidebar").on("click", (e) => {
@@ -220,8 +238,19 @@ app.controller("reportsController", async ($scope) => {
     $("#body_container").css({display:"block"});
 
     setTimeout( () => {
+
+        //Show PHYLOViZ form to perform the request to the platform
         $("#phyloviz_button").off("click").on("click", () => {
             $("#sendToPHYLOViZModal").modal("show");
+        });
+
+        //Event to show phyloviz tree
+        $("#phyloviz_button_show").off("click").on("click", () => {
+            const selTree = $.map(treesTable.tableObj.rows(".selected").data(), (d) => {
+                console.log(d);
+                return d.uri;
+            });
+            showTree(selTree);
         });
 
         $("#download_profiles_button").off("click").on("click", () => {
