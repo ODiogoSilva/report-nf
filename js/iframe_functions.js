@@ -4,7 +4,3 @@ const runFromParent = () => {
     window.parent.setUpFrame();
     return true;
 };
-
-window.addUserData = (username, userID) => {
-    console.log("InFrame", username, userID);
-};

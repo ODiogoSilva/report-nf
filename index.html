@@ -149,8 +149,14 @@
     </div>
 
     <img id="waiting_gif" src="./images/waiting_gif.gif" class="centered" width="200" height="120" style="display:none;">
+    <script>
+        var addUserData = (username, userID) => {
+            console.log("InFrame", username, userID);
+        };
+    </script>
 
     <!--<script src="bower_components/popper.js/dist/umd/popper.min.js"></script>-->
+    <script src="js/iframe_functions.js"></script>
     <script src="bower_components/webui-popover/dist/jquery.webui-popover.min.js"></script>
     <script src="bower_components/mustache.js/mustache.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
