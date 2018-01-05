@@ -31,3 +31,41 @@ const filterPopovers = () => {
 
 };
 
+/**
+ * Function that adds a filter div (with the filter name and remove button)
+ * with an arbitrary value into an arbitrary container. The requires opts are:
+ *
+ *      - {String} val: Value/Name of the filter;
+ *      - {String} targetId: Id of the popover content div;
+ *      - {String} popoverId: Id of the popover element;
+ *
+ * @param {Object} opts - Object with the required properties
+ */
+const addFilterButton = (opts) => {
+
+    // Create random id for filter
+    const filterId = Math.random().toString(36).substring(7);
+    const popoverDataSel = $("#" + opts.targetId);
+    const popover = $("#" + opts.popoverId).data("bs.popover");
+
+    // Create the filter template div to be populated using mustache
+    const filterTemplate = '<div class="input-group" id="{{ fId }}">' +
+        '<input class="form-control {{ tId }}" readonly value="{{ val }}">' +
+        '<span onclick="removeFilterButton(\'{{ tId }}\',\'{{ fId }}\', \'{{ pop }}\', \'{{ val }}\')" class="input-group-addon btn btn-default remove_filter"><i class="fa fa-minus" aria-hidden="true"></i></span>' +
+        '</div>';
+
+    // Render template with the specified options. filterDiv is now an
+    // html div element.
+    const filterDiv = Mustache.to_html(filterTemplate, {
+        fId: filterId,
+        tId: opts.targetId,
+        val: opts.val,
+        pop: opts.popoverId
+    });
+
+    popoverDataSel.append(filterDiv);
+    popover.options.content = popoverDataSel.html();
+
+};
+
+

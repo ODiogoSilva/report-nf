@@ -274,10 +274,11 @@ const removeFilterButton = (popoverContentId, removeId, popoverId, val) => {
     }
 };
 
-
 /**
- *
- * @param targetId
+ * This function checks the input fields of the sample and project filters
+ * and triggers the creation of the filter button if the check completes.
+ * @param {String} targetId - ID of the button triggered to add the filter
+ * (expected to be associated with either sample or project)
  */
 const checkFilter = (targetId) => {
 
@@ -299,26 +300,30 @@ const checkFilter = (targetId) => {
 
     // Get all sample filters and the filter selector where the new filters
     // will be added
-    let activeFilters;
+    // Array with the concatenation of the active and temporary filters //
+    let totalFilters;
+    // Selector of the popover content div //
     let filterSelecteor;
+    // Array with the temporary filters //
     let tempFilters;
-    let changePopover;
+    // String with the ID of the popover data container div//
     let popoverContentId;
+    // String with the ID of the popover element //
     let popoverId;
 
+    // Determine variable values according to the targetID (whether it refers
+    // to sample or project filter
     if ( targetId === "filter_by_name" ) {
-        activeFilters = dataFilters.sample.active.concat(dataFilters.sample.temp);
+        totalFilters = dataFilters.sample.active.concat(dataFilters.sample.temp);
         filterSelecteor = $("#" + "popover_filters_sample");
         popoverContentId = "popover_filters_sample";
         popoverId = "active_filters_name";
-        changePopover = $("#active_filters_name").data("bs.popover");
         tempFilters = dataFilters.sample.temp;
     } else {
-        activeFilters = dataFilters.projectId.active.concat(dataFilters.projectId.temp);
+        totalFilters = dataFilters.projectId.active.concat(dataFilters.projectId.temp);
         filterSelecteor = $("#" + "popover_filters_project");
         popoverContentId = "popover_filters_project";
         popoverId = "active_filters_projectid";
-        changePopover = $("#active_filters_projectid").data("bs.popover");
         tempFilters = dataFilters.projectId.temp;
     }
 
@@ -337,7 +342,7 @@ const checkFilter = (targetId) => {
     }
 
     // Check for duplicate filter terms
-    if ( activeFilters.includes(val) ) {
+    if ( totalFilters.includes(val) ) {
         return showLabel(selector, spanSelector, helpSelector, "Filter already applied", "error");
     }
 
@@ -346,43 +351,18 @@ const checkFilter = (targetId) => {
     // If the current value passed all checks, add it to the filter selector
     // and to the dataFilters object
 
-    // Random id for filter div
-    const filterId = Math.random().toString(36).substring(7);
-
-    const filterTemplate = '<div class="input-group" id="{{ fId }}">' +
-                        '<input class="form-control {{ targetId }}" readonly value="{{ val }}">' +
-                        '<span onclick="removeFilterButton(\'{{ tId }}\',\'{{ fId }}\', \'{{ pop }}\', \'{{ val }}\')" class="input-group-addon btn btn-default remove_filter"><i class="fa fa-minus" aria-hidden="true"></i></span>' +
-                       '</div>';
-
-    const filterDiv = Mustache.to_html(filterTemplate, {
-        fId: filterId,
-        tId: popoverContentId,
-        val,
-        pop: popoverId
-    });
-
-    console.log(filterDiv)
-
     // Case first filter
-    if(tempFilters.length === 0 && activeFilters.length === 0){
+    if (tempFilters.length === 0 && totalFilters.length === 0){
         filterSelecteor.empty();
     }
 
-    filterSelecteor.append(filterDiv);
     tempFilters.push(val);
 
-    // Set value of input to empty
-    target.val("");
-
-
-    // Set content of popover
-    if(activeFilters.length === 0 && tempFilters.length === 0){
-        changePopover.options.content = "<div>No filters applied!</div>";
-    }
-    else {
-        changePopover.options.content = filterSelecteor.html();
-    }
-
+    addFilterButton({
+        val,
+        targetId: popoverContentId,
+        popoverId
+    });
 
     return showLabel(selector, spanSelector, helpSelector, "Filter successfully added!", "ok");
 
