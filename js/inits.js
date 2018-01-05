@@ -67,6 +67,15 @@ const populateSelect = (container, speciesData, projectsData) => {
 
 };
 
+const populateSelectPHYLOViZ = (container, projectsData) => {
+    let options = "";
+    projectsData.map((entry) => {
+        options += "<option value='"+entry.name+"'>"+entry.name+"</option>";
+    });
+
+    $("#"+container).empty().append(options).selectpicker("refresh");
+};
+
 /**
  * Converts a Date object to string format in dd-mm-yyyy
  *

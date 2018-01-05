@@ -66,3 +66,11 @@ const getStrainsMetadata = async (filter) => {
     );
 };
 
+//Request to send data to PHYLOViZ for tree visualization
+const sendToPHYLOViZ = async (data) => {
+    return await $.post(
+        reportsRoute+"app/api/v1.0/phyloviz/",
+        data,
+    );
+};
+

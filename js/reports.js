@@ -59,6 +59,7 @@ const initReports = (scope, globalResults, append = true) => {
 
     });
 
+
     // Update the data array with the new filtered results
     data = [results, metadataResults];
 
@@ -68,7 +69,7 @@ const initReports = (scope, globalResults, append = true) => {
         await metadataTable.addTableHeaders(scope, resultsCh,
             "table_headers_innuca");
         await metadataTable.addTableData(resultsCh, append);
-        await metadataTable.buildDataTable(scope);
+        await metadataTable.buildDataTable(true);
     });
 
     p1.then( async (r) => {
@@ -76,7 +77,7 @@ const initReports = (scope, globalResults, append = true) => {
         await innucaTable.addTableHeaders(scope, resultsCh,
             "table_headers_innuca");
         await innucaTable.addTableData(resultsCh, append);
-        await innucaTable.buildDataTable(scope);
+        await innucaTable.buildDataTable(true);
     });
 
     p1.then( async (r) => {
@@ -84,7 +85,7 @@ const initReports = (scope, globalResults, append = true) => {
         await chewbbacaTable.addTableHeaders(scope, resultsCh,
             "table_headers_chewbbaca");
         await chewbbacaTable.addTableData(resultsCh);
-        await chewbbacaTable.buildDataTable();
+        await chewbbacaTable.buildDataTable(true);
     });
 
     p1.then( async (r) => {
@@ -92,7 +93,7 @@ const initReports = (scope, globalResults, append = true) => {
         await prokkaTable.addTableHeaders(scope, resultsCh,
             "table_headers_prokka");
         await prokkaTable.addTableData(resultsCh);
-        await prokkaTable.buildDataTable();
+        await prokkaTable.buildDataTable(true);
     });
 
     /* Launch charts */
@@ -158,6 +159,10 @@ app.controller("reportsController", async ($scope) => {
     // Initialize homepage species/project dropdown
     $(".selectpicker").selectpicker();
 
+    $scope.sendToPHYLOViZ = () => {
+        processPHYLOViZRequest(chewbbacaTable);
+    };
+
     // Query information about available species and projects
     const spResults = await getSpecies();
     const pResults = await getProjects();
@@ -169,6 +174,8 @@ app.controller("reportsController", async ($scope) => {
     populateSelect("project_select", spResults, pResults);
     // Populate dropdown with species/project info for navbar
     populateSelect("navProjectPicker", spResults, pResults);
+    // Populate dropdown with species database from the platform.
+    populateSelectPHYLOViZ("species_database", speciesDatabase)
 
     // Initialize the behaviour of the toggle buttons
     // in the home screen for selecting/loading projects

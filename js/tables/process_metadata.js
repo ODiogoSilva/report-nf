@@ -6,7 +6,6 @@
 const processMetadata = (reportsData) => {
 
     const titleMapping = {
-        "id": "id",
         "species_id": "SpeciesID",
         "SampleReceivedDate": "Sample Received Date",
         "SamplingDate": "Sampling Date",
@@ -14,7 +13,7 @@ const processMetadata = (reportsData) => {
         "AdditionalInformation": "Additional Information",
         "File_1": "File 1",
         "File_2": "File 2",
-        "Primary": "Sample Name",
+        "Primary": "Sample",
         "Owner": "Owner",
         "Food-Bug": "Food-Bug",
         "Submitter": "Submitter",
@@ -27,7 +26,6 @@ const processMetadata = (reportsData) => {
     /* Get headers */
     const metadataHeaders = [
         "",
-        "id",
         "Primary",
         "source_Source",
         "Location",
@@ -66,7 +64,7 @@ const processMetadata = (reportsData) => {
     ];
 
     metadataHeaders.map((x) => {
-        if (x !== "" && x !== "species_id") metadataColumnMapping.push({"data": x, "title":titleMapping[x]});
+        if (x !== "" && x !== "species_id" && x !== "id") metadataColumnMapping.push({"data": x, "title":titleMapping[x]});
     });
 
     /* Get data for each strain to add to the table */
@@ -75,7 +73,6 @@ const processMetadata = (reportsData) => {
 
         let dataObject = {
             "active": 0,
-            "id": report.id
         };
 
         metadataHeaders.map( (j, i) => {

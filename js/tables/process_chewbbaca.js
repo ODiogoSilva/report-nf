@@ -6,7 +6,7 @@
 const processChewbbaca = (reportsData) => {
 
     const chewbbacaData = {};
-    let chewbbacaHeaders = ["", "id"];
+    let chewbbacaHeaders = ["", "id", "Sample"];
     let dataKey = "";
     const chewbbacaDataArray = [];
 
@@ -37,7 +37,8 @@ const processChewbbaca = (reportsData) => {
     ];
 
     chewbbacaHeaders.map((x) => {
-        if (x !== "") chewbbacaColumnMapping.push({"data": x, "title":x});
+        if (x === "Sample") chewbbacaColumnMapping.push({"data": "sample_name", "title":"Sample"});
+        else if (x !== "") chewbbacaColumnMapping.push({"data": x, "title":x});
     });
 
     /* Get data for each strain to add to the table */
@@ -49,16 +50,24 @@ const processChewbbaca = (reportsData) => {
 
             let dataObject = {
                 "active": 0,
-                "id": report.sample_name
+                "id": `${report.project_id}.${report.pipeline_id}`
             };
 
             Object.keys(report.report_json.cagao[1]).map((key) => {
                 if (key !== "header") dataKey = key;
             });
 
+            dataObject["sample_name"] = report.sample_name;
+
             report.report_json.cagao[1][dataKey].map( (j, i) => {
                 dataObject[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][dataKey][i];
             });
+
+            dataObject["project_id"] = report.project_id;
+            dataObject["pipeline_id"] = report.pipeline_id;
+            dataObject["process_id"] = report.process_id;
+
+            console.log(dataObject);
 
             chewbbacaDataArray.push(dataObject);
 

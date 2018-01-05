@@ -105,7 +105,7 @@ class Table {
     }
 
     /* Method to build DataTable */
-    buildDataTable() {
+    buildDataTable(scrollX) {
         if ( this.tableObj) {
             this.clearTable();
             this.tableObj.rows.add(this.tableData).draw();
@@ -118,6 +118,7 @@ class Table {
                     enable: false
                 },
                 dom: "Bfrtip",
+                scrollX:scrollX,
                 buttons: [
                     "copy",
                     "csv",
@@ -170,14 +171,7 @@ class Table {
                 },
                 "fnCreatedRow": (nRow, aData) => {
                     // Get ID based on pipeline id and sample name
-                    let pid;
-                    try {
-                        //Only in case of INNUca table
-                        pid = aData.id.split(".")[0] + "." + aData.Sample;
-                    }
-                    catch(e){
-                        return;
-                    }
+                    let pid = String(aData.id).split(".")[0] + "." + aData.Sample;
                     // Add ID to each row
                     $(nRow).attr("id", pid);
                     // Add onclick event for sample selection in checkbox
