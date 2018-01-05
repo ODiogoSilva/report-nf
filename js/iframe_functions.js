@@ -5,6 +5,6 @@ const runFromParent = () => {
     return true;
 };
 
-const setUpFrame = (username, userID) => {
+const addUserData = (username, userID) => {
     console.log("InFrame", username, userID);
 };
