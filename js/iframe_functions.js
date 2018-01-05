@@ -5,6 +5,6 @@ const runFromParent = () => {
     return true;
 };
 
-var addUserData = (username, userID) => {
+window.addUserData = (username, userID) => {
     console.log("InFrame", username, userID);
 };
