@@ -1,0 +1,27 @@
+
+<!-- chewBBACA content: tables and graphs -->
+<div class="container-fluid not_first" id="PHYLOVIZ">
+    <h1 class="heading" id="PHYLOVIZ_heading">PHYLOVIZ</h1>
+    <button type="button" class="btn btn-sm btn-info m-bottom"
+            data-toggle="collapse"
+            data-target="#table_trees_div"><i class="fa fa-compress" aria-hidden="true"></i>
+    </button>
+    <b style="display:inline-block">Trees Table</b>
+    <button id="phyloviz_button_show" class="btn btn-sm btn-warning" style="float:right;display:inline-block;">
+        <i class="fa" data-toggle="tooltip" data-placement="top" title="Show Tree">
+            Show Tree
+        </i>
+    </button>
+    <button id="download_profiles_button" class="btn btn-sm btn-default" style="float:right;display:inline-block;">
+        <i class="fa fa-download" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Download Profiles"></i>
+    </button>
+    <div id="table_trees_div" class="collapse in" style="overflow-x: hidden;">
+        <table id="master_table_trees" class="display" cellspacing="0"
+               style="height:100%;width:100%;">
+            <thead>
+            </thead>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
+</div>
