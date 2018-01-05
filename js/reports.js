@@ -124,6 +124,9 @@ const modalAlert = (text, callback) => {
 /* Angular controller to control the DOM elements from the index.html file */
 app.controller("reportsController", async ($scope) => {
 
+    //Get info in case of app on iframe
+    runFromParent();
+
     $scope.graph1Name = "Graph 1";
     $scope.graph2Name = "Graph 2";
     $scope.fastqcName = "FastQC";
