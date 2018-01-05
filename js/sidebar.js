@@ -28,6 +28,8 @@ const filterPopovers = () => {
 
     createPopover("active_filters_name", "popover_filters_sample");
     createPopover("active_filters_projectid", "popover_filters_project");
+    createPopover("highlightedSamples", "popover_highlight_sample");
+    createPopover("highlightedProjects", "popover_highlight_project");
 
 };
 
@@ -73,3 +75,63 @@ const addFilterButton = (opts) => {
 };
 
 
+const updateHighlightOptions = (res) => {
+
+    let option;
+
+    const sampleSelectize = $("#highlightSampleVal")[0].selectize;
+
+    for (const el of res.filteredJson) {
+        option = el.sample_name;
+        sampleSelectize.addOption({
+            "value": option,
+            "text": option,
+        })
+    }
+
+};
+
+
+const addHighlight = (sourceId) => {
+
+    let textId,
+        popoverContentId,
+        popoverId,
+        dataArray,
+        colorInputId;
+
+    if (sourceId === "highlightSampleVal") {
+        textId = "highlightSampleVal";
+        popoverContentId = "popover_highlight_sample";
+        popoverId = "highlightedSamples";
+        dataArray = dataHighlights.samples;
+        colorInputId = "cpSampleVal";
+    } else {
+        textId = "highlightProjectVal";
+        popoverContentId = "popover_highlight_project";
+        popoverid = "highlightedProjects";
+        dataArray = dataHighlights.projects;
+        colorInputId = "cpProjectVal";
+    }
+
+    // Get value of input text
+    const val = $("#" + textId).val();
+
+    if (val === ""){
+        console.log("empty string");
+        return
+    }
+
+    // Split string by whitespace, command and semi colon
+    const highlightArray = val.split(/[\s,;\t\n]+/).filter(Boolean);
+    // Get selected color
+    const highlightColor = $("#" + colorInputId).val();
+
+    // Add array to global object
+    dataArray.push({
+        samples: highlightArray,
+        color: highlightColor,
+    });
+
+
+};

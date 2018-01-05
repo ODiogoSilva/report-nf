@@ -11,7 +11,7 @@
     top: 60px;
     left: 0;
     /* top layer */
-    z-index: 9999;
+    z-index: 11;
     margin-left: -300px;
 }
 
@@ -81,7 +81,7 @@
     left: 0;
     display: none;
     /* middle layer, i.e. appears below the sidebar */
-    z-index: 9998;
+    z-index: 10;
 }
 
 #dismiss {

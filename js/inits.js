@@ -520,8 +520,6 @@ const initDropFile = (scope) => {
         data = results.data;
         dataFilters = results.dataFilters;
 
-        console.log(results)
-
         // Update sidebar elements (filters and highlights) according to the
         // loaded data
         updateSidebar();
@@ -533,5 +531,39 @@ const initDropFile = (scope) => {
         $("#current_workflow").css({display:"block"});
 
     });
+
+};
+
+
+const highlightPickers = () => {
+
+    $("#cpSample").colorpicker({"color": "#000", "container": "#cpSample"});
+    $("#cpProject").colorpicker({"color": "#000"});
+
+
+};
+
+const highlightSelectize = () => {
+
+    $("#highlightSampleVal, #highlightProjectVal").selectize({
+        plugins: ["remove_button"],
+        delimiter: ",",
+        persist: false,
+        hideSelected: true,
+        create: (input) => {
+            return {
+                value: input,
+                text: input
+            }
+        }
+    })
+
+};
+
+
+const initHighlights = () => {
+
+    highlightPickers();
+    highlightSelectize();
 
 };

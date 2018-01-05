@@ -20,6 +20,13 @@ let dataFilters = {
     "assembled bp": {"range": [null, null], "max": null},
 };
 
+// Object with the report highlight options. Can be changed dynamically
+// during the app session
+let dataHighlights = {
+    "samples": [],
+    "projects": []
+};
+
 // Object that will store the mapping between the project_id key in the JSON
 // reports and the corresponding project name
 let projectIdMap = new Map();
@@ -101,6 +108,12 @@ const initReports = (scope, globalResults, append = true) => {
         await charts.addReportData(r.filteredJson, append);
         await charts.buildAllCharts();
     });
+
+    // Update sidebar selector options for auto complete
+    p1.then( (r) => {
+        updateHighlightOptions(r);
+    });
+
 };
 
 const modalAlert = (text, callback) => {
@@ -203,8 +216,7 @@ app.controller("reportsController", async ($scope) => {
     // SIDEBAR //
     // Behaviour for filter popovers
     filterPopovers();
-
-
+    initHighlights();
 
     /* Event to toggle workflows sidebar */
     $(".toggle_sidebar").on("click", (e) => {

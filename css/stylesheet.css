@@ -88,6 +88,11 @@ Workflow side bar elements
     /*border-bottom: 1px solid grey;*/
 }
 
+.add-btn {
+    background-color: #000;
+    color: #28a745;
+}
+
 /* Set line spacing for submenu itens */
 .nav-tour > li > ul {
 }

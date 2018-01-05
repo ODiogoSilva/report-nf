@@ -197,7 +197,7 @@ class ChartManager {
 
             // Call the highlighter function
             const chartObj = $("#" + container).highcharts();
-            opts.highlight(chartObj, [{samples: ["1.HSM742d0C1_S37"], color:"blue"}]);
+            opts.highlight(chartObj, selection);
 
         }
     }

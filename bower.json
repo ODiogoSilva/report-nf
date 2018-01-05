@@ -31,6 +31,8 @@
     "webui-popover": "^2.1.15",
     "bootstrap-datepicker": "^1.7.1",
     "popper.js": "^1.12.9",
-    "mustache.js": "mustache#^2.3.0"
+    "mustache.js": "mustache#^2.3.0",
+    "bootstrap-colorpicker": "^2.5.1",
+    "selectize": "^0.12.4"
   }
 }

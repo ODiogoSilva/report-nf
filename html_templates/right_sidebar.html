@@ -13,25 +13,37 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                        Search</a>
+                        Highlight</a>
                 </h4>
             </div>
             <div id="collapse1" class="panel-collapse collapse">
                 <div class="panel-body">
                     <div>
-                        <label>Search By Name:</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Strain Name">
-                            <span onclick="charts.highlightCharts()" class="input-group-addon button_side" id="addon1">Search</span>
+                        <label>Highlight By Name:</label>
+                        <div>
+                            <input id="highlightSampleVal" type="text" placeholder="Type strain names">
+                            <div id="cpSample" class="input-group colorpicker-component">
+                                <input type="text" class="form-control" value="#DD0F20"/>
+                                <span class="input-group-addon"><i></i></span>
+                                <span onclick="addHighlight('highlightSampleVal')" class="input-group-btn" ><button type="button" class="btn btn-success" style="border-radius: 0"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                            </div>
                         </div>
+                        <a class="active_filters" id="highlightedSamples" data-placement="right" data-trigger="focus" tabindex="0" data-toggle="popover">Active highlights</a>
+                        <span class="error" id="highlightedSamples_help"></span>
                     </div>
                     <br>
                     <div>
-                        <label>Search By Process:</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Process Name">
-                            <span class="input-group-addon button_side" id="addon2">Search</span>
+                        <label>Highlight By Project:</label>
+                        <div>
+                            <input id="highlightProjectVal" type="text" placeholder="Type project names">
+                            <div id="cpProject" class="input-group colorpicker-component">
+                                <input type="text" class="form-control" value="#DD0F20"/>
+                                <span class="input-group-addon"><i></i></span>
+                                <span onclick="addHighlight('highlightProjectVal')" class="input-group-btn" ><button type="button" class="btn btn-success" style="border-radius: 0"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                            </div>
                         </div>
+                        <a class="active_filters" id="highlightedProjects" data-placement="right" data-trigger="focus" tabindex="0" data-toggle="popover">Active highlights</a>
+                        <span class="error" id="highlightedProjects_help"></span>
                     </div>
                 </div>
             </div>
@@ -135,12 +147,18 @@
     </div>
 </nav>
 
-<!-- Generated markup by the plugin -->
 <div id="popover_filters_sample" style="display: none">
     <div>No Filters applied!</div>
 </div>
 
-<!-- Generated markup by the plugin -->
 <div id="popover_filters_project" style="display: none">
     <div>No Filters applied!</div>
+</div>
+
+<div id="popover_highlight_project" style="display: none">
+    <div>No highlights active!</div>
+</div>
+
+<div id="popover_highlight_sample" style="display: none">
+    <div>No highlights active!</div>
 </div>
