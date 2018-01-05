@@ -118,7 +118,7 @@ const getQc = (qcObject, sample) => {
  */
 const setMaxFilters = (header, value) => {
 
-    sliderMap = new Map([
+    const sliderMap = new Map([
         ["bp", $("#sliderbp")],
         ["reads", $("#sliderrn")],
         ["coverage (2nd)", $("#sliderc")],

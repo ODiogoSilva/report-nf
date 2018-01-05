@@ -435,3 +435,103 @@ const initResubmit = (scope) => {
 
     })
 };
+
+/**
+ * Function that populates the project/sample filters when loading
+ * a JSON file into the reports
+ */
+const updateInputFilters = () => {
+
+    const projectFilters = dataFilters.projectId.active.concat(dataFilters.projectId.temp);
+    const sampleFilters = dataFilters.sample.active.concat(dataFilters.sample.temp);
+
+    for (const el of projectFilters) {
+        addFilterButton({
+            val: el,
+            targetId: "popover_filters_project",
+            popoverId: "active_filters_projectid",
+            reset: true
+        })
+    }
+
+    for (const el of sampleFilters) {
+        addFilterButton({
+            val: el,
+            targetId: "popover_filters_sample",
+            popoverId: "active_filters_name",
+            reset: true
+        })
+    }
+
+};
+
+/**
+ * Updates sliders according to the dataFitler object
+ */
+const updateSliders = () => {
+
+    const sliderMap = new Map([
+        ["bp", $("#sliderbp")],
+        ["reads", $("#sliderrn")],
+        ["coverage (2nd)", $("#sliderc")],
+        ["contigs", $("#slidercn")],
+        ["assembled bp", $("#sliderabp")]
+    ]);
+
+    let min,
+        max;
+    for (const [el, sel] of sliderMap.entries()) {
+        sel.slider({max: dataFilters[el].max});
+        min = dataFilters[el].range[0] ? dataFilters[el].range[0] : 0;
+        max = dataFilters[el].range[1] ? dataFilters[el].range[1] : dataFilters[el].max;
+        sel.slider("setValue", [min, max])
+    }
+
+};
+
+
+/**
+ * Wrapper function that updates elements of the reports sidepanel, including:
+ *
+ *      - Sample and project filters
+ *      - Filter sliders
+ */
+const updateSidebar = () => {
+
+    updateInputFilters();
+    updateSliders();
+
+};
+
+/**
+ * Initializes the Drag and Drop behaviour for loading report files
+ * @param scope - Angular scope object
+ */
+const initDropFile = (scope) => {
+
+    /* Event to be triggered when a file is dropped into the body of the page */
+    $("#body_container").on("dropFile", async (ev, results) => {
+        /*
+            Rebuild tables and graphs
+         */
+        $("#waiting_gif").css({display: "block"});
+        $("#homeInnuendo").css({display: "none"});
+
+        data = results.data;
+        dataFilters = results.dataFilters;
+
+        console.log(results)
+
+        // Update sidebar elements (filters and highlights) according to the
+        // loaded data
+        updateSidebar();
+
+        await initReports(scope, results.data);
+
+        $("#waiting_gif").css({display:"none"});
+        $("#row-main").css({display:"block"});
+        $("#current_workflow").css({display:"block"});
+
+    });
+
+};

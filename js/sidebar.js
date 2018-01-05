@@ -48,6 +48,10 @@ const addFilterButton = (opts) => {
     const popoverDataSel = $("#" + opts.targetId);
     const popover = $("#" + opts.popoverId).data("bs.popover");
 
+    if (opts.reset) {
+        popoverDataSel.empty()
+    }
+
     // Create the filter template div to be populated using mustache
     const filterTemplate = '<div class="input-group" id="{{ fId }}">' +
         '<input class="form-control {{ tId }}" readonly value="{{ val }}">' +

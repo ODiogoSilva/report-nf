@@ -194,28 +194,14 @@ app.controller("reportsController", async ($scope) => {
     // Initialize sidebar toggle behaviour
     initToggleSidebar();
 
+    // Initialize drop file behaviour for loading reports
+    initDropFile($scope);
+
     // SIDEBAR //
     // Behaviour for filter popovers
     filterPopovers();
 
-    /* Event to be triggered when a file is dropped into the body of the page */
-    $("#body_container").on("dropFile", async (ev, results) => {
-        /*
-            Rebuild tables and graphs
-         */
-        $("#waiting_gif").css({display: "block"});
-        $("#homeInnuendo").css({display: "none"});
 
-        data = results.data;
-        dataFilters = results.dataFilters;
-
-        await initReports($scope, results.data);
-
-        $("#waiting_gif").css({display:"none"});
-        $("#row-main").css({display:"block"});
-        $("#current_workflow").css({display:"block"});
-
-    });
 
     /* Event to toggle workflows sidebar */
     $(".toggle_sidebar").on("click", (e) => {
@@ -329,18 +315,6 @@ app.controller("reportsController", async ($scope) => {
 
 
         });
-
-        //
-        // $('body').on('click', function (e) {
-        //     $('[data-toggle="popover"],[data-original-title]').each(function () {
-        //         //the 'is' for buttons that trigger popups
-        //         //the 'has' for icons within a button that triggers a popup
-        //         if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-        //             (($(this).popover('hide').data('bs.popover')||{}).inState||{}).click = false  // fix for BS 3.3.6
-        //         }
-        //
-        //     });
-        // });
 
     }, 100);
 

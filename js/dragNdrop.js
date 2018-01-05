@@ -21,7 +21,7 @@ const drop = async (ev) => {
     reader.onload = (e) => {
         let reportsData;
         try{
-            reportsData = JSON.parse(e.target.result);
+            reportsData = $.parseJSON(e.target.result);
         }
         catch(e){
             const alertText = "<div class='alert alert-danger alert-dismissable fade in' aria-label='close'>" +
@@ -30,7 +30,7 @@ const drop = async (ev) => {
             $("#alertDiv").empty().append(alertText).css({"display":"block"});
             return;
         }
-        $("#body_container").trigger("dropFile",[reportsData]);
+        $("#body_container").trigger("dropFile", [reportsData]);
     };
 
     reader.readAsText(data[0]);

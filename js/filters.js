@@ -348,10 +348,8 @@ const checkFilter = (targetId) => {
 
     /* Checks ended here */
 
-    // If the current value passed all checks, add it to the filter selector
-    // and to the dataFilters object
-
-    // Case first filter
+    // In case the filters were previously empty, remove the default div from
+    // the popover content
     if (tempFilters.length === 0 && totalFilters.length === 0){
         filterSelecteor.empty();
     }
