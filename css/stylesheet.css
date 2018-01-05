@@ -99,7 +99,6 @@ Workflow side bar elements
 }
 
 .nav-tour a {
-    font-weight: bold;
     color: #000000;
 }
 
@@ -131,8 +130,7 @@ Workflow side bar elements
 /* Style for active submenu itens */
 .nav-tour > .active > .nav > .active > a,
 .nav-tour > .active > .nav > .active > a:hover {
-    /*font-weight: bold;*/
-    /*color: #28a745;*/
+    font-weight: bold;
     border-right: 2px solid #28a745;
     margin-right: 0px;
 }
