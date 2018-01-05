@@ -25,10 +25,9 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
         missing_char: $('#missing_data_character').val(),
         phyloviz_user: $('#phyloviz_user').val(),
         phyloviz_pass: $('#phyloviz_pass').val(),
-        makePublic: $('#makePublic_checkbox').is(":checked")
+        makePublic: $('#makePublic_checkbox').is(":checked"),
+        user_id: USERID
     }
-
-    console.log(data);
 
     const res = await sendToPHYLOViZ(data);
     console.log(res);
