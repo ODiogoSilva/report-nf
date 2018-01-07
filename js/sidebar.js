@@ -134,7 +134,7 @@ const addHighlight = (sourceId) => {
         dataArray = dataHighlights.samples;
     } else {
         textId = "highlightProjectVal";
-        colorInputId = highlightSampleCol;
+        colorInputId = "highlightSampleCol";
         popoverContentId = "popover_highlight_project";
         popoverId = "highlightedProjects";
         dataArray = dataHighlights.projects;
