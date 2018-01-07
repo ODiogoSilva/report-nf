@@ -102,16 +102,16 @@ const addHighlight = (sourceId) => {
 
     if (sourceId === "highlightSampleVal") {
         textId = "highlightSampleVal";
+        colorInputId = "highlightSampleCol";
         popoverContentId = "popover_highlight_sample";
         popoverId = "highlightedSamples";
         dataArray = dataHighlights.samples;
-        colorInputId = "cpSampleVal";
     } else {
         textId = "highlightProjectVal";
+        colorInputId = highlightSampleCol;
         popoverContentId = "popover_highlight_project";
         popoverid = "highlightedProjects";
         dataArray = dataHighlights.projects;
-        colorInputId = "cpProjectVal";
     }
 
     // Get value of input text
@@ -132,6 +132,7 @@ const addHighlight = (sourceId) => {
         samples: highlightArray,
         color: highlightColor,
     });
+
 
 
 };
