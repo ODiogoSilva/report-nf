@@ -119,3 +119,9 @@
     font-size: 80%;
     margin-left: 2%;
 }
+
+.highlight-btn-group {
+    height: 40px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

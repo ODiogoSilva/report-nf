@@ -51,7 +51,7 @@ const addFilterButton = (opts) => {
     const popover = $("#" + opts.popoverId).data("bs.popover");
 
     if (opts.reset) {
-        popoverDataSel.empty()
+        popoverDataSel.empty();
     }
 
     // Create the filter template div to be populated using mustache
@@ -92,6 +92,32 @@ const updateHighlightOptions = (res) => {
 };
 
 
+const addHighlightButton = (opts) => {
+
+    // Create random id for filter
+    const highlightId = Math.random().toString(36).substring(7);
+    const popoverDataSel = $("#" + opts.popoverDataSel);
+    const popover = $("#" + opts.popoverId).data("bs.popover");
+
+    // Create template
+    const highlightTemplate = '<div class="highlight-btn-group btn-group btn-group-justified" id="{{ hId }}">' +
+        // '<button style="width: 5%; min-width:5%; background-color: {{ col }};" class="btn btn-default"><span style="opacity: 0;">l</span></button>' +
+        '<button style="width: 85%; border-left: 10px solid {{ col }}" class="btn btn-default">{{ val }}</button>' +
+        '<button style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+        '</div>';
+
+    const highlightDiv = Mustache.to_html(highlightTemplate, {
+        hId: highlightId,
+        val: opts.val,
+        col: opts.color,
+    });
+
+    popoverDataSel.append(highlightDiv);
+    popover.options.content = popoverDataSel.html();
+
+};
+
+
 const addHighlight = (sourceId) => {
 
     let textId,
@@ -110,7 +136,7 @@ const addHighlight = (sourceId) => {
         textId = "highlightProjectVal";
         colorInputId = highlightSampleCol;
         popoverContentId = "popover_highlight_project";
-        popoverid = "highlightedProjects";
+        popoverId = "highlightedProjects";
         dataArray = dataHighlights.projects;
     }
 
@@ -118,8 +144,11 @@ const addHighlight = (sourceId) => {
     const val = $("#" + textId).val();
 
     if (val === ""){
-        console.log("empty string");
         return
+    }
+
+    if (dataArray.length < 1) {
+        $("#" + popoverContentId).empty();
     }
 
     // Split string by whitespace, command and semi colon
@@ -133,6 +162,12 @@ const addHighlight = (sourceId) => {
         color: highlightColor,
     });
 
-
+    // Add to highlights popover
+    addHighlightButton({
+        popoverDataSel: popoverContentId,
+        popoverId,
+        color: highlightColor,
+        val: "teste",
+    })
 
 };
