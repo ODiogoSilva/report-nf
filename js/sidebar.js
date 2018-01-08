@@ -88,15 +88,25 @@ const addFilterButton = (opts) => {
 
 const updateHighlightOptions = (res) => {
 
-    let option;
-
-    const sampleSelectize = $("#highlightSampleVal")[0].selectize;
+    let selection = [];
 
     for (const el of res.filteredJson) {
-        option = el.sample_name;
-        sampleSelectize.addOption({
-            "value": option,
-            "text": option,
+        selection.push(el.sample_name);
+    }
+
+    populateSelectize(selection, "highlightSampleVal")
+
+};
+
+
+const populateSelectize = (selection, containerId) => {
+
+    const selectizeSel = $("#" + containerId)[0].selectize;
+
+    for (const el of selection) {
+        selectizeSel.addOption({
+            "value": el,
+            "text": el
         })
     }
 
