@@ -31,8 +31,6 @@ const filterPopovers = () => {
 
     createPopover("active_filters_name", "popover_filters_sample");
     createPopover("active_filters_projectid", "popover_filters_project");
-    createPopover("highlightedSamples", "popover_highlight_sample");
-    createPopover("highlightedProjects", "popover_highlight_project");
 
     // This automatically disables the popovers when a click is triggered
     // outside the popover element and the triggering element.
@@ -105,30 +103,83 @@ const updateHighlightOptions = (res) => {
 };
 
 
-const addHighlightButton = (opts) => {
+const highlightsModal = (type) => {
 
-    // Create random id for filter
-    const highlightId = Math.random().toString(36).substring(7);
-    const popoverDataSel = $("#" + opts.popoverDataSel);
-    const popover = $("#" + opts.popoverId).data("bs.popover");
+    let title,
+        dataArray;
+
+    if (type === "highlightSampleVal") {
+        title = "Sample highlights";
+        dataArray = dataHighlights.samples
+    } else {
+        title = "Project highlights";
+        dataArray = dataHighlights.projects
+    }
+
+    for (const el of dataArray) {
+        addGroupButton("groupContainer", el.groupName, el.color);
+    }
+
+    console.log(dataArray)
+
+    // Set modal title
+    $("#highlightModalTitle").html(title);
+
+    $("#highlightsModal").modal().show()
+
+};
+
+
+const removeHighlightGroup = (containerDiv, targetDiv) => {
+
+    $("#" + containerDiv).find("#" + targetDiv).remove();
+
+};
+
+
+const addGroupButton = (containerId, val, color) => {
+
+    const containerSel = $("#" + containerId);
 
     // Create template
-    const highlightTemplate = '<div class="highlight-btn-group btn-group btn-group-justified" id="{{ hId }}">' +
-        // '<button style="width: 5%; min-width:5%; background-color: {{ col }};" class="btn btn-default"><span style="opacity: 0;">l</span></button>' +
-        '<button style="width: 85%; border-left: 10px solid {{ col }}; overflow: hidden" class="btn btn-default">{{ val }}</button>' +
-        '<button onclick="removeFilterButton(\'{{ tId }}\', \'{{ hId }}\', \'{{ pop }}\', \'{{ val }}\')" style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+    const highlightTemplate = '<div class="highlight-btn-group btn-group btn-group-justified" id="{{ val }}">' +
+        '<button style="width: 80%; border-left: 10px solid {{ col }}; overflow: hidden" class="btn btn-default" data-toggle="button">{{ val }}</button>' +
+        '<button onclick="removeHighlightGroup(\'{{ containerId }}\', \'{{ val }}\')" style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
         '</div>';
 
     const highlightDiv = Mustache.to_html(highlightTemplate, {
-        tId: opts.popoverDataSel,
-        hId: highlightId,
-        val: opts.val,
-        col: opts.color,
-        pop: opts.popoverId
+        containerId: containerId,
+        val,
+        col: color
     });
 
-    popoverDataSel.append(highlightDiv);
-    popover.options.content = popoverDataSel.html();
+    containerSel.append(highlightDiv);
+
+};
+
+let labelTimer;
+const showLabel = (helpSelector, msg, type) => {
+
+    // Reset error and success classes
+    helpSelector.removeClass("text-danger text-success");
+
+    let iconSpan;
+
+    if (type === "error") {
+        helpSelector.addClass("text-danger");
+        iconSpan = "<span><i class='fa fa-lg fa-times'></i></span> ";
+    } else {
+        helpSelector.addClass("text-success");
+        iconSpan = "<span><i class='fa fa-lg fa-check'></i></span> "
+    }
+
+    helpSelector.html(iconSpan + msg);
+    helpSelector.css({"opacity": 1});
+
+    clearTimeout(labelTimer);
+    labelTimer = setTimeout(() => {
+        helpSelector.css({"opacity": 0})
+    }, 5000)
 
 };
 
@@ -136,30 +187,46 @@ const addHighlightButton = (opts) => {
 const addHighlight = (sourceId) => {
 
     let textId,
+        groupId,
         popoverContentId,
-        popoverId,
         dataArray,
-        colorInputId;
+        colorInputId,
+        helpId;
 
     if (sourceId === "highlightSampleVal") {
         textId = "highlightSampleVal";
+        groupId = "highlightSampleGroup";
         colorInputId = "highlightSampleCol";
-        popoverContentId = "popover_highlight_sample";
-        popoverId = "highlightedSamples";
         dataArray = dataHighlights.samples;
+        helpId = $("#highlightedSamples_help");
     } else {
         textId = "highlightProjectVal";
-        colorInputId = "highlightSampleCol";
-        popoverContentId = "popover_highlight_project";
-        popoverId = "highlightedProjects";
+        groupId = "highlightProjectGroup";
+        colorInputId = "highlightProjectCol";
         dataArray = dataHighlights.projects;
+        helpId = $("#highlightedProjects_help");
     }
 
     // Get value of input text
     const val = $("#" + textId).val();
 
+    // Exit if no selection is provided
     if (val === ""){
-        return
+        return showLabel(helpId, "Empty selection", "error");
+    }
+
+    const groupName = $("#" + groupId).val();
+    console.log(groupName)
+    // Exit if no group is provided
+    if (groupName === ""){
+        return showLabel(helpId, "Missing group name", "error");
+    }
+
+    // Exit if group name already exists
+    for (const el of dataArray) {
+        if (el.groupName === groupName) {
+            return showLabel(helpId, "Duplicate group name", "error");
+        }
     }
 
     if (dataArray.length < 1) {
@@ -173,18 +240,11 @@ const addHighlight = (sourceId) => {
 
     // Add array to global object
     dataArray.push({
+        groupName: groupName,
         samples: highlightArray,
         color: highlightColor,
     });
 
-    // Add to highlights popover
-    addHighlightButton({
-        popoverDataSel: popoverContentId,
-        popoverId,
-        color: highlightColor,
-        val: highlightArray.join(),
-    });
-
-    console.log(highlightArray);
+    return showLabel(helpId, "Group successfully added", "success")
 
 };

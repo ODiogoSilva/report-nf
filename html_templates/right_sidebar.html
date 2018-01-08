@@ -18,34 +18,36 @@
             </div>
             <div id="collapse1" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <div>
+                    <div class="sidepanel-panel">
                         <label>Highlight By Name:</label>
                         <div>
                             <input id="highlightSampleVal" type="text" placeholder="Type strain names">
-                            <div id="cpSample" class="input-group colorpicker-component">
-                                <input id="highlightSampleCol" type="text" class="form-control" value="#DD0F20"/>
-                                <span class="input-group-addon"><i></i></span>
+                            <div class="input-group">
+                                <input id="highlightSampleGroup" type="text" class="form-control" placeholder="Group name"/>
+                                <span id="cpSample" style="padding: 5px" class="input-group-addon colorpicker-component">
+                                    <input id="highlightSampleCol" style="display: none" type="text" class="form-control" value="#DD0F20">
+                                    <span style="padding: 8px; margin: 0; border-radius: 0" class="input-group-addon"></span>
+                                </span>
                                 <span onclick="addHighlight('highlightSampleVal')" class="input-group-btn" ><button type="button" class="btn btn-success" style="border-radius: 0"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                             </div>
                         </div>
-                        <a class="active-filters auto-popup-dismiss" id="highlightedSamples" data-placement="right" data-trigger="focus" tabindex="0" data-toggle="popover">Active highlights</a>
-                        <span class="error" id="highlightedSamples_help"></span>
-                        <div id="activeHighlights">
-
-                        </div>
+                        <a onclick="highlightsModal('highlightSampleVal')" class="active-filters" id="highlightedSamples">View active highlights</a>
+                        <div class="error" id="highlightedSamples_help"></div>
                     </div>
-                    <br>
                     <div>
                         <label>Highlight By Project:</label>
                         <div>
                             <input id="highlightProjectVal" type="text" placeholder="Type project names">
-                            <div id="cpProject" class="input-group colorpicker-component">
-                                <input type="text" class="form-control" value="#DD0F20"/>
-                                <span class="input-group-addon"><i></i></span>
+                            <div class="input-group">
+                                <input id="highlightProjectGroup" type="text" class="form-control" placeholder="Group name"/>
+                                <span id="cpProject" style="padding: 5px" class="input-group-addon colorpicker-component">
+                                    <input id="highlightProjectCol" style="display: none" type="text" class="form-control" value="#DD0F20">
+                                    <span style="padding: 8px; margin: 0; border-radius: 0" class="input-group-addon"></span>
+                                </span>
                                 <span onclick="addHighlight('highlightProjectVal')" class="input-group-btn" ><button type="button" class="btn btn-success" style="border-radius: 0"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                             </div>
                         </div>
-                        <a class="active-filters auto-popup-dismiss" id="highlightedProjects" data-placement="right" data-trigger="focus" tabindex="0" data-toggle="popover">Active highlights</a>
+                        <a onclick="highlightsModal('highlightProjectVal')" class="active-filters" id="highlightedProjects">View active highlights</a>
                         <span class="error" id="highlightedProjects_help"></span>
                     </div>
                 </div>
@@ -66,13 +68,12 @@
                             <div class="input-group">
                                 <div class="input-group">
                                     <input id="filter_by_name" type="text" class="form-control text-input" placeholder="Strain Name">
-                                    <span id="filter_by_name_span" style="opacity: 0" class="glyphicon glyphicon-remove form-control-feedback"></span>
                                 </div>
                                 <span onclick="checkFilter('filter_by_name')" class="input-group-addon btn btn-default add_filter" id="filter_by_name_button"><i class="fa fa-plus" aria-hidden="true"></i></span>
                             </div>
                         </div>
                         <a class="active-filters auto-popup-dismiss" id="active_filters_name" data-placement="right" data-trigger="focus" tabindex="0" data-toggle="popover">Active filters</a>
-                        <span class="error" id="filter_by_name_help"></span>
+                        <div class="error" id="filter_by_name_help"></div>
                     </div>
                     <br>
                     <div>
@@ -87,7 +88,7 @@
                             </div>
                         </div>
                         <a class="active-filters auto-popup-dismiss" id="active_filters_projectid" data-placement="right" data-trigger="focus" tabindex="0" data-toggle="popover">Active filters</a>
-                        <span class="error" id="filter_by_projectid_help"></span>
+                        <div class="error" id="filter_by_projectid_help"></div>
                     </div>
                     <br>
                     <div>

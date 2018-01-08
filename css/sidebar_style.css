@@ -111,17 +111,37 @@
 }
 
 .active-filters {
-    font-size: 80%;
+    font-size: 90%;
     margin-left: 2%;
 }
 
 .error {
+    transition: opacity 0.5s;
     font-size: 80%;
     margin-left: 2%;
+    opacity: 0;
 }
 
 .highlight-btn-group {
     height: 40px;
     padding-top: 5px;
     padding-bottom: 5px;
+}
+
+.sidepanel-panel {
+    margin-bottom: 20px;
+}
+
+.highlight-modal-header {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.highlight-modal {
+    width: 60%;
+}
+
+#highlightsModal {
+    width: 100%;
 }

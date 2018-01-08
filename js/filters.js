@@ -179,37 +179,6 @@ const filterJson = (jsonResult, metadataJson, filterObject) => {
     };
 };
 
-/**
- *
- * @param selector
- * @param msg
- */
-const showLabel = (selector, spanSelector, helpSelector, msg, type) => {
-    // Reset error and Ok classes
-    spanSelector.removeClass("glyphicon-remove glyphicon-ok");
-    spanSelector.removeClass("text-danger text-success");
-    helpSelector.removeClass("text-danger text-success");
-    selector.removeClass("has-error has-success");
-
-    // Depending on the provided type, show the message as an error or success
-    if ( type === "error" ) {
-        selector.addClass("has-error has-feedback");
-        helpSelector.addClass("text-danger");
-        spanSelector.addClass("glyphicon-remove");
-    } else {
-        selector.addClass("has-success has-feedback");
-        helpSelector.addClass("text-success");
-        spanSelector.addClass("glyphicon-ok");
-
-    }
-
-    spanSelector.css({"opacity": "1"});
-    spanSelector.css({"display": "block"});
-
-    helpSelector.html(msg);
-    helpSelector.css({"display": "block"});
-};
-
 
 const removeDataFilters = (popoverId, val) => {
 
@@ -284,21 +253,9 @@ const removeFilterButton = (popoverContentId, removeId, popoverId, val) => {
  */
 const checkFilter = (targetId) => {
 
-    // Set selectors and value
+    // Set the value
     const target = $("#" + targetId);
-    const selector = target.parent().parent();
-    const spanSelector = $("#" + targetId + "_span");
-    const helpSelector = $("#" + targetId + "_help");
     const val = target.val();
-
-    // Adds functionality of removing the error/success class atributes
-    // associated with the text-input
-    target.off("click").on("click", () => {
-        selector.removeClass("has-error has-success has-feedback");
-        helpSelector.removeClass("text-danger text-success");
-        spanSelector.css({"opacity": "0"});
-        helpSelector.css({"display": "none"});
-    });
 
     // Get all sample filters and the filter selector where the new filters
     // will be added
@@ -312,6 +269,7 @@ const checkFilter = (targetId) => {
     let popoverContentId;
     // String with the ID of the popover element //
     let popoverId;
+    let helpId;
 
     // Determine variable values according to the targetID (whether it refers
     // to sample or project filter
@@ -321,31 +279,33 @@ const checkFilter = (targetId) => {
         popoverContentId = "popover_filters_sample";
         popoverId = "active_filters_name";
         tempFilters = dataFilters.sample.temp;
+        helpId = $("#filter_by_name_help")
     } else {
         totalFilters = dataFilters.projectId.active.concat(dataFilters.projectId.temp);
         filterSelecteor = $("#" + "popover_filters_project");
         popoverContentId = "popover_filters_project";
         popoverId = "active_filters_projectid";
         tempFilters = dataFilters.projectId.temp;
+        helpId = $("#filter_by_projectid_help")
     }
 
     /* Begin checks here */
 
     // Check if filter is not empty
     if ( val === "" ) {
-        return showLabel(selector, spanSelector, helpSelector, "Empty filter", "error");
+        return showLabel(helpId, "Empty filter", "error");
     }
 
     // Check if val can be a regular expression
     try {
         const re = new RegExp(val);
     } catch(err) {
-        return showLabel(selector, spanSelector, helpSelector, "Invalid expression", "error");
+        return showLabel(helpId, "Invalid expression", "error");
     }
 
     // Check for duplicate filter terms
     if ( totalFilters.includes(val) ) {
-        return showLabel(selector, spanSelector, helpSelector, "Filter already applied", "error");
+        return showLabel(helpId, "Filter already applied", "error");
     }
 
     /* Checks ended here */
@@ -364,6 +324,6 @@ const checkFilter = (targetId) => {
         popoverId
     });
 
-    return showLabel(selector, spanSelector, helpSelector, "Filter successfully added!", "ok");
+    return showLabel(helpId, "Filter successfully added!", "success");
 
 };
