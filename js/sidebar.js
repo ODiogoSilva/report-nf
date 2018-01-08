@@ -99,7 +99,7 @@ const updateHighlightOptions = (res) => {
 };
 
 
-const populateSelectize = (selection, containerId) => {
+const populateSelectize = (selection, containerId, addItems) => {
 
     const selectizeSel = $("#" + containerId)[0].selectize;
 
@@ -107,13 +107,58 @@ const populateSelectize = (selection, containerId) => {
         selectizeSel.addOption({
             "value": el,
             "text": el
-        })
+        });
+
+        if (addItems) {
+            selectizeSel.addItem(el)
+        }
     }
 
 };
 
 
+const toggleGroupSelection = (groupName, type) => {
+
+    let dataArray;
+
+    if (type === "highlightSampleVal") {
+        dataArray = dataHighlights.samples
+    } else {
+        dataArray = dataHighlights.projects
+    }
+
+    // Make sure all toggles are off before
+    for (const bt of $("#groupContainer").find(".main-toggle")) {
+        if ($(bt).html() !== groupName) {
+            $(bt).button("reset");
+            $(bt).removeClass("active");
+        }
+    }
+
+    // Clear selectize
+    const selectizeSel = $("#highlightModalSelection")[0].selectize;
+    selectizeSel.clearOptions();
+    selectizeSel.clear();
+
+    let selection = [];
+    for (const el of dataArray) {
+        if (el.groupName === groupName) {
+            selection = el.samples;
+        }
+    }
+
+    populateSelectize(selection, "highlightModalSelection", true);
+
+};
+
+
 const highlightsModal = (type) => {
+
+    // Clear modal
+    $("#groupContainer").empty();
+    const selectizeSel = $("#highlightModalSelection")[0].selectize;
+    selectizeSel.clearOptions();
+    selectizeSel.clear();
 
     let title,
         dataArray;
@@ -126,11 +171,15 @@ const highlightsModal = (type) => {
         dataArray = dataHighlights.projects
     }
 
+    let toggleGroup = true;
     for (const el of dataArray) {
-        addGroupButton("groupContainer", el.groupName, el.color);
+        addGroupButton("groupContainer", el.groupName, type, el.color);
+        if (toggleGroup) {
+            toggleGroupSelection(el.groupName, type);
+            $("#groupContainer").find(".main-toggle").trigger("click");
+            toggleGroup = false;
+        }
     }
-
-    console.log(dataArray)
 
     // Set modal title
     $("#highlightModalTitle").html(title);
@@ -142,24 +191,33 @@ const highlightsModal = (type) => {
 
 const removeHighlightGroup = (containerDiv, targetDiv) => {
 
-    $("#" + containerDiv).find("#" + targetDiv).remove();
+    const containerSel = $("#" + containerDiv);
+
+    // Remove group
+    containerSel.find("#" + targetDiv).remove();
+
+    // If there are no active groups, trigger the toggle for the first group
+    if (containerSel.find(".active").length < 1) {
+        $(containerSel.find(".main-toggle")[0]).trigger("click");
+    }
 
 };
 
 
-const addGroupButton = (containerId, val, color) => {
+const addGroupButton = (containerId, val, type, color) => {
 
     const containerSel = $("#" + containerId);
 
     // Create template
     const highlightTemplate = '<div class="highlight-btn-group btn-group btn-group-justified" id="{{ val }}">' +
-        '<button style="width: 80%; border-left: 10px solid {{ col }}; overflow: hidden" class="btn btn-default" data-toggle="button">{{ val }}</button>' +
+        '<button onclick="toggleGroupSelection(\'{{val}}\', \'{{ type }}\')" style="width: 80%; border-left: 10px solid {{ col }}; overflow: hidden" class="btn btn-default main-toggle" data-toggle="button">{{ val }}</button>' +
         '<button onclick="removeHighlightGroup(\'{{ containerId }}\', \'{{ val }}\')" style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
         '</div>';
 
     const highlightDiv = Mustache.to_html(highlightTemplate, {
         containerId: containerId,
         val,
+        type,
         col: color
     });
 
@@ -198,7 +256,6 @@ const addHighlight = (sourceId) => {
 
     let textId,
         groupId,
-        popoverContentId,
         dataArray,
         colorInputId,
         helpId;
@@ -226,7 +283,6 @@ const addHighlight = (sourceId) => {
     }
 
     const groupName = $("#" + groupId).val();
-    console.log(groupName)
     // Exit if no group is provided
     if (groupName === ""){
         return showLabel(helpId, "Missing group name", "error");
