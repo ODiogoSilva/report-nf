@@ -537,8 +537,13 @@ const initDropFile = (scope) => {
 
 const highlightPickers = () => {
 
-    $("#cpSample").colorpicker({"color": "#000", "container": "#cpSample"});
-    $("#cpProject").colorpicker({"color": "#000"});
+    $("#cpSample").colorpicker({
+        "color": "#7BB312",
+        "container": "#cpSample"
+    });
+    $("#cpProject").colorpicker({
+        "color": "#7BB312"
+    });
 
 
 };
