@@ -568,7 +568,7 @@ const highlightPickers = () => {
 
 const highlightSelectize = () => {
 
-    $("#highlightSampleVal, #highlightProjectVal, #highlightModalSelection").selectize({
+    $("#highlightSampleVal, #highlightProjectVal").selectize({
         plugins: ["remove_button"],
         delimiter: ",",
         hideSelected: true,
@@ -578,7 +578,11 @@ const highlightSelectize = () => {
                 text: input
             }
         }
-    })
+    });
+
+    $("#highlightModalSelection").selectize({
+        delimiter: ","
+    });
 
 };
 
