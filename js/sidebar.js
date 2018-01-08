@@ -239,10 +239,6 @@ const addHighlight = (sourceId) => {
         }
     }
 
-    if (dataArray.length < 1) {
-        $("#" + popoverContentId).empty();
-    }
-
     // Split string by whitespace, command and semi colon
     const highlightArray = val.split(/[\s,;\t\n]+/).filter(Boolean);
     // Get selected color
