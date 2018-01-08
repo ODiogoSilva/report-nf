@@ -537,13 +537,31 @@ const initDropFile = (scope) => {
 
 const highlightPickers = () => {
 
+    // const presetColors = {
+    //     name: "swatches",
+    //     colors: {
+    //         "black": "#000000",
+    //         "white": "#ffffff",
+    //         "red": "#FF0000",
+    //         "default": "#777777",
+    //         "primary": "#337ab7",
+    //         "success": "#5cb85c",
+    //         "info": "#5bc0de",
+    //         "warning": "#f0ad4e",
+    //         "danger": "#d9534f"
+    //     },
+    //     namesAsValues: true
+    // };
+
     $("#cpSample").colorpicker({
         "color": "#7BB312",
-        "container": true
+        "container": true,
+        // "extensions": [presetColors]
     });
     $("#cpProject").colorpicker({
         "color": "#7BB312",
-        "container": true
+        "container": true,
+        // "extensions": [presetColors]
     });
 
 };

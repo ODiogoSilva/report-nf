@@ -115,14 +115,16 @@ const addHighlightButton = (opts) => {
     // Create template
     const highlightTemplate = '<div class="highlight-btn-group btn-group btn-group-justified" id="{{ hId }}">' +
         // '<button style="width: 5%; min-width:5%; background-color: {{ col }};" class="btn btn-default"><span style="opacity: 0;">l</span></button>' +
-        '<button style="width: 85%; border-left: 10px solid {{ col }}" class="btn btn-default">{{ val }}</button>' +
-        '<button style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+        '<button style="width: 85%; border-left: 10px solid {{ col }}; overflow: hidden" class="btn btn-default">{{ val }}</button>' +
+        '<button onclick="removeFilterButton(\'{{ tId }}\', \'{{ hId }}\', \'{{ pop }}\', \'{{ val }}\')" style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
         '</div>';
 
     const highlightDiv = Mustache.to_html(highlightTemplate, {
+        tId: opts.popoverDataSel,
         hId: highlightId,
         val: opts.val,
         col: opts.color,
+        pop: opts.popoverId
     });
 
     popoverDataSel.append(highlightDiv);
@@ -180,7 +182,9 @@ const addHighlight = (sourceId) => {
         popoverDataSel: popoverContentId,
         popoverId,
         color: highlightColor,
-        val: "teste",
-    })
+        val: highlightArray.join(),
+    });
+
+    console.log(highlightArray);
 
 };
