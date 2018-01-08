@@ -571,7 +571,6 @@ const highlightSelectize = () => {
     $("#highlightSampleVal, #highlightProjectVal, #highlightModalSelection").selectize({
         plugins: ["remove_button"],
         delimiter: ",",
-        persist: false,
         hideSelected: true,
         create: (input) => {
             return {

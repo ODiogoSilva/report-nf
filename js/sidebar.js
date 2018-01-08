@@ -292,15 +292,18 @@ const addHighlight = (sourceId) => {
         helpId = $("#highlightedProjects_help");
     }
 
+    const selectizeSel = $("#" + textId);
+    const groupSel = $("#" + groupId);
+
     // Get value of input text
-    const val = $("#" + textId).val();
+    const val = selectizeSel.val();
 
     // Exit if no selection is provided
     if (val === ""){
         return showLabel(helpId, "Empty selection", "error");
     }
 
-    const groupName = $("#" + groupId).val();
+    const groupName = groupSel.val();
     // Exit if no group is provided
     if (groupName === ""){
         return showLabel(helpId, "Missing group name", "error");
@@ -324,6 +327,11 @@ const addHighlight = (sourceId) => {
         samples: highlightArray,
         color: highlightColor,
     });
+
+    // Clear text inputs
+    selectizeSel[0].selectize.clear();
+    groupSel.val("");
+
 
     return showLabel(helpId, "Group successfully added", "success")
 
