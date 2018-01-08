@@ -262,8 +262,10 @@ const removeFilterButton = (popoverContentId, removeId, popoverId, val) => {
 
     // Update and redraw the popover
     popover.setContent();
-    popover.hide();
+    // popover.hide();
+    // setTimeout(popover.show(), 700)
     popover.show();
+
 
     // Perform changes to data filters, if the popoverId is among the
     // expected Ids for the filter popovers

@@ -23,6 +23,9 @@ const createPopover = (targetId, templateId) => {
 /**
  * Wrapper for the creation and initialization of the sidepanel filter popover
  * labels.
+ *
+ * NOTE: For the popovers to be automatically dismissed, the data-filters class
+ * needs to be added to the triggering element.
  */
 const filterPopovers = () => {
 
@@ -30,6 +33,16 @@ const filterPopovers = () => {
     createPopover("active_filters_projectid", "popover_filters_project");
     createPopover("highlightedSamples", "popover_highlight_sample");
     createPopover("highlightedProjects", "popover_highlight_project");
+
+    // This automatically disables the popovers when a click is triggered
+    // outside the popover element and the triggering element.
+    // TODO: There is a bug where the popover triggering element needs to be
+    // clicked twice after the popover has been dismissed this way.
+    $("body").mouseup( (e) => {
+        if (!$(".popover").has(e.target).length && !$(e.target).hasClass("active-filters")) {
+            $(".popover").hide()
+        }
+    });
 
 };
 

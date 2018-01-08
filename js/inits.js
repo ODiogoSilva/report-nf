@@ -539,12 +539,12 @@ const highlightPickers = () => {
 
     $("#cpSample").colorpicker({
         "color": "#7BB312",
-        "container": "#cpSample"
+        "container": true
     });
     $("#cpProject").colorpicker({
-        "color": "#7BB312"
+        "color": "#7BB312",
+        "container": true
     });
-
 
 };
 
