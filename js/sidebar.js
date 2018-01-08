@@ -117,7 +117,7 @@ const highlightsModal = (type) => {
     }
 
     for (const el of dataArray) {
-
+        addGroupButton("groupContainer", el.groupName, el.color);
     }
 
     console.log(dataArray)
@@ -130,30 +130,30 @@ const highlightsModal = (type) => {
 };
 
 
-const addHighlightButton = (opts) => {
+const removeHighlightGroup = (containerDiv, targetDiv) => {
 
-    // Create random id for filter
-    const highlightId = Math.random().toString(36).substring(7);
-    const popoverDataSel = $("#" + opts.popoverDataSel);
-    const popover = $("#" + opts.popoverId).data("bs.popover");
+    $("#" + containerDiv).find("#" + targetDiv).remove();
+
+};
+
+
+const addGroupButton = (containerId, val, color) => {
+
+    const containerSel = $("#" + containerId);
 
     // Create template
-    const highlightTemplate = '<div class="highlight-btn-group btn-group btn-group-justified" id="{{ hId }}">' +
-        // '<button style="width: 5%; min-width:5%; background-color: {{ col }};" class="btn btn-default"><span style="opacity: 0;">l</span></button>' +
-        '<button style="width: 85%; border-left: 10px solid {{ col }}; overflow: hidden" class="btn btn-default">{{ val }}</button>' +
-        '<button onclick="removeFilterButton(\'{{ tId }}\', \'{{ hId }}\', \'{{ pop }}\', \'{{ val }}\')" style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+    const highlightTemplate = '<div class="highlight-btn-group btn-group btn-group-justified" id="{{ val }}">' +
+        '<button style="width: 80%; border-left: 10px solid {{ col }}; overflow: hidden" class="btn btn-default" data-toggle="button">{{ val }}</button>' +
+        '<button onclick="removeHighlightGroup(\'{{ containerId }}\', \'{{ val }}\')" style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
         '</div>';
 
     const highlightDiv = Mustache.to_html(highlightTemplate, {
-        tId: opts.popoverDataSel,
-        hId: highlightId,
-        val: opts.val,
-        col: opts.color,
-        pop: opts.popoverId
+        containerId: containerId,
+        val,
+        col: color
     });
 
-    popoverDataSel.append(highlightDiv);
-    popover.options.content = popoverDataSel.html();
+    containerSel.append(highlightDiv);
 
 };
 
@@ -245,7 +245,6 @@ const addHighlight = (sourceId) => {
         color: highlightColor,
     });
 
-    console.log(highlightArray);
     return showLabel(helpId, "Group successfully added", "success")
 
 };

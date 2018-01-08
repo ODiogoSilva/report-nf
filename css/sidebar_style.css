@@ -131,3 +131,17 @@
 .sidepanel-panel {
     margin-bottom: 20px;
 }
+
+.highlight-modal-header {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.highlight-modal {
+    width: 60%;
+}
+
+#highlightsModal {
+    width: 100%;
+}
