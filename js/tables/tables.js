@@ -22,10 +22,10 @@ class Table {
         Method to add table headers and column mapping
         Needs the scope to modify the html table headers
     */
-    addTableHeaders(scope, tableObject, headersName) {
-        scope.$apply( () => {
+    addTableHeaders(tableObject, headersName) {
+        /*scope.$apply( () => {
             scope[headersName] = tableObject.headers;
-        });
+        });*/
         this.tableHeaders = tableObject.headers;
         this.columnMapping = tableObject.columnMapping;
     }
@@ -61,6 +61,16 @@ class Table {
             this.tableIds = tableObject.ids;
             this.clearTable();
         }
+    }
+
+    /**
+     * Method to populate the existing datatable with new data
+     * @param newData
+     */
+    remakeTable(newData){
+        this.tableObj.clear();
+        this.tableObj.rows.add(newData);
+        this.tableObj.draw();
     }
 
     emptyTable() {

@@ -10,6 +10,9 @@ let trees = null;
 // JSON mapping of report id with current chewbbaca procedures
 let chewbbacaToReportId = {};
 
+// Object for jobs submitted to PHYLOViZ Online
+let intervalCheckTree = {};
+
 // Object with the project filters. Each value can be dynamically changed
 // during the app session
 let dataFilters = {
@@ -78,7 +81,7 @@ const initReports = (scope, globalResults, append = true) => {
 
     ( async () => {
         const resultsCh = await treesTable.processTrees(trees, append);
-        await treesTable.addTableHeaders(scope, resultsCh,
+        await treesTable.addTableHeaders(resultsCh,
             "table_headers_trees");
         await treesTable.addTableData(resultsCh, append);
         await treesTable.buildDataTable(true);
@@ -86,7 +89,7 @@ const initReports = (scope, globalResults, append = true) => {
 
     p1.then( async (r) => {
         const resultsCh = await metadataTable.processMetadata(r.filteredMetadata, append);
-        await metadataTable.addTableHeaders(scope, resultsCh,
+        await metadataTable.addTableHeaders(resultsCh,
             "table_headers_metadata");
         await metadataTable.addTableData(resultsCh, append);
         await metadataTable.buildDataTable(true);
@@ -94,7 +97,7 @@ const initReports = (scope, globalResults, append = true) => {
 
     p1.then( async (r) => {
         const resultsCh = await innucaTable.processInnuca(r.filteredJson, !append);
-        await innucaTable.addTableHeaders(scope, resultsCh,
+        await innucaTable.addTableHeaders(resultsCh,
             "table_headers_innuca");
         await innucaTable.addTableData(resultsCh, append);
         await innucaTable.buildDataTable(true);
@@ -102,7 +105,7 @@ const initReports = (scope, globalResults, append = true) => {
 
     p1.then( async (r) => {
         const resultsCh = await chewbbacaTable.processChewbbaca(r.filteredJson);
-        await chewbbacaTable.addTableHeaders(scope, resultsCh,
+        await chewbbacaTable.addTableHeaders(resultsCh,
             "table_headers_chewbbaca");
         await chewbbacaTable.addTableData(resultsCh);
         await chewbbacaTable.buildDataTable(true);
@@ -110,7 +113,7 @@ const initReports = (scope, globalResults, append = true) => {
 
     p1.then( async (r) => {
         const resultsCh = await prokkaTable.processProkka(r.filteredJson);
-        await prokkaTable.addTableHeaders(scope, resultsCh,
+        await prokkaTable.addTableHeaders(resultsCh,
             "table_headers_prokka");
         await prokkaTable.addTableData(resultsCh);
         await prokkaTable.buildDataTable(true);
@@ -261,7 +264,6 @@ app.controller("reportsController", async ($scope) => {
         //Event to show phyloviz tree
         $("#phyloviz_button_show").off("click").on("click", () => {
             const selTree = $.map(treesTable.tableObj.rows(".selected").data(), (d) => {
-                console.log(d);
                 return d.uri;
             });
             showTree(selTree);

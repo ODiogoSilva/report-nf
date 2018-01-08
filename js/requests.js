@@ -94,3 +94,14 @@ const getPHYLOViZTrees = async () => {
     );
 };
 
+//Request to get PHYLOViZ Online job status
+const fetchJob = async (redis_job_id) => {
+
+    return await $.get(
+        reportsRoute+"app/api/v1.0/phyloviz/",
+        {job_id: redis_job_id},
+    );
+
+
+};
+
