@@ -189,12 +189,30 @@ const highlightsModal = (type) => {
 };
 
 
-const removeHighlightGroup = (containerDiv, targetDiv) => {
+const removeHighlightGroup = (containerDiv, targetDiv, type) => {
 
     const containerSel = $("#" + containerDiv);
 
-    // Remove group
+    // Remove group from container
     containerSel.find("#" + targetDiv).remove();
+
+    // Remove group from report object
+    let dataArray;
+    if (type === "highlightSampleVal") {
+        dataArray = dataHighlights.samples
+    } else {
+        dataArray = dataHighlights.projects
+    }
+    const filteredArray = dataArray.filter((el) => {
+        if (el.groupName !== targetDiv){
+            return el
+        }
+    });
+    if (type === "highlightSampleVal") {
+        dataHighlights.samples = filteredArray;
+    } else {
+        dataHighlights.projects = filteredArray;
+    }
 
     // If there are no active groups, trigger the toggle for the first group
     if (containerSel.find(".active").length < 1) {
@@ -211,7 +229,7 @@ const addGroupButton = (containerId, val, type, color) => {
     // Create template
     const highlightTemplate = '<div class="highlight-btn-group btn-group btn-group-justified" id="{{ val }}">' +
         '<button onclick="toggleGroupSelection(\'{{val}}\', \'{{ type }}\')" style="width: 80%; border-left: 10px solid {{ col }}; overflow: hidden" class="btn btn-default main-toggle" data-toggle="button">{{ val }}</button>' +
-        '<button onclick="removeHighlightGroup(\'{{ containerId }}\', \'{{ val }}\')" style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+        '<button onclick="removeHighlightGroup(\'{{ containerId }}\', \'{{ val }}\', \'{{ type }}\')" style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
         '</div>';
 
     const highlightDiv = Mustache.to_html(highlightTemplate, {
