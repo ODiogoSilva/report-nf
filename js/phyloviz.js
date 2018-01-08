@@ -30,7 +30,47 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
     }
 
     const res = await sendToPHYLOViZ(data);
-    console.log(res);
+
+    modalAlert("Your request was sent to PHYLOViZ Online server. You will be notified when the tree is ready to be visualized. All available trees can be found on the PHYLOViZ Table at the Reports menu.", function(){
+
+    });
+
+    intervalCheckTree[res] = setInterval(() => {
+        fetchTreeJob(res);
+    }, 5000);
+
+};
 
 
+/**
+ * Function to fetch job status of PHYLOViZ Online
+ * @param redis_job_id
+ */
+const fetchTreeJob = async (redisJobId) => {
+
+    const response = await fetchJob(redisJobId);
+
+    if (response.status == true) {
+        clearInterval(intervalCheckTree[redisJobId])
+        message = "Your tree is ready to be visualized! Go to the PHYLOViZ Table at the Reports menu.";
+        if (response.result.message != undefined) {
+            message = response.result.message
+        }
+
+        ( async () => {
+            trees = await getPHYLOViZTrees();
+            const resultsCh = await treesTable.processTrees(trees, true);
+            await treesTable.remakeTable(resultsCh.data);
+        } )();
+
+        modalAlert(message, function () {
+
+        });
+    }
+    else if (response.status == false) {
+        clearInterval(intervalCheckTree[redisJobId])
+        modalAlert("There was an error when producing the tree at PHYLOViZ Online.", function () {
+
+        });
+    }
 };
