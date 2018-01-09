@@ -182,7 +182,7 @@ class ChartManager {
      *
      * @param [Array] selection
      */
-    async highlightCharts(selection){
+    highlightCharts(selection){
         for (const [container, opts] of this.charts.entries()) {
 
             // Ignore charts that lack the highlight method

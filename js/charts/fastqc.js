@@ -188,18 +188,21 @@ const bdFastqcNContent = (rawData, path) => {
 const HighlightLineSeries = (chartObj, selection) => {
 
     const highlightedSeries = [];
+    let highlight;
 
-    for (const group of selection) {
-        for (const series of chartObj.series) {
+    for (const series of chartObj.series) {
+        highlight = false;
+        for (const group of selection) {
             if (group.samples.includes(series.name)) {
                 highlightedSeries.push({color: group.color, zIndex: 100});
-            } else {
-                highlightedSeries.push({zIndex: 1});
+                highlight = true
             }
+        }
+        if (!highlight) {
+            highlightedSeries.push({color: "grey", zIndex: 1});
         }
     }
 
     chartObj.update({series: highlightedSeries});
 
-    // return chartObj
 };

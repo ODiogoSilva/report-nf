@@ -237,6 +237,9 @@ const removeHighlightGroup = (containerDiv, targetDiv, type) => {
         $(containerSel.find(".main-toggle")[0]).trigger("click");
     }
 
+    // Trigger selections
+    triggerHighlights(type)
+
 };
 
 
@@ -288,7 +291,22 @@ const showLabel = (helpSelector, msg, type) => {
 };
 
 
-const addHighlight = (sourceId) => {
+const getSampleMappings = (sampleArray) => {
+
+    let finalArray = [];
+
+    for (const el of sampleArray) {
+        for (const projectId of projectSampleMap.get(el)) {
+            finalArray.push(`${projectId}.${el}`);
+        }
+    }
+
+    return finalArray;
+
+};
+
+
+const addHighlight = async (sourceId) => {
 
     let textId,
         groupId,
@@ -341,13 +359,22 @@ const addHighlight = (sourceId) => {
     const highlightArray = val.split(/[\s,;\t\n]+/).filter(Boolean);
     // Get selected color
     const highlightColor = $("#" + colorInputId).val();
+    // Converts the user provided sample array into an array of
+    // `projectId.sampleName`, which are the correct sample ids for the
+    // majority of the objects in the report.
+    // Example: "sampleA" -> "1.sampleA"
+    const highlightFinalArray = await getSampleMappings(highlightArray);
+
+    // Create selection object
+    const selection = {
+        groupName: groupName,
+        samples: highlightFinalArray,
+        userSamples: highlightArray,
+        color: highlightColor,
+    };
 
     // Add array to global object
-    dataArray.push({
-        groupName: groupName,
-        samples: highlightArray,
-        color: highlightColor,
-    });
+    dataArray.push(selection);
 
     // Update counter
     counterSel.html(`(${dataArray.length})`);
@@ -356,7 +383,21 @@ const addHighlight = (sourceId) => {
     selectizeSel[0].selectize.clear();
     groupSel.val("");
 
+    // Trigger highlights for current selection
+    triggerHighlights(sourceId);
 
     return showLabel(helpId, "Group successfully added", "success")
+
+};
+
+
+const triggerHighlights = (type) => {
+
+    console.log(dataHighlights)
+    console.log(type)
+
+    if (type === "highlightSampleVal") {
+        charts.highlightCharts(dataHighlights.samples)
+    }
 
 };
