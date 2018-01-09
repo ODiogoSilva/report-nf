@@ -86,7 +86,7 @@ const addFilterButton = (opts) => {
 };
 
 
-const updateHighlightOptions = (res) => {
+const updateHighlightOptions = (res, clear) => {
 
     let sampleSelection = [];
     let projectSelection = [];
@@ -105,6 +105,10 @@ const updateHighlightOptions = (res) => {
 const populateSelectize = (selection, containerId, addItems) => {
 
     const selectizeSel = $("#" + containerId)[0].selectize;
+
+    // Clear selections
+    selectizeSel.clearOptions();
+    selectizeSel.clear();
 
     for (const el of selection) {
         selectizeSel.addOption({
