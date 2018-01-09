@@ -426,12 +426,17 @@ const addHighlight = async (sourceId) => {
 };
 
 
-const triggerHighlights = (type) => {
+/**
+ * Triggers the highlights throughout the reports. First, a selection array
+ * is built from the active sample and project highlights. The samples take
+ * precedence, which means that they are the last to be added into the array.
+ * Then, the re-drawing of the charts is issued only once with the
+ * appropriate method of the ChartManager class.
+ */
+const triggerHighlights = async () => {
 
-    if (type === "highlightSampleVal") {
-        charts.highlightCharts(dataHighlights.samples)
-    } else {
-        charts.highlightCharts(dataHighlights.projects)
-    }
+    let selection = dataHighlights.projects.concat(dataHighlights.samples);
+
+    charts.highlightCharts(selection);
 
 };
