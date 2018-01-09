@@ -40,11 +40,12 @@ const assemblyContigSize = (rawData, path) => {
         });
 
         myChart.extend("chart", {type: "boxplot"});
-        myChart.extend("xAxis", {labels: {
-            rotation: -45,
-            enabled: true,
-            formatter() {return res[this.value][0];}
-        }});
+        myChart.extend("xAxis", {labels: {enabled: false}});
+        // myChart.extend("xAxis", {labels: {
+        //     rotation: -90,
+        //     enabled: true,
+        //     formatter() {return res[this.value][0];}
+        // }});
         myChart.extend("yAxis", {min:0});
 
         myChart.layout.plotOptions = {
@@ -75,14 +76,18 @@ const assemblyContigSize = (rawData, path) => {
 const highlightBoxPlot = (chartObj, selection) => {
 
     const highlightedSeries = [];
+    let highlight;
 
-    for (const group of selection) {
-        for (const point of chartObj.series[0].data) {
+    for (const point of chartObj.series[0].data) {
+        highlight = false;
+        for (const group of selection) {
             if (group.samples.includes(point.name)) {
-                highlightedSeries.push({color: group.color});
-            } else {
-                highlightedSeries.push({});
+                highlightedSeries.push({color: group.color, name: point.name});
+                highlight = true
             }
+        }
+        if (!highlight) {
+            highlightedSeries.push({color: "grey", name: point.name})
         }
     }
 
