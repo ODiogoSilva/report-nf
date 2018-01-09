@@ -76,17 +76,13 @@ const assemblyContigSize = (rawData, path) => {
 const highlightBoxPlot = (chartObj, selection) => {
 
     const highlightedSeries = [];
-    let highlight;
+    let sel;
 
     for (const point of chartObj.series[0].data) {
-        highlight = false;
-        for (const group of selection) {
-            if (group.samples.includes(point.name)) {
-                highlightedSeries.push({color: group.color, name: point.name});
-                highlight = true
-            }
-        }
-        if (!highlight) {
+        if (selection.has(point.name)) {
+            sel = selection.get(point.name);
+            highlightedSeries.push({color: sel.color, name: point.name});
+        } else {
             highlightedSeries.push({color: "grey", name: point.name})
         }
     }

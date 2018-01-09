@@ -346,7 +346,8 @@ const addHighlight = async (sourceId) => {
         dataArray,
         colorInputId,
         helpId,
-        counterSel;
+        counterSel,
+        type;
 
     if (sourceId === "highlightSampleVal") {
         textId = "highlightSampleVal";
@@ -354,14 +355,16 @@ const addHighlight = async (sourceId) => {
         colorInputId = "highlightSampleCol";
         dataArray = dataHighlights.samples;
         helpId = $("#highlightedSamples_help");
-        counterSel = $("#sampleHighlightCounter")
+        counterSel = $("#sampleHighlightCounter");
+        type = "sample";
     } else {
         textId = "highlightProjectVal";
         groupId = "highlightProjectGroup";
         colorInputId = "highlightProjectCol";
         dataArray = dataHighlights.projects;
         helpId = $("#highlightedProjects_help");
-        counterSel = $("#projectHighlightCounter")
+        counterSel = $("#projectHighlightCounter");
+        type = "project";
     }
 
     const selectizeSel = $("#" + textId);
@@ -398,14 +401,13 @@ const addHighlight = async (sourceId) => {
     // Example: "sampleA" -> "1.sampleA"
     const highlightFinalArray = await getSampleMappings(highlightArray, sourceId);
 
-    console.log(highlightArray)
-
     // Create selection object
     const selection = {
         groupName: groupName,
         samples: highlightFinalArray,
         userSamples: highlightArray,
         color: highlightColor,
+        type
     };
 
     // Add array to global object
@@ -437,6 +439,20 @@ const triggerHighlights = async () => {
 
     let selection = dataHighlights.projects.concat(dataHighlights.samples);
 
-    charts.highlightCharts(selection);
+    // This will filter the selection array to remove duplicate sample names
+    // (when they are specified more that one time) and retain only the
+    // last highlight.
+    const selectionMap = new Map();
+    for (const el of selection){
+        for (const sample of el.samples) {
+            selectionMap.set(sample, {
+                color: el.color,
+                groupName: el.groupName,
+                type: el.type
+            })
+        }
+    }
+
+    charts.highlightCharts(selectionMap);
 
 };
