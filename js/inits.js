@@ -514,11 +514,15 @@ const initDropFile = (scope) => {
         /*
             Rebuild tables and graphs
          */
-        $("#waiting_gif").css({display: "block"});
+        const waitingGif = $("#waiting_gif");
+        waitingGif.css({display: "block"});
         $("#homeInnuendo").css({display: "none"});
 
         data = results.data;
         dataFilters = results.dataFilters;
+        dataHighlights = results.dataHighlights;
+
+        console.log(results)
 
         // Update sidebar elements (filters and highlights) according to the
         // loaded data
@@ -526,7 +530,7 @@ const initDropFile = (scope) => {
 
         await initReports(scope, results.data);
 
-        $("#waiting_gif").css({display:"none"});
+        waitingGif.css({display:"none"});
         $("#row-main").css({display:"block"});
         $("#current_workflow").css({display:"block"});
 

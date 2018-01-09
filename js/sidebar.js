@@ -313,7 +313,7 @@ const getSampleMappings = async (highlightArray, type) => {
     let currentId;
 
     // For samples
-    if (type === highlightSampleVal) {
+    if (type === "highlightSampleVal") {
         for (const el of highlightArray) {
             for (const projectId of projectSampleMap.get(el)) {
                 finalArray.push(`${projectId}.${el}`);
@@ -397,6 +397,8 @@ const addHighlight = async (sourceId) => {
     // majority of the objects in the report.
     // Example: "sampleA" -> "1.sampleA"
     const highlightFinalArray = await getSampleMappings(highlightArray, sourceId);
+
+    console.log(highlightArray)
 
     // Create selection object
     const selection = {
