@@ -88,13 +88,16 @@ const addFilterButton = (opts) => {
 
 const updateHighlightOptions = (res) => {
 
-    let selection = [];
+    let sampleSelection = [];
+    let projectSelection = [];
 
     for (const el of res.filteredJson) {
-        selection.push(el.sample_name);
+        sampleSelection.push(el.sample_name);
+        projectSelection.push(projectIdMap.get(parseInt(el.project_id)));
     }
 
-    populateSelectize(selection, "highlightSampleVal")
+    populateSelectize(sampleSelection, "highlightSampleVal");
+    populateSelectize(projectSelection, "highlightProjectVal");
 
 };
 

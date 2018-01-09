@@ -245,7 +245,6 @@ app.controller("reportsController", async ($scope) => {
     // Initialize sidebar toggle behaviour
     initToggleSidebar();
 
-
     //
     // NAVBAR INITS //
     //
@@ -323,13 +322,6 @@ app.controller("reportsController", async ($scope) => {
         });
 
         $("#modalGraphs").on("hidden.bs.modal scroll", () => {WebuiPopovers.hideAll()})
-        //
-        // /* Trigger style of dropdowns */
-        // $(".selectpicker").selectpicker({
-        //     style: "btn-primary",
-        //     size: 4
-        // });
-
 
         /**
          *  This function set the trigger for changes in the input loaded from a file in the Home page
@@ -347,7 +339,6 @@ app.controller("reportsController", async ($scope) => {
             $(':file').on('fileselect', function(event, numFiles, label) {
                 const input = $(this).parents('.input-group').find(':text');
                 input.val(label);
-
             });
         });
 
