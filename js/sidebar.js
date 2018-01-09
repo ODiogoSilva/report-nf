@@ -171,6 +171,14 @@ const highlightsModal = (type) => {
         dataArray = dataHighlights.projects
     }
 
+    // If there are groups reveal the selectize element
+    const sampleContainer = $("#sampleContainer");
+    if (dataArray.length > 0) {
+        sampleContainer.css({"display": "block"})
+    } else {
+        sampleContainer.css({"display": "none"})
+    }
+
     let toggleGroup = true;
     for (const el of dataArray) {
         addGroupButton("groupContainer", el.groupName, type, el.color);
@@ -212,6 +220,13 @@ const removeHighlightGroup = (containerDiv, targetDiv, type) => {
         dataHighlights.samples = filteredArray;
     } else {
         dataHighlights.projects = filteredArray;
+    }
+
+    // If no active groups left, hide selectize input
+    console.log(filteredArray.length);
+    if (filteredArray.length < 1) {
+        console.log("here")
+        $("#sampleContainer").css({"display": "none"})
     }
 
     // If there are no active groups, trigger the toggle for the first group
