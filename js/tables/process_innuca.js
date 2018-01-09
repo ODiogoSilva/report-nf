@@ -1,4 +1,4 @@
-/*globals sliderMap, dataFilters */
+/*globals sliderMap, dataFilters, projectSampleMap */
 
 /**
  *
@@ -202,7 +202,8 @@ const parseReport = (reportJSON) => {
                 ["active", 0],
                 ["Sample", sampleName],
                 ["id", `${projectId}.${pipelineId}`],
-                ["qc", ""]
+                ["qc", ""],
+                ["projectId", projectId]
             ]));
             storageIds.push(id);
             qcStorage.set(id, {"warnings": {}, "fails": {}});
@@ -292,6 +293,15 @@ const createTableData = (parsedJson, setMax) => {
     for (const [k, v] of parsedJson.storage.entries()) {
 
         let dataObject = {};
+
+        // Add current sample to the project-sample mapping
+        let sampleName = v.get("Sample");
+        let projectId = v.get("projectId");
+        if (projectSampleMap.has(sampleName)) {
+            projectSampleMap.get(sampleName).push(projectId);
+        } else {
+            projectSampleMap.set(sampleName, [projectId]);
+        }
 
         // Check if current sample has finished
         const lastHeader = parsedJson.headers[parsedJson.headers.length - 1];
@@ -392,8 +402,6 @@ const processInnuca = async (reportsData, setMax) => {
             className: "dt-body-center"
         },
     ].concat(tableData.mappings);
-
-    console.log(innucaData);
 
     return innucaData;
 

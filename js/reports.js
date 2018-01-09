@@ -37,6 +37,12 @@ let dataHighlights = {
 // reports and the corresponding project name
 let projectIdMap = new Map();
 
+// Object that will store the mapping between samples and projectIds.
+// This will allow the quick fetching of which project (or projects) a given
+// sample name belongs to. An example of this object could be something like:
+//      [("sampleA", [1]), ("sampleB", [1,2])]
+let projectSampleMap = new Map();
+
 // Init charts
 const charts = new ChartManager();
 
