@@ -64,8 +64,8 @@ const initReports = (scope, globalResults, append = true) => {
 
     //globalResults has reports and metadata
     //NOTE: Filters only working on reports, not on metadata
-    const results = globalResults[0];
-    const metadataResults = globalResults[1];
+    const results = globalResults.results;
+    const metadataResults = globalResults.metadataResults;
 
     // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve, reject) => {
@@ -132,6 +132,9 @@ const initReports = (scope, globalResults, append = true) => {
     p1.then( async (r) => {
         await charts.addReportData(r.filteredJson, append);
         await charts.buildAllCharts();
+        if (dataHighlights.samples.concat(dataHighlights.projects).length > 0){
+            await triggerHighlights();
+        }
     });
 
     // Update sidebar selector options for auto complete

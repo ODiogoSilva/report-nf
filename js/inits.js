@@ -366,7 +366,10 @@ const submissionRoutine = async (selectorIds) => {
 
         console.log(resMetadata);
 
-    return [res, resMetadata]
+    return {
+        results: res,
+        metadataResults: resMetadata
+    }
 
 };
 
@@ -521,8 +524,6 @@ const initDropFile = (scope) => {
         data = results.data;
         dataFilters = results.dataFilters;
         dataHighlights = results.dataHighlights;
-
-        console.log(results)
 
         // Update sidebar elements (filters and highlights) according to the
         // loaded data
