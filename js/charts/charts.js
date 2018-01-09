@@ -124,7 +124,7 @@ class ChartManager {
             obj.chartOptions = chartJson;
             // Build plots scheduled for the init
             if (obj.atInit === true) {
-                this.buildChart(container);
+                this.buildChart(container, true);
             }
         }
     }
