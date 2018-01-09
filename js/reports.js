@@ -212,38 +212,54 @@ app.controller("reportsController", async ($scope) => {
     const spResults = await getSpecies();
     const pResults = await getProjects();
 
-    // Populate dropdown with species/project info
-    populateSelect("project_select", spResults, pResults);
-    // Populate dropdown with species/project info for navbar
-    populateSelect("navProjectPicker", spResults, pResults);
-    // Populate dropdown with species database from the platform.
-    populateSelectPHYLOViZ("species_database", speciesDatabase)
-
-    // Initialize the behaviour of the toggle buttons
-    // in the home screen for selecting/loading projects
-    initHomeButtonsToggle();
-
-    // Initialize the Project selection picker and filter elements
-    initProjectSelection();
-    initNavSelection();
-
-    // Initialize the project selection submission
-    initProjectSubmission($scope);
-
-    // Initialize the project resubmission in the navbar
-    initResubmit($scope);
-
-    // Initialize sidebar toggle behaviour
-    initToggleSidebar();
+    //
+    // GENERAL INITS
+    //
 
     // Initialize drop file behaviour for loading reports
     initDropFile($scope);
 
-    // SIDEBAR //
+    //
+    // HOMEPAGE INITS //
+    //
+
+    // Populate dropdown with species/project info
+    populateSelect("project_select", spResults, pResults);
+    // Populate dropdown with species/project info for navbar
+    populateSelect("navProjectPicker", spResults, pResults);
+    // Initialize the behaviour of the toggle buttons
+    // in the home screen for selecting/loading projects
+    initHomeButtonsToggle();
+    // Initialize the Project selection picker and filter elements
+    initProjectSelection();
+    initNavSelection();
+    // Initialize the project selection submission
+    initProjectSubmission($scope);
+
+    //
+    // NAVBAR INITS //
+    //
+
+    // Initialize the project resubmission in the navbar
+    initResubmit($scope);
+    // Initialize sidebar toggle behaviour
+    initToggleSidebar();
+
+
+    //
+    // NAVBAR INITS //
+    //
+
     // Behaviour for filter popovers
     filterPopovers();
     initHighlights();
 
+    //
+    // PHYLOVIZ INITS //
+    //
+
+    // Populate dropdown with species database from the platform.
+    populateSelectPHYLOViZ("species_database", speciesDatabase);
     //Get user Trees
     trees = await getPHYLOViZTrees();
 

@@ -535,7 +535,7 @@ const initDropFile = (scope) => {
 };
 
 
-const highlightPickers = () => {
+const highlightColorPickers = () => {
 
     // const presetColors = {
     //     name: "swatches",
@@ -589,7 +589,7 @@ const highlightSelectize = () => {
 
 const initHighlights = () => {
 
-    highlightPickers();
+    highlightColorPickers();
     highlightSelectize();
 
 };
