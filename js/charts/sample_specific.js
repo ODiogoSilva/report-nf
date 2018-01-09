@@ -51,7 +51,7 @@ const sparkline = (sample, color) => {
     let maxBp;
 
     // Get BP data for current sample from report_json.plotData.sparkline
-    for ( const el of data ) {
+    for ( const el of data.results ) {
         const pid = `${el.project_id}.${el.sample_name}`;
         if ( pid === sample && (el.report_json.plotData || {}).sparkline )  {
             // Populate an array of arrays, with the processId and BP data
@@ -259,7 +259,7 @@ const getAbricateReport = async (sample, xbars) => {
 
     let counter = 0;
 
-    for (const el of data) {
+    for (const el of data.results) {
         const pid = `${el.project_id}.${el.sample_name}`;
         if (pid === sample && el.report_json.task === "abricate") {
             for (const [key, val] of Object.entries(el.report_json.plotData)) {
@@ -296,7 +296,7 @@ const getSlidingReport = async (sample) => {
         xLabels;
 
     // Get data and labels
-    for ( const el of data ) {
+    for ( const el of data.results ) {
         const pid = `${el.project_id}.${el.sample_name}`;
         if ( pid === sample && (el.report_json.plotData || {}).gcSliding )  {
             xLabels = el.report_json.plotData.gcSliding[1];
@@ -320,7 +320,7 @@ const sizeDistributionPlot = (sample) => {
     let distData;
 
     // Get BP data for current sample from report_json.plotData.sparkline
-    for ( const el of data ) {
+    for ( const el of data.results ) {
         const pid = `${el.project_id}.${el.sample_name}`;
         if ( pid === sample && (el.report_json.plotData || {}).size_dist )  {
             distData = el.report_json.plotData.size_dist;

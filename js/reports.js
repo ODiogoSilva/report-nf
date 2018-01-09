@@ -81,7 +81,10 @@ const initReports = (scope, globalResults, append = true) => {
 
 
     // Update the data array with the new filtered results
-    data = [results, metadataResults];
+    data = {
+        results,
+        metadataResults
+    };
 
     /* Launch Tables */
 
