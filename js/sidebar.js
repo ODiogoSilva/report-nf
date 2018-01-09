@@ -216,17 +216,20 @@ const removeHighlightGroup = (containerDiv, targetDiv, type) => {
             return el
         }
     });
+
+    // Update report data structure and highlight counter
     if (type === "highlightSampleVal") {
         dataHighlights.samples = filteredArray;
+        $("#sampleHighlightCounter").html(`(${filteredArray.length})`)
     } else {
         dataHighlights.projects = filteredArray;
+        $("#projectHighlightCounter").html(`(${filteredArray.length})`)
     }
 
     // If no active groups left, hide selectize input
     console.log(filteredArray.length);
     if (filteredArray.length < 1) {
-        console.log("here")
-        $("#sampleContainer").css({"display": "none"})
+        $("#sampleContainer").css({"display": "none"});
     }
 
     // If there are no active groups, trigger the toggle for the first group
@@ -291,7 +294,8 @@ const addHighlight = (sourceId) => {
         groupId,
         dataArray,
         colorInputId,
-        helpId;
+        helpId,
+        counterSel;
 
     if (sourceId === "highlightSampleVal") {
         textId = "highlightSampleVal";
@@ -299,12 +303,14 @@ const addHighlight = (sourceId) => {
         colorInputId = "highlightSampleCol";
         dataArray = dataHighlights.samples;
         helpId = $("#highlightedSamples_help");
+        counterSel = $("#sampleHighlightCounter")
     } else {
         textId = "highlightProjectVal";
         groupId = "highlightProjectGroup";
         colorInputId = "highlightProjectCol";
         dataArray = dataHighlights.projects;
         helpId = $("#highlightedProjects_help");
+        counterSel = $("#projectHighlightCounter")
     }
 
     const selectizeSel = $("#" + textId);
@@ -342,6 +348,9 @@ const addHighlight = (sourceId) => {
         samples: highlightArray,
         color: highlightColor,
     });
+
+    // Update counter
+    counterSel.html(`(${dataArray.length})`);
 
     // Clear text inputs
     selectizeSel[0].selectize.clear();

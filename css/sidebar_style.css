@@ -110,9 +110,10 @@
     background: grey;
 }
 
-.active-filters {
+.active-filters, .highlight-counter {
     font-size: 90%;
     margin-left: 2%;
+    color: #337ab7;
 }
 
 .error {
