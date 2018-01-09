@@ -15,8 +15,10 @@ const populateHeader = (sample) => {
 
     // Get QC div and add to container
     const qc = innucaTable.getValue(sample, "qc");
-    $("#qcContainer").html(qc);
+    const qcContainer = $("#qcContainer")
+    qcContainer.html(qc.html());
     qcColor = qc.css("background-color");
+    qcContainer.css({"color": qcColor});
 
     // Base pairs
     const bp = innucaTable.getValue(sample, "bp")[0].innerText;
