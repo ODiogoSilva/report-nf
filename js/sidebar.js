@@ -294,13 +294,39 @@ const showLabel = (helpSelector, msg, type) => {
 };
 
 
-const getSampleMappings = (sampleArray) => {
+const getProjectId = (projectName) => {
+    for (const [id, name] of projectIdMap.entries()) {
+        if (name === projectName) {
+            return id.toString();
+        }
+    }
+};
+
+
+const getSampleMappings = async (highlightArray, type) => {
 
     let finalArray = [];
+    let currentId;
 
-    for (const el of sampleArray) {
-        for (const projectId of projectSampleMap.get(el)) {
-            finalArray.push(`${projectId}.${el}`);
+    // For samples
+    if (type === highlightSampleVal) {
+        for (const el of highlightArray) {
+            for (const projectId of projectSampleMap.get(el)) {
+                finalArray.push(`${projectId}.${el}`);
+            }
+        }
+        // For projects
+    } else {
+        for (const projectName of highlightArray) {
+            // Convert project name provide by the user to the corresponding
+            // project id
+            currentId = await getProjectId(projectName);
+            // Collect all samples for that project id
+            for (const [sample, projectId] of projectSampleMap.entries()) {
+                if (projectId.includes(currentId)) {
+                    finalArray.push(`${projectId}.${sample}`)
+                }
+            }
         }
     }
 
@@ -366,7 +392,7 @@ const addHighlight = async (sourceId) => {
     // `projectId.sampleName`, which are the correct sample ids for the
     // majority of the objects in the report.
     // Example: "sampleA" -> "1.sampleA"
-    const highlightFinalArray = await getSampleMappings(highlightArray);
+    const highlightFinalArray = await getSampleMappings(highlightArray, sourceId);
 
     // Create selection object
     const selection = {
@@ -396,11 +422,10 @@ const addHighlight = async (sourceId) => {
 
 const triggerHighlights = (type) => {
 
-    console.log(dataHighlights)
-    console.log(type)
-
     if (type === "highlightSampleVal") {
         charts.highlightCharts(dataHighlights.samples)
+    } else {
+        charts.highlightCharts(dataHighlights.projects)
     }
 
 };
