@@ -513,7 +513,7 @@ const updateSidebar = () => {
 const initDropFile = (scope) => {
 
     /* Event to be triggered when a file is dropped into the body of the page */
-    $("#body_container").on("dropFile", async (ev, results) => {
+    $("body").on("dropFile", async (ev, results) => {
         /*
             Rebuild tables and graphs
          */

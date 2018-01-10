@@ -21,12 +21,14 @@ const initToggleSidebar = () => {
 
         if (sidebarSel.hasClass("active")) {
             sidebarBtn.css({color: "#ffffff"});
-            $(".overlay").fadeOut();
+            // WARNING: ADDING THE OVERLAY WILL PREVENT DRAG AND DROP OF
+            // REPORTS WHEN THE SIDEBAR IS TOGGLED
+            // $(".overlay").fadeOut();
             $(".popover").removeClass("in");
         } else {
             sidebarBtn.css({color: "#28a745"});
             // fade in the overlay
-            $(".overlay").fadeIn();
+            // $(".overlay").fadeIn();
             $("a[aria-expanded=true]").attr("aria-expanded", "false");
         }
 
