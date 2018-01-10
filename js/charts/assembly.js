@@ -14,15 +14,28 @@ const getBoxPlotSeries = async (data) => {
     return series
 };
 
+
+const assemblyContigSize = (rawData, path) => {
+
+    return assemblyBoxplot(rawData, path, "pilon");
+
+};
+
+
+const assemblyContigCoverage = (rawData, path) => {
+
+    return assemblyBoxplot(rawData, path, "assembly_mapping");
+
+};
+
+
 /**
  *
  * @param rawData
  * @param path
  * @returns {Promise.<TResult>}
  */
-const assemblyContigSize = (rawData, path) => {
-
-    const taskName = "pilon";
+const assemblyBoxplot = (rawData, path, taskName) => {
 
     // Get JSON report array
     const chartData = getTaskReport(rawData, taskName, path);

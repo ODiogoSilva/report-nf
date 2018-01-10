@@ -168,7 +168,7 @@ app.controller("reportsController", async ($scope) => {
     //Get info in case of app on iframe
     runFromParent();
 
-    $scope.graph1Name = "Graph 1";
+    $scope.graph1Name = "Assembly charts";
     $scope.graph2Name = "Graph 2";
     $scope.fastqcName = "FastQC";
 
@@ -191,7 +191,7 @@ app.controller("reportsController", async ($scope) => {
         "Assembly": [
             ["Main table", "table1_div"],
             ["FastQC", "fastqcContainer"],
-            ["Graph 1", "spades_graph_container"],
+            ["Assembly charts", "assemblyCharts"],
             ["Graph 2", "container2"]
 
         ],
@@ -310,7 +310,7 @@ app.controller("reportsController", async ($scope) => {
         });
 
         // Render FastQC plots for the first time on demand by pressing the tabs
-        $("#fastqcTabs").on("shown.bs.tab", (e) => {
+        $("#fastqcTabs, #assemblyTabs").on("shown.bs.tab", (e) => {
             let container = $(e.target).attr("data-target");
             charts.buildChart(container.replace("#", ""));
         });

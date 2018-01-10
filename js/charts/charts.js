@@ -79,6 +79,15 @@ class ChartManager {
                     chartOptions: null,
                     atInit: true
                 }
+            ],
+            ["assemblyContigCoverage",
+                {
+                    path: "plotData.coverageDist",
+                    build: assemblyContigCoverage,
+                    highlight: highlightBoxPlot,
+                    chartOptions: null,
+                    atInit: false
+                }
             ]
         ]);
     }
@@ -122,6 +131,7 @@ class ChartManager {
             // Call the builder function and provide the rawData array
             const chartJson = await obj.build(this.rawData, obj.path);
             obj.chartOptions = chartJson;
+            console.log(container)
             // Build plots scheduled for the init
             if (obj.atInit === true) {
                 this.buildChart(container, true);
@@ -152,6 +162,8 @@ class ChartManager {
         if (!redraw) {
             redraw = false;
         }
+
+        console.log(container)
 
         const c = $("#" + container).highcharts();
 
@@ -272,7 +284,10 @@ const getTaskReport = (rawData, task, path) => {
         const pid = `${r.project_id}.${r.sample_name}`;
         // Find specified task and add plot data JSON to array
         if (r.report_json.task === task) {
-            data.set(pid, getValue(r.report_json, path));
+            const val = getValue(r.report_json, path);
+            if (val) {
+                data.set(pid, getValue(r.report_json, path));
+            }
         }
     }
 
