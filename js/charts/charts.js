@@ -230,12 +230,22 @@ class Chart {
             },
             xAxis: {
                 title: {
-                    text: this.axisLabels.x
+                    text: this.axisLabels.x,
+                    margin: 30,
+                    style: {
+                        fontSize: 20,
+                        fontWeight: "bold",
+                    }
                 }
             },
             yAxis: {
                 title: {
-                    text: this.axisLabels.y
+                    text: this.axisLabels.y,
+                    margin: 30,
+                    style: {
+                        fontSize: 20,
+                        fontWeight: "bold",
+                    }
                 }
             },
             series: this.series
