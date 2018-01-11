@@ -227,6 +227,11 @@ const parseReport = (reportJSON) => {
 
             // Add each individual cell from the current process id
             for (const cell of jr.tableRow) {
+
+                if (cell.table !== "assembly") {
+                    continue
+                }
+
                 const header = cell.header.replace("_", " ");
                 storage.get(id).set(header, cell.value);
 
