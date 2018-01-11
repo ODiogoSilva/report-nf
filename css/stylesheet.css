@@ -80,7 +80,7 @@ Workflow side bar elements
  */
 
 /* Style for side navbar */
-#workflow-header {
+#workflow-header, #phyloviz-header {
     font-size: 25px;
     color: #000000;
     font-weight: bold;
