@@ -1,0 +1,12 @@
+
+.database-column {
+    display: inline-block;
+    width: 18%;
+    padding: 10px;
+}
+
+.database-header {
+    /*font-size: 15px;*/
+    font-weight: bold;
+    text-align: center;
+}

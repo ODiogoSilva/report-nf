@@ -76,7 +76,7 @@ const createAbricateData = (parsedObj) => {
                 if (parsedObj.columns.includes(col)){
                     const maxValue = Math.max(...parsedObj.columnBars[col]);
                     const prop = (parseFloat(v.get(col)) / maxValue) * 100;
-                    v.set(col, `<div id="${col.replace(/ |\\(|\\)/g, "")}" onclick="" class='table-cell table-link'><div class='table-bar' style='width:${prop}%'></div>${v.get(col)}</div>`)
+                    v.set(col, `<div id="${col.replace(/ |\\(|\\)/g, "")}" onclick="showAbricateModal('${k}')" class='table-cell table-link'><div class='table-bar' style='width:${prop}%'></div>${v.get(col)}</div>`)
                 } else {
                     v.set(col, `<div id="${col.replace(/ |\\(|\\)/g, "")}" class='table-cell'>${v.get(col)}</div>`)
                 }
