@@ -224,6 +224,11 @@ class Table {
         return await processProkka(reports);
     }
 
+    /* Process Abricate data to load into the DataTable */
+    async processAbricate(reports) {
+        return await processAbricate(reports);
+    }
+
     /* Process Metadata to load into the DataTable */
     async processMetadata(reports) {
         return await processMetadata(reports);

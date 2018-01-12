@@ -191,6 +191,13 @@ th {
     z-index: 1;
 }
 
+.table-link {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
 .badge-qc {
     color: white;
     font-weight: bold;

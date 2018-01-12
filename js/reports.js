@@ -53,6 +53,7 @@ const metadataTable = new Table("master_table_metadata");
 const innucaTable = new Table("master_table_innuca");
 const chewbbacaTable = new Table("master_table_chewbbaca");
 const prokkaTable = new Table("master_table_prokka");
+const abricateTable = new Table("master_table_abricate");
 const treesTable = new Table("master_table_trees");
 
 /**
@@ -130,6 +131,14 @@ const initReports = (scope, globalResults, append = true) => {
         await prokkaTable.buildDataTable(true);
     });
 
+    p1.then( async (r) => {
+        const resultsCh = await abricateTable.processAbricate(r.filteredJson);
+        await abricateTable.addTableHeaders(resultsCh,
+            "table_headers_abricate");
+        await abricateTable.addTableData(resultsCh);
+        await abricateTable.buildDataTable(true);
+    });
+
     /* Launch charts */
     p1.then( async (r) => {
         await charts.addReportData(r.filteredJson, append);
@@ -200,7 +209,7 @@ app.controller("reportsController", async ($scope) => {
 
         ],
         "Annotation": [
-            ["Table 3", "table3_div"]
+            ["Antimicrobial resistance", "table3_div"]
         ],
         "ChewBBACA": [],
         "Pathotyping": [],
