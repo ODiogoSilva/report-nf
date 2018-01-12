@@ -268,6 +268,12 @@ app.controller("reportsController", async ($scope) => {
     //Get user Trees
     trees = await getPHYLOViZTrees();
 
+    //
+    // MODALs INITS //
+    //
+
+    initSampleSpecificModal();
+
     /* Event to toggle workflows sidebar */
     $(".toggle_sidebar").on("click", (e) => {
         console.log(e.target);

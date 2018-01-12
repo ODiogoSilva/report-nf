@@ -598,3 +598,28 @@ const initHighlights = () => {
     highlightSelectize();
 
 };
+
+
+/**
+ * Cleans the Highcharts from the sample specific modal. This prevents
+ * Highcharts from continuously storing the synchronized charts in the
+ * main Highcharts.charts object.
+ */
+const initSampleSpecificModal = () => {
+
+    // Sanitize charts when closing the modal
+    $("#modalGraphs").on("hide.bs.modal", () => {
+
+        $("#sparkline-container").highcharts().destroy();
+        $("#distribution-size-container").highcharts().destroy();
+
+        Highcharts.each(Highcharts.charts, (chart) => {
+            if (chart) {
+                if (chart.renderTo.id === "") {
+                    chart.destroy()
+                }
+            }
+        });
+    });
+
+};
