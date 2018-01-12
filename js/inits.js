@@ -108,12 +108,11 @@ const convertDateInverse = (date) => {
 /**
  * Populates the sample and project counter indicators in the home page when
  * selecting a project.
- * @param {int} projectNum - Number of selected projects
  * @param {Array} reportInfo - List of objects with the sample names associated
  * with each selected project. The relevant key from the object file is
  * 'sample_name'
  */
-const populateProjectIndicator = (projectNum, reportInfo) => {
+const populateProjectIndicator = (reportInfo) => {
 
     // Home screen elements
     const projectDiv = $("#projectCounter");
@@ -123,18 +122,22 @@ const populateProjectIndicator = (projectNum, reportInfo) => {
     const navSampleDiv = $("#navSampleCounter");
 
     let samples = [];
+    let projects = [];
     for (const el of reportInfo) {
         if (!samples.includes(el.sample_name)) {
-            samples.push(el.sample_name)
+            samples.push(el.sample_name);
+        }
+        if (!projects.includes(el.project_id)) {
+            projects.push(el.project_id);
         }
     }
 
     // Home screen update
     sampleDiv.html(`Samples: ${samples.length}`);
-    projectDiv.html(`Projects: ${projectNum}`);
+    projectDiv.html(`Projects: ${projects.length}`);
     // Navbar update
     navSampleDiv.html(`${samples.length}`);
-    navProjectDiv.html(`${projectNum}`);
+    navProjectDiv.html(`${projects.length}`);
 };
 
 /**
@@ -221,7 +224,6 @@ const readReportFile = (files) => {
 };
 
 
-let reportInfo = "";
 /**
  * Initialize the project selection picker. This function is responsible
  * for several tasks:
@@ -249,7 +251,7 @@ const initProjectSelection = () => {
             // Use the report information to populate the filter elements
             populateFilter(reportInfo);
             // Update project and sample number indicators
-            populateProjectIndicator(selectedOpts.length, reportInfo);
+            populateProjectIndicator(reportInfo);
 
             // Display filter elements and submission button
             $("#submitDiv").css({display: "inline-block"});
@@ -288,9 +290,7 @@ const initNavSelection = () => {
             // Use the report information to populate the filter elements
             populateFilter(reportInfo);
             // Update project and sample number indicators
-            populateProjectIndicator(selectedOpts.length, reportInfo);
-        } else {
-            alert("oOOOPs")
+            populateProjectIndicator(reportInfo);
         }
 
     })
@@ -506,6 +506,31 @@ const updateSidebar = () => {
 
 };
 
+
+/**
+ * Updates the reportInfo object from a Drag and Drop of report file load
+ * operation. It crawls through the data JSON and checks for known project
+ * Ids
+ * @param {Array} dataJSON - The array of JSON with the main report data
+ */
+const updateReportInfo = (dataJSON) => {
+
+    let projectIds = [];
+
+    for (const el of dataJSON) {
+        if (!projectIds.includes(el.project_id)) {
+            projectIds.push(el.project_id);
+            console.log(el.project_id)
+        }
+    }
+
+    $("#project_select").selectpicker("val", projectIds);
+    $("#navProjectPicker").selectpicker("val", projectIds);
+
+    return getReportInfo(projectIds);
+
+};
+
 /**
  * Initializes the Drag and Drop behaviour for loading report files
  * @param scope - Angular scope object
@@ -528,6 +553,12 @@ const initDropFile = (scope) => {
         // Update sidebar elements (filters and highlights) according to the
         // loaded data
         updateSidebar();
+        reportInfo = await updateReportInfo(data.results);
+
+        // Use the report information to populate the filter elements
+        populateFilter(reportInfo);
+        // Update project and sample number indicators
+        populateProjectIndicator(reportInfo);
 
         await initReports(scope, results.data);
 
@@ -616,7 +647,7 @@ const initSampleSpecificModal = () => {
         Highcharts.each(Highcharts.charts, (chart) => {
             if (chart) {
                 if (chart.renderTo.id === "") {
-                    chart.destroy()
+                    chart.destroy();
                 }
             }
         });

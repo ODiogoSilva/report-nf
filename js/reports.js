@@ -4,6 +4,8 @@ const app = angular.module("reportsApp", []);
 // Array of JSON files with the report data
 let data = null;
 
+let reportInfo = null;
+
 //array with trees inofmration
 let trees = null;
 
@@ -141,6 +143,8 @@ const initReports = (scope, globalResults, append = true) => {
     p1.then( (r) => {
         updateHighlightOptions(r);
     });
+
+    console.log(data)
 
 };
 
