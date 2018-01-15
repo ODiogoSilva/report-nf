@@ -412,23 +412,27 @@ const sizeDistributionPlot = (sample) => {
  * Synchronize zooming through the setExtremes event handler.
  */
 function syncExtremes(e) {
+    let syncCharts = [
+        "gccontent",
+        "coverage",
+        "sw-abricate-chart",
+        "sw-prokka-chart",
+        "sw-chewbbaca-chart"
+    ];
+
     let thisChart = this.chart;
     WebuiPopovers.hideAll();
 
     // Prevent feedback loop
     if ( e.trigger !== "syncExtremes" ) {
         Highcharts.each(Highcharts.charts, function (chart) {
-            // Ignore undefined charts
-            if ( chart === undefined ) {
-                return true;
-            }
-            if ( chart.renderTo.id !== "" ) {
-                return true;
-            }
-            if ( chart !== thisChart ) {
-                // It is null while updating
-                if ( chart.xAxis[0].setExtremes ) {
-                    chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: "syncExtremes" });
+
+            if (syncCharts.includes(chart.userOptions.id)){
+                if (chart !== thisChart){
+                    // It is null while updating
+                    if ( chart.xAxis[0].setExtremes ) {
+                        chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: "syncExtremes" });
+                    }
                 }
             }
         });
@@ -566,10 +570,13 @@ const slidingReport = (sample) => {
 
         $.each(slidingData, (i, dataset) => {
 
+            const chartId = dataset.title.replace(" ","").toLowerCase();
+
             // Append the GC content and coverage charts
             $("<div class='chart'>")
                 .appendTo("#sync-sliding-window")
                 .highcharts({
+                    id: chartId,
                     chart: {
                         marginLeft: 70,
                         spacingTop: 20,
@@ -654,6 +661,7 @@ const prokkaReport = (sample, res) => {
     $("<div class='chart'>")
         .appendTo("#sync-sw-prokka")
         .highcharts({
+            id: "sw-prokka-chart",
             chart: {
                 marginLeft: 70,
                 spacingTop: 20,
@@ -690,6 +698,7 @@ const chewbbacaReport = (sample, res) => {
     $("<div class='chart'>")
         .appendTo("#sync-sw-chewbbaca")
         .highcharts({
+            id: "sw-chewbbaca-chart",
             chart: {
                 marginLeft: 70,
                 spacingTop: 20,
@@ -777,6 +786,7 @@ const abricateReport = (sample, res) => {
         $("<div class='chart'>")
             .appendTo("#sync-sw-abricate")
             .highcharts({
+                id: "sw-abricate-chart",
                 chart: {
                     marginLeft: 70,
                     spacingTop: 10,
