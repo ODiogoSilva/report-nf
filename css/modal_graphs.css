@@ -94,6 +94,13 @@
     vertical-align: middle;
 }
 
-.search-field {
-    width: 200px;
+.abricate-navigation {
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+    height: 40px;
+}
+
+.abricate-navigation .selectize-input {
+    width: 500px;
 }

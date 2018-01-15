@@ -716,6 +716,41 @@ const chewbbacaReport = (sample, res) => {
 };
 
 
+const abricateNavigation = (data) => {
+
+    let optgroups = [];
+    let options = [];
+
+    for (const el of data) {
+        optgroups.push({
+            id: el.name,
+            name: el.name
+        });
+
+        for (const gene of el.data) {
+            options.push({
+                id: gene.gene,
+                gene: gene.gene,
+                database: el.name
+            })
+        }
+    }
+
+    $("#abricateSelectize").selectize({
+        options,
+        optgroups,
+        labelField: "gene",
+        valueField: "id",
+        optgroupField: "database",
+        optgroupLabelField: 'name',
+        optgroupValueField: "id",
+        searchField: ["gene"],
+        plugins: ["optgroup_columns"]
+    });
+
+};
+
+
 const abricateReport = (sample, res) => {
 
     getAbricateReport(sample, contigBoundaries).then((abrRes) => {
@@ -808,8 +843,13 @@ const abricateReport = (sample, res) => {
                     enabled: false
                 },
                 series: abrRes.seriesFinal
-            })
+            });
+
+        console.log(abrRes)
+        abricateNavigation(abrRes.seriesFinal);
+
     });
+
 };
 
 

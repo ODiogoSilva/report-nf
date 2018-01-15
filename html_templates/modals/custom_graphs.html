@@ -59,10 +59,10 @@
                         <div id="sync-sliding-window"></div>
                         <div id="sync-sw-abricate"></div>
                         <div class="abricate-navigation">
-                            <div class="input-group search-field">
-                                <input list="geneOpts" type="text" class="form-control" placeholder="Search genes..." aria-label="Search genes...">
-                                <span class="input-group-btn"><button class="btn btn-secondary" type="button">Go!</button></span>
+                            <div class="search-field" style="display: inline-block">
+                                <select id="abricateSelectize" tabindex="-1" placeholder="Search genes..." aria-label="Search genes..."></select>
                             </div>
+                            <span><button style="position: absolute" type="button" class="btn btn-success">Go!</button></span>
                         </div>
                         <div id="sync-sw-prokka"></div>
                         <div id="sync-sw-chewbbaca"></div>
@@ -93,11 +93,4 @@
         </div>
     </div>
 </div>
-
-<datalist id="geneOpts">
-    <option value="Waaa"></option>
-    <option value="Waa213"></option>
-    <option value="Waa12a"></option>
-    <option value="Waa11"></option>
-</datalist>
 
