@@ -427,6 +427,10 @@ function syncExtremes(e) {
     if ( e.trigger !== "syncExtremes" ) {
         Highcharts.each(Highcharts.charts, function (chart) {
 
+            if (!chart) {
+                return true;
+            }
+
             if (syncCharts.includes(chart.userOptions.id)){
                 if (chart !== thisChart){
                     // It is null while updating
@@ -461,8 +465,6 @@ const populateAbricateReport = (el) => {
 
 
 const buildGauge = (value, container, title) => {
-
-    console.log("here")
 
     Highcharts.chart(container, {
         chart: {
@@ -775,9 +777,7 @@ const abricateNavigation = (data) => {
                 chart.showResetZoom();
             }
         });
-
     });
-
 };
 
 
