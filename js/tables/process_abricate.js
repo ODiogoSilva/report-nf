@@ -31,6 +31,7 @@ const parseAbricateReport = (data) => {
 
                 const header = cell.header.replace("_", " ");
                 storage.get(id).set(header, cell.value);
+                storage.get(id).set(header + "geneList", cell.geneList);
 
                 if (!columns.includes(header)) {
                     columns.push(header);
@@ -67,6 +68,11 @@ const createAbricateData = (parsedObj) => {
 
         parsedObj.headers.map((col) => {
 
+            const geneList = col + "geneList";
+            if (v.has(geneList)) {
+                dataObject[geneList] = v.get(v.get(geneList));
+            }
+
             if (!(v.has(col))){
                 v.set(col,
                     "<div class='table-cell'>" +
@@ -76,9 +82,11 @@ const createAbricateData = (parsedObj) => {
                 if (parsedObj.columns.includes(col)){
                     const maxValue = Math.max(...parsedObj.columnBars[col]);
                     const prop = (parseFloat(v.get(col)) / maxValue) * 100;
-                    v.set(col, `<div id="${col.replace(/ |\\(|\\)/g, "")}" onclick="showAbricateModal('${k}')" class='table-cell table-link'><div class='table-bar' style='width:${prop}%'></div>${v.get(col)}</div>`)
+                    const sampleId = $(v.get("id")).html();
+                    const sampleName = $(v.get("Sample")).html();
+                    v.set(col, `<div id="${col.replace(/ |\\(|\\)/g, "")}" onclick="showAbricateModal('${sampleId}', '${sampleName}')" class='table-cell table-link'><div class='table-bar' style='width:${prop}%'></div>${v.get(col)}</div>`)
                 } else {
-                    v.set(col, `<div id="${col.replace(/ |\\(|\\)/g, "")}" class='table-cell'>${v.get(col)}</div>`)
+                    v.set(col, `<div id="${col.replace(/ |\\(|\\)/g, "")}" class='table-cell'>${v.get(col)} </div>`)
                 }
 
             }
@@ -122,8 +130,6 @@ const processAbricate = async (reportsData) => {
             className: "dt-body-center"
         },
     ].concat(tableData.mappings);
-
-    console.log(abricateData)
 
     return abricateData;
 

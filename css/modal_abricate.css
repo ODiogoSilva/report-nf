@@ -1,12 +1,38 @@
 
 .database-column {
     display: inline-block;
-    width: 18%;
+    width: 24%;
     padding: 10px;
+    top: 0;
+    vertical-align: top;
 }
 
 .database-header {
     /*font-size: 15px;*/
     font-weight: bold;
     text-align: center;
+    height: 20px;
+    /*position: absolute;*/
+    /*top: 0;*/
+}
+
+.database-container {
+    padding-top: 15px;
+    margin: auto;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.database-container li {
+    list-style-type: none;
+}
+
+.abricate-btn {
+    width: 20px;
+    float: right;
+    height: 70%;
+    padding: 0;
+    position: absolute;
+    top: 10%;
+    right: 10px;
 }
