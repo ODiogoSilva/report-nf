@@ -1,5 +1,7 @@
 /*global innucaTable, data, Highcharts */
 
+let windowSize;
+
 const humanReadable = (number) => {
     const suffix = ["", "KB", "MB", "GB", "TB"];
     const i = parseInt(Math.floor(Math.log(number) / Math.log(1000)));
@@ -256,8 +258,9 @@ const convertXPosition = (value, contig, xbars) => {
 const getAbricateReport = async (sample, xbars) => {
 
     let categories = [],
-        seriesFinal = [],
-        windowSize = xbars[0].window;
+        seriesFinal = [];
+
+    windowSize = xbars[0].window;
 
     let counter = 0;
 
@@ -721,6 +724,8 @@ const abricateNavigation = (data) => {
     let optgroups = [];
     let options = [];
 
+    const abricateSel = $("#abricateSelectize");
+
     for (const el of data) {
         optgroups.push({
             id: el.name,
@@ -731,12 +736,13 @@ const abricateNavigation = (data) => {
             options.push({
                 id: gene.gene,
                 gene: gene.gene,
-                database: el.name
+                database: el.name,
+                range: [gene.x, gene.x2]
             })
         }
     }
 
-    $("#abricateSelectize").selectize({
+    abricateSel.selectize({
         options,
         optgroups,
         labelField: "gene",
@@ -746,6 +752,17 @@ const abricateNavigation = (data) => {
         optgroupValueField: "id",
         searchField: ["gene"],
         plugins: ["optgroup_columns"]
+    });
+
+    $("#abricateSearch").off("click").on("click", () => {
+        const geneName = abricateSel.val();
+        const geneOpts = abricateSel[0].selectize.options[geneName];
+
+        const newRange = [geneOpts.range[0] - (geneOpts.range[0] * 0.001),
+                          geneOpts.range[1] + (geneOpts.range[1] * 0.001)];
+
+        syncExtremes({min: newRange[0], max: newRange[1]})
+
     });
 
 };
@@ -845,11 +862,9 @@ const abricateReport = (sample, res) => {
                 series: abrRes.seriesFinal
             });
 
-        console.log(abrRes)
+        // Initialize the navigation buttons and selector for abricate
         abricateNavigation(abrRes.seriesFinal);
-
     });
-
 };
 
 

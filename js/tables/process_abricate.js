@@ -84,9 +84,9 @@ const createAbricateData = (parsedObj) => {
                     const prop = (parseFloat(v.get(col)) / maxValue) * 100;
                     const sampleId = $(v.get("id")).html();
                     const sampleName = $(v.get("Sample")).html();
-                    v.set(col, `<div id="${col.replace(/ |\\(|\\)/g, "")}" onclick="showAbricateModal('${sampleId}', '${sampleName}')" class='table-cell table-link'><div class='table-bar' style='width:${prop}%'></div>${v.get(col)}</div>`)
+                    v.set(col, `<div onclick="showAbricateModal('${sampleId}', '${sampleName}')" class='table-cell table-link'><div class='table-bar' style='width:${prop}%'></div>${v.get(col)}</div>`)
                 } else {
-                    v.set(col, `<div id="${col.replace(/ |\\(|\\)/g, "")}" class='table-cell'>${v.get(col)} </div>`)
+                    v.set(col, `<div class='table-cell'>${v.get(col)} </div>`)
                 }
 
             }
