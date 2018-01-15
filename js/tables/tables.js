@@ -173,8 +173,13 @@ class Table {
                 columnDefs: [ {
                     orderable: false,
                     className: "select-checkbox",
-                    targets:   0
-                } ],
+                    targets:   0,
+                    width: "15px"
+                } ,
+                    {
+                        targets: [1,2],
+                        width: "30px",
+                    }],
                 select: {
                     style:    "os",
                     selector: "td:first-child"
