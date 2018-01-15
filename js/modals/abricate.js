@@ -32,7 +32,7 @@ const showAbricateModal = (sampleId, sampleName) => {
 
     // Populate modal
     for (const db of Object.keys(abricateGenes)) {
-        const dbSel = $("#" + db);
+        const dbSel = $("#modal" + db);
         dbSel.empty();
         for (const gene of abricateGenes[db]) {
             const itemDiv = `<li class="list-group-item">${gene}<button type="button" class="btn btn-default abricate-btn"><i class="fa fa-bullseye"></i></button></li>`;
