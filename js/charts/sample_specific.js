@@ -768,7 +768,13 @@ const abricateNavigation = (data) => {
         const newRange = [geneOpts.range[0] - (geneOpts.range[0] * 0.001),
                           geneOpts.range[1] + (geneOpts.range[1] * 0.001)];
 
-        syncExtremes({min: newRange[0], max: newRange[1]})
+        syncExtremes({min: newRange[0], max: newRange[1]});
+
+        Highcharts.each(Highcharts.charts, (chart) => {
+            if (chart.userOptions.id === "sw-abricate-chart") {
+                chart.showResetZoom();
+            }
+        });
 
     });
 
