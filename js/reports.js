@@ -1,4 +1,4 @@
-/*global angular, ChartManager, Table, filterJson, getSpecies, getProjects, getReportsByProject, downloadProfiles, updateFilterObject*, initNavSelection, initProjectSubmission, initSampleSpecificModal, showTree, WebuiPopovers /
+/*global angular, ChartManager, Table, filterJson, getSpecies, getProjects, getReportsByProject, downloadProfiles, updateFilterObject*, initNavSelection, initProjectSubmission, initSampleSpecificModal, showTree, WebuiPopovers, dataFilters, data, treesTable, metadataTable, innucaTable, chewbbacaTable, prokkaTable, triggerHighlights, updateHighlightOptions, runFromParent, processPHYLOViZRequest, initDropFile, populateSelect, initHomeButtonsToggle, initProjectSelection, initNavSelection, initProjectSubmission, initResubmit, initToggleSidebar, filterPopovers, initHighlights, populateSelectPHYLOViZ, getPHYLOViZTrees, initSampleSpecificModal, readReportFile /
 const app = angular.module("reportsApp", []);
 
 /**
@@ -97,8 +97,6 @@ const initReports = (scope, globalResults, append = true) => {
     p1.then( (r) => {
         updateHighlightOptions(r);
     });
-
-    console.log(data)
 
 };
 
@@ -234,7 +232,6 @@ app.controller("reportsController", async ($scope) => {
 
     /* Event to toggle workflows sidebar */
     $(".toggle_sidebar").on("click", (e) => {
-        console.log(e.target);
         /* to toggle the sidebar, just switch the CSS classes */
         $("#workflows_sidebar").toggleClass("collapsed_sidebar");
         $("#workflows_content").toggleClass("col-md-12 col-md-10");
@@ -291,23 +288,23 @@ app.controller("reportsController", async ($scope) => {
             $(this).tab("show");
         });
 
-        $("#modalGraphs").on("hidden.bs.modal scroll", () => {WebuiPopovers.hideAll()})
+        $("#modalGraphs").on("hidden.bs.modal scroll", () => {WebuiPopovers.hideAll()});
 
         /**
          *  This function set the trigger for changes in the input loaded from a file in the Home page
          */
-        $(document).on('change', ':file', function() {
+        $(document).on("change", ":file", function() {
             const input = $(this),
                 numFiles = input.get(0).files ? input.get(0).files.length : 1,
-                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-            input.trigger('fileselect', [numFiles, label]);
+                label = input.val().replace(/\\/g, "/").replace(/.*\//, "");
+            input.trigger("fileselect", [numFiles, label]);
 
             readReportFile(input.get(0).files);
         });
 
         $(document).ready( function() {
-            $(':file').on('fileselect', function(event, numFiles, label) {
-                const input = $(this).parents('.input-group').find(':text');
+            $(":file").on("fileselect", function(event, numFiles, label) {
+                const input = $(this).parents(".input-group").find(":text");
                 input.val(label);
             });
         });
