@@ -762,6 +762,17 @@ const abricateZoomGene = () => {
 
         if (chart.userOptions.id === "sw-abricate-chart") {
             chart.showResetZoom();
+
+            // Get index of series for the database
+            const seriesIdx = chart.series.findIndex(
+                x => x.name === geneOpts.database
+            );
+            const pointIdx = chart.series[seriesIdx].data.findIndex(
+                x => x.gene === geneName
+            );
+
+            setTimeout(() => {chart.series[seriesIdx].data[pointIdx].firePointEvent("click")}, 500);
+
         }
     });
 };
@@ -791,11 +802,11 @@ const abricateHighlightSelection = () => {
     // Add/remove plotBands in every synced chart
     Highcharts.each(Highcharts.charts, (chart) => {
 
-        if (syncCharts.includes(chart.userOptions.id)){
+        if (!chart){
+            return;
+        }
 
-            if (!chart){
-                return;
-            }
+        if (syncCharts.includes(chart.userOptions.id)){
 
             // Removes previously added plotBand
             if (!chart.xAxis.plotBands){
@@ -907,7 +918,6 @@ const abricateReport = (sample, res) => {
                         point: {
                             events: {
                                 click() {
-                                    console.log(this)
                                     const sel = $(this.graphic.element);
                                     sel.webuiPopover({
                                         title: "Abricate summary report",
