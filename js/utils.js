@@ -1,6 +1,8 @@
 /*globals
     data,
-    modalAlert
+    modalAlert,
+    dataFilters,
+    dataHighlights
 */
 
 /**
