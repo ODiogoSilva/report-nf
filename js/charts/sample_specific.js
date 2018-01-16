@@ -761,7 +761,11 @@ const abricateZoomGene = () => {
         }
 
         if (chart.userOptions.id === "sw-abricate-chart") {
-            chart.showResetZoom();
+
+            // Only show the resetZoomButton for the first time
+            if (!(chart.resetZoomButton||{}).added){
+                chart.showResetZoom();
+            }
 
             // Get index of series for the database
             const seriesIdx = chart.series.findIndex(
