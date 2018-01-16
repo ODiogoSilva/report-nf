@@ -412,6 +412,11 @@ const sizeDistributionPlot = (sample) => {
  * Synchronize zooming through the setExtremes event handler.
  */
 function syncExtremes(e) {
+
+    if (!e.animation){
+        e.animation = false
+    }
+
     let syncCharts = [
         "gccontent",
         "coverage",
@@ -435,7 +440,7 @@ function syncExtremes(e) {
                 if (chart !== thisChart){
                     // It is null while updating
                     if ( chart.xAxis[0].setExtremes ) {
-                        chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: "syncExtremes" });
+                        chart.xAxis[0].setExtremes(e.min, e.max, undefined, e.animation, { trigger: "syncExtremes" });
                     }
                 }
             }
@@ -727,6 +732,36 @@ const chewbbacaReport = (sample, res) => {
         })
 };
 
+/**
+ * Zooms on the abricate xrange plot by fetching the gene and range
+ * from the select picker value.
+ */
+const abricateZoomGene = () => {
+
+    const abricateSel = $("#abricateSelectize");
+    const geneName = abricateSel.val();
+
+    if (!geneName){
+        return;
+    }
+
+    const geneOpts = abricateSel[0].selectize.options[geneName];
+    const newRange = [geneOpts.range[0] - (geneOpts.range[0] * 0.001),
+        geneOpts.range[1] + (geneOpts.range[1] * 0.001)];
+
+    syncExtremes({
+        min: newRange[0],
+        max: newRange[1],
+        animation: true
+    });
+
+    Highcharts.each(Highcharts.charts, (chart) => {
+        if (chart.userOptions.id === "sw-abricate-chart") {
+            chart.showResetZoom();
+        }
+    });
+};
+
 
 const abricateNavigation = (data) => {
 
@@ -763,21 +798,7 @@ const abricateNavigation = (data) => {
         plugins: ["optgroup_columns"]
     });
 
-    $("#abricateSearch").off("click").on("click", () => {
-        const geneName = abricateSel.val();
-        const geneOpts = abricateSel[0].selectize.options[geneName];
-
-        const newRange = [geneOpts.range[0] - (geneOpts.range[0] * 0.001),
-                          geneOpts.range[1] + (geneOpts.range[1] * 0.001)];
-
-        syncExtremes({min: newRange[0], max: newRange[1]});
-
-        Highcharts.each(Highcharts.charts, (chart) => {
-            if (chart.userOptions.id === "sw-abricate-chart") {
-                chart.showResetZoom();
-            }
-        });
-    });
+    $("#abricateSearch").on("click", abricateZoomGene);
 };
 
 
