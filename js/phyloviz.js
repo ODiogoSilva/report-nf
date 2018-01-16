@@ -1,4 +1,14 @@
-/*globals fetchJob, treesTable */
+/*globals
+    fetchJob,
+    treesTable,
+    intervalCheckTree,
+    treesTable,
+    modalAlert,
+    USERID,
+    sendToPHYLOViZ,
+    modalAlert,
+    intervalCheckTree
+*/
 
 /**
  * Function to fetch job status of PHYLOViZ Online
@@ -8,11 +18,11 @@ const fetchTreeJob = async (redisJobId) => {
 
     const response = await fetchJob(redisJobId);
 
-    if (response.status == true) {
-        clearInterval(intervalCheckTree[redisJobId])
-        message = "Your tree is ready to be visualized! Go to the PHYLOViZ Table at the Reports menu.";
-        if (response.result.message != undefined) {
-            message = response.result.message
+    if (response.status === true) {
+        clearInterval(intervalCheckTree[redisJobId]);
+        let message = "Your tree is ready to be visualized! Go to the PHYLOViZ Table at the Reports menu.";
+        if (response.result.message !== undefined) {
+            message = response.result.message;
         }
 
         ( async () => {
@@ -25,8 +35,8 @@ const fetchTreeJob = async (redisJobId) => {
 
         });
     }
-    else if (response.status == false) {
-        clearInterval(intervalCheckTree[redisJobId])
+    else if (response.status === false) {
+        clearInterval(intervalCheckTree[redisJobId]);
         modalAlert("There was an error when producing the tree at PHYLOViZ Online.", function () {
 
         });
@@ -50,19 +60,19 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
 
     const data = {
         job_ids: selectedJobIds.join(","),
-        dataset_name: $('#modal_phyloviz_dataset_name').val(),
-        dataset_description: $('#modal_phyloviz_dataset_description').val(),
+        dataset_name: $("#modal_phyloviz_dataset_name").val(),
+        dataset_description: $("#modal_phyloviz_dataset_description").val(),
         additional_data: "", //JSON.stringify(global_additional_data)
         max_closest: $("#closest_number_of_strains").val(),
         database_to_include: $("#species_database option:selected").text(),
         species_id: 3,
-        missing_data: $('#missing_data_checkbox').is(":checked"),
-        missing_char: $('#missing_data_character').val(),
-        phyloviz_user: $('#phyloviz_user').val(),
-        phyloviz_pass: $('#phyloviz_pass').val(),
-        makePublic: $('#makePublic_checkbox').is(":checked"),
+        missing_data: $("#missing_data_checkbox").is(":checked"),
+        missing_char: $("#missing_data_character").val(),
+        phyloviz_user: $("#phyloviz_user").val(),
+        phyloviz_pass: $("#phyloviz_pass").val(),
+        makePublic: $("#makePublic_checkbox").is(":checked"),
         user_id: USERID
-    }
+    };
 
     const res = await sendToPHYLOViZ(data);
 
