@@ -15,20 +15,6 @@ const getBoxPlotSeries = async (data) => {
 };
 
 
-const assemblyContigSize = (rawData, path) => {
-
-    return assemblyBoxplot(rawData, path, "pilon");
-
-};
-
-
-const assemblyContigCoverage = (rawData, path) => {
-
-    return assemblyBoxplot(rawData, path, "assembly_mapping");
-
-};
-
-
 /**
  *
  * @param rawData
@@ -80,6 +66,19 @@ const assemblyBoxplot = (rawData, path, taskName) => {
     });
 };
 
+
+const assemblyContigSize = (rawData, path) => {
+
+    return assemblyBoxplot(rawData, path, "pilon");
+
+};
+
+
+const assemblyContigCoverage = (rawData, path) => {
+
+    return assemblyBoxplot(rawData, path, "assembly_mapping");
+
+};
 
 /**
  *
