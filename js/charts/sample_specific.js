@@ -862,7 +862,9 @@ const abricateNavigation = (data) => {
         plugins: ["optgroup_columns"]
     });
 
+    // Add functionlity to on click event of zoom Go! button
     $("#abricateSearch").on("click", abricateZoomGene);
+    // Add functionality to automatic plotBands when selecting a gene
     abricateSel.on("change", abricateHighlightSelection);
 };
 
