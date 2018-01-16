@@ -1,4 +1,12 @@
-/*global showModelGraphs, processChewbbaca, processInnuca, processPathotyping, processProkka */
+/*global
+    showModelGraphs,
+    processChewbbaca,
+    processInnuca,
+    processPathotyping,
+    processProkka,
+    processMetadata
+*/
+
 /* Table Class
     - Process table data
     - Load table
@@ -128,7 +136,7 @@ class Table {
                     enable: false
                 },
                 dom: "Bfrtip",
-                scrollX:scrollX,
+                scrollX,
                 buttons: [
                     "copy",
                     "csv",
@@ -163,7 +171,7 @@ class Table {
                                 text: "Show graphs",
                                 action( e, dt, node, config ) {
                                     const row = dt.rows(".selected").data()[0];
-                                    const pid = `${row.id.split(".")[0]}.${row.Sample}`
+                                    const pid = `${row.id.split(".")[0]}.${row.Sample}`;
                                     showModelGraphs(pid);
                                 }
                             }
@@ -203,9 +211,9 @@ class Table {
                             animation: "pop",
                             closeable: true
                         }
-                    )
+                    );
                 }
-            } );
+            });
         }
     }
 

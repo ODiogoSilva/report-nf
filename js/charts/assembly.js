@@ -9,9 +9,9 @@ const getBoxPlotSeries = async (data) => {
     const series = [];
 
     for (const [pid, val] of data.entries()) {
-        series.push(getBoxValues(val, pid))
+        series.push(getBoxValues(val, pid));
     }
-    return series
+    return series;
 };
 
 
@@ -95,7 +95,7 @@ const highlightBoxPlot = (chartObj, selection) => {
             sel = selection.get(point.name);
             highlightedSeries.push({color: sel.color, name: point.name});
         } else {
-            highlightedSeries.push({color: "grey", name: point.name})
+            highlightedSeries.push({color: "grey", name: point.name});
         }
     }
 

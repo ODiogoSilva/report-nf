@@ -7,6 +7,7 @@ const runFromParent = () => {
         window.parent.setUpFrame();
     }
     catch(e){
+        return false;
     }
     return true;
 };

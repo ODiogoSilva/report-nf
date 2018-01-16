@@ -738,7 +738,7 @@ const chewbbacaReport = (sample, res) => {
             credits: {
                 enabled: false
             },
-        })
+        });
 };
 
 /**

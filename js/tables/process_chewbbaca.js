@@ -27,8 +27,8 @@ const processChewbbaca = (reportsData) => {
         {
             data: "active",
             render(data, type, row) {
-                if (type === 'display') {
-                    return '<input type="checkbox" class="editor-active">';
+                if (type === "display") {
+                    return "<input type='checkbox' class='editor-active'>";
                 }
                 return data;
             },
@@ -37,8 +37,12 @@ const processChewbbaca = (reportsData) => {
     ];
 
     chewbbacaHeaders.map((x) => {
-        if (x === "Sample") chewbbacaColumnMapping.push({"data": "sample_name", "title":"Sample"});
-        else if (x !== "") chewbbacaColumnMapping.push({"data": x, "title":x});
+        if (x === "Sample") {
+            chewbbacaColumnMapping.push({"data": "sample_name", "title":"Sample"});
+        }
+        else if (x !== "") {
+            chewbbacaColumnMapping.push({"data": x, "title":x});
+        }
     });
 
     /* Get data for each strain to add to the table */
@@ -54,7 +58,9 @@ const processChewbbaca = (reportsData) => {
             };
 
             Object.keys(report.report_json.cagao[1]).map((key) => {
-                if (key !== "header") dataKey = key;
+                if (key !== "header") {
+                    dataKey = key;
+                }
             });
 
             dataObject["sample_name"] = report.sample_name;
@@ -66,8 +72,6 @@ const processChewbbaca = (reportsData) => {
             dataObject["project_id"] = report.project_id;
             dataObject["pipeline_id"] = report.pipeline_id;
             dataObject["process_id"] = report.process_id;
-
-            console.log(dataObject);
 
             chewbbacaDataArray.push(dataObject);
 

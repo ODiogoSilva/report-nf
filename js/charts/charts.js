@@ -1,4 +1,15 @@
-/*globals Highcharts, bdFastqcBaseSequenceQuality, HighlightLineSeries, bdFastqcSequenceQuality, bdFastqcGcContent, bdFastqcSequenceLength, bdFastqcNContent, assemblyContigSize, highlightBoxPlot, assemblyContigCoverage */
+/*globals
+    Highcharts,
+    bdFastqcBaseSequenceQuality,
+    HighlightLineSeries,
+    bdFastqcSequenceQuality,
+    bdFastqcGcContent,
+    bdFastqcSequenceLength,
+    bdFastqcNContent,
+    assemblyContigSize,
+    highlightBoxPlot,
+    assemblyContigCoverage
+*/
 
 /**
  * Main chart manager and interface for:
@@ -131,7 +142,6 @@ class ChartManager {
             // Call the builder function and provide the rawData array
             const chartJson = await obj.build(this.rawData, obj.path);
             obj.chartOptions = chartJson;
-            console.log(container)
             // Build plots scheduled for the init
             if (obj.atInit === true) {
                 this.buildChart(container, true);
@@ -163,14 +173,12 @@ class ChartManager {
             redraw = false;
         }
 
-        console.log(container)
-
         const c = $("#" + container).highcharts();
 
         if (c) {
            if (redraw === true) {
                c.destroy();
-               this.buildChart(container);
+               this.buildChart(container, false);
            }
         } else {
             // Get chart options for this container

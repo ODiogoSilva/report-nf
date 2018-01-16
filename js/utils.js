@@ -1,4 +1,7 @@
-/*globals data */
+/*globals
+    data,
+    modalAlert
+*/
 
 /**
  * Function to send file to user, client-side
@@ -28,9 +31,9 @@ const saveStatusFile = () => {
     const fileName = $("#save_file_name").val();
     if (fileName !== "") {
         const saveObject = {
-            "data": data,
-            "dataFilters": dataFilters,
-            "dataHighlights": dataHighlights
+            data,
+            dataFilters,
+            dataHighlights
         };
         const dataString = JSON.stringify(saveObject);
         sendFile(fileName, dataString);

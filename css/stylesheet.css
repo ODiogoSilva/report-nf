@@ -15,8 +15,8 @@ div.not_first {
 
 button.m-bottom{
     margin-bottom: 10px;
-    position: absolute;
-    float: right;
+    /*position: absolute;*/
+    /*float: right;*/
 }
 
 #workflows_sidebar {

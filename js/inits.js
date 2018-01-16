@@ -364,7 +364,7 @@ const submissionRoutine = async (selectorIds) => {
 
     const res = await getReportByFilter(
         {
-            selectedProjects: selectedProjects,
+            selectedProjects,
             selectedStrains: strainsForRequest.join()
         }
     );
@@ -415,7 +415,7 @@ const initProjectSubmission = (scope) => {
         loadingGif.css({display: "none"});
         $("#row-main").css({display: "block"});
         $("#current_workflow").css({display:"block"});
-    })
+    });
 };
 
 /**
@@ -621,7 +621,7 @@ const highlightSelectize = () => {
             return {
                 value: input,
                 text: input
-            }
+            };
         }
     });
 

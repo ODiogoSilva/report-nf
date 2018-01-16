@@ -251,7 +251,7 @@ const triggerHighlights = async () => {
                 color: el.color,
                 groupName: el.groupName,
                 type: el.type
-            })
+            });
         }
     }
 

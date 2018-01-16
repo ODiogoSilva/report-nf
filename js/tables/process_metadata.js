@@ -54,8 +54,8 @@ const processMetadata = (reportsData) => {
         {
             data: "active",
             render(data, type, row) {
-                if (type === 'display') {
-                    return '<input type="checkbox" class="editor-active">';
+                if (type === "display") {
+                    return "<input type='checkbox' class='editor-active'>";
                 }
                 return data;
             },
@@ -79,8 +79,8 @@ const processMetadata = (reportsData) => {
 
         metadataHeaders.map( (j, i) => {
             if (j !== "" && j !== "id" && j !== "species_id"){
-                const strain_metadata = JSON.parse(report.strain_metadata);
-                dataObject[j] = strain_metadata[j];
+                const strainMetadata = JSON.parse(report.strain_metadata);
+                dataObject[j] = strainMetadata[j];
             }
         });
 

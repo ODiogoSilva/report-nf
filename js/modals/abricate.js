@@ -1,3 +1,4 @@
+/*globals abricateTable */
 
 const getGeneLists = (entry) => {
 
@@ -10,7 +11,7 @@ const getGeneLists = (entry) => {
         }
     }
 
-    return abricateGenes
+    return abricateGenes;
 
 };
 
@@ -36,7 +37,7 @@ const showAbricateModal = (sampleId, sampleName) => {
         dbSel.empty();
         for (const gene of abricateGenes[db]) {
             const itemDiv = `<li class="list-group-item">${gene}<button type="button" class="btn btn-default abricate-btn"><i class="fa fa-bullseye"></i></button></li>`;
-            dbSel.append(itemDiv)
+            dbSel.append(itemDiv);
         }
     }
 

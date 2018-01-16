@@ -20,6 +20,7 @@ const getQc = (qcObject, sample) => {
     let qcColor;
     let qcValue;
     let qcMsg;
+    let qcDiv;
 
     // If the current sample has the fails property, return the fail QC
     // badge and exit

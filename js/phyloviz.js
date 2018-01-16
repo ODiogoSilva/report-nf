@@ -26,7 +26,7 @@ const fetchTreeJob = async (redisJobId) => {
         }
 
         ( async () => {
-            trees = await getPHYLOViZTrees();
+            const trees = await getPHYLOViZTrees();
             const resultsCh = await treesTable.processTrees(trees, true);
             await treesTable.remakeTable(resultsCh.data);
         } )();

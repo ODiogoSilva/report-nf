@@ -1,3 +1,7 @@
+/*globals
+    modalAlert
+*/
+
 /**
  * Function to process Trees results from the platform
  * @param treesReports
@@ -40,7 +44,9 @@ const processTrees = (treesReports) => {
     ];
 
     treesHeaders.map((x) => {
-        if (x !== "" && x !== "uri") treesColumnMapping.push({"data": x, "title":titleMapping[x]});
+        if (x !== "" && x !== "uri") {
+            treesColumnMapping.push({"data": x, "title":titleMapping[x]});
+        }
     });
 
     /* Get data for each strain to add to the table */

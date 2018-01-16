@@ -1,8 +1,10 @@
 /*globals
+    angular,
     dataFilters,
     projectIdMap,
     initReports,
-    showLabel
+    showLabel,
+    addFilterButton
 */
 
 /**
@@ -134,7 +136,7 @@ const filterJson = (jsonResult, metadataJson, filterObject) => {
             // Filter for number of reads
             if ( !testRowValue(filterObject.reads.range,
                     po.report_json.tableRow, "reads") === true ) {
-                filteredIds = addToFilters(po, filteredIds)
+                filteredIds = addToFilters(po, filteredIds);
             }
         }
 
@@ -142,7 +144,7 @@ const filterJson = (jsonResult, metadataJson, filterObject) => {
             // Filter for coverage
             if ( !testRowValue(filterObject["coverage (2nd)"].range,
                     po.report_json.tableRow, "coverage_(2nd)") ) {
-                filteredIds = addToFilters(po, filteredIds)
+                filteredIds = addToFilters(po, filteredIds);
             }
         }
 
@@ -150,12 +152,12 @@ const filterJson = (jsonResult, metadataJson, filterObject) => {
             // Filter for number of contigs
             if ( !testRowValue(filterObject.contigs.range,
                     po.report_json.tableRow, "contigs")) {
-                filteredIds = addToFilters(po, filteredIds)
+                filteredIds = addToFilters(po, filteredIds);
             }
             // Filter for assembled base pairs
             if ( !testRowValue(filterObject["assembled bp"].range,
                     po.report_json.tableRow, "contigs") ) {
-                filteredIds = addToFilters(po, filteredIds)
+                filteredIds = addToFilters(po, filteredIds);
             }
         }
     }
@@ -246,7 +248,7 @@ const removeFilterButton = (popoverContentId, removeId, popoverId, val) => {
     const filterIds = ["active_filters_name", "active_filters_projectid"];
 
     if (filterIds.includes(popoverId)) {
-        removeDataFilters(popoverId, val)
+        removeDataFilters(popoverId, val);
     }
 };
 
@@ -284,14 +286,14 @@ const checkFilter = (targetId) => {
         popoverContentId = "popover_filters_sample";
         popoverId = "active_filters_name";
         tempFilters = dataFilters.sample.temp;
-        helpId = $("#filter_by_name_help")
+        helpId = $("#filter_by_name_help");
     } else {
         totalFilters = dataFilters.projectId.active.concat(dataFilters.projectId.temp);
         filterSelecteor = $("#" + "popover_filters_project");
         popoverContentId = "popover_filters_project";
         popoverId = "active_filters_projectid";
         tempFilters = dataFilters.projectId.temp;
-        helpId = $("#filter_by_projectid_help")
+        helpId = $("#filter_by_projectid_help");
     }
 
     /* Begin checks here */

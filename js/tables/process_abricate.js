@@ -26,7 +26,7 @@ const parseAbricateReport = (data) => {
             for (const cell of jr.tableRow) {
 
                 if (cell.table !== "abricate") {
-                    continue
+                    continue;
                 }
 
                 const header = cell.header.replace("_", " ");
@@ -77,7 +77,7 @@ const createAbricateData = (parsedObj) => {
                 v.set(col,
                     "<div class='table-cell'>" +
                     "<div class='table-bar-text'>NA</div>" +
-                    "</div>")
+                    "</div>");
             } else {
                 if (parsedObj.columns.includes(col)){
                     const maxValue = Math.max(...parsedObj.columnBars[col]);
@@ -104,7 +104,7 @@ const createAbricateData = (parsedObj) => {
     return {
         data,
         mappings
-    }
+    };
 
 };
 
