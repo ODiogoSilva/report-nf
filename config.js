@@ -16,3 +16,58 @@ let USERNAME = "bgoncalves";
 let USERID = "2";
 // let USERID = "1";
 
+// Array of JSON files with the report data
+let data = null;
+
+let reportInfo = null;
+
+//array with trees inofmration
+let trees = null;
+
+// JSON mapping of report id with current chewbbaca procedures
+let chewbbacaToReportId = {};
+
+// Object for jobs submitted to PHYLOViZ Online
+let intervalCheckTree = {};
+
+// Object with the project filters. Each value can be dynamically changed
+// during the app session
+let dataFilters = {
+    "sample": {"active": [], "temp": []},
+    "projectId": {"active": [], "temp": []},
+    "qc": [],
+    "bp": {"range": [null, null], "max": null},
+    "reads": {"range": [null, null], "max": null},
+    "coverage (2nd)": {"range": [null, null], "max": null},
+    "contigs": {"range": [null, null], "max": null},
+    "assembled bp": {"range": [null, null], "max": null},
+};
+
+// Object with the report highlight options. Can be changed dynamically
+// during the app session
+let dataHighlights = {
+    "samples": [],
+    "projects": []
+};
+
+// Object that will store the mapping between the project_id key in the JSON
+// reports and the corresponding project name
+let projectIdMap = new Map();
+
+// Object that will store the mapping between samples and projectIds.
+// This will allow the quick fetching of which project (or projects) a given
+// sample name belongs to. An example of this object could be something like:
+//      [("sampleA", [1]), ("sampleB", [1,2])]
+let projectSampleMap = new Map();
+
+// Init charts
+const charts = new ChartManager();
+
+// Init tables
+const metadataTable = new Table("master_table_metadata");
+const innucaTable = new Table("master_table_innuca");
+const chewbbacaTable = new Table("master_table_chewbbaca");
+const prokkaTable = new Table("master_table_prokka");
+const abricateTable = new Table("master_table_abricate");
+const treesTable = new Table("master_table_trees");
+
