@@ -88,6 +88,13 @@
     margin-right: 5px;
 }
 
+.search-field {
+    display: inline-block;
+    height: 35px;
+    margin: auto;
+    vertical-align: middle;
+}
+
 .report-div {
     line-height: 25px;
     padding-bottom: 8px;

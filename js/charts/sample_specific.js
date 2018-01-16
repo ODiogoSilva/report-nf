@@ -2,6 +2,14 @@
 
 let windowSize;
 
+const syncCharts = [
+    "gccontent",
+    "coverage",
+    "sw-abricate-chart",
+    "sw-prokka-chart",
+    "sw-chewbbaca-chart"
+];
+
 const humanReadable = (number) => {
     const suffix = ["", "KB", "MB", "GB", "TB"];
     const i = parseInt(Math.floor(Math.log(number) / Math.log(1000)));
@@ -17,7 +25,7 @@ const populateHeader = (sample) => {
 
     // Get QC div and add to container
     const qc = innucaTable.getValue(sample, "qc");
-    const qcContainer = $("#qcContainer")
+    const qcContainer = $("#qcContainer");
     qcContainer.html(qc.html());
     qcColor = qc.css("background-color");
     qcContainer.css({"color": qcColor});
@@ -404,7 +412,6 @@ const sizeDistributionPlot = (sample) => {
             }
         }]
     });
-
 };
 
 
@@ -416,14 +423,6 @@ function syncExtremes(e) {
     if (!e.animation){
         e.animation = false
     }
-
-    let syncCharts = [
-        "gccontent",
-        "coverage",
-        "sw-abricate-chart",
-        "sw-prokka-chart",
-        "sw-chewbbaca-chart"
-    ];
 
     let thisChart = this.chart;
     WebuiPopovers.hideAll();
@@ -756,10 +755,64 @@ const abricateZoomGene = () => {
     });
 
     Highcharts.each(Highcharts.charts, (chart) => {
+
+        if (!chart){
+            return;
+        }
+
         if (chart.userOptions.id === "sw-abricate-chart") {
             chart.showResetZoom();
         }
     });
+};
+
+
+/**
+ * Triggered when selecting an item in the gene selector navigator.
+ * Adds a plotBand to all sync charts on the position of the gene.
+ */
+const abricateHighlightSelection = () => {
+
+    const abricateSel = $("#abricateSelectize");
+    const geneName = abricateSel.val();
+    const geneOpts = abricateSel[0].selectize.options[geneName];
+
+    // When the gene selection is clear, the range does not exist
+    let highlightRange;
+    try {
+        highlightRange = [
+            geneOpts.range[0] - (geneOpts.range[0] * 0.005),
+            geneOpts.range[1] + (geneOpts.range[1] * 0.005)
+        ];
+    } catch (err) {
+        highlightRange = null;
+    }
+
+    // Add/remove plotBands in every synced chart
+    Highcharts.each(Highcharts.charts, (chart) => {
+
+        if (syncCharts.includes(chart.userOptions.id)){
+
+            if (!chart){
+                return;
+            }
+
+            // Removes previously added plotBand
+            if (!chart.xAxis.plotBands){
+                chart.xAxis[0].removePlotBand("geneHighlight");
+            }
+
+            // If a range could be determined, add a new plotBand
+            if (highlightRange) {
+                chart.xAxis[0].addPlotBand({
+                    id: "geneHighlight",
+                    color: "rgba(169, 255, 176, 0.5)",
+                    from: highlightRange[0],
+                    to: highlightRange[1]
+                })
+            }
+        }
+    })
 };
 
 
@@ -799,6 +852,7 @@ const abricateNavigation = (data) => {
     });
 
     $("#abricateSearch").on("click", abricateZoomGene);
+    abricateSel.on("change", abricateHighlightSelection);
 };
 
 
