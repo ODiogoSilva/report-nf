@@ -1,4 +1,4 @@
-/*global Table */
+/*global Table, ChartManager */
 
 //Route to get the reports from
 const reportsRoute = "https://192.92.149.157/";

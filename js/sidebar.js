@@ -1,4 +1,10 @@
-/*globals dataHighlights, Mustache, charts, projectSampleMap */
+/*globals
+    dataHighlights,
+    Mustache,
+    charts,
+    projectSampleMap,
+    projectIdMap
+*/
 
 /**
  * Creates a popover object associated with a targetId and using a templateId
@@ -17,9 +23,9 @@ const createPopover = (targetId, templateId) => {
         trigger: "click",
         container: "body",
         content() {
-            return $("#" + templateId).html()
+            return $("#" + templateId).html();
         }
-    })
+    });
 };
 
 /**
@@ -40,7 +46,7 @@ const filterPopovers = () => {
     // clicked twice after the popover has been dismissed this way.
     $("body").mouseup( (e) => {
         if (!$(".popover").has(e.target).length && !$(e.target).hasClass("active-filters")) {
-            $(".popover").hide()
+            $(".popover").hide();
         }
     });
 
@@ -68,10 +74,10 @@ const addFilterButton = (opts) => {
     }
 
     // Create the filter template div to be populated using mustache
-    const filterTemplate = '<div class="input-group" id="{{ fId }}">' +
-        '<input class="form-control {{ tId }}" readonly value="{{ val }}">' +
-        '<span onclick="removeFilterButton(\'{{ tId }}\',\'{{ fId }}\', \'{{ pop }}\', \'{{ val }}\')" class="input-group-addon btn btn-default remove_filter"><i class="fa fa-minus" aria-hidden="true"></i></span>' +
-        '</div>';
+    const filterTemplate = "<div class='input-group' id='{{ fId }}'>" +
+        "<input class='form-control {{ tId }}' readonly value='{{ val }}'>" +
+        "<span onclick='removeFilterButton(\"{{ tId }}\",\"{{ fId }}\", \"{{ pop }}\", \"{{ val }}\")' class='input-group-addon btn btn-default remove_filter'><i class='fa fa-minus' aria-hidden='true'></i></span>" +
+        "</div>";
 
     // Render template with the specified options. filterDiv is now an
     // html div element.
@@ -102,7 +108,7 @@ const populateSelectize = (selection, containerId, addItems) => {
         });
 
         if (addItems) {
-            selectizeSel.addItem(el)
+            selectizeSel.addItem(el);
         }
     }
 };
@@ -128,9 +134,9 @@ const toggleGroupSelection = (groupName, type) => {
     let dataArray;
 
     if (type === "highlightSampleVal") {
-        dataArray = dataHighlights.samples
+        dataArray = dataHighlights.samples;
     } else {
-        dataArray = dataHighlights.projects
+        dataArray = dataHighlights.projects;
     }
 
     // Make sure all toggles are off before
@@ -163,13 +169,13 @@ const addGroupButton = (containerId, val, type, color) => {
     const containerSel = $("#" + containerId);
 
     // Create template
-    const highlightTemplate = '<div class="highlight-btn-group btn-group btn-group-justified" id="{{ val }}">' +
-        '<button onclick="toggleGroupSelection(\'{{val}}\', \'{{ type }}\')" style="width: 80%; border-left: 10px solid {{ col }}; overflow: hidden" class="btn btn-default main-toggle" data-toggle="button">{{ val }}</button>' +
-        '<button onclick="removeHighlightGroup(\'{{ containerId }}\', \'{{ val }}\', \'{{ type }}\')" style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
-        '</div>';
+    const highlightTemplate = "<div class='highlight-btn-group btn-group btn-group-justified' id='{{ val }}'>" +
+        "<button onclick='toggleGroupSelection(\"{{val}}\", \"{{ type }}\")' style='width: 80%; border-left: 10px solid {{ col }}; overflow: hidden' class='btn btn-default main-toggle' data-toggle='button'>{{ val }}</button>" +
+        "<button onclick='removeHighlightGroup(\"{{ containerId }}\", \"{{ val }}\", \"{{ type }}\")' style='width: 15%' class='btn btn-danger'><i class='fa fa-times' aria-hidden='true'></i></button>" +
+        "</div>";
 
     const highlightDiv = Mustache.to_html(highlightTemplate, {
-        containerId: containerId,
+        containerId,
         val,
         type,
         col: color
@@ -193,18 +199,18 @@ const highlightsModal = (type) => {
 
     if (type === "highlightSampleVal") {
         title = "Sample highlights";
-        dataArray = dataHighlights.samples
+        dataArray = dataHighlights.samples;
     } else {
         title = "Project highlights";
-        dataArray = dataHighlights.projects
+        dataArray = dataHighlights.projects;
     }
 
     // If there are groups reveal the selectize element
     const sampleContainer = $("#sampleContainer");
     if (dataArray.length > 0) {
-        sampleContainer.css({"display": "block"})
+        sampleContainer.css({"display": "block"});
     } else {
-        sampleContainer.css({"display": "none"})
+        sampleContainer.css({"display": "none"});
     }
 
     let toggleGroup = true;
@@ -263,27 +269,26 @@ const removeHighlightGroup = (containerDiv, targetDiv, type) => {
     // Remove group from report object
     let dataArray;
     if (type === "highlightSampleVal") {
-        dataArray = dataHighlights.samples
+        dataArray = dataHighlights.samples;
     } else {
-        dataArray = dataHighlights.projects
+        dataArray = dataHighlights.projects;
     }
     const filteredArray = dataArray.filter((el) => {
         if (el.groupName !== targetDiv){
-            return el
+            return el;
         }
     });
 
     // Update report data structure and highlight counter
     if (type === "highlightSampleVal") {
         dataHighlights.samples = filteredArray;
-        $("#sampleHighlightCounter").html(`(${filteredArray.length})`)
+        $("#sampleHighlightCounter").html(`(${filteredArray.length})`);
     } else {
         dataHighlights.projects = filteredArray;
-        $("#projectHighlightCounter").html(`(${filteredArray.length})`)
+        $("#projectHighlightCounter").html(`(${filteredArray.length})`);
     }
 
     // If no active groups left, hide selectize input
-    console.log(filteredArray.length);
     if (filteredArray.length < 1) {
         $("#sampleContainer").css({"display": "none"});
     }
@@ -294,7 +299,7 @@ const removeHighlightGroup = (containerDiv, targetDiv, type) => {
     }
 
     // Trigger selections
-    triggerHighlights(type)
+    triggerHighlights(type);
 
 };
 
@@ -312,7 +317,7 @@ const showLabel = (helpSelector, msg, type) => {
         iconSpan = "<span><i class='fa fa-lg fa-times'></i></span> ";
     } else {
         helpSelector.addClass("text-success");
-        iconSpan = "<span><i class='fa fa-lg fa-check'></i></span> "
+        iconSpan = "<span><i class='fa fa-lg fa-check'></i></span> ";
     }
 
     helpSelector.html(iconSpan + msg);
@@ -320,7 +325,7 @@ const showLabel = (helpSelector, msg, type) => {
 
     clearTimeout(labelTimer);
     labelTimer = setTimeout(() => {
-        helpSelector.css({"opacity": 0})
+        helpSelector.css({"opacity": 0});
     }, 5000);
 
 };
@@ -356,7 +361,7 @@ const getSampleMappings = async (highlightArray, type) => {
             // Collect all samples for that project id
             for (const [sample, projectId] of projectSampleMap.entries()) {
                 if (projectId.includes(currentId)) {
-                    finalArray.push(`${projectId}.${sample}`)
+                    finalArray.push(`${projectId}.${sample}`);
                 }
             }
         }
@@ -431,7 +436,7 @@ const addHighlight = async (sourceId) => {
 
     // Create selection object
     const selection = {
-        groupName: groupName,
+        groupName,
         samples: highlightFinalArray,
         userSamples: highlightArray,
         color: highlightColor,
@@ -451,7 +456,7 @@ const addHighlight = async (sourceId) => {
     // Trigger highlights for current selection
     triggerHighlights(sourceId);
 
-    return showLabel(helpId, "Group successfully added", "success")
+    return showLabel(helpId, "Group successfully added", "success");
 
 };
 
