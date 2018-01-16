@@ -1,4 +1,11 @@
-/*global innucaTable, data, Highcharts */
+/*global
+    innucaTable,
+    data,
+    Highcharts,
+    contigBoundaries,
+    WebuiPopovers,
+
+*/
 
 let windowSize;
 
@@ -286,7 +293,7 @@ const getAbricateReport = async (sample, xbars) => {
                     coverage: x.coverage,
                     ident: x["identity"],
                     windowSize
-                }});
+                };});
 
                 categories.push(key);
                 seriesFinal.push({name: key, data: tempData, pointWidth: 12, pointRange: 0});
@@ -294,8 +301,7 @@ const getAbricateReport = async (sample, xbars) => {
             }
         }
     }
-    // return {categories, seriesData}
-    return {categories, seriesFinal}
+    return {categories, seriesFinal};
 };
 
 
@@ -421,7 +427,7 @@ const sizeDistributionPlot = (sample) => {
 function syncExtremes(e) {
 
     if (!e.animation){
-        e.animation = false
+        e.animation = false;
     }
 
     let thisChart = this.chart;
@@ -463,16 +469,16 @@ const buildGauge = (value, container, title) => {
             style: {"fontSize": "11px", fontWeight: "bold"}
         },
         pane: {
-            center: ['50%', '70%'],
-            size: '130%',
+            center: ["50%", "70%"],
+            size: "130%",
             startAngle: -90,
             endAngle: 90,
             background: {
-                backgroundColor: '#fff',
-                innerRadius: '75%',
-                outerRadius: '100%',
-                shape: 'arc',
-                borderColor: 'transparent'
+                backgroundColor: "#fff",
+                innerRadius: "75%",
+                outerRadius: "100%",
+                shape: "arc",
+                borderColor: "transparent"
             }
         },
         tooltip: {
@@ -535,7 +541,7 @@ const populateAbricateReport = (el) => {
     $("#abr-gene-length").html(Math.round((el.x2 - el.x) * el.windowSize), 0);
     $("#abr-gene-position").html(`${Math.round(el.x * el.windowSize)} - ${Math.round(el.x2 * el.windowSize)}`);
     $("#abr-database").html(el.yCategory);
-    $("#abr-accession").html(el.accession)
+    $("#abr-accession").html(el.accession);
 
 };
 
@@ -546,7 +552,7 @@ const abricatePopover = (el) => {
     buildGauge(el.ident, "identityGauge", "identity");
     populateAbricateReport(el);
 
-    return function(){return $(".abricate-popover").html()}
+    return function(){return $(".abricate-popover").html();};
 
 };
 
@@ -655,7 +661,7 @@ const slidingReport = (sample) => {
                             }
                         }
                     }]
-                })
+                });
         });
         return res;
     });
@@ -773,13 +779,13 @@ const abricateZoomGene = () => {
 
             // Get index of series for the database
             const seriesIdx = chart.series.findIndex(
-                x => x.name === geneOpts.database
+                (x) => x.name === geneOpts.database
             );
             const pointIdx = chart.series[seriesIdx].data.findIndex(
-                x => x.gene === geneName
+                (x) => x.gene === geneName
             );
 
-            setTimeout(() => {chart.series[seriesIdx].data[pointIdx].firePointEvent("click")}, 500);
+            setTimeout(() => {chart.series[seriesIdx].data[pointIdx].firePointEvent("click");}, 500);
 
         }
     });
@@ -864,7 +870,7 @@ const abricateNavigation = (data) => {
         labelField: "gene",
         valueField: "id",
         optgroupField: "database",
-        optgroupLabelField: 'name',
+        optgroupLabelField: "name",
         optgroupValueField: "id",
         searchField: ["gene"],
         plugins: ["optgroup_columns"]
@@ -914,7 +920,7 @@ const abricateReport = (sample, res) => {
                         };
                     },
                     pointFormatter() {
-                        return `<span>Gene: <b>${this.gene}</b> (Click for details)</span>`
+                        return `<span>Gene: <b>${this.gene}</b> (Click for details)</span>`;
                     },
                     borderWidth: 0,
                     backgroundColor: "none",
@@ -1015,13 +1021,13 @@ const sincronizedSlidingWindow = async (sample) => {
                         // Get nearest point for current series
 
                         if (!s) {
-                            continue
+                            continue;
                         }
 
                         point = s.searchPoint(event, true);
 
                         if (!point) {
-                            continue
+                            continue;
                         }
 
                         // Get corrected coordinates for crosshairs
