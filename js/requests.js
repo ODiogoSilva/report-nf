@@ -1,4 +1,4 @@
-
+/*globals reportsRoute */
 
 const getSpecies = async () => {
     return await $.get(

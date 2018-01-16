@@ -1,4 +1,4 @@
-/*globals dataFilters, projectIdMap, initReports */
+/*globals dataFilters, projectIdMap, initReports, showLabel */
 
 /**
  * Tests for the presence of a regular expression in any element of an array

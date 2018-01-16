@@ -1,4 +1,4 @@
-/*globals dataHighlights */
+/*globals dataHighlights, Mustache, charts, projectSampleMap */
 
 /**
  * Creates a popover object associated with a targetId and using a templateId

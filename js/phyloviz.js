@@ -1,3 +1,4 @@
+/*globals fetchJob, treesTable */
 
 /**
  * Function to fetch job status of PHYLOViZ Online

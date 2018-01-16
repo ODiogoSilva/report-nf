@@ -277,7 +277,7 @@ const getAbricateReport = async (sample, xbars) => {
         if (pid === sample && el.report_json.task === "abricate") {
             for (const [key, val] of Object.entries(el.report_json.plotData)) {
 
-                tempData = Array.from(val, (x) => {return {
+                const tempData = Array.from(val, (x) => {return {
                     x: convertXPosition(x.seqRange[0], x.contig, xbars),
                     x2: convertXPosition(x.seqRange[1], x.contig, xbars),
                     y: counter,

@@ -1,3 +1,4 @@
+/*global Table */
 
 //Route to get the reports from
 const reportsRoute = "https://192.92.149.157/";

@@ -1,3 +1,13 @@
+/*globals
+    reportInfo,
+    getReportInfo,
+    getStrainsMetadata,
+    dataFilters,
+    data,
+    dataHighlights,
+    initReports,
+*/
+
 /**
  * This function is used to ensure that only one of the
  * div elements of the main toggle buttons in the
