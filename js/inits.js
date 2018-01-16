@@ -1,11 +1,15 @@
 /*globals
-    reportInfo,
+    addFilterButton,
+    data,
+    dataFilters,
+    dataHighlights,
+    getReportByFilter,
     getReportInfo,
     getStrainsMetadata,
-    dataFilters,
-    data,
-    dataHighlights,
+    Highcharts,
     initReports,
+    projectIdMap
+    reportInfo,
 */
 
 /**
@@ -44,7 +48,7 @@ const initHomeButtonsToggle = () => {
         btDiv.on("click", () => {
 
             resetHomeOpts();
-            targetDiv.css({"display": "inline-block"})
+            targetDiv.css({"display": "inline-block"});
 
         });
     }
@@ -93,7 +97,7 @@ const populateSelectPHYLOViZ = (container, projectsData) => {
  * @returns {string} - Date string in dd-mm-yyyy
  */
 const convertDate = (date) => {
-    return date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+    return date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
 };
 
 /**
@@ -104,14 +108,14 @@ const convertDate = (date) => {
  */
 const convertDateInverse = (date) => {
     let dd = date.getDate();
-    let mm = date.getMonth()+1;
+    let mm = date.getMonth() + 1;
     if(dd<10){
-        dd='0'+dd;
+        dd="0" + dd;
     }
     if(mm<10){
-        mm='0'+mm;
+        mm="0" + mm;
     }
-    return date.getFullYear() + '-' + mm + '-' + dd
+    return date.getFullYear() + "-" + mm + "-" + dd
 };
 
 
@@ -266,7 +270,7 @@ const initProjectSelection = () => {
             // Display filter elements and submission button
             $("#submitDiv").css({display: "inline-block"});
             $("#homeFilters").css({display: "block"});
-            $(".pcounter").css({display: "inline-block"})
+            $(".pcounter").css({display: "inline-block"});
         } else {
             // When no valid projects are selected, hide the filter elements
             // and submission button
@@ -302,9 +306,7 @@ const initNavSelection = () => {
             // Update project and sample number indicators
             populateProjectIndicator(reportInfo);
         }
-
-    })
-
+    });
 };
 
 
@@ -321,7 +323,7 @@ const getMetadataMapping = (reportInfo) => {
     const projectStr = projectAr.join();
     const sampleStr = sampleAr.join();
 
-    return [projectStr, sampleStr]
+    return [projectStr, sampleStr];
 
 };
 
@@ -374,12 +376,10 @@ const submissionRoutine = async (selectorIds) => {
         }
     );
 
-        console.log(resMetadata);
-
     return {
         results: res,
         metadataResults: resMetadata
-    }
+    };
 
 };
 
@@ -444,7 +444,7 @@ const initResubmit = (scope) => {
 
         await initReports(scope, res, false);
 
-        loadingGif.css({display: "none"})
+        loadingGif.css({display: "none"});
 
     })
 };
@@ -497,7 +497,7 @@ const updateSliders = () => {
         sel.slider({max: dataFilters[el].max});
         min = dataFilters[el].range[0] ? dataFilters[el].range[0] : 0;
         max = dataFilters[el].range[1] ? dataFilters[el].range[1] : dataFilters[el].max;
-        sel.slider("setValue", [min, max])
+        sel.slider("setValue", [min, max]);
     }
 
 };
@@ -530,7 +530,6 @@ const updateReportInfo = (dataJSON) => {
     for (const el of dataJSON) {
         if (!projectIds.includes(el.project_id)) {
             projectIds.push(el.project_id);
-            console.log(el.project_id)
         }
     }
 
