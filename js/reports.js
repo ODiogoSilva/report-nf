@@ -1,4 +1,4 @@
-/*global angular, ChartManager, Table, filterJson, getSpecies, getProjects, getReportsByProject, downloadProfiles, updateFilterObject*/
+/*global angular, ChartManager, Table, filterJson, getSpecies, getProjects, getReportsByProject, downloadProfiles, updateFilterObject*, initNavSelection, initProjectSubmission, initSampleSpecificModal, showTree, WebuiPopovers /
 const app = angular.module("reportsApp", []);
 
 /**

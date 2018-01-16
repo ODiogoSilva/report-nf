@@ -1,3 +1,5 @@
+/*globals dataHighlights */
+
 /**
  * Creates a popover object associated with a targetId and using a templateId
  * The templateId must be a defined div with the provided id
@@ -199,7 +201,7 @@ const highlightsModal = (type) => {
     // Set modal title
     $("#highlightModalTitle").html(title);
 
-    $("#highlightsModal").modal().show()
+    $("#highlightsModal").modal().show();
 
 };
 
@@ -293,7 +295,7 @@ const showLabel = (helpSelector, msg, type) => {
     clearTimeout(labelTimer);
     labelTimer = setTimeout(() => {
         helpSelector.css({"opacity": 0})
-    }, 5000)
+    }, 5000);
 
 };
 

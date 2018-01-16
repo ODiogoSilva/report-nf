@@ -1,4 +1,4 @@
-/*globals Highcharts, bdFastqcBaseSequenceQuality, HighlightLineSeries, bdFastqcSequenceQuality, bdFastqcGcContent, bdFastqcSequenceLength, bdFastqcNContent, assemblyContigSize, highlightBoxPlot */
+/*globals Highcharts, bdFastqcBaseSequenceQuality, HighlightLineSeries, bdFastqcSequenceQuality, bdFastqcGcContent, bdFastqcSequenceLength, bdFastqcNContent, assemblyContigSize, highlightBoxPlot, assemblyContigCoverage */
 
 /**
  * Main chart manager and interface for:

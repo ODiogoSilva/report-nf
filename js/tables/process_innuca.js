@@ -229,7 +229,7 @@ const parseReport = (reportJSON) => {
             for (const cell of jr.tableRow) {
 
                 if (cell.table !== "assembly") {
-                    continue
+                    continue;
                 }
 
                 const header = cell.header.replace("_", " ");

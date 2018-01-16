@@ -653,9 +653,9 @@ const slidingReport = (sample) => {
                     }]
                 })
         });
-        return res
+        return res;
     });
-    return finalRes
+    return finalRes;
 };
 
 

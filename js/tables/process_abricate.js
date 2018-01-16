@@ -93,8 +93,8 @@ const createAbricateData = (parsedObj) => {
         });
 
         // Convert Map object data type
-        v.forEach((v, k) => { dataObject[k] = v });
-        data.push(dataObject)
+        v.forEach((v, k) => {dataObject[k] = v;});
+        data.push(dataObject);
     }
 
     const mappings = parsedObj.headers.map((x) => {
