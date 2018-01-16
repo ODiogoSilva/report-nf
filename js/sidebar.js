@@ -87,23 +87,6 @@ const addFilterButton = (opts) => {
 
 };
 
-
-const updateHighlightOptions = (res, clear) => {
-
-    let sampleSelection = [];
-    let projectSelection = [];
-
-    for (const el of res.filteredJson) {
-        sampleSelection.push(el.sample_name);
-        projectSelection.push(projectIdMap.get(parseInt(el.project_id)));
-    }
-
-    populateSelectize(sampleSelection, "highlightSampleVal");
-    populateSelectize(projectSelection, "highlightProjectVal");
-
-};
-
-
 const populateSelectize = (selection, containerId, addItems) => {
 
     const selectizeSel = $("#" + containerId)[0].selectize;
@@ -122,6 +105,20 @@ const populateSelectize = (selection, containerId, addItems) => {
             selectizeSel.addItem(el)
         }
     }
+};
+
+const updateHighlightOptions = (res, clear) => {
+
+    let sampleSelection = [];
+    let projectSelection = [];
+
+    for (const el of res.filteredJson) {
+        sampleSelection.push(el.sample_name);
+        projectSelection.push(projectIdMap.get(parseInt(el.project_id)));
+    }
+
+    populateSelectize(sampleSelection, "highlightSampleVal");
+    populateSelectize(projectSelection, "highlightProjectVal");
 
 };
 
@@ -157,6 +154,28 @@ const toggleGroupSelection = (groupName, type) => {
     }
 
     populateSelectize(selection, "highlightModalSelection", true);
+
+};
+
+
+const addGroupButton = (containerId, val, type, color) => {
+
+    const containerSel = $("#" + containerId);
+
+    // Create template
+    const highlightTemplate = '<div class="highlight-btn-group btn-group btn-group-justified" id="{{ val }}">' +
+        '<button onclick="toggleGroupSelection(\'{{val}}\', \'{{ type }}\')" style="width: 80%; border-left: 10px solid {{ col }}; overflow: hidden" class="btn btn-default main-toggle" data-toggle="button">{{ val }}</button>' +
+        '<button onclick="removeHighlightGroup(\'{{ containerId }}\', \'{{ val }}\', \'{{ type }}\')" style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+        '</div>';
+
+    const highlightDiv = Mustache.to_html(highlightTemplate, {
+        containerId: containerId,
+        val,
+        type,
+        col: color
+    });
+
+    containerSel.append(highlightDiv);
 
 };
 
@@ -202,9 +221,37 @@ const highlightsModal = (type) => {
     $("#highlightModalTitle").html(title);
 
     $("#highlightsModal").modal().show();
-
 };
 
+
+/**
+ * Triggers the highlights throughout the reports. First, a selection array
+ * is built from the active sample and project highlights. The samples take
+ * precedence, which means that they are the last to be added into the array.
+ * Then, the re-drawing of the charts is issued only once with the
+ * appropriate method of the ChartManager class.
+ */
+const triggerHighlights = async () => {
+
+    let selection = dataHighlights.projects.concat(dataHighlights.samples);
+
+    // This will filter the selection array to remove duplicate sample names
+    // (when they are specified more that one time) and retain only the
+    // last highlight.
+    const selectionMap = new Map();
+    for (const el of selection){
+        for (const sample of el.samples) {
+            selectionMap.set(sample, {
+                color: el.color,
+                groupName: el.groupName,
+                type: el.type
+            })
+        }
+    }
+
+    charts.highlightCharts(selectionMap);
+
+};
 
 const removeHighlightGroup = (containerDiv, targetDiv, type) => {
 
@@ -251,27 +298,6 @@ const removeHighlightGroup = (containerDiv, targetDiv, type) => {
 
 };
 
-
-const addGroupButton = (containerId, val, type, color) => {
-
-    const containerSel = $("#" + containerId);
-
-    // Create template
-    const highlightTemplate = '<div class="highlight-btn-group btn-group btn-group-justified" id="{{ val }}">' +
-        '<button onclick="toggleGroupSelection(\'{{val}}\', \'{{ type }}\')" style="width: 80%; border-left: 10px solid {{ col }}; overflow: hidden" class="btn btn-default main-toggle" data-toggle="button">{{ val }}</button>' +
-        '<button onclick="removeHighlightGroup(\'{{ containerId }}\', \'{{ val }}\', \'{{ type }}\')" style="width: 15%" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>' +
-        '</div>';
-
-    const highlightDiv = Mustache.to_html(highlightTemplate, {
-        containerId: containerId,
-        val,
-        type,
-        col: color
-    });
-
-    containerSel.append(highlightDiv);
-
-};
 
 let labelTimer;
 const showLabel = (helpSelector, msg, type) => {
@@ -429,32 +455,3 @@ const addHighlight = async (sourceId) => {
 
 };
 
-
-/**
- * Triggers the highlights throughout the reports. First, a selection array
- * is built from the active sample and project highlights. The samples take
- * precedence, which means that they are the last to be added into the array.
- * Then, the re-drawing of the charts is issued only once with the
- * appropriate method of the ChartManager class.
- */
-const triggerHighlights = async () => {
-
-    let selection = dataHighlights.projects.concat(dataHighlights.samples);
-
-    // This will filter the selection array to remove duplicate sample names
-    // (when they are specified more that one time) and retain only the
-    // last highlight.
-    const selectionMap = new Map();
-    for (const el of selection){
-        for (const sample of el.samples) {
-            selectionMap.set(sample, {
-                color: el.color,
-                groupName: el.groupName,
-                type: el.type
-            })
-        }
-    }
-
-    charts.highlightCharts(selectionMap);
-
-};

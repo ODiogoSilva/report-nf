@@ -1,3 +1,37 @@
+
+/**
+ * Function to fetch job status of PHYLOViZ Online
+ * @param redis_job_id
+ */
+const fetchTreeJob = async (redisJobId) => {
+
+    const response = await fetchJob(redisJobId);
+
+    if (response.status == true) {
+        clearInterval(intervalCheckTree[redisJobId])
+        message = "Your tree is ready to be visualized! Go to the PHYLOViZ Table at the Reports menu.";
+        if (response.result.message != undefined) {
+            message = response.result.message
+        }
+
+        ( async () => {
+            trees = await getPHYLOViZTrees();
+            const resultsCh = await treesTable.processTrees(trees, true);
+            await treesTable.remakeTable(resultsCh.data);
+        } )();
+
+        modalAlert(message, function () {
+
+        });
+    }
+    else if (response.status == false) {
+        clearInterval(intervalCheckTree[redisJobId])
+        modalAlert("There was an error when producing the tree at PHYLOViZ Online.", function () {
+
+        });
+    }
+};
+
 /*
     File where all functions to process data to send to PHYLOViZ Online will be available.
  */
@@ -39,38 +73,4 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
         fetchTreeJob(res);
     }, 5000);
 
-};
-
-
-/**
- * Function to fetch job status of PHYLOViZ Online
- * @param redis_job_id
- */
-const fetchTreeJob = async (redisJobId) => {
-
-    const response = await fetchJob(redisJobId);
-
-    if (response.status == true) {
-        clearInterval(intervalCheckTree[redisJobId])
-        message = "Your tree is ready to be visualized! Go to the PHYLOViZ Table at the Reports menu.";
-        if (response.result.message != undefined) {
-            message = response.result.message
-        }
-
-        ( async () => {
-            trees = await getPHYLOViZTrees();
-            const resultsCh = await treesTable.processTrees(trees, true);
-            await treesTable.remakeTable(resultsCh.data);
-        } )();
-
-        modalAlert(message, function () {
-
-        });
-    }
-    else if (response.status == false) {
-        clearInterval(intervalCheckTree[redisJobId])
-        modalAlert("There was an error when producing the tree at PHYLOViZ Online.", function () {
-
-        });
-    }
 };

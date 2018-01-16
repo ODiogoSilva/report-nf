@@ -447,26 +447,6 @@ function syncExtremes(e) {
     }
 }
 
-const abricatePopover = (el) => {
-
-    buildGauge(el.coverage, "coverageGauge", "coverage");
-    buildGauge(el.ident, "identityGauge", "identity");
-    populateAbricateReport(el);
-
-    return function(){return $(".abricate-popover").html()}
-
-};
-
-const populateAbricateReport = (el) => {
-
-    $("#abr-gene-name").html(el.gene);
-    $("#abr-gene-length").html(Math.round((el.x2 - el.x) * el.windowSize), 0);
-    $("#abr-gene-position").html(`${Math.round(el.x * el.windowSize)} - ${Math.round(el.x2 * el.windowSize)}`);
-    $("#abr-database").html(el.yCategory);
-    $("#abr-accession").html(el.accession)
-
-};
-
 
 const buildGauge = (value, container, title) => {
 
@@ -547,6 +527,30 @@ const buildGauge = (value, container, title) => {
         }]
     });
 };
+
+
+const populateAbricateReport = (el) => {
+
+    $("#abr-gene-name").html(el.gene);
+    $("#abr-gene-length").html(Math.round((el.x2 - el.x) * el.windowSize), 0);
+    $("#abr-gene-position").html(`${Math.round(el.x * el.windowSize)} - ${Math.round(el.x2 * el.windowSize)}`);
+    $("#abr-database").html(el.yCategory);
+    $("#abr-accession").html(el.accession)
+
+};
+
+
+const abricatePopover = (el) => {
+
+    buildGauge(el.coverage, "coverageGauge", "coverage");
+    buildGauge(el.ident, "identityGauge", "identity");
+    populateAbricateReport(el);
+
+    return function(){return $(".abricate-popover").html()}
+
+};
+
+
 
 const slidingReport = (sample) => {
 
