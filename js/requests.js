@@ -1,4 +1,7 @@
-/*globals reportsRoute */
+/*globals
+    reportsRoute,
+    USERID
+*/
 
 const getSpecies = async () => {
     return await $.get(
@@ -21,9 +24,9 @@ const getReportsByProject = async (projectIds) => {
         reportsRoute+"app/api/v1.0/reports/project/",
         { project_id: projectIdsString },
     );
-    res = res.concat(info)
+    res = res.concat(info);
 
-    return res
+    return res;
 };
 
 const getReportInfo = async (projectIds) => {
@@ -51,7 +54,6 @@ const getReportByFilter = async (filter) => {
 */
 
 const getReportByFilter = async (filter) => {
-    console.log(filter);
     return await $.get(
         reportsRoute+"app/api/v1.0/reports/project/filter",
         filter,
