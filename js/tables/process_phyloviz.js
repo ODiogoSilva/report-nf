@@ -30,8 +30,8 @@ const processTrees = (treesReports) => {
         {
             data: "active",
             render(data, type, row) {
-                if (type === 'display') {
-                    return '<input type="checkbox" class="editor-active">';
+                if (type === "display"){
+                    return "<input type='checkbox' class='editor-active'>";
                 }
                 return data;
             },
@@ -73,7 +73,7 @@ const processTrees = (treesReports) => {
  */
 const showTree = (selTreeData) => {
     if (selTreeData.length > 0){
-        window.open(selTreeData[0], '_blank');
+        window.open(selTreeData[0], "_blank");
     }
     else{
         modalAlert("Select a tree first", () => {});

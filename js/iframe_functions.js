@@ -7,10 +7,7 @@ const runFromParent = () => {
         window.parent.setUpFrame();
     }
     catch(e){
-        console.log("NOT RUNNING FROM IFRAME");
-
     }
-    console.log(USERNAME, USERID);
     return true;
 };
 

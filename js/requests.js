@@ -40,7 +40,7 @@ const getReportInfo = async (projectIds) => {
     );
     res = res.concat(info);
 
-    return res
+    return res;
 };
 
 /*
@@ -61,7 +61,6 @@ const getReportByFilter = async (filter) => {
 };
 
 const getStrainsMetadata = async (filter) => {
-    console.log(filter);
     return await $.get(
         reportsRoute+"app/api/v1.0/strains/name",
         filter,

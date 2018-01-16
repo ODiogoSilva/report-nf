@@ -64,7 +64,9 @@ const processMetadata = (reportsData) => {
     ];
 
     metadataHeaders.map((x) => {
-        if (x !== "" && x !== "species_id" && x !== "id") metadataColumnMapping.push({"data": x, "title":titleMapping[x]});
+        if (x !== "" && x !== "species_id" && x !== "id") {
+            metadataColumnMapping.push({"data": x, "title":titleMapping[x]});
+        }
     });
 
     /* Get data for each strain to add to the table */

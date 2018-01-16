@@ -369,7 +369,7 @@ const createTableData = (parsedJson, setMax) => {
         data,
         mappings,
         qcMap
-    }
+    };
 
 };
 

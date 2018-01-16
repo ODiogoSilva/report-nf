@@ -701,7 +701,7 @@ const prokkaReport = (sample, res) => {
             credits: {
                 enabled: false
             },
-        })
+        });
 };
 
 
@@ -1037,7 +1037,7 @@ const sincronizedSlidingWindow = async (sample) => {
 
                         chart.renderer.path(["M", crossX, crossY, "V", crossOffSet])
                             .attr({"stroke-width": 5, stroke: point.color, id:s.userOptions.name, zIndex: -1, opacity: .7})
-                            .add()
+                            .add();
                     }
 
                 } else {

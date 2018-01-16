@@ -38,9 +38,9 @@ const parseAbricateReport = (data) => {
                 }
 
                 if (!columnBars.hasOwnProperty(header)) {
-                    columnBars[header] = [cell.value]
+                    columnBars[header] = [cell.value];
                 } else {
-                    columnBars[header].push(cell.value)
+                    columnBars[header].push(cell.value);
                 }
             }
         }
@@ -53,7 +53,7 @@ const parseAbricateReport = (data) => {
         headers,
         columns,
         columnBars
-    }
+    };
 
 };
 
@@ -84,9 +84,9 @@ const createAbricateData = (parsedObj) => {
                     const prop = (parseFloat(v.get(col)) / maxValue) * 100;
                     const sampleId = $(v.get("id")).html();
                     const sampleName = $(v.get("Sample")).html();
-                    v.set(col, `<div onclick="showAbricateModal('${sampleId}', '${sampleName}')" class='table-cell table-link'><div class='table-bar' style='width:${prop}%'></div>${v.get(col)}</div>`)
+                    v.set(col, `<div onclick="showAbricateModal('${sampleId}', '${sampleName}')" class='table-cell table-link'><div class='table-bar' style='width:${prop}%'></div>${v.get(col)}</div>`);
                 } else {
-                    v.set(col, `<div class='table-cell'>${v.get(col)} </div>`)
+                    v.set(col, `<div class='table-cell'>${v.get(col)} </div>`);
                 }
 
             }

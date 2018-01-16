@@ -288,7 +288,7 @@ app.controller("reportsController", async ($scope) => {
             $(this).tab("show");
         });
 
-        $("#modalGraphs").on("hidden.bs.modal scroll", () => {WebuiPopovers.hideAll()});
+        $("#modalGraphs").on("hidden.bs.modal scroll", () => {WebuiPopovers.hideAll();});
 
         /**
          *  This function set the trigger for changes in the input loaded from a file in the Home page

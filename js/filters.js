@@ -1,4 +1,9 @@
-/*globals dataFilters, projectIdMap, initReports, showLabel */
+/*globals
+    dataFilters,
+    projectIdMap,
+    initReports,
+    showLabel
+*/
 
 /**
  * Tests for the presence of a regular expression in any element of an array
@@ -185,9 +190,9 @@ const removeDataFilters = (popoverId, val) => {
     // Determines from which property is the val going to be removed
     let objId;
     if (popoverId === "active_filters_name") {
-        objId = "sample"
+        objId = "sample";
     } else if (popoverId === "active_filters_projectid") {
-        objId = "projectId"
+        objId = "projectId";
     }
 
     // Removes val from both active and temp arrays
