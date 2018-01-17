@@ -59,6 +59,24 @@ const initReports = (scope, globalResults, append = true) => {
     // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve, reject) => {
         const r = filterJson(results, metadataResults, dataFilters);
+        taskArray = [];
+
+        //Add tasks list to array
+        r.filteredJson.map((report) => {
+            if(report.report_json.task !== undefined){
+                if (!strainTableValDict.hasOwnProperty(report.sample_name)){
+                    strainTableValDict[report.sample_name] = {};
+                }
+
+                if (report.report_json.hasOwnProperty("tableRow")){
+                    if(!taskArray.includes(report.report_json.task)){
+                        taskArray.push(report.report_json.task);
+                    }
+                    strainTableValDict[report.sample_name][report.report_json.task] = report.report_json.tableRow;
+                }
+
+            }
+        });
         // Only resolve the promise when the results array is not empty
         if (r.length !== 0) {
             resolve(r);
@@ -162,8 +180,6 @@ const modalAlert = (text, callback) => {
 /* Angular controller to control the DOM elements from the index.html file */
 app.controller("reportsController", async ($scope) => {
 
-    //Get info in case of app on iframe
-    runFromParent();
 
     $scope.graph1Name = "Assembly charts";
     $scope.graph2Name = "Graph 2";
@@ -214,6 +230,9 @@ app.controller("reportsController", async ($scope) => {
     // Query information about available species and projects
     const spResults = await getSpecies();
     const pResults = await getProjects();
+
+    //Get info in case of app on iframe
+    runFromParent();
 
     //
     // GENERAL INITS
@@ -288,6 +307,11 @@ app.controller("reportsController", async ($scope) => {
         //Show PHYLOViZ form to perform the request to the platform
         $("#phyloviz_button").off("click").on("click", () => {
             $("#sendToPHYLOViZModal").modal("show");
+        });
+
+        //Event to trigger click Sign In
+        $("#formSignIn").on("submit", () => {
+            processAuth();
         });
 
         //Event to show phyloviz tree

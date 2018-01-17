@@ -103,6 +103,13 @@ const fetchJob = async (redisJobId) => {
         {job_id: redisJobId},
     );
 
+};
 
+//Login function
+const loginPlatform = async (data) => {
+    return await $.post(
+        reportsRoute+"app/api/v1.0/user/external/login/",
+        data,
+    );
 };
 

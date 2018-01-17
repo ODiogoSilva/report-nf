@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <div class="col-md-12 banner-row" style="text-align: center">
+        <div id="mainBanner" class="col-md-12 banner-row" style="text-align: center">
             <div class="btn-group" data-toggle="buttons" style="width: 80%">
                 <label id="btProjectSelect" class="btn btn-primary primary-bts" data-target="projectSelect"><input type="radio">Select project</label>
                 <label id="btProjectLoad" class="btn btn-primary primary-bts" data-target="projectLoad"><input type="radio">Load from file</label>
@@ -73,6 +73,41 @@
                 </div>
             </div>
             <div id="alertDiv" style="display:none;">
+        </div>
+        </div>
+
+        <div id="signInDiv" class="col-md-4 col-md-offset-4">
+            <h2>Sign In</h2>
+            <hr>
+            <form class="form-horizontal" role="form" id="formSignIn">
+                <div class="form-group">
+                    <label for="inputUsername" class="col-md-3 control-label">Username</label>
+                    <div class="col-md-9">
+                        <input class="form-control" id="inputUsername" placeholder="Username" name="username" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="col-md-3 control-label">Password</label>
+                    <div class="col-md-9">
+                        <input class="form-control" id="inputPassword" placeholder="Password" name="password" type="password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-9">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"> I agree with the <a data-toggle="modal" href="#tcModal">Terms and Conditions</a>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn btn-inverse">Sign in</button>
+                    </div>
+                </div>
+            </form>
+
         </div>
 
         <!--<div class="row banner-row">-->

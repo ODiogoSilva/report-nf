@@ -22,6 +22,13 @@ let data = null;
 
 let reportInfo = null;
 
+// Array with all available tasks
+let taskArray = [];
+
+// Object with strain and table row for each task
+let strainTableValDict = {};
+let activeAdditionalSel = {};
+
 //array with trees inofmration
 let trees = null;
 

@@ -279,3 +279,10 @@ div.dataTables_wrapper {
 #modalAlert {
     z-index: 999999999;
 }
+
+.active-btn, .active-btn:active, .active-btn:focus{
+    background-color: #5cb85c;
+}
+
+
+

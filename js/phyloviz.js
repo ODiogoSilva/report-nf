@@ -58,11 +58,61 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
         return d.project_id+":"+d.pipeline_id+":"+d.process_id;
     });
 
+    const selectedSampleNames = $.map(chewbbacaTable.tableObj.rows(".selected").data(), (d) => {
+        return d.sample_name;
+    });
+
+    let globalAdditionalData = {};
+
+    for (const task of Object.keys(activeAdditionalSel)){
+
+        if (activeAdditionalSel[task][0] === true){
+
+            for(const sample of selectedSampleNames){
+                const procedure = activeAdditionalSel[task][1];
+                if(!globalAdditionalData.hasOwnProperty(sample)){
+                    globalAdditionalData[sample] = {};
+                }
+
+                if(strainTableValDict[sample].hasOwnProperty(procedure)){
+
+                    let abricateResults = [];
+                    const selectedGenes = activeAdditionalSel[task][2];
+
+                    for (const el of strainTableValDict[sample][procedure]){
+                        if(el.table === "abricate"){
+                            for (const gene of selectedGenes){
+                                if (el.geneList.includes(gene)){
+                                    abricateResults.push(gene);
+                                }
+                            }
+                        }
+                        else {
+                            globalAdditionalData[sample][el.header] = el.value;
+                        }
+                    }
+
+                    if (procedure === "abricate") {
+                        abricateResults = Array.from(new Set(abricateResults));
+                        globalAdditionalData[sample]["Resistance Genes"] = abricateResults.join();
+                        console.log(abricateResults);
+                    }
+                }
+            }
+        }
+    }
+
+
+    console.log(globalAdditionalData);
+    console.log(selectedSampleNames);
+
+    console.log(activeAdditionalSel);
+
     const data = {
         job_ids: selectedJobIds.join(","),
         dataset_name: $("#modal_phyloviz_dataset_name").val(),
         dataset_description: $("#modal_phyloviz_dataset_description").val(),
-        additional_data: "", //JSON.stringify(global_additional_data)
+        additional_data: JSON.stringify(globalAdditionalData), //JSON.stringify(global_additional_data)
         max_closest: $("#closest_number_of_strains").val(),
         database_to_include: $("#species_database option:selected").text(),
         species_id: 3,
