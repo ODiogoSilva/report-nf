@@ -4,15 +4,15 @@
     background: #e0e0e0;
     color: #000;
     transition: all 0.3s;
-    min-width: 300px;
-    max-width: 300px;
+    min-width: 350px;
+    max-width: 350px;
     height: 100vh;
     position: fixed;
     top: 60px;
     left: 0;
     /* top layer */
     z-index: 11;
-    margin-left: -300px;
+    margin-left: -350px;
 }
 
 .popover {
@@ -146,4 +146,27 @@
 
 #highlightsModal {
     width: 100%;
+}
+
+.version-container {
+    height: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.version-label {
+    float: right;
+}
+
+.version-counter {
+    float: right;
+    cursor: pointer;
+}
+
+.version-program {
+    margin-right: 5px;
+    font-weight: bold;
+    float: left;
 }

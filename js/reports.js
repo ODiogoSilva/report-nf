@@ -14,6 +14,7 @@
     getProjects,
     getReportsByProject,
     getSpecies,
+    initDetails,
     initDropFile,
     initHighlights,
     initHomeButtonsToggle,
@@ -136,8 +137,8 @@ const initReports = (scope, globalResults, append = true) => {
     // Update sidebar selector options for auto complete
     p1.then( (r) => {
         updateHighlightOptions(r);
+        initDetails();
     });
-
 };
 
 const modalAlert = (text, callback) => {
@@ -248,7 +249,7 @@ app.controller("reportsController", async ($scope) => {
     initToggleSidebar();
 
     //
-    // NAVBAR INITS //
+    // SIDEBAR INITS //
     //
 
     // Behaviour for filter popovers

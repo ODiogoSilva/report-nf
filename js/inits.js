@@ -663,3 +663,96 @@ const initSampleSpecificModal = () => {
     });
 
 };
+
+
+/**
+ *
+ * @returns {Map}
+ */
+const getVersionInfo = () => {
+
+    const versionMap = new Map();
+
+    for (const el of data.results) {
+        // Get version information, if any
+        if (el.report_json.versions) {
+            const ver = el.report_json.versions;
+            for (const prog of ver){
+                const programId = `${prog.program}.${prog.version}`;
+
+                if (!versionMap.has(programId)){
+                    versionMap.set(programId, {
+                        name: prog.program,
+                        version: prog.version,
+                        samples: [el.sample_name]
+                    });
+                } else {
+                    if (!versionMap.get(programId).samples.includes(el.sample_name)) {
+                        versionMap.get(programId).samples.push(el.sample_name);
+                    }
+                }
+            }
+        }
+    }
+
+    const sortedVersionMap = new Map([...versionMap.entries()].sort((a, b) => {
+        return a[0].toLowerCase().localeCompare(b[0].toLowerCase());
+    }));
+
+    return sortedVersionMap;
+};
+
+
+const getVersionLabel = (pid, info) => {
+
+    const divId = pid.split(".").join("");
+
+    const template = "<div class='version-container'>" +
+        "<span class='version-program'>{{ name }}</span>" +
+        "<span data-toggle='collapse' href='#{{ divId }}Version' class='version-counter label label-default'>{{ sampleNumber }}</span>" +
+        "<span class='label label-success version-label'>{{ version }}</span>" +
+        "</div>" +
+        "<div class='collapse' id='{{ divId }}Version'>" +
+            "<ul>" +
+                "{{#samples}}<li>{{.}}</li>{{/samples}}" +
+            "</ul>" +
+        "</div>";
+
+    const div = Mustache.to_html(template, {
+        name: info.name,
+        sampleNumber: info.samples.length,
+        version: info.version,
+        divId,
+        samples: info.samples
+    });
+
+    return div;
+
+};
+
+
+/**
+ *
+ * @param versionMap
+ */
+const populateVersionInfo = async (versionMap) => {
+
+    const containerSel = $("#navDetails");
+    containerSel.empty();
+
+    for (const [pid, info] of versionMap.entries()){
+        const versionDiv = await getVersionLabel(pid, info);
+        containerSel.append(versionDiv);
+    }
+
+};
+
+
+const initDetails = async () => {
+
+    const versionInfo = await getVersionInfo();
+    populateVersionInfo(versionInfo);
+
+    console.log(versionInfo)
+
+};

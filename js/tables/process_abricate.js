@@ -131,6 +131,8 @@ const processAbricate = async (reportsData) => {
         },
     ].concat(tableData.mappings);
 
+    console.log(abricateData)
+
     return abricateData;
 
 };
