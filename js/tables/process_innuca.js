@@ -310,7 +310,6 @@ const createTableData = (parsedJson, setMax) => {
         }
 
         // Check if current sample has finished
-        console.log(v)
         if (v.has(innucaTable.lastHeader)) {
             parsedJson.qcStorage.get(k).status = "finished";
         } else {

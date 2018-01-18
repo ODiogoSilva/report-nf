@@ -137,97 +137,98 @@ class Table {
 
     /* Method to build DataTable */
     buildDataTable(scrollX) {
-        if ( this.tableObj) {
-            this.clearTable();
-            this.tableObj.rows.add(this.tableData).draw();
+        if (this.tableObj) {
+            this.tableObj.destroy();
+            $("#"+this.container).empty();
         }
-        else{
-            this.tableObj = $("#"+this.container).DataTable( {
-                "data": this.tableData,
-                "columns" : this.columnMapping,
-                autoFill: {
-                    enable: false
-                },
-                dom: "Bfrtip",
-                scrollX,
-                buttons: [
-                    "copy",
-                    "csv",
-                    "excel",
-                    "pdf",
-                    "print",
-                    {
-                        extend: "collection",
-                        text: "Table control",
-                        buttons: [
-                            {
-                                text: "Enable AutoFill",
-                                action(e, dt) {
-                                    if (dt.autoFill().enabled()) {
-                                        this.autoFill().disable();
-                                        this.text("Enable AutoFill");
-                                    }
-                                    else {
-                                        this.autoFill().enable();
-                                        this.text("Disable AutoFill");
-                                    }
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        extend: "collection",
-                        text: "Selection",
-                        autoClose: true,
-                        buttons: [
-                            {
-                                text: "Show graphs",
-                                action( e, dt, node, config ) {
-                                    const row = dt.rows(".selected").data()[0];
-                                    const pid = `${row.id.split(".")[0]}.${row.Sample}`;
-                                    showModelGraphs(pid);
-                                }
-                            }
-                        ]
-                    }
-                ],
-                columnDefs: [ {
-                    orderable: false,
-                    className: "select-checkbox",
-                    targets:   0,
-                    width: "15px"
-                } ,
-                    {
-                        targets: [1,2],
-                        width: "30px",
-                    }],
-                select: {
-                    style:    "os",
-                    selector: "td:first-child"
-                },
-                "fnCreatedRow": (nRow, aData) => {
-                    // Get ID based on pipeline id and sample name
-                    let pid = String(aData.id).split(".")[0] + "." + aData.Sample;
-                    // Add ID to each row
-                    $(nRow).attr("id", pid);
-                    // Add onclick event for sample selection in checkbox
-                    $(nRow).find("input").off("click").on("click", (e) => {
-                        $(e.target).closest("tr").toggleClass("selected");
-                    });
 
-                    // Set QC popover
-                    $(nRow).find(".badge-qc").webuiPopover(
+        this.tableObj = $("#"+this.container).DataTable( {
+            "data": this.tableData,
+            "columns" : this.columnMapping,
+            "destroy": true,
+            autoFill: {
+                enable: false
+            },
+            dom: "Bfrtip",
+            scrollX,
+            buttons: [
+                "copy",
+                "csv",
+                "excel",
+                "pdf",
+                "print",
+                {
+                    extend: "collection",
+                    text: "Table control",
+                    buttons: [
                         {
-                            title: "Quality control summary",
-                            content: aData.qcMsg,
-                            placement: "right",
-                            animation: "pop",
-                            closeable: true
+                            text: "Enable AutoFill",
+                            action(e, dt) {
+                                if (dt.autoFill().enabled()) {
+                                    this.autoFill().disable();
+                                    this.text("Enable AutoFill");
+                                }
+                                else {
+                                    this.autoFill().enable();
+                                    this.text("Disable AutoFill");
+                                }
+                            }
                         }
-                    );
+                    ]
+                },
+                {
+                    extend: "collection",
+                    text: "Selection",
+                    autoClose: true,
+                    buttons: [
+                        {
+                            text: "Show graphs",
+                            action( e, dt, node, config ) {
+                                const row = dt.rows(".selected").data()[0];
+                                const pid = `${row.id.split(".")[0]}.${row.Sample}`;
+                                showModelGraphs(pid);
+                            }
+                        }
+                    ]
                 }
-            });
-        }
+            ],
+            columnDefs: [ {
+                orderable: false,
+                className: "select-checkbox",
+                targets:   0,
+                width: "15px"
+            } ,
+                {
+                    targets: [1,2],
+                    width: "30px",
+                }],
+            select: {
+                style:    "os",
+                selector: "td:first-child"
+            },
+            "fnCreatedRow": (nRow, aData) => {
+                // Get ID based on pipeline id and sample name
+                let pid = String(aData.id).split(".")[0] + "." + aData.Sample;
+                // Add ID to each row
+                $(nRow).attr("id", pid);
+                // Add onclick event for sample selection in checkbox
+                $(nRow).find("input").off("click").on("click", (e) => {
+                    $(e.target).closest("tr").toggleClass("selected");
+                });
+
+                // Set QC popover
+                $(nRow).find(".badge-qc").webuiPopover(
+                    {
+                        title: "Quality control summary",
+                        content: aData.qcMsg,
+                        placement: "right",
+                        animation: "pop",
+                        closeable: true
+                    }
+                );
+            }
+        });
+
     }
 
     /* Process chewBBACA data to load into the DataTable */
