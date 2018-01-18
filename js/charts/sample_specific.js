@@ -843,6 +843,9 @@ const abricateHighlightSelection = () => {
 
 const abricateNavigation = (data) => {
 
+    const abrNavigationDiv = $(".abricate-navigation");
+    abrNavigationDiv.show();
+
     let optgroups = [];
     let options = [];
 
@@ -880,6 +883,10 @@ const abricateNavigation = (data) => {
     $("#abricateSearch").on("click", abricateZoomGene);
     // Add functionality to automatic plotBands when selecting a gene
     abricateSel.on("change", abricateHighlightSelection);
+    // Hide navigation div if no options exist
+    if (options.length < 1){
+        $(".abricate-navigation").hide();
+    }
 };
 
 
