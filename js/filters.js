@@ -172,11 +172,13 @@ const filterJson = (jsonResult, metadataJson, filterObject) => {
         }
     }
 
-    for (const po of metadataJson) {
-        const strainMeta = JSON.parse(po.strain_metadata);
-        pid = `${po.project_id}${strainMeta.Primary}`;
-        if (!filteredIds.includes(pid)) {
-            filteredMetadata.push(po);
+    if (metadataJson.constructor === Array){
+        for (const po of metadataJson) {
+            const strainMeta = JSON.parse(po.strain_metadata);
+            pid = `${po.project_id}${strainMeta.Primary}`;
+            if (!filteredIds.includes(pid)) {
+                filteredMetadata.push(po);
+            }
         }
     }
 

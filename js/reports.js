@@ -56,6 +56,8 @@ const initReports = (scope, globalResults, append = true) => {
     const results = globalResults.results;
     const metadataResults = globalResults.metadataResults;
 
+    console.log(metadataResults)
+
     // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve, reject) => {
         const r = filterJson(results, metadataResults, dataFilters);
