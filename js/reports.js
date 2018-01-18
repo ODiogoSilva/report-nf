@@ -157,6 +157,8 @@ const initReports = (scope, globalResults, append = true) => {
         updateHighlightOptions(r);
         initDetails();
     });
+
+    console.log(data)
 };
 
 const modalAlert = (text, callback) => {

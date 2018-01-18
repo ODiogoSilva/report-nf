@@ -127,7 +127,7 @@ const filterJson = (jsonResult, metadataJson, filterObject) => {
             filteredIds = addToFilters(po, filteredIds);
         }
 
-        if ( po.report_json.task === "integrity_coverage" ) {
+        if (po.report_json.task === "integrity_coverage" && po.report_json.tableRow) {
             // Filter for base pairs
             if ( !testRowValue(filterObject.bp.range,
                     po.report_json.tableRow, "bp") === true ) {
@@ -140,7 +140,7 @@ const filterJson = (jsonResult, metadataJson, filterObject) => {
             }
         }
 
-        if ( po.report_json.task === "check_coverage" ) {
+        if (po.report_json.task === "check_coverage" && po.report_json.tableRow) {
             // Filter for coverage
             if ( !testRowValue(filterObject["coverage (2nd)"].range,
                     po.report_json.tableRow, "coverage_(2nd)") ) {
@@ -148,7 +148,7 @@ const filterJson = (jsonResult, metadataJson, filterObject) => {
             }
         }
 
-        if (po.report_json.task === "pilon" ) {
+        if (po.report_json.task === "pilon" && po.report_json.tableRow) {
             // Filter for number of contigs
             if ( !testRowValue(filterObject.contigs.range,
                     po.report_json.tableRow, "contigs")) {
