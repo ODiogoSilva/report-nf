@@ -1,6 +1,16 @@
 
 const goHome = () => {
 
+    // Close sidebar, if active
+    const sidebarSel = $("#sidebar");
+    const sidebarBtn = $("#sidebar-button");
+
+    if (sidebarSel.hasClass("active")) {
+        sidebarBtn.css({color: "#ffffff"});
+        $(".popover").removeClass("in");
+        sidebarSel.toggleClass("active");
+    }
+
     $("#row-main").css({display: "none"});
     $("#current_workflow").css({display: "none"});
     $("#homeInnuendo").css({display: "block"});
