@@ -20,10 +20,23 @@ class Table {
         this.columnMapping = [];
         this.container = container;
         this.tableObj = null;
+        // Sets the last expected header of the table. See setLastColumn method.
+        this.lastHeader = null;
 
         // Stores the 'projectId.pipelineId' associated with each entry
         // in the table. Is used to prevent duplications in the table
         this.tableIds = [];
+    }
+
+    /**
+     * Sets the lastHeader attribute of the Table object. This is used to test
+     * if a particular table row has reached the expected end or not (when
+     * the sample is still running. This is only used for tables that have
+     * a dynamic number of columns
+     * @param columnHeader
+     */
+    setLastColumn(columnHeader) {
+        this.lastHeader = columnHeader
     }
 
     /*
