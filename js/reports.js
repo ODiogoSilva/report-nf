@@ -181,6 +181,20 @@ const modalAlert = (text, callback) => {
 
 };
 
+
+const modalMessage = (text, title) => {
+
+    const modalBody = $("#modalMessageBody");
+    modalBody.empty();
+    modalBody.html(`<p>${text}</p>`);
+
+    $("#ModalAlertTitle").html(title);
+
+    $("#modalMessage").modal("show");
+
+};
+
+
 /* Angular controller to control the DOM elements from the index.html file */
 app.controller("reportsController", async ($scope) => {
 

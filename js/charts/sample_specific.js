@@ -1075,26 +1075,37 @@ const sincronizedSlidingWindow = async (sample) => {
  */
 const showModelGraphs = (sample) => {
 
-    let qcColor;
+    try {
+        let qcColor;
 
-    if ( sample.hasOwnProperty("point") ) {
-        sample = sample.point.name;
+        if (sample.hasOwnProperty("point")) {
+            sample = sample.point.name;
+        }
+
+        // Set title with sample name
+        $("#modalTitle").html(`Hello there, ${sample}`);
+
+        // Populate header row
+        qcColor = populateHeader(sample);
+
+        // Generate sparkline
+        sparkline(sample, qcColor);
+
+        // Generate contig size distribution plot
+        sizeDistributionPlot(sample);
+
+        const res = sincronizedSlidingWindow(sample);
+
+        res.then(() => {
+            $("#modalGraphs").modal("show");
+        }, () => {
+            modalMessage(`Sample specific data is currently not available for` +
+                ` ${sample}`, "Warning");
+        });
+
+    } catch(err) {
+        modalMessage(`Sample specific data is currently not available for` +
+                     ` ${sample}`, "Warning");
     }
-
-    // Set title with sample name
-    $("#modalTitle").html(`Hello there, ${sample}`);
-
-    // Populate header row
-    qcColor = populateHeader(sample);
-
-    // Generate sparkline
-    sparkline(sample, qcColor);
-
-    // Generate contig size distribution plot
-    sizeDistributionPlot(sample);
-
-    sincronizedSlidingWindow(sample);
-
-    $("#modalGraphs").modal("show");
 
 };
