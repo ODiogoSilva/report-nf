@@ -223,7 +223,7 @@ app.controller("reportsController", async ($scope) => {
             ["Main table", "table1_div"],
             ["FastQC", "fastqcContainer"],
             ["Assembly charts", "assemblyCharts"],
-            ["Graph 2", "container2"]
+            // ["Graph 2", "container2"]
 
         ],
         "Annotation": [

@@ -116,22 +116,26 @@ const processAbricate = async (reportsData) => {
     const parsedJson = await parseAbricateReport(reportsData);
     const tableData = await createAbricateData(parsedJson);
 
-    abricateData.data = tableData.data;
-    abricateData.headers = parsedJson.columns;
-    abricateData.columnMapping = [
-        {
-            data:   "active",
-            render( data, type, row ) {
-                if ( type === "display" ) {
-                    return "<input type='checkbox' class='editor-active'>";
-                }
-                return data;
+    if (parsedJson.columns.length > 0) {
+        abricateData.data = tableData.data;
+        abricateData.headers = parsedJson.columns;
+        abricateData.columnMapping = [
+            {
+                data: "active",
+                render(data, type, row) {
+                    if (type === "display") {
+                        return "<input type='checkbox' class='editor-active'>";
+                    }
+                    return data;
+                },
+                className: "dt-body-center"
             },
-            className: "dt-body-center"
-        },
-    ].concat(tableData.mappings);
-
-    console.log(abricateData)
+        ].concat(tableData.mappings);
+    } else {
+        abricateData.data = {};
+        abricateData.headers = [];
+        abricateData.columnMapping = [];
+    }
 
     return abricateData;
 
