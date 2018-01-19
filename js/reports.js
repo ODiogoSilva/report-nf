@@ -56,6 +56,7 @@ const initReports = (scope, globalResults, append = true) => {
     const results = globalResults.results;
     const metadataResults = globalResults.metadataResults;
 
+
     // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve, reject) => {
         const r = filterJson(results, metadataResults, dataFilters);
@@ -144,6 +145,15 @@ const initReports = (scope, globalResults, append = true) => {
         await abricateTable.addTableHeaders(resultsCh,
             "table_headers_abricate");
         await abricateTable.addTableData(resultsCh);
+
+        const additionalButton = {
+            text: "Genes CSV",
+            action( e, dt, node, config ) {
+                generateGenesCSV(abricateTable);
+            }
+        };
+
+        await abricateTable.addAdditionalButton(additionalButton);
         await abricateTable.buildDataTable(true);
     });
 

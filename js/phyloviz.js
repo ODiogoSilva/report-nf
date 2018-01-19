@@ -83,7 +83,13 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
                         if(el.table === "abricate"){
                             for (const gene of selectedGenes){
                                 if (el.geneList.includes(gene)){
-                                    abricateResults.push(gene);
+                                    globalAdditionalData[sample][gene.replace(/\(|\)/g, "-")] = true;
+                                    abricateResults.push(gene.replace(/\(|\)/g, "-"));
+                                }
+                                else {
+                                    if(!globalAdditionalData[sample].hasOwnProperty(gene.replace(/\(|\)/g, "-"))){
+                                        globalAdditionalData[sample][gene.replace(/\(|\)/g, "-")] = false;
+                                    }
                                 }
                             }
                         }
@@ -94,7 +100,7 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
 
                     if (procedure === "abricate") {
                         abricateResults = Array.from(new Set(abricateResults));
-                        globalAdditionalData[sample]["Resistance Genes"] = abricateResults.join();
+                        globalAdditionalData[sample]["Resistance Profile"] = abricateResults.join();
                         console.log(abricateResults);
                     }
                 }

@@ -26,6 +26,43 @@ class Table {
         // Stores the 'projectId.pipelineId' associated with each entry
         // in the table. Is used to prevent duplications in the table
         this.tableIds = [];
+        this.tableAdditionalButtons = [
+            [
+                "copy",
+                "csv",
+                "excel",
+                "pdf",
+                "print",
+                {
+                    extend: "collection",
+                    text: "Selection",
+                    autoClose: true,
+                    buttons: [
+                        {
+                            text: "Show graphs",
+                            action( e, dt, node, config ) {
+                                const row = dt.rows(".selected").data()[0];
+                                const pid = `${row.id.split(".")[0]}.${row.Sample}`;
+                                showModelGraphs(pid);
+                            }
+                        },
+                        {
+                            text: "Download assembly",
+                            async action( e, dt, node, config ) {
+
+                                const res = await getAssemblies(dt);
+
+                                const fileStr = res[0].join(";");
+                                const sampleStr = res[1].join(";");
+
+                                getFile(fileStr, sampleStr);
+
+                            }
+                        }
+                    ]
+                }
+            ]
+        ];
     }
 
     /**
@@ -101,6 +138,10 @@ class Table {
         }
     }
 
+    addAdditionalButton(buttonObject) {
+        this.tableAdditionalButtons.push(buttonObject)
+    }
+
     /* Method to destroy the DataTable */
     destroyTable() {
         if ( this.tableObj ) {
@@ -151,60 +192,7 @@ class Table {
             },
             dom: "Bfrtip",
             scrollX,
-            buttons: [
-                "copy",
-                "csv",
-                "excel",
-                "pdf",
-                "print",
-                // {
-                //     extend: "collection",
-                //     text: "Table control",
-                //     buttons: [
-                //         {
-                //             text: "Enable AutoFill",
-                //             action(e, dt) {
-                //                 if (dt.autoFill().enabled()) {
-                //                     this.autoFill().disable();
-                //                     this.text("Enable AutoFill");
-                //                 }
-                //                 else {
-                //                     this.autoFill().enable();
-                //                     this.text("Disable AutoFill");
-                //                 }
-                //             }
-                //         }
-                //     ]
-                // },
-                {
-                    extend: "collection",
-                    text: "Selection",
-                    autoClose: true,
-                    buttons: [
-                        {
-                            text: "Show graphs",
-                            action( e, dt, node, config ) {
-                                const row = dt.rows(".selected").data()[0];
-                                const pid = `${row.id.split(".")[0]}.${row.Sample}`;
-                                showModelGraphs(pid);
-                            }
-                        },
-                        {
-                            text: "Download assembly",
-                            async action( e, dt, node, config ) {
-
-                                const res = await getAssemblies(dt);
-
-                                const fileStr = res[0].join(";");
-                                const sampleStr = res[1].join(";");
-
-                                getFile(fileStr, sampleStr);
-
-                            }
-                        }
-                    ]
-                }
-            ],
+            buttons: this.tableAdditionalButtons,
             columnDefs: [ {
                 orderable: false,
                 className: "select-checkbox",

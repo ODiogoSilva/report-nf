@@ -140,3 +140,60 @@ const processAbricate = async (reportsData) => {
     return abricateData;
 
 };
+
+/**
+ * Function to parse abricate table and retrieve genes
+ * @param abricateTable
+ */
+const generateGenesCSV = (abricateTable) => {
+
+    let firstTime = true;
+    const rows = [];
+    let keys = ["Sample","cardgeneList", "plasmidfindergeneList", "resfindergeneList", "vfdbgeneList"];
+    let fileString = keys.join(";") + "\n";
+
+
+    $.map(abricateTable.tableObj.rows().data(), (d) => {
+        const row = [];
+        for (const field of keys) {
+
+            if (field.indexOf("geneList") > -1) {
+                try {
+                    row.push(d[field].join(","));
+                }
+                catch (TypeError) {
+                    row.push("NA");
+                }
+            }
+            else {
+                row.push($(d[field]).html());
+            }
+        }
+        rows.push(row);
+    });
+
+    rows.map( (r) => {
+        fileString += r.join(";") + "\n";
+    });
+
+    downloadAbricateGenesTable("abricateGenes.csv",fileString);
+
+};
+
+/**
+ * Function to download file based on a string
+ * @param filename
+ * @param text
+ */
+const downloadAbricateGenesTable = (filename, text) => {
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+};
