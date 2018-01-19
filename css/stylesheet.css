@@ -221,6 +221,7 @@ th {
     width: 30px;
     height: 30px;
     animation: spin 2s linear infinite;
+    margin: auto;
 }
 
 @keyframes spin {
