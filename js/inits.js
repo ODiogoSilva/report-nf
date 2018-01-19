@@ -650,6 +650,9 @@ const initSampleSpecificModal = () => {
     // Sanitize charts when closing the modal
     $("#modalGraphs").on("hide.bs.modal", () => {
 
+        // Destroy the abricate selectize box for correct re-intialization
+        $("#abricateSelectize")[0].selectize.destroy();
+
         $("#sparkline-container").highcharts().destroy();
         $("#distribution-size-container").highcharts().destroy();
 

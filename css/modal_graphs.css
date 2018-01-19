@@ -4,6 +4,10 @@
     margin-top: 5%;
 }
 
+#modalGraphs {
+    z-index: 1051;
+}
+
 .modal-row {
     /*height: 180px;*/
     margin: auto;
