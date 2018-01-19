@@ -50,6 +50,7 @@ const getAssemblyPath = (sampleId) => {
 
     const assemblySuffix = "/results/assembly/pilon/sample_polished.assembly.fasta";
     let filePath;
+    let sampleName;
 
     for (const el of data.results){
 
@@ -57,9 +58,28 @@ const getAssemblyPath = (sampleId) => {
             const pid = `${el.project_id}.${el.sample_name}`;
             if (sampleId === pid){
                 filePath = el.report_json.workdir.split("/").slice(0, -3).join("/") + assemblySuffix;
+                sampleName = el.sample_name
             }
         }
     }
 
-    return filePath;
+    return [filePath, sampleName];
+};
+
+const getAssemblies = (dt) => {
+
+    let fileList = [];
+    let sampleNames = [];
+
+    $.map(dt.rows(".selected").data(), (d) => {
+
+        const pid = `${d.id.split(".")[0]}.${d.Sample}`;
+
+        const res = getAssemblyPath(pid);
+
+        fileList.push(res[0]);
+        sampleNames.push(res[1]);
+    });
+
+    return [fileList, sampleNames];
 };

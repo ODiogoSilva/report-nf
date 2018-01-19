@@ -191,19 +191,14 @@ class Table {
                         },
                         {
                             text: "Download assembly",
-                            action( e, dt, node, config ) {
+                            async action( e, dt, node, config ) {
 
-                                let fileList = [];
+                                const res = await getAssemblies(dt);
 
-                                $.map(dt.rows(".selected").data(), (d) => {
+                                const fileStr = res[0].join(";");
+                                const sampleStr = res[1].join(";");
 
-                                    const pid = `${d.id.split(".")[0]}.${d.Sample}`;
-                                    fileList.push(getAssemblyPath(pid));
-
-                                });
-
-                                const fileStr = fileList.join(";");
-                                getFile(fileStr);
+                                getFile(fileStr, sampleStr);
 
                             }
                         }
