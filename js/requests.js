@@ -113,3 +113,13 @@ const loginPlatform = async (data) => {
     );
 };
 
+const getFile = async (filePath) => {
+
+    const url = reportsRoute + "app/api/v1.0/reports/strain/files/?path=" + filePath;
+
+    const link = document.createElement("a");
+    link.download = filePath.split('/').slice(-1)[0];
+    link.href = url;
+    link.click();
+
+};

@@ -157,25 +157,25 @@ class Table {
                 "excel",
                 "pdf",
                 "print",
-                {
-                    extend: "collection",
-                    text: "Table control",
-                    buttons: [
-                        {
-                            text: "Enable AutoFill",
-                            action(e, dt) {
-                                if (dt.autoFill().enabled()) {
-                                    this.autoFill().disable();
-                                    this.text("Enable AutoFill");
-                                }
-                                else {
-                                    this.autoFill().enable();
-                                    this.text("Disable AutoFill");
-                                }
-                            }
-                        }
-                    ]
-                },
+                // {
+                //     extend: "collection",
+                //     text: "Table control",
+                //     buttons: [
+                //         {
+                //             text: "Enable AutoFill",
+                //             action(e, dt) {
+                //                 if (dt.autoFill().enabled()) {
+                //                     this.autoFill().disable();
+                //                     this.text("Enable AutoFill");
+                //                 }
+                //                 else {
+                //                     this.autoFill().enable();
+                //                     this.text("Disable AutoFill");
+                //                 }
+                //             }
+                //         }
+                //     ]
+                // },
                 {
                     extend: "collection",
                     text: "Selection",
@@ -187,6 +187,24 @@ class Table {
                                 const row = dt.rows(".selected").data()[0];
                                 const pid = `${row.id.split(".")[0]}.${row.Sample}`;
                                 showModelGraphs(pid);
+                            }
+                        },
+                        {
+                            text: "Download assembly",
+                            action( e, dt, node, config ) {
+
+                                let fileList = [];
+
+                                $.map(dt.rows(".selected").data(), (d) => {
+
+                                    const pid = `${d.id.split(".")[0]}.${d.Sample}`;
+                                    fileList.push(getAssemblyPath(pid));
+
+                                });
+
+                                const fileStr = fileList.join(";");
+                                getFile(fileStr);
+
                             }
                         }
                     ]

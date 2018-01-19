@@ -44,3 +44,22 @@ const saveStatusFile = () => {
         modalAlert("Please select a file name first.");
     }
 };
+
+
+const getAssemblyPath = (sampleId) => {
+
+    const assemblySuffix = "/results/assembly/pilon/sample_polished.assembly.fasta";
+    let filePath;
+
+    for (const el of data.results){
+
+        if (el.report_json.task === "pilon"){
+            const pid = `${el.project_id}.${el.sample_name}`;
+            if (sampleId === pid){
+                filePath = el.report_json.workdir.split("/").slice(0, -3).join("/") + assemblySuffix;
+            }
+        }
+    }
+
+    return filePath;
+};

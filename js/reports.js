@@ -162,6 +162,8 @@ const initReports = (scope, globalResults, append = true) => {
         initDetails();
     });
 
+    console.log(data)
+
 };
 
 const modalAlert = (text, callback) => {
