@@ -1070,8 +1070,8 @@ const sincronizedSlidingWindow = async (sample) => {
 
     const res = await slidingReport(sample);
     await abricateReport(sample, res);
-    await prokkaReport(sample, res);
-    await chewbbacaReport(sample, res);
+    // await prokkaReport(sample, res);
+    // await chewbbacaReport(sample, res);
 
 };
 
