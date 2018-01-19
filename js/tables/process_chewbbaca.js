@@ -57,6 +57,10 @@ const processChewbbaca = (reportsData) => {
                 "id": `${report.project_id}.${report.pipeline_id}`
             };
 
+            if (!report.report_json.cagao){
+                continue;
+            }
+
             Object.keys(report.report_json.cagao[1]).map((key) => {
                 if (key !== "header") {
                     dataKey = key;
