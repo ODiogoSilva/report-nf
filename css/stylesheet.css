@@ -289,5 +289,9 @@ div.dataTables_wrapper {
     background-color: #5cb85c;
 }
 
+.qc-runtime {
+    height: 30px;
+}
+
 
 

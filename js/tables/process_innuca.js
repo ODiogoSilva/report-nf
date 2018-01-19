@@ -4,11 +4,15 @@
  *
  * @param qcObject
  */
-const getQc = (qcObject, sample) => {
+const getQc = (qcObject, sampleObj) => {
 
     let low = [];
     let moderate = [];
     let high = [];
+
+    const sample = sampleObj.get("Sample");
+    const pid = `${sampleObj.get("projectId")}.${sample}`;
+    const runTime = Math.round(getSampleRuntime(pid) * 100) / 100;
 
     const qcPicker = {
         "low": ["#42f480", "A"],
@@ -32,6 +36,7 @@ const getQc = (qcObject, sample) => {
                        style="background: ${qcColor}">
                     ${qcValue}</div>`;
         qcMsg = `<span class='tooltip-qc-text'>
+                        <div class="qc-runtime">Total runtime: <span class="label label-default">${runTime}</span></div>
                         <div>
                             <ul>
                                 <li>Fail reason:</li>
@@ -94,6 +99,7 @@ const getQc = (qcObject, sample) => {
                 ${qcValue}</div>`;
     qcMsg = `<span class='tooltip-qc-text'>
                     <div>
+                        <div class="qc-runtime">Total runtime: <span class="label label-default">${runTime} minutes</span></div>
                         <ul>
                             <li>Low severity:</li>
                                 <ul>${low.join("")}</ul>
@@ -317,7 +323,7 @@ const createTableData = (parsedJson, setMax) => {
         }
 
         // Get QC message for a sample
-        let qcObj = getQc(parsedJson.qcStorage.get(k), v.get("Sample"));
+        let qcObj = getQc(parsedJson.qcStorage.get(k), v);
         v.set("qc", qcObj.qcDiv);
         qcMap.set(k, qcObj.qcMsg);
 
