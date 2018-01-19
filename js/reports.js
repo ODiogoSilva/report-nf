@@ -56,8 +56,6 @@ const initReports = (scope, globalResults, append = true) => {
     const results = globalResults.results;
     const metadataResults = globalResults.metadataResults;
 
-    console.log(metadataResults)
-
     // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve, reject) => {
         const r = filterJson(results, metadataResults, dataFilters);
@@ -81,6 +79,10 @@ const initReports = (scope, globalResults, append = true) => {
         });
         // Only resolve the promise when the results array is not empty
         if (r.length !== 0) {
+            // Get pipeline info stats. This is performed between the filtering
+            // and subsequent data processing because some functions may
+            // depend on this information
+            getPipelineInfo(r);
             resolve(r);
         } else {
             alert("Warning: Empty report object");
@@ -160,7 +162,6 @@ const initReports = (scope, globalResults, append = true) => {
         initDetails();
     });
 
-    console.log(data)
 };
 
 const modalAlert = (text, callback) => {

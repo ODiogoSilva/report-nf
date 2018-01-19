@@ -753,6 +753,66 @@ const initDetails = async () => {
     const versionInfo = await getVersionInfo();
     populateVersionInfo(versionInfo);
 
-    console.log(versionInfo)
+};
+
+
+const parseTrace = (reportInfo, traceArray) => {
+
+    let infoObj = {};
+
+    for (const el of traceArray){
+        // Check if element if array or string
+        let trace_str;
+        if (el.constructor === Array){
+            trace_str = el[0];
+        } else {
+            trace_str = el;
+        }
+
+        const tempStr = trace_str.split(";");
+        const headers = tempStr[0].split(" ");
+        const vals = tempStr[1].split(" ");
+        const timeRun = tempStr[2];
+
+        for (let i = 0; i < headers.length; i++){
+            if (infoObj.hasOwnProperty(headers[i])){
+                infoObj[headers[i]].push(parseInt(vals[i]));
+            } else {
+                infoObj[headers[i]] = [parseInt(vals[i])];
+            }
+        }
+        if (infoObj.hasOwnProperty("time")){
+            infoObj["time"].push(parseInt(timeRun));
+        } else {
+            infoObj["time"] = [parseInt(timeRun)];
+        }
+    }
+
+    return infoObj;
 
 };
+
+
+const getPipelineInfo = (dataJson) => {
+
+    let pipelineMap = new Map();
+
+    for (const el of dataJson.filteredJson) {
+        if (el.report_json.trace){
+            const traceArray = el.report_json.trace;
+            const pid = `${el.pipeline_id}.${el.sample_name}`;
+
+            // Add sample to Map object if first time
+            if (!pipelineMap.has(pid)){
+                pipelineMap.set(pid, {});
+            }
+
+            // Parse trace array
+            const infoObj = parseTrace(el, traceArray);
+            pipelineMap.get(pid)[el.report_json.task] = infoObj;
+        }
+    }
+
+    pipelineInfo = pipelineMap;
+};
+

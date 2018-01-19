@@ -68,6 +68,10 @@ let projectIdMap = new Map();
 //      [("sampleA", [1]), ("sampleB", [1,2])]
 let projectSampleMap = new Map();
 
+// Object that will store the pipeline run information (time, cpu usage,
+// etc.)  for each sample in the report
+let pipelineInfo = new Map();
+
 // Init charts
 const charts = new ChartManager();
 
@@ -79,4 +83,5 @@ const chewbbacaTable = new Table("master_table_chewbbaca");
 const prokkaTable = new Table("master_table_prokka");
 const abricateTable = new Table("master_table_abricate");
 const treesTable = new Table("master_table_trees");
+
 
