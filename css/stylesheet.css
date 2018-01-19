@@ -144,7 +144,7 @@ Workflow side bar elements
 
 .nav-tour > .active > .nav > .active > a:focus,
 .nav-tour > .active > .nav > a:focus {
-    background-color: transparent!important;
+    /*background-color: transparent!important;*/
 }
 
 /* when hovering over inactive submensu */
@@ -162,15 +162,19 @@ Workflow side bar elements
 
 /* when hovering over inactive menus */
 .nav-tour > .active > .nav > li > a:hover,
-.nav-tour > .active > .nav > li > a:focus,
-.nav-tour > li > a:hover {
+.nav-tour > .active > .nav > li > a:focus {
     border-right: 1px solid #28a745;
     background-color: transparent;
 }
 
-/*
-Table style elements
- */
+.nav-tour > li > a:hover,
+.nav-tour > li > a:focus {
+    background-color: transparent;
+}
+
+    /*
+    Table style elements
+     */
 
 th {
     text-align: center;
