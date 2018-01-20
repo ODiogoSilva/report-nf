@@ -27,7 +27,7 @@ class Table {
         // in the table. Is used to prevent duplications in the table
         this.tableIds = [];
         this.tableAdditionalButtons = [
-            [
+
                 "copy",
                 "csv",
                 "excel",
@@ -61,7 +61,6 @@ class Table {
                         }
                     ]
                 }
-            ]
         ];
     }
 
@@ -178,6 +177,9 @@ class Table {
 
     /* Method to build DataTable */
     buildDataTable(scrollX) {
+
+        // $.fn.dataTableExt.oStdClasses.sPageButton = "btn btn-success";
+
         if (this.tableObj) {
             this.tableObj.destroy();
             $("#"+this.container).empty();
@@ -187,11 +189,12 @@ class Table {
             "data": this.tableData,
             "columns" : this.columnMapping,
             "destroy": true,
-            autoFill: {
-                enable: false
-            },
-            dom: "Bfrtip",
+            // autoFill: {
+            //     enable: false
+            // },
+            // dom: "fBtip",
             scrollX,
+            lengthChange: false,
             buttons: this.tableAdditionalButtons,
             columnDefs: [ {
                 orderable: false,
@@ -227,8 +230,14 @@ class Table {
                         closeable: true
                     }
                 );
+            },
+            "drawCallback": function () {
+                $('.dataTables_paginate > .pagination').addClass('pagination-sm');
             }
         });
+
+        this.tableObj.buttons().container()
+            .appendTo("#"+this.container + "_wrapper .col-sm-6:eq(0)");
 
     }
 
