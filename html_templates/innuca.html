@@ -1,15 +1,13 @@
 
 <!-- INNUca content: tables and graphs -->
-<div class="container-fluid" id="Assembly">
-    <div class="row">
-        <h1 class="heading" id="innuca_heading">Assembly</h1>
-        <button type="button" class="btn btn-sm btn-info m-bottom" data-toggle="collapse" data-target="#table1_div">
-            <i class="fa fa-compress" aria-hidden="true"></i>
-        </button>
-    </div>
-
-    <b style="display:inline-block">Assembly Table</b>
-    <div id="table1_div" class="collapse in">
+<div class="container-fluid not_first master-table-container" id="Assembly">
+    <h1 class="heading" id="innuca_heading">Assembly</h1>
+    <button type="button" class="btn btn-sm btn-success m-bottom"
+            data-toggle="collapse" data-target="#innucaTableDiv">
+        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+    </button>
+    <div id="innucaTableDiv" class="collapse in">
+        <p class="sub-header">Assembly Table</p>
         <table id="master_table_innuca" class="display" cellspacing="0"
                style="height:100%;width:100%;">
             <thead>
@@ -25,48 +23,56 @@
 <!--
 FastQC plot containers
 -->
-<div class="container-fluid not_first">
-    <button type="button" class="btn btn-sm btn-info"
-            data-toggle="collapse"
-            data-target="#fastqcContainer">
-        <i class="fa fa-compress"aria-hidden="true"></i>
-    </button>
-    <ul id="fastqcTabs" class="nav nav-tabs"
-        style="float:right;display:inline-block;">
-        <li class="active"><a data-target="#fastqcbaseSequenceQuality" data-toggle="tab">Base sequence quality</a></li>
-        <li><a data-target="#fastqcsequenceQuality" data-toggle="tab">Sequence quality</a></li>
-        <li><a data-target="#fastqcgcContent" data-toggle="tab">GC content</a></li>
-        <li><a data-target="#fastqcsequenceLength" data-toggle="tab">Sequence length</a></li>
-        <li><a data-target="#fastqcnContent" data-toggle="tab">Base N content</a></li>
-    </ul>
-    <b style="display:inline-block">{{fastqcName}}</b>
-    <div id="fastqcContainer" class="tab-content collapse in" style="width:100%; height:600px;">
-        <div id="fastqcbaseSequenceQuality" class="tab-pane active" style="width:100%; height:600px;"></div>
-        <div id="fastqcsequenceQuality" class="tab-pane" style="width:100%; height:600px;"></div>
-        <div id="fastqcgcContent" class="tab-pane" style="width:100%; height:600px;"></div>
-        <div id="fastqcsequenceLength" class="tab-pane" style="width:100%; height:600px;"></div>
-        <div id="fastqcnContent" class="tab-pane" style="width:100%; height:600px;"></div>
+<div class="container-fluid not_first master-table-container">
+    <div>
+        <button type="button" class="btn btn-sm btn-success btn-chart-container"
+                data-toggle="collapse"
+                data-target="#fastqcContainer">
+            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <p class="chart-sub-header"><span><i class="fa fa-bar-chart" aria-hidden="true"></i></span> {{fastqcName}}</p>
+    </div>
+    <div class="collapse in" id="fastqcContainer">
+        <ul id="fastqcTabs" class="nav nav-tabs"
+            style="float:right;display:inline-block;">
+            <li class="active"><a data-target="#fastqcbaseSequenceQuality" data-toggle="tab">Base sequence quality</a></li>
+            <li><a data-target="#fastqcsequenceQuality" data-toggle="tab">Sequence quality</a></li>
+            <li><a data-target="#fastqcgcContent" data-toggle="tab">GC content</a></li>
+            <li><a data-target="#fastqcsequenceLength" data-toggle="tab">Sequence length</a></li>
+            <li><a data-target="#fastqcnContent" data-toggle="tab">Base N content</a></li>
+        </ul>
+        <div class="tab-content" style="width:100%; height:600px;">
+            <div id="fastqcbaseSequenceQuality" class="tab-pane active" style="width:100%; height:600px;"></div>
+            <div id="fastqcsequenceQuality" class="tab-pane" style="width:100%; height:600px;"></div>
+            <div id="fastqcgcContent" class="tab-pane" style="width:100%; height:600px;"></div>
+            <div id="fastqcsequenceLength" class="tab-pane" style="width:100%; height:600px;"></div>
+            <div id="fastqcnContent" class="tab-pane" style="width:100%; height:600px;"></div>
+        </div>
     </div>
 </div>
 
 <!--
 Assembly plot containers
 -->
-<div class="container-fluid not_first">
-    <button type="button" class="btn btn-sm btn-info"
-            data-toggle="collapse"
-            data-target="#spades_graph_container">
-        <i class="fa fa-compress" aria-hidden="true"></i>
-    </button>
-    <ul id="assemblyTabs" class="nav nav-tabs"
-        style="float:right;display:inline-block;">
-        <li class="active"><a data-target="#assemblyContigSize" data-toggle="tab">Contig size</a></li>
-        <li><a data-target="#assemblyContigCoverage" data-toggle="tab">Contig coverage</a></li>
-    </ul>
-    <b style="display:inline-block">{{graph1Name}}</b>
-    <div id="assemblyCharts" class="tab-content collapse in" style="width:100%;height:600px;">
-        <div id="assemblyContigSize" class="tab-pane active" style="width:100%; height:600px;"></div>
-        <div id="assemblyContigCoverage" class="tab-pane" style="width:100%; height:600px;"></div>
+<div class="container-fluid not_first master-table-container">
+    <div>
+        <button type="button" class="btn btn-sm btn-success btn-chart-container"
+                data-toggle="collapse"
+                data-target="#assemblyCharts">
+            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <p class="chart-sub-header"><span><i class="fa fa-bar-chart" aria-hidden="true"></i></span> {{graph1Name}}</p>
+    </div>
+    <div id="assemblyCharts" class="collapse in">
+        <ul id="assemblyTabs" class="nav nav-tabs"
+            style="float:right;display:inline-block;">
+            <li class="active"><a data-target="#assemblyContigSize" data-toggle="tab">Contig size</a></li>
+            <li><a data-target="#assemblyContigCoverage" data-toggle="tab">Contig coverage</a></li>
+        </ul>
+        <div class="tab-content" style="width:100%;height:600px;">
+            <div id="assemblyContigSize" class="tab-pane active" style="width:100%; height:600px;"></div>
+            <div id="assemblyContigCoverage" class="tab-pane" style="width:100%; height:600px;"></div>
+        </div>
     </div>
 </div>
 <!--<div class="container-fluid not_first">-->

@@ -1,21 +1,23 @@
 
 <!-- chewBBACA content: tables and graphs -->
-<div class="container-fluid not_first" id="chewBBACA">
+<div class="container-fluid not_first master-table-container" id="chewBBACA">
     <h1 class="heading" id="chewBBACA_heading">chewBBACA</h1>
-    <button type="button" class="btn btn-sm btn-info m-bottom"
+    <button type="button" class="btn btn-sm btn-success m-bottom"
             data-toggle="collapse"
-            data-target="#table2_div"><i class="fa fa-compress" aria-hidden="true"></i>
+            data-target="#chewbbacaDiv"><i class="fa fa-chevron-down" aria-hidden="true"></i>
     </button>
-    <b style="display:inline-block">chewBBACA Table</b>
-    <button id="phyloviz_button" class="btn btn-sm btn-warning" style="float:right;display:inline-block;">
-        <i class="fa" data-toggle="tooltip" data-placement="top" title="Send data to PHYLOViZ Online">
-            Send to PHYLOViZ Online
-        </i>
-    </button>
-    <button id="download_profiles_button" class="btn btn-sm btn-default" style="float:right;display:inline-block;">
-        <i class="fa fa-download" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Download Profiles"></i>
-    </button>
-    <div id="table2_div" class="collapse in" style="overflow-x: hidden;">
+    <div id="chewbbacaDiv" class="collapse in" style="overflow-x: hidden;">
+        <div>
+            <p class="sub-header">chewBBACA Table</p>
+            <button id="phyloviz_button" class="btn btn-sm btn-warning" style="float:right;display:inline-block;margin-left:5px">
+                <i class="fa" data-toggle="tooltip" data-placement="top" title="Send data to PHYLOViZ Online">
+                    Send to PHYLOViZ Online
+                </i>
+            </button>
+            <button id="download_profiles_button" class="btn btn-sm btn-default" style="float:right;display:inline-block">
+                <i class="fa fa-download" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Download Profiles"></i>
+            </button>
+        </div>
         <table id="master_table_chewbbaca" class="display" cellspacing="0"
                style="height:100%;width:100%;">
             <thead>

@@ -2,9 +2,13 @@ html, body {
 }
 
 div.not_first {
-    margin-top: 3%;
+    margin-top: 10px;
     /* Margin for footer */
-    margin-bottom: 80px;
+    margin-bottom: 50px;
+}
+
+.master-table-container {
+    position: relative;
 }
 
 .centered {
@@ -16,9 +20,29 @@ div.not_first {
 }
 
 button.m-bottom{
-    margin-bottom: 10px;
-    /*position: absolute;*/
-    /*float: right;*/
+    position: absolute;
+    top: 30px;
+    right: 15px;
+    font-weight: bold;
+}
+
+.btn-chart-container {
+    position: absolute;
+    top: 0;
+    right: 15px;
+}
+
+.sub-header,
+.chart-sub-header {
+    height: 30px;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 15px;
+    display: inline-block;
+}
+
+.chart-sub-header {
+    font-size: 17px;
 }
 
 #workflows_sidebar {
@@ -69,6 +93,7 @@ button.m-bottom{
     /* for the animation */
     transition: width 0.3s ease;
     border-left: 1px solid #dadada;
+    margin-bottom: 50px;
 }
 
 .hide_button {
