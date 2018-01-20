@@ -35,8 +35,6 @@ const testArray = (array, testString) => {
  */
 const testRowValue = (rg, tableRow, header) => {
 
-    console.log(header, tableRow);
-
     // Get header value from reportJson
     let val = null;
     for (const x of tableRow)  {

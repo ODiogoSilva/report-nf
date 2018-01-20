@@ -1,12 +1,12 @@
 
-const parseAbricateReport = (data) => {
+const parseAbricateReport = (rdata) => {
 
     let storage = new Map();
     let startHeaders = ["id", "Sample"];
     let columns = [];
     let columnBars = {};
 
-    for (const report of data) {
+    for (const report of rdata) {
 
         const jr = report.report_json;
         const sampleName = report.sample_name;

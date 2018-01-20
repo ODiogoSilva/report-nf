@@ -77,6 +77,7 @@ const charts = new ChartManager();
 
 // Init tables
 const metadataTable = new Table("master_table_metadata");
+const typingTable = new Table("master_table_typing");
 const innucaTable = new Table("master_table_innuca");
 innucaTable.setLastColumn("assembled bp");
 const chewbbacaTable = new Table("master_table_chewbbaca");

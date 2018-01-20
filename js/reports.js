@@ -117,6 +117,13 @@ const initReports = (scope, globalResults, append = true) => {
     });
 
     p1.then( async (r) => {
+        const resultsCh = await typingTable.processTyping(r.filteredJson, !append);
+        await typingTable.addTableHeaders(resultsCh, "table_headers_typing");
+        await typingTable.addTableData(resultsCh, append);
+        await typingTable.buildDataTable();
+    });
+
+    p1.then( async (r) => {
         const resultsCh = await innucaTable.processInnuca(r.filteredJson, !append);
         await innucaTable.addTableHeaders(resultsCh,
             "table_headers_innuca");
@@ -218,10 +225,10 @@ app.controller("reportsController", async ($scope) => {
 
     $scope.workflows = [
         ["Metadata", 14],
+        ["Typing", 1],
         ["Assembly", 14],
         ["Annotation", 2],
         ["chewBBACA", 2],
-        ["Pathotyping", 1]
     ];
 
     $scope.trees = [
@@ -232,6 +239,9 @@ app.controller("reportsController", async ($scope) => {
         "Metadata": [
             ["Strains metadata", "table_metadata_div"]
         ],
+        "Typing": [
+            ["Main table", "master_table_typing"],
+        ],
         "Assembly": [
             ["Main table", "table1_div"],
             ["FastQC", "fastqcContainer"],
@@ -240,10 +250,9 @@ app.controller("reportsController", async ($scope) => {
 
         ],
         "Annotation": [
-            ["Antimicrobial resistance", "table3_div"]
+            ["Antimicrobial resistance", "master_table_abricate"]
         ],
         "ChewBBACA": [],
-        "Pathotyping": [],
         "PHYLOVIZ": [
             ["PHYLOViZ Table", "table_trees_div"]
         ]

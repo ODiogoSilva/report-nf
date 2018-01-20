@@ -238,6 +238,11 @@ class Table {
     }
 
     /* Process INNUca data to load into the DataTable */
+    async processTyping(reports, setMax) {
+        return await processTyping(reports, setMax);
+    }
+
+    /* Process INNUca data to load into the DataTable */
     async processInnuca(reports, setMax) {
         return await processInnuca(reports, setMax);
     }
