@@ -33,6 +33,8 @@
     "popper.js": "^1.12.9",
     "mustache.js": "mustache#^2.3.0",
     "bootstrap-colorpicker": "^2.5.1",
-    "selectize": "^0.12.4"
+    "selectize": "^0.12.4",
+    "datatables.net-bs": "^2.1.1",
+    "datatables.net-buttons-bs": "^1.4.2"
   }
 }
