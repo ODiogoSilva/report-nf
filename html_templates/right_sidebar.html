@@ -22,13 +22,13 @@
                         <label>Highlight By Name:</label>
                         <div>
                             <input id="highlightSampleVal" type="text" placeholder="Type strain names">
-                            <div class="input-group">
+                            <div class="input-group filter-group">
                                 <input id="highlightSampleGroup" type="text" class="form-control" placeholder="Group name"/>
                                 <span id="cpSample" style="padding: 5px" class="input-group-addon colorpicker-component">
                                     <input id="highlightSampleCol" style="display: none" type="text" class="form-control" value="#DD0F20">
-                                    <span style="padding: 8px; margin: 0; border-radius: 0" class="input-group-addon"></span>
+                                    <span style="padding: 8px; margin: 0" class="input-group-addon"></span>
                                 </span>
-                                <span onclick="addHighlight('highlightSampleVal')" class="input-group-btn" ><button type="button" class="btn btn-success" style="border-radius: 0"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                <span onclick="addHighlight('highlightSampleVal')" class="input-group-btn" ><button type="button" class="btn btn-success" ><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                             </div>
                         </div>
                         <a onclick="highlightsModal('highlightSampleVal')" class="active-filters" id="highlightedSamples">View active highlights</a><span class="highlight-counter" id="sampleHighlightCounter">(0)</span>
@@ -38,13 +38,13 @@
                         <label>Highlight By Project:</label>
                         <div>
                             <input id="highlightProjectVal" type="text" placeholder="Type project names">
-                            <div class="input-group">
+                            <div class="input-group filter-group">
                                 <input id="highlightProjectGroup" type="text" class="form-control" placeholder="Group name"/>
                                 <span id="cpProject" style="padding: 5px" class="input-group-addon colorpicker-component">
                                     <input id="highlightProjectCol" style="display: none" type="text" class="form-control" value="#DD0F20">
-                                    <span style="padding: 8px; margin: 0; border-radius: 0" class="input-group-addon"></span>
+                                    <span style="padding: 8px; margin: 0" class="input-group-addon"></span>
                                 </span>
-                                <span onclick="addHighlight('highlightProjectVal')" class="input-group-btn" ><button type="button" class="btn btn-success" style="border-radius: 0"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
+                                <span onclick="addHighlight('highlightProjectVal')" class="input-group-btn" ><button type="button" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                             </div>
                         </div>
                         <a onclick="highlightsModal('highlightProjectVal')" class="active-filters" id="highlightedProjects">View active highlights</a><span class="highlight-counter" id="projectHighlightCounter">(0)</span>
@@ -66,10 +66,8 @@
                         <label>Filter By Name:</label>
                         <div data-placement="left">
                             <div class="input-group">
-                                <div class="input-group">
-                                    <input id="filter_by_name" type="text" class="form-control text-input" placeholder="Strain Name">
-                                </div>
-                                <span onclick="checkFilter('filter_by_name')" class="input-group-addon btn btn-default add_filter" id="filter_by_name_button"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                <input id="filter_by_name" type="text" class="form-control text-input" placeholder="Strain Name">
+                                <span onclick="checkFilter('filter_by_name')" class="input-group-btn add_filter" id="filter_by_name_button"><button class="btn btn-success" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                             </div>
                         </div>
                         <a class="active-filters auto-popup-dismiss" id="active_filters_name" data-placement="right" data-trigger="focus" tabindex="0" data-toggle="popover">Active filters</a>
@@ -80,11 +78,8 @@
                         <label>Filter By Project ID:</label>
                         <div data-placement="left">
                             <div class="input-group">
-                                <div class="input-group">
-                                    <input id="filter_by_projectid" type="text" class="form-control text-input" placeholder="Project ID">
-                                    <span id="filter_by_projectid_span" style="opacity: 0" class="glyphicon glyphicon-remove form-control-feedback"></span>
-                                </div>
-                                <span onclick="checkFilter('filter_by_projectid')" class="input-group-addon btn btn-default add_filter" id="filter_by_projectid_button"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                <input id="filter_by_projectid" type="text" class="form-control text-input" placeholder="Project ID">
+                                <span onclick="checkFilter('filter_by_projectid')" class="add_filter input-group-btn"><button class="btn btn-success" id="filter_by_projectid_button"><i class="fa fa-plus" aria-hidden="true"></i></button></span>
                             </div>
                         </div>
                         <a class="active-filters auto-popup-dismiss" id="active_filters_projectid" data-placement="right" data-trigger="focus" tabindex="0" data-toggle="popover">Active filters</a>
