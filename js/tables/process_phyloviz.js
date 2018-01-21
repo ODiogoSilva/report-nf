@@ -50,6 +50,7 @@ const processTrees = (treesReports) => {
     });
 
     /* Get data for each strain to add to the table */
+    console.log(treesReports);
 
     for (const report of treesReports) {
 
