@@ -242,7 +242,7 @@ app.controller("reportsController", async ($scope) => {
             ["Main table", "master_table_typing"],
         ],
         "Assembly": [
-            ["Main table", "table1_div"],
+            ["Main table", "innucaTableDiv"],
             ["FastQC", "fastqcContainer"],
             ["Assembly charts", "assemblyCharts"],
             // ["Graph 2", "container2"]
