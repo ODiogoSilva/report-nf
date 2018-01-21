@@ -125,14 +125,14 @@ const initReports = (scope, globalResults, append = true) => {
     });
 
     p1.then( async (r) => {
-        const resultsCh = await typingTable.processTyping(r.filteredJson, !append);
+        const resultsCh = await typingTable.processTyping(r.filteredJson, append);
         await typingTable.addTableHeaders(resultsCh, "table_headers_typing");
         await typingTable.addTableData(resultsCh, append);
         await typingTable.buildDataTable();
     });
 
     p1.then( async (r) => {
-        const resultsCh = await innucaTable.processInnuca(r.filteredJson, !append);
+        const resultsCh = await innucaTable.processInnuca(r.filteredJson, append);
         await innucaTable.addTableHeaders(resultsCh,
             "table_headers_innuca");
         await innucaTable.addTableData(resultsCh, append);

@@ -212,7 +212,7 @@ const parseReport = (reportJSON) => {
                 ["qc", ""],
                 ["projectId", projectId]
             ]));
-            storageIds.push(id);
+            storageIds.push(`${projectId}.${pipelineId}`);
             qcStorage.set(id, {"warnings": {}, "fails": {}});
         }
 
