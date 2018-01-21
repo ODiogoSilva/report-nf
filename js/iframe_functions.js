@@ -13,7 +13,13 @@ const runFromParent = () => {
     return true;
 };
 
-const addUserData = (username, userID) => {
+/**
+ * Add user information in case of running in the platform
+ * Function type NEEDS to have the var declaration to work
+ * @param username
+ * @param userID
+ */
+var addUserData = (username, userID) => {
     USERNAME = username;
     USERID = userID;
 };
