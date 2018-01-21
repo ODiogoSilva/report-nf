@@ -57,6 +57,7 @@ const initReports = (scope, globalResults, append = true) => {
     const metadataResults = globalResults.metadataResults;
 
 
+
     // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve, reject) => {
         const r = filterJson(results, metadataResults, dataFilters);
@@ -75,13 +76,20 @@ const initReports = (scope, globalResults, append = true) => {
                     }
                     strainTableValDict[report.sample_name][report.report_json.task] = report.report_json.tableRow;
                 }
-
-                if (report.report_json.hasOwnProperty("typing")){
+                else if (report.report_json.hasOwnProperty("typing")){
                     if(!taskArray.includes(report.report_json.task)){
                         taskArray.push(report.report_json.task);
                     }
                     strainTableValDict[report.sample_name][report.report_json.task] = [report.report_json.typing];
                 }
+                else if (report.report_json.hasOwnProperty("status")) {
+                    if(!taskArray.includes(report.report_json.task)){
+                        taskArray.push(report.report_json.task);
+                    }
+                    strainTableValDict[report.sample_name][report.report_json.task] = [{"chewBBACAStatus":report.report_json.status}];
+                }
+
+
 
             }
         });
@@ -109,10 +117,10 @@ const initReports = (scope, globalResults, append = true) => {
     /* Launch Tables */
 
     ( async () => {
-        const resultsCh = await treesTable.processTrees(trees, append);
+        const resultsCh = await treesTable.processTrees(trees, false);
         await treesTable.addTableHeaders(resultsCh,
             "table_headers_trees");
-        await treesTable.addTableData(resultsCh, append);
+        await treesTable.addTableData(resultsCh, false);
         await treesTable.buildDataTable(true);
     } )();
 
@@ -320,8 +328,6 @@ app.controller("reportsController", async ($scope) => {
 
     // Populate dropdown with species database from the platform.
     populateSelectPHYLOViZ("species_database", speciesDatabase);
-    //Get user Trees
-    trees = await getPHYLOViZTrees();
 
     //
     // MODALs INITS //

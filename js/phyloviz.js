@@ -100,6 +100,9 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
                             else if(el.seqtyping !== undefined){
                                 globalAdditionalData[sample]["Serotype"] = el.seqtyping;
                             }
+                            else if(el["chewBBACAStatus"] !== undefined){
+                                globalAdditionalData[sample]["chewBBACAStatus"] = el["chewBBACAStatus"];
+                            }
                             else {
                                 globalAdditionalData[sample][el.header] = el.value;
                             }

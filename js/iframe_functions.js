@@ -21,6 +21,10 @@ const runFromParent = () => {
 var addUserData = (username, userID) => {
     USERNAME = username;
     USERID = userID;
+
+    //Get user Trees
+    trees = getPHYLOViZTrees();
+
 };
 
 /**
@@ -41,6 +45,10 @@ const processAuth = async () => {
     if (res !== undefined && res.access === true) {
         $("#signInDiv").css({display:"none"});
         $("#mainBanner").css({display:"block"});
+
+        //Get user Trees
+        trees = await getPHYLOViZTrees();
+
     }
     else{
         modalAlert("Incorrect credentials! Please try again...");

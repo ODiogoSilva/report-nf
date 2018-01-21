@@ -112,6 +112,7 @@ class Table {
             // Check for duplicate entries
             for ( const el of tableObject.data ) {
                 // Only add unique IDs
+                console.log(this.tableIds, el.id, this.tableIds.includes(el.id));
                 if ( !this.tableIds.includes(el.id) ) {
                     this.tableData.push(el);
                     this.tableIds.push(el.id);

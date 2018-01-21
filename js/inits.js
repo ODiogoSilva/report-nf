@@ -547,10 +547,11 @@ const updateReportInfo = (dataJSON) => {
 const initDropFile = (scope) => {
 
     /* Event to be triggered when a file is dropped into the body of the page */
-    $("body").on("dropFile", async (ev, results) => {
+    $("body").off("dropFile").on("dropFile", async (ev, results) => {
         /*
             Rebuild tables and graphs
          */
+
         const waitingGif = $("#waiting_gif");
         waitingGif.css({display: "block"});
         $("#homeInnuendo").css({display: "none"});
@@ -569,7 +570,7 @@ const initDropFile = (scope) => {
         // Update project and sample number indicators
         populateProjectIndicator(reportInfo);
 
-        await initReports(scope, results.data);
+        await initReports(scope, results.data, false);
 
         waitingGif.css({display:"none"});
         $("#row-main").css({display:"block"});
