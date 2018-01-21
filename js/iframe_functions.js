@@ -18,12 +18,12 @@ const runFromParent = () => {
  * @param username
  * @param userID
  */
-var addUserData = (username, userID) => {
+var addUserData = async (username, userID) => {
     USERNAME = username;
     USERID = userID;
 
     //Get user Trees
-    trees = getPHYLOViZTrees();
+    trees =  await getPHYLOViZTrees();
 
 };
 
