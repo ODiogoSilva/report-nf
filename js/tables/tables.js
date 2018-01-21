@@ -104,6 +104,10 @@ class Table {
      */
     addTableData(tableObject, update) {
 
+        if (!tableObject.data){
+            return;
+        }
+
         if ( update === true ) {
             // Check for duplicate entries
             for ( const el of tableObject.data ) {

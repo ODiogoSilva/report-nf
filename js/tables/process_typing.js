@@ -95,7 +95,7 @@ const processTyping = async (reportsData) => {
             },
         ].concat(tableData.mappings);
     } else {
-        typingData.data = {};
+        typingData.data = [];
         typingData.headers = [];
         typingData.columnMapping = [];
     }
