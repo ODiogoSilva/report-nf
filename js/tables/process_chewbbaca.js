@@ -49,8 +49,7 @@ const processChewbbaca = (reportsData) => {
 
     for (const [index, report] of reportsData.entries()) {
         if (report.report_json.task === "chewbbaca"){
-
-            chewbbacaToReportId[report.sample_name] = index;
+            chewbbacaToReportId[report.sample_name] = report.project_id + "." + report.pipeline_id + "." +report.process_id;
 
             let dataObject = {
                 "active": 0,
@@ -106,8 +105,10 @@ const downloadProfiles = () => {
     }
 
     selectedData.each((value, i) => {
-        for (const [index, report] of data.entries()){
-            if (index === chewbbacaToReportId[value.id]) {
+        for (const [index, report] of data.results.entries()){
+            const indexToCheck = report.project_id + "." + report.pipeline_id + "." +report.process_id;
+            if (indexToCheck === chewbbacaToReportId[value.sample_name]) {
+
                 auxBody = [];
 
                 if (firstTime) {
