@@ -82,7 +82,16 @@ const innucaTable = new Table("master_table_innuca");
 innucaTable.setLastColumn("assembled bp");
 const chewbbacaTable = new Table("master_table_chewbbaca");
 const prokkaTable = new Table("master_table_prokka");
+
 const abricateTable = new Table("master_table_abricate");
+abricateTable.addAdditionalButton({
+        text: "Genes CSV",
+        action(e, dt, node, config) {
+            generateGenesCSV(abricateTable);
+        }
+    }
+);
+
 const treesTable = new Table("master_table_trees");
 
 

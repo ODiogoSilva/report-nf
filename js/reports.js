@@ -160,15 +160,6 @@ const initReports = (scope, globalResults, append = true) => {
         await abricateTable.addTableHeaders(resultsCh,
             "table_headers_abricate");
         await abricateTable.addTableData(resultsCh);
-
-        const additionalButton = {
-            text: "Genes CSV",
-            action( e, dt, node, config ) {
-                generateGenesCSV(abricateTable);
-            }
-        };
-
-        await abricateTable.addAdditionalButton(additionalButton);
         await abricateTable.buildDataTable(true);
     });
 
