@@ -40,22 +40,34 @@ const triggerV = () => {
         $("#phylovizParametersDiv").css({"display": "none"});
         $("#valuesAbricateDiv").css({"display": "none"});
 
-        console.log(strainTableValDict, target);
 
         chewbbacaTable.tableObj.rows(".selected").data().map((d) => {
             let itemDiv = "";
             if(strainTableValDict[d.sample_name][target] !== undefined) {
-
                 for (const el of strainTableValDict[d.sample_name][target]){
                     let active = "";
-                    if(correspondenceObj[el.header] !== true){
+
+                    if(correspondenceObj[el.header] !== true && el.header !== undefined){
                         if(activeAdditionalSel[el.header] !== undefined && activeAdditionalSel[el.header][0] != false){
-                            console.log(activeAdditionalSel, el.header);
                             active = "active-btn";
                         }
                         itemDiv += `<li class="list-group-item">${el.header}<button type="button" class="btn btn-default abricate-btn ${active}"><i class="fa fa-bullseye paramTrigger" name="${el.header}" procedure="${target}"></i></button></li>`;
 
                         correspondenceObj[el.header] = true;
+                    }
+                    else if(correspondenceObj["pathotyping"] !== true && el["pathotyping"] !== undefined){
+                        if(activeAdditionalSel["pathotyping"] !== undefined && activeAdditionalSel["pathotyping"][0] != false){
+                            active = "active-btn";
+                        }
+                        itemDiv += `<li class="list-group-item">${"pathotyping"}<button type="button" class="btn btn-default abricate-btn ${active}"><i class="fa fa-bullseye paramTrigger" name="${"pathotyping"}" procedure="${target}"></i></button></li>`;
+
+                    }
+                    else if(correspondenceObj["seqtyping"] !== true && el["seqtyping"] !== undefined){
+                        if(activeAdditionalSel["seqtyping"] !== undefined && activeAdditionalSel["seqtyping"][0] != false){
+                            active = "active-btn";
+                        }
+                        itemDiv += `<li class="list-group-item">${"seqtyping"}<button type="button" class="btn btn-default abricate-btn ${active}"><i class="fa fa-bullseye paramTrigger" name="${"seqtyping"}" procedure="${target}"></i></button></li>`;
+
                     }
 
                 }
@@ -95,10 +107,12 @@ const triggerParams = () => {
             });
 
             for (const strain of selectedStrains){
-                for (const el of strainTableValDict[strain][procedure]){
-                    if(el.header === task) {
-                        abricateResults = abricateResults.concat(el.geneList);
-                        abricateResults = Array.from(new Set(abricateResults));
+                if(strainTableValDict[strain].hasOwnProperty(procedure)){
+                    for (const el of strainTableValDict[strain][procedure]){
+                        if(el.header === task) {
+                            abricateResults = abricateResults.concat(el.geneList);
+                            abricateResults = Array.from(new Set(abricateResults));
+                        }
                     }
                 }
             }

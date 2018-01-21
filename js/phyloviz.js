@@ -94,25 +94,27 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
                             }
                         }
                         else {
-                            globalAdditionalData[sample][el.header] = el.value;
+                            if(el.pathotyping !== undefined){
+                                globalAdditionalData[sample]["Pathotype"] = el.pathotyping;
+                            }
+                            else if(el.seqtyping !== undefined){
+                                globalAdditionalData[sample]["Serotype"] = el.seqtyping;
+                            }
+                            else {
+                                globalAdditionalData[sample][el.header] = el.value;
+                            }
                         }
                     }
 
                     if (procedure === "abricate") {
                         abricateResults = Array.from(new Set(abricateResults));
                         globalAdditionalData[sample]["Resistance Profile"] = abricateResults.join();
-                        console.log(abricateResults);
                     }
                 }
             }
         }
     }
 
-
-    console.log(globalAdditionalData);
-    console.log(selectedSampleNames);
-
-    console.log(activeAdditionalSel);
 
     const data = {
         job_ids: selectedJobIds.join(","),

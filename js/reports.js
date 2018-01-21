@@ -76,8 +76,16 @@ const initReports = (scope, globalResults, append = true) => {
                     strainTableValDict[report.sample_name][report.report_json.task] = report.report_json.tableRow;
                 }
 
+                if (report.report_json.hasOwnProperty("typing")){
+                    if(!taskArray.includes(report.report_json.task)){
+                        taskArray.push(report.report_json.task);
+                    }
+                    strainTableValDict[report.sample_name][report.report_json.task] = [report.report_json.typing];
+                }
+
             }
         });
+
         // Only resolve the promise when the results array is not empty
         if (r.length !== 0) {
             // Get pipeline info stats. This is performed between the filtering
