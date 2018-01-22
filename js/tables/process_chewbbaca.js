@@ -10,6 +10,8 @@ const processChewbbaca = (reportsData) => {
     let dataKey = "";
     const chewbbacaDataArray = [];
 
+    const refDict = {"fail": "label-danger", "warning": "label-warning", "pass": "label-success"};
+
     /* Get headers */
     let firstTime = true;
     for (const report of reportsData) {
@@ -69,7 +71,9 @@ const processChewbbaca = (reportsData) => {
 
             dataObject["sample_name"] = report.sample_name;
 
-            dataObject["status"] = report.report_json.status;
+
+
+            dataObject["status"] = `<div class="label ${refDict[report.report_json.status]}">${report.report_json.status}</div>`;
 
             report.report_json.cagao[1][dataKey].map( (j, i) => {
                 dataObject[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][dataKey][i];
