@@ -46,7 +46,6 @@ const triggerV = () => {
             if(strainTableValDict[d.sample_name][target] !== undefined) {
                 for (const el of strainTableValDict[d.sample_name][target]){
 
-                    console.log(el);
                     let active = "";
 
                     if(correspondenceObj[el.header] !== true && el.header !== undefined){
@@ -63,6 +62,8 @@ const triggerV = () => {
                         }
                         itemDiv += `<li class="list-group-item">${"pathotyping"}<button type="button" class="btn btn-default abricate-btn ${active}"><i class="fa fa-bullseye paramTrigger" name="${"pathotyping"}" procedure="${target}"></i></button></li>`;
 
+                        correspondenceObj["pathotyping"] = true;
+
                     }
                     else if(correspondenceObj["seqtyping"] !== true && el["seqtyping"] !== undefined){
                         if(activeAdditionalSel["seqtyping"] !== undefined && activeAdditionalSel["seqtyping"][0] != false){
@@ -70,12 +71,16 @@ const triggerV = () => {
                         }
                         itemDiv += `<li class="list-group-item">${"seqtyping"}<button type="button" class="btn btn-default abricate-btn ${active}"><i class="fa fa-bullseye paramTrigger" name="${"seqtyping"}" procedure="${target}"></i></button></li>`;
 
+                        correspondenceObj["seqtyping"] = true;
+
                     }
                     else if(correspondenceObj["chewBBACAStatus"] !== true && el["chewBBACAStatus"] !== undefined){
                         if(activeAdditionalSel["chewBBACAStatus"] !== undefined && activeAdditionalSel["chewBBACAStatus"][0] != false){
                             active = "active-btn";
                         }
                         itemDiv += `<li class="list-group-item">${"chewBBACAStatus"}<button type="button" class="btn btn-default abricate-btn ${active}"><i class="fa fa-bullseye paramTrigger" name="${"chewBBACAStatus"}" procedure="${target}"></i></button></li>`;
+
+                        correspondenceObj["chewBBACAStatus"] = true;
 
                     }
 

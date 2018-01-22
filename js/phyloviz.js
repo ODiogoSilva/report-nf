@@ -24,6 +24,9 @@ const fetchTreeJob = async (redisJobId) => {
         if (response.result.message !== undefined) {
             message = response.result.message;
         }
+        if(response.result === 404){
+            message = "PHYLOViZ Online: Bad credentials.";
+        }
 
         ( async () => {
             const trees = await getPHYLOViZTrees();
