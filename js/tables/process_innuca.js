@@ -287,8 +287,8 @@ const parseReport = (reportJSON) => {
  *
  * @param parsedJson (Object) : Processed JSON report. See `parseReport`
  * documentation
- * @param setMax (boolean) : Determines whether the report app filters should
- * be updated with this new data or not. This should be set to false when
+ * @param ignoreMax (boolean) : Determines whether the report app filters should
+ * be updated with this new data or not. This should be set to true when
  * the table is being created after a filtering instruction, in which it is
  * not desirable to update the min/max values of the filters.
  * @returns {{data: Array, mappings}}
@@ -297,7 +297,7 @@ const parseReport = (reportJSON) => {
  *      - mappings (Array): Array of objects ready for jquery data table
  *      mappings
  */
-const createTableData = (parsedJson, setMax) => {
+const createTableData = (parsedJson, ignoreMax) => {
 
     let data = [];
     let qcMap = new Map();
@@ -351,7 +351,7 @@ const createTableData = (parsedJson, setMax) => {
                         const maxValue = Math.max(...parsedJson.columnBars[col]);
                         prop = (parseFloat(v.get(col)) / maxValue) * 100;
                         // Set/Update maximum filters value
-                        if ( setMax === true ) {setMaxFilters(col, maxValue);}
+                        if ( !ignoreMax === true ) {setMaxFilters(col, maxValue);}
                     }
                     const outDiv = `<div id="${col.replace(/ |\(|\)/g, "")}" class='table-cell'><div class='table-bar' style='width:${prop}%'></div>${v.get(col)}</div>`;
                     v.set(col, outDiv);
@@ -384,7 +384,7 @@ const createTableData = (parsedJson, setMax) => {
  * Function to process INNuca data to load into the DataTable
  * @param reportsData
  */
-const processInnuca = async (reportsData, setMax) => {
+const processInnuca = async (reportsData, ignoreMax) => {
 
     // Instantiate the object with the table data
     const innucaData = {};
@@ -394,7 +394,7 @@ const processInnuca = async (reportsData, setMax) => {
     const parsedJson = await parseReport(reportsData);
 
     // Process the parsed JSON and prepare the table data
-    const tableData = await createTableData(parsedJson, setMax);
+    const tableData = await createTableData(parsedJson, ignoreMax);
 
     // Set table data and return
     innucaData.data = tableData.data;
