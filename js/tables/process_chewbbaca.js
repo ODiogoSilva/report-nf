@@ -33,7 +33,8 @@ const processChewbbaca = (reportsData) => {
                 return data;
             },
             className: "dt-body-center"
-        }
+        },
+        {data: "status", title: "chewBBACA Status"}
     ];
 
     chewbbacaHeaders.map((x) => {
@@ -67,6 +68,8 @@ const processChewbbaca = (reportsData) => {
             });
 
             dataObject["sample_name"] = report.sample_name;
+
+            dataObject["status"] = report.report_json.status;
 
             report.report_json.cagao[1][dataKey].map( (j, i) => {
                 dataObject[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][dataKey][i];
