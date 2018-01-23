@@ -79,7 +79,7 @@ const charts = new ChartManager();
 const metadataTable = new Table("master_table_metadata");
 const typingTable = new Table("master_table_typing");
 const innucaTable = new Table("master_table_innuca");
-innucaTable.setLastColumn("assembled bp");
+innucaTable.setLastColumn("Assembled BP");
 innucaTable.addAdditionalButton({
     extend: "collection",
     text: "Selection",
