@@ -40,11 +40,6 @@ const assemblyBoxplot = (rawData, path, taskName) => {
 
         myChart.extend("chart", {type: "boxplot"});
         myChart.extend("xAxis", {labels: {enabled: false}});
-        // myChart.extend("xAxis", {labels: {
-        //     rotation: -90,
-        //     enabled: true,
-        //     formatter() {return res[this.value][0];}
-        // }});
         myChart.extend("yAxis", {min:0});
 
         myChart.layout.plotOptions = {
@@ -60,6 +55,21 @@ const assemblyBoxplot = (rawData, path, taskName) => {
                         click: showModelGraphs
                     }
                 }
+            }
+        };
+
+        myChart.layout.tooltip = {
+            style: {
+                fontSize: "16px"
+            },
+            formatter() {
+                return `<div><b>Sample:</b> ${this.point.name}</div><br>
+                        <div> </div><br>
+                        <div><i>Minimum: </i>${humanReadable(this.point.low)}</div><br>
+                        <div><i>Q1: </i>${humanReadable(this.point.q1)}</div><br>
+                        <div><b>Median:</b> ${humanReadable(this.point.median)}</div><br>
+                        <div><i>Q3: </i>${humanReadable(this.point.q3)}</div><br>
+                        <div><i>Maximum:</i> ${humanReadable(this.point.high)}</div><br>`
             }
         };
         return myChart.layout;
