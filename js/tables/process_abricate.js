@@ -76,7 +76,7 @@ const createAbricateData = (parsedObj) => {
             if (!(v.has(col))){
                 v.set(col,
                     "<div class='table-cell'>" +
-                    "<div class='table-bar-text'>NA</div>" +
+                    "<div class='table-bar-text'>Not run</div>" +
                     "</div>");
             } else {
                 if (parsedObj.columns.includes(col)){

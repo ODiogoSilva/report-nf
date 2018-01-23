@@ -336,7 +336,7 @@ const createTableData = (parsedJson, ignoreMax) => {
             if (!(v.has(col))){
                 v.set(col,
                     "<div class='table-cell'>" +
-                    "<div class='table-bar-text'>NA</div>" +
+                    "<div class='table-bar-text'>Not run</div>" +
                     "</div>");
                 // The field exists, do some pre-processing
             } else {
