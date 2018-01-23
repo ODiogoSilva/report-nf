@@ -1,6 +1,11 @@
 
 const parseTypingReport = (rdata) => {
 
+    const headerConversion = {
+        "seq_typing": "Serotyping",
+        "patho_typing": "Pathotyping"
+    };
+
     let storage = new Map();
     let startHeaders = ["id", "Sample"];
     let columns = [];
@@ -21,8 +26,8 @@ const parseTypingReport = (rdata) => {
         }
 
         if (jr.hasOwnProperty("typing")) {
-            const header = jr.task;
-            storage.get(id).set(header, Object.values(jr.typing)[0])
+            const header = headerConversion[jr.task];
+            storage.get(id).set(header, Object.values(jr.typing)[0]);
 
             if (!columns.includes(header)){
                 columns.push(header);
