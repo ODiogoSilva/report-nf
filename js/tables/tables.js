@@ -27,40 +27,10 @@ class Table {
         // in the table. Is used to prevent duplications in the table
         this.tableIds = [];
         this.tableAdditionalButtons = [
-
                 "copy",
                 "csv",
                 "excel",
                 "pdf",
-                "print",
-                {
-                    extend: "collection",
-                    text: "Selection",
-                    autoClose: true,
-                    buttons: [
-                        {
-                            text: "Show graphs",
-                            action( e, dt, node, config ) {
-                                const row = dt.rows(".selected").data()[0];
-                                const pid = `${row.id.split(".")[0]}.${row.Sample}`;
-                                showModelGraphs(pid);
-                            }
-                        },
-                        {
-                            text: "Download assembly",
-                            async action( e, dt, node, config ) {
-
-                                const res = await getAssemblies(dt);
-
-                                const fileStr = res[0].join(";");
-                                const sampleStr = res[1].join(";");
-
-                                getFile(fileStr, sampleStr);
-
-                            }
-                        }
-                    ]
-                }
         ];
     }
 

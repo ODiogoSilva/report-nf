@@ -80,6 +80,35 @@ const metadataTable = new Table("master_table_metadata");
 const typingTable = new Table("master_table_typing");
 const innucaTable = new Table("master_table_innuca");
 innucaTable.setLastColumn("assembled bp");
+innucaTable.addAdditionalButton({
+    extend: "collection",
+    text: "Selection",
+    autoClose: true,
+    buttons: [
+        {
+            text: "Show graphs",
+            action( e, dt, node, config ) {
+                const row = dt.rows(".selected").data()[0];
+                const pid = `${row.id.split(".")[0]}.${row.Sample}`;
+                showModelGraphs(pid);
+            }
+        },
+        {
+            text: "Download assembly",
+            async action( e, dt, node, config ) {
+
+                const res = await getAssemblies(dt);
+
+                const fileStr = res[0].join(";");
+                const sampleStr = res[1].join(";");
+
+                getFile(fileStr, sampleStr);
+
+            }
+        }
+    ]
+});
+
 const chewbbacaTable = new Table("master_table_chewbbaca");
 const prokkaTable = new Table("master_table_prokka");
 
