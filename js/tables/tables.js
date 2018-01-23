@@ -175,11 +175,15 @@ class Table {
                 orderable: false,
                 className: "select-checkbox",
                 targets:   0,
-                width: "15px"
+                width: "10px"
             } ,
                 {
-                    targets: [1,2],
+                    targets: [1],
                     width: "30px",
+                },
+                {
+                    targets: [1,2],
+                    width: "50px",
                 }],
             select: {
                 style:    "os",

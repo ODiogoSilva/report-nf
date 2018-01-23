@@ -229,6 +229,10 @@ th {
     line-height: 30px;
     vertical-align: middle;
     text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
 }
 
 .table-bar {
