@@ -383,7 +383,12 @@ app.controller("reportsController", async ($scope) => {
         // Render FastQC plots for the first time on demand by pressing the tabs
         $("#fastqcTabs, #assemblyTabs").on("shown.bs.tab", (e) => {
             let container = $(e.target).attr("data-target");
-            charts.buildChart(container.replace("#", ""));
+            charts.buildChart(container.replace("#", ""), false);
+            // Change the atInit property of the charts, so that the correct
+            // one is drawn when resubmitting data to the reports
+            charts.charts.get(container.replace("#", "")).atInit = true;
+            const prevContainer = $(e.relatedTarget).attr("data-target");
+            charts.charts.get(prevContainer.replace("#", "")).atInit = false;
         });
 
         /* Show/hide tabs of spades and its divs */

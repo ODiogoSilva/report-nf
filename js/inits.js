@@ -442,6 +442,7 @@ const initResubmit = (scope) => {
         $("#project_select").val($("#navProjectPicker").val()).selectpicker("refresh");
         $("#f_by_name").val($("#navSamplePicker").val()).selectpicker("refresh");
 
+        charts.resetCharts();
         await initReports(scope, res, false);
 
         loadingGif.css({display: "none"});

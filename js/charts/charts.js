@@ -222,6 +222,16 @@ class ChartManager {
         }
     }
 
+    resetCharts(){
+        for (const container of this.charts.keys()) {
+
+            const c = $("#" + container).highcharts();
+            if (c){
+                c.destroy();
+            }
+        }
+    }
+
 }
 
 
