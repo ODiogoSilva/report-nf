@@ -38,7 +38,11 @@ const assemblyBoxplot = (rawData, path, taskName) => {
             }]
         });
 
-        myChart.extend("chart", {type: "boxplot"});
+        myChart.extend("chart", {
+            type: "boxplot",
+            panKey: "ctrl",
+            panning: true
+        });
         myChart.extend("xAxis", {labels: {enabled: false}});
         myChart.extend("yAxis", {min:0});
 
@@ -58,6 +62,7 @@ const assemblyBoxplot = (rawData, path, taskName) => {
             }
         };
 
+        // Add custom tooltip with human readable values
         myChart.layout.tooltip = {
             style: {
                 fontSize: "16px"
