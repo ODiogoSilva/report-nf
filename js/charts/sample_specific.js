@@ -17,8 +17,19 @@ const syncCharts = [
     "sw-chewbbaca-chart"
 ];
 
-const humanReadable = (number) => {
-    const suffix = ["", "KB", "MB", "GB", "TB"];
+const humanReadable = (number, bpSuffix) => {
+
+    if (!bpSuffix){
+        let bpSuffix = true;
+    }
+
+    let suffix;
+    if (bpSuffix === true){
+        suffix = ["", "KB", "MB", "GB", "TB"];
+    } else {
+        suffix = ["", "K", "M", "G", "T"];
+    }
+
     const i = parseInt(Math.floor(Math.log(number) / Math.log(1000)));
     if (i === 0) {
         return number + " " + suffix[i];
@@ -38,23 +49,23 @@ const populateHeader = (sample) => {
     qcContainer.css({"color": qcColor});
 
     // Base pairs
-    const bp = innucaTable.getValue(sample, "bp")[0].innerText;
+    const bp = innucaTable.getValue(sample, "Raw BP")[0].innerText;
     $("#bpContainer").html(humanReadable(bp));
 
     // Reads
-    const reads = innucaTable.getValue(sample, "reads")[0].innerText;
-    $("#readsContainer").html(humanReadable(reads));
+    const reads = innucaTable.getValue(sample, "Reads")[0].innerText;
+    $("#readsContainer").html(humanReadable(reads, false));
 
     // Coverage
-    const coverage = innucaTable.getValue(sample, "coverage (2nd)")[0].innerText;
-    $("#covContainer").html(humanReadable(coverage));
+    const coverage = innucaTable.getValue(sample, "Coverage (2nd)")[0].innerText;
+    $("#covContainer").html(humanReadable(coverage, false));
 
     // Contigs
-    const contigs = innucaTable.getValue(sample, "contigs")[0].innerText;
-    $("#contigsContainer").html(humanReadable(contigs));
+    const contigs = innucaTable.getValue(sample, "Contigs")[0].innerText;
+    $("#contigsContainer").html(humanReadable(contigs, false));
 
     // Assembled bp
-    const assembledbp = innucaTable.getValue(sample, "assembled bp")[0].innerText;
+    const assembledbp = innucaTable.getValue(sample, "Assembled BP")[0].innerText;
     $("#assembledContainer").html(humanReadable(assembledbp));
 
     return qcColor;
