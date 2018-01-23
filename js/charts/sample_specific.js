@@ -605,7 +605,7 @@ const slidingReport = (sample) => {
                 .highcharts({
                     id: chartId,
                     chart: {
-                        marginLeft: 70,
+                        marginLeft: 100,
                         spacingTop: 20,
                         spacingBottom: 10,
                         zoomType: "x",
@@ -914,7 +914,7 @@ const abricateReport = (sample, res) => {
             .highcharts({
                 id: "sw-abricate-chart",
                 chart: {
-                    marginLeft: 70,
+                    marginLeft: 100,
                     spacingTop: 10,
                     spacingBottom: 10,
                     zoomType: "x",
