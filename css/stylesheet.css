@@ -217,6 +217,10 @@ th {
     text-align: center;
 }
 
+.table {
+    overflow-y: hidden;
+}
+
 .table-cell {
     display: inline-block;
     position: relative;
