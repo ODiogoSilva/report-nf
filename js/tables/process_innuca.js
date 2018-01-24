@@ -31,7 +31,17 @@ const getQc = (qcObject, sampleObj) => {
     if (Object.keys(qcObject.fails).length !== 0) {
         qcColor = qcPicker.fail[0];
         qcValue = qcPicker.fail[1];
-        let failMsg = Object.values(qcObject.fails).toString().replace(/_/g, " ");
+
+        let failMessages = [];
+        for (const el of Object.values(qcObject.fails)) {
+
+            if (!el.value){
+                continue
+            }
+
+            const failMsg = el.value.split(":")[0].replace(/_/g, " ");
+            failMessages.push(`(${el.process}) ${failMsg}`);
+        }
         qcDiv = `<div id=${sample} class='badge-qc tooltip-qc' 
                        style="background: ${qcColor}">
                     ${qcValue}</div>`;
@@ -39,8 +49,8 @@ const getQc = (qcObject, sampleObj) => {
                         <div class="qc-runtime">Total runtime: <span class="label label-default">${runTime}</span></div>
                         <div>
                             <ul>
-                                <li>Fail reason:</li>
-                                    <ul><li>${failMsg}</li></ul>
+                                <li>Fail reason(s):</li>
+                                    <ul>${failMessages.join("<br>")}</ul>
                             </ul>
                         </div>
                     </span>`;
@@ -232,6 +242,17 @@ const parseReport = (reportJSON) => {
             qcStorage.get(id).fails[processId] = jr.fail;
         }
 
+        // If the current json report has an expectedSpecies, parse the MLST
+        // result
+        if (jr.hasOwnProperty("expectedSpecies")) {
+            if (jr.species !== jr.expectedSpecies) {
+                qcStorage.get(id).fails[processId] = {
+                    process: "mlst",
+                    value: `Detected species <b>${jr.species}</b> does not match the expected species <b>${jr.expectedSpecies}</b>`
+                }
+            }
+        }
+
         // If the current json report has a table-row property, parse it
         // to the data table
         if (jr.hasOwnProperty("tableRow")) {
@@ -264,6 +285,8 @@ const parseReport = (reportJSON) => {
             }
         }
     }
+
+    console.log(qcStorage)
 
     // Sort the column headers according to the process id
     if (!innucaTable.columnArray){
