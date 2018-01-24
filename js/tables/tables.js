@@ -22,6 +22,7 @@ class Table {
         this.tableObj = null;
         // Sets the last expected header of the table. See setLastColumn method.
         this.lastHeader = null;
+        this.columnArray = null;
 
         // Stores the 'projectId.pipelineId' associated with each entry
         // in the table. Is used to prevent duplications in the table
@@ -42,7 +43,16 @@ class Table {
      * @param columnHeader
      */
     setLastColumn(columnHeader) {
-        this.lastHeader = columnHeader
+        this.lastHeader = columnHeader;
+    }
+
+    /**
+     * Sets the columns for the Table object. This is used to force the order
+     * of the columns in a given table
+     * @param columnArray
+     */
+    setColumns(columnArray) {
+        this.columnArray = columnArray;
     }
 
     /*

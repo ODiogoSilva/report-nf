@@ -58,7 +58,6 @@ const createTypingData = (parsedObj) => {
             if (!(v.has(col))) {
                 v.set(col, "<div class='table-cell'><div>Not run</div></div>");
             } else {
-                console.log(v.get(col))
                 v.set(col, `<div class='table-cell'>${v.get(col)}</div>`);
             }
         });

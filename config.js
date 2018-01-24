@@ -80,6 +80,9 @@ const metadataTable = new Table("master_table_metadata");
 const typingTable = new Table("master_table_typing");
 const innucaTable = new Table("master_table_innuca");
 innucaTable.setLastColumn("Assembled BP");
+// Temporary fix to force the order of the table columns
+innucaTable.setColumns(["Raw BP", "Reads", "Coverage (1st)", "Trimmed (%)",
+    "Coverage (2nd)", "Contigs", "Assembled BP"]);
 innucaTable.addAdditionalButton({
     extend: "collection",
     text: "Selection",

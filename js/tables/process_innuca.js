@@ -182,6 +182,10 @@ const parseReport = (reportJSON) => {
     // These headers are always present in the beginning of the table
     // The first element corresponds to the select checkbox column
     let startHeaders = ["", "qc", "id", "Sample"];
+    // If the column array was defined, used it to defined the sorted columns
+    if (innucaTable.columnArray){
+        sortedColumns = innucaTable.columnArray;
+    }
 
     // Holds an object containing the table headers tha should be filled with
     // a column bar and an array of their values
@@ -262,9 +266,11 @@ const parseReport = (reportJSON) => {
     }
 
     // Sort the column headers according to the process id
-    columns = [...columns.entries()].sort( (a,b) => {return a[1] - b[1];});
-    for (let c of columns) {
-        sortedColumns.push(c[0]);
+    if (!innucaTable.columnArray){
+        columns = [...columns.entries()].sort( (a,b) => {return a[1] - b[1];});
+        for (let c of columns) {
+            sortedColumns.push(c[0]);
+        }
     }
 
     // Add the final headers to the table data object
