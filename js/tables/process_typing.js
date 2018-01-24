@@ -25,10 +25,18 @@ const parseTypingReport = (rdata) => {
             ]));
         }
 
-        if (jr.hasOwnProperty("typing")) {
-            const header = headerConversion[jr.task];
-            storage.get(id).set(header, Object.values(jr.typing)[0]);
+        let header;
 
+        if (jr.hasOwnProperty("typing")) {
+            header = headerConversion[jr.task];
+            storage.get(id).set(header, Object.values(jr.typing)[0]);
+        }
+        if (jr.hasOwnProperty("expectedSpecies")) {
+            header = "mlst";
+            storage.get(id).set(header, `${jr.species} (${jr.st})`);
+        }
+
+        if (header){
             if (!columns.includes(header)){
                 columns.push(header);
             }
