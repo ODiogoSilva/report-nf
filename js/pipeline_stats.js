@@ -77,7 +77,9 @@ const getSampleRuntime = (sampleId) => {
     }
 
     for (const el of Object.keys(sampleInfo)) {
-        runtime += sampleInfo[el].time
+        if (!isNaN(sampleInfo[el].time)){
+            runtime += sampleInfo[el].time
+        }
     }
 
     return runtime / 1000 / 60;

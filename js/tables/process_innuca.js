@@ -286,8 +286,6 @@ const parseReport = (reportJSON) => {
         }
     }
 
-    console.log(qcStorage)
-
     // Sort the column headers according to the process id
     if (!innucaTable.columnArray){
         columns = [...columns.entries()].sort( (a,b) => {return a[1] - b[1];});
