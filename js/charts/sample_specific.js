@@ -551,7 +551,7 @@ const populateAbricateReport = (el) => {
     $("#abr-gene-name").html(el.gene);
     $("#abr-gene-length").html(Math.round((el.x2 - el.x) * el.windowSize), 0);
     $("#abr-gene-position").html(`${Math.round(el.x * el.windowSize)} - ${Math.round(el.x2 * el.windowSize)}`);
-    $("#abr-database").html(el.yCategory);
+    $("#abr-database").html(el.series.name);
     $("#abr-accession").html(el.accession);
 
 };
