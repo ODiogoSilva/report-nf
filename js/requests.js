@@ -54,7 +54,7 @@ const getReportByFilter = async (filter) => {
 */
 
 const getReportByFilter = async (filter) => {
-    return await $.get(
+    return await $.post(
         reportsRoute+"app/api/v1.0/reports/project/filter",
         filter,
     );
