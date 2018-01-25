@@ -195,7 +195,7 @@ const HighlightLineSeries = (chartObj, selection) => {
             sel = selection.get(series.name);
             highlightedSeries.push({color: sel.color, zIndex: 100});
         } else {
-            highlightedSeries.push({color: "grey", zIndex: 1});
+            highlightedSeries.push({color: "#626262", zIndex: 1});
         }
     }
 
