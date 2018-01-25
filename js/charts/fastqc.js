@@ -13,7 +13,7 @@ const getLineSeries = async (mapObject) => {
             name: k,
             type: "line",
             data: v,
-            color: "grey"
+            color: "#626262"
         });
     }
 
