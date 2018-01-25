@@ -15,7 +15,7 @@ const processMetadata = (reportsData) => {
         "File_2": "File 2",
         "Primary": "Sample",
         "Owner": "Owner",
-        "Food-Bug": "Food-Bug",
+        "Case ID": "Case ID",
         "Submitter": "Submitter",
         "Location": "Location",
     };
@@ -33,7 +33,7 @@ const processMetadata = (reportsData) => {
         "SampleReceivedDate",
         "species_id",
         "Owner",
-        "Food-Bug",
+        "Case ID",
         "Submitter",
         "File_1",
         "File_2",
@@ -80,7 +80,11 @@ const processMetadata = (reportsData) => {
         metadataHeaders.map( (j, i) => {
             if (j !== "" && j !== "id" && j !== "species_id"){
                 const strainMetadata = JSON.parse(report.strain_metadata);
-                dataObject[j] = strainMetadata[j];
+                if (j === "Case ID"){
+                    dataObject[j] = strainMetadata["Food-Bug"]
+                } else {
+                    dataObject[j] = strainMetadata[j];
+                }
             }
         });
 
