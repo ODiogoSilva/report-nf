@@ -55,14 +55,14 @@ const getReportByFilter = async (filter) => {
 
 const getReportByFilter = async (filter) => {
     return await $.post(
-        reportsRoute+"app/api/v1.0/reports/project/filter",
+        reportsRoute+"app/api/v1.0/reports/project/filter/",
         filter,
     );
 };
 
 const getStrainsMetadata = async (filter) => {
-    return await $.get(
-        reportsRoute+"app/api/v1.0/strains/name",
+    return await $.post(
+        reportsRoute+"app/api/v1.0/strains/name/",
         filter,
     );
 };
