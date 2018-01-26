@@ -793,7 +793,7 @@ const abricateZoomGene = () => {
                 (x) => x.name === geneOpts.database
             );
             const pointIdx = chart.series[seriesIdx].data.findIndex(
-                (x) => x.gene === geneName
+                (x) => `${x.gene}` === geneName
             );
 
             setTimeout(() => {chart.series[seriesIdx].data[pointIdx].firePointEvent("click");}, 500);
@@ -870,8 +870,8 @@ const abricateNavigation = (data) => {
 
         for (const gene of el.data) {
             options.push({
-                id: gene.gene,
-                gene: gene.gene,
+                id: `${gene.gene}`,
+                gene: `${gene.gene}.${gene.x}`,
                 database: el.name,
                 range: [gene.x, gene.x2]
             })

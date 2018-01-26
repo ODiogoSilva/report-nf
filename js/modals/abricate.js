@@ -31,6 +31,8 @@ const findAbricateGene = async (sampleId, geneName, database) => {
         const abricateSel = $("#abricateSelectize")[0].selectize;
 
         abricateSel.addItem(geneName);
+        console.log(geneName)
+        console.log(abricateSel)
         $("#abricateSearch").trigger("click");
 
     });
