@@ -9,6 +9,10 @@ function numSort(a,b) {
     return a - b;
 }
 
+function numSortArray(a,b) {
+    return a[0] - b[0];
+}
+
 //get any percentile from an array
 function getPercentile(data, percentile) {
     data.sort(numSort);

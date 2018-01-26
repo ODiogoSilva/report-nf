@@ -92,7 +92,7 @@ const sparkline = (sample, color) => {
     }
 
     // Get sorted BP data
-    sparklineData = Array.from(sparklineDataTemp.sort(numSort), (x) => x[1]);
+    sparklineData = Array.from(sparklineDataTemp.sort(numSortArray), (x) => x[1]);
     // Get maximum value for sample
     maxBp = Math.max(...sparklineData);
     // Get data series, already in percentage
