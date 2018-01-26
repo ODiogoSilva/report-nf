@@ -3,6 +3,32 @@
     Function to process chewBBACA data to load into the DataTable
  */
 
+
+const chewbbacaHeaderTooltip = (settings) => {
+
+    const idMap = {
+        "EXC": "Exact match",
+        "INF": "Inferred allele",
+        "LNF": "Locus not found",
+        "PLOT": "Possible locus on tip",
+        "NIPH": "Non informative paralog hit",
+        "ALM": "Allele larger than mode",
+        "ASM": "Allele smaller than mode"
+    };
+
+    $.map($("#master_table_chewbbaca_wrapper .dataTables_scrollHeadInner thead th"), (el) => {
+        const headerSel = $(el);
+        const headerId = headerSel[0].innerText;
+        if (idMap.hasOwnProperty(headerId)){
+            headerSel.attr("data-toggle", "tooltip");
+            headerSel.attr("data-placement", "top");
+            headerSel.attr("title", idMap[headerId]);
+        }
+    })
+
+};
+
+
 const processChewbbaca = (reportsData) => {
 
     const chewbbacaData = {};
@@ -72,8 +98,8 @@ const processChewbbaca = (reportsData) => {
             dataObject["sample_name"] = report.sample_name;
 
 
-
-            dataObject["status"] = `<div class="label ${refDict[report.report_json.status]}">${report.report_json.status}</div>`;
+            console.log(report.report_json)
+            dataObject["status"] = `<div style="text-align: center"><div data-toggle="tooltip" data-placement="top" title="${report.report_json.lnfPercentage}" class="label ${refDict[report.report_json.status]}">${report.report_json.status}</div></div>`;
 
             report.report_json.cagao[1][dataKey].map( (j, i) => {
                 dataObject[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][dataKey][i];

@@ -33,6 +33,7 @@ class Table {
                 "excel",
                 "pdf",
         ];
+        this.initCompleteFunc = () => {};
     }
 
     /**
@@ -222,7 +223,8 @@ class Table {
             },
             "drawCallback": function () {
                 $('.dataTables_paginate > .pagination').addClass('pagination-sm');
-            }
+            },
+            "initComplete": this.initCompleteFunc
         });
 
         this.tableObj.buttons().container()
