@@ -35,6 +35,9 @@ let trees = null;
 // JSON mapping of report id with current chewbbaca procedures
 let chewbbacaToReportId = {};
 
+//PHYLOVIZ Online max submission size
+let phylovizMaxSubSize = 1000;
+
 // Object for jobs submitted to PHYLOViZ Online
 let intervalCheckTree = {};
 

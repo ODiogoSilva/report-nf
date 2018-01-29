@@ -22,7 +22,6 @@ const populateAdditionalDataList = () => {
 
     triggerV();
 
-
 };
 
 /**

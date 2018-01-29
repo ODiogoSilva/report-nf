@@ -353,6 +353,12 @@ app.controller("reportsController", async ($scope) => {
         //Show PHYLOViZ form to perform the request to the platform
         $("#phyloviz_button").off("click").on("click", () => {
             $("#sendToPHYLOViZModal").modal("show");
+
+            //Set max submission value
+            const selectedRows = chewbbacaTable.tableObj.rows(".selected").data().length;
+            const maxClosestValue = phylovizMaxSubSize / selectedRows;
+
+            $("#closest_number_of_strains").attr("max", String(maxClosestValue));
         });
 
         //Event to trigger click Sign In

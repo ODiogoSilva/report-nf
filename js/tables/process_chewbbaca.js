@@ -97,8 +97,6 @@ const processChewbbaca = (reportsData) => {
 
             dataObject["sample_name"] = report.sample_name;
 
-
-            console.log(report.report_json)
             dataObject["status"] = `<div style="text-align: center"><div data-toggle="tooltip" data-placement="top" title="${report.report_json.lnfPercentage}" class="label ${refDict[report.report_json.status]}">${report.report_json.status}</div></div>`;
 
             report.report_json.cagao[1][dataKey].map( (j, i) => {
