@@ -97,7 +97,8 @@ const processChewbbaca = (reportsData) => {
 
             dataObject["Sample"] = report.sample_name;
 
-            dataObject["status"] = `<div style="text-align: center"><div data-toggle="tooltip" data-placement="top" title="${report.report_json.lnfPercentage}" class="label ${refDict[report.report_json.status]}">${report.report_json.status}</div></div>`;
+            const lnfPercentage = parseFloat(report.report_json.lnfPercentage) * 100;
+            dataObject["status"] = `<div style="text-align: center"><div data-toggle="tooltip" data-placement="top" title="${lnfPercentage.toFixed(2)}% core loci not found" class="label ${refDict[report.report_json.status]}">${report.report_json.status}</div></div>`;
 
             report.report_json.cagao[1][dataKey].map( (j, i) => {
                 dataObject[report.report_json.cagao[1].header[i]] = report.report_json.cagao[1][dataKey][i];
