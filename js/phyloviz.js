@@ -62,7 +62,7 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
     });
 
     const selectedSampleNames = $.map(chewbbacaTable.tableObj.rows(".selected").data(), (d) => {
-        return d.sample_name;
+        return d.Sample;
     });
 
     let globalAdditionalData = {};

@@ -197,7 +197,7 @@ class Table {
                     width: "50px",
                 }],
             select: {
-                style:    "os",
+                style:    "multi",
                 selector: "td:first-child"
             },
             "fnCreatedRow": (nRow, aData) => {
@@ -206,8 +206,8 @@ class Table {
                 // Add ID to each row
                 $(nRow).attr("id", pid);
                 // Add onclick event for sample selection in checkbox
-                $(nRow).find("input").off("click").on("click", (e) => {
-                    $(e.target).closest("tr").toggleClass("selected");
+                $(nRow).find("td>input").off("click").on("click", (e) => {
+                    $(e.target).parent().parent().toggleClass("selected");
                 });
 
                 // Set QC popover

@@ -116,6 +116,57 @@ innucaTable.addAdditionalButton({
 });
 
 const chewbbacaTable = new Table("master_table_chewbbaca");
+chewbbacaTable.addAdditionalButton({
+    extend: "collection",
+    text: "Selection",
+    autoClose: true,
+    buttons: [
+        {
+            text: "Select All",
+            async action( e, dt, node, config ) {
+                $.map(dt.rows().nodes(), (r) => {
+                    if(!$(r).hasClass("selected")){
+                        $(r).find("input").trigger("click");
+                    }
+                });
+            }
+        },
+        {
+            text: "Deselect All",
+            async action( e, dt, node, config ) {
+                $.map(dt.rows().nodes(), (r) => {
+                    if($(r).hasClass("selected")){
+                        $(r).find("input").trigger("click");
+                    }
+                });
+
+            }
+        },
+        {
+            text: "Select 'Pass' status",
+            async action( e, dt, node, config ) {
+                $.map(dt.rows(), (r) => {
+                    for (const index of r){
+                        const rowData = dt.row(index).data();
+                        const node = dt.row(index).nodes();
+                        if(rowData.status.indexOf(">pass<") > -1){
+                            if(!$(node).hasClass("selected")){
+                                $(node).find("input").trigger("click");
+                            }
+                        }
+                        else {
+                            if($(node).hasClass("selected")){
+                                $(node).find("input").trigger("click");
+                            }
+                        }
+                    }
+                });
+
+            }
+        }
+    ]
+});
+
 const prokkaTable = new Table("master_table_prokka");
 
 const abricateTable = new Table("master_table_abricate");

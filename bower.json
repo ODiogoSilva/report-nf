@@ -35,6 +35,8 @@
     "bootstrap-colorpicker": "^2.5.1",
     "selectize": "^0.12.4",
     "datatables.net-bs": "^2.1.1",
-    "datatables.net-buttons-bs": "^1.4.2"
+    "datatables.net-buttons-bs": "^1.4.2",
+    "datatables.net-select": "^1.2.3",
+    "datatables.net-select-dt": "^1.2.3"
   }
 }

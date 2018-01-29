@@ -67,7 +67,7 @@ const processChewbbaca = (reportsData) => {
 
     chewbbacaHeaders.map((x) => {
         if (x === "Sample") {
-            chewbbacaColumnMapping.push({"data": "sample_name", "title":"Sample"});
+            chewbbacaColumnMapping.push({"data": "Sample", "title":"Sample"});
         }
         else if (x !== "") {
             chewbbacaColumnMapping.push({"data": x, "title":x});
@@ -95,7 +95,7 @@ const processChewbbaca = (reportsData) => {
                 }
             });
 
-            dataObject["sample_name"] = report.sample_name;
+            dataObject["Sample"] = report.sample_name;
 
             dataObject["status"] = `<div style="text-align: center"><div data-toggle="tooltip" data-placement="top" title="${report.report_json.lnfPercentage}" class="label ${refDict[report.report_json.status]}">${report.report_json.status}</div></div>`;
 
