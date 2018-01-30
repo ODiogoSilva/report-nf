@@ -139,7 +139,7 @@ const downloadProfiles = () => {
     selectedData.each((value, i) => {
         for (const [index, report] of data.results.entries()){
             const indexToCheck = report.project_id + "." + report.pipeline_id + "." +report.process_id;
-            if (indexToCheck === chewbbacaToReportId[value.sample_name]) {
+            if (indexToCheck === chewbbacaToReportId[value.Sample]) {
 
                 auxBody = [];
 

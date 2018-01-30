@@ -39,11 +39,10 @@ const triggerV = () => {
         $("#phylovizParametersDiv").css({"display": "none"});
         $("#valuesAbricateDiv").css({"display": "none"});
 
-
         chewbbacaTable.tableObj.rows(".selected").data().map((d) => {
             let itemDiv = "";
-            if(strainTableValDict[d.sample_name][target] !== undefined) {
-                for (const el of strainTableValDict[d.sample_name][target]){
+            if(strainTableValDict[d.Sample][target] !== undefined) {
+                for (const el of strainTableValDict[d.Sample][target]){
 
                     let active = "";
 
@@ -116,7 +115,7 @@ const triggerParams = () => {
             let abricateResults = [];
 
             const selectedStrains = $.map(chewbbacaTable.tableObj.rows(".selected").data(), (d) => {
-                return d.sample_name;
+                return d.Sample;
             });
 
             for (const strain of selectedStrains){
