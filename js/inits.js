@@ -494,11 +494,18 @@ const updateSliders = () => {
 
     let min,
         max;
+
     for (const [el, sel] of sliderMap.entries()) {
         sel.slider({max: dataFilters[el].max});
         min = dataFilters[el].range[0] ? dataFilters[el].range[0] : 0;
         max = dataFilters[el].range[1] ? dataFilters[el].range[1] : dataFilters[el].max;
-        sel.slider("setValue", [min, max]);
+
+        try {
+            sel.slider("setValue", [min, max]);
+        }
+        catch (e){
+            console.log(e.message, "Can't assign value to slider");
+        }
     }
 
 };
@@ -560,18 +567,24 @@ const initDropFile = (scope) => {
         data = results.data;
         dataFilters = results.dataFilters;
         dataHighlights = results.dataHighlights;
+        console.log("ADD data");
 
         // Update sidebar elements (filters and highlights) according to the
         // loaded data
         updateSidebar();
+        console.log("sidebar");
         reportInfo = await updateReportInfo(data.results);
+        console.log("get info");
 
         // Use the report information to populate the filter elements
         populateFilter(reportInfo);
+        console.log("filter")
         // Update project and sample number indicators
         populateProjectIndicator(reportInfo);
+        console.log("project Indicator")
 
         await initReports(scope, results.data, false);
+        console.log("init reports");
 
         waitingGif.css({display:"none"});
         $("#row-main").css({display:"block"});

@@ -57,7 +57,6 @@ const initReports = (scope, globalResults, append = true) => {
     const metadataResults = globalResults.metadataResults;
 
 
-
     // Apply any existing filters to the JSON array results from the request
     const p1 = new Promise( (resolve, reject) => {
         const r = filterJson(results, metadataResults, dataFilters);
@@ -152,7 +151,7 @@ const initReports = (scope, globalResults, append = true) => {
         chewbbacaTable.initCompleteFunc = chewbbacaHeaderTooltip;
         await chewbbacaTable.addTableHeaders(resultsCh,
             "table_headers_chewbbaca");
-        await chewbbacaTable.addTableData(resultsCh);
+        await chewbbacaTable.addTableData(resultsCh, append);
         await chewbbacaTable.buildDataTable(true);
     });
 
@@ -160,7 +159,7 @@ const initReports = (scope, globalResults, append = true) => {
         const resultsCh = await prokkaTable.processProkka(r.filteredJson);
         await prokkaTable.addTableHeaders(resultsCh,
             "table_headers_prokka");
-        await prokkaTable.addTableData(resultsCh);
+        await prokkaTable.addTableData(resultsCh, append);
         await prokkaTable.buildDataTable(true);
     });
 
@@ -168,7 +167,7 @@ const initReports = (scope, globalResults, append = true) => {
         const resultsCh = await abricateTable.processAbricate(r.filteredJson);
         await abricateTable.addTableHeaders(resultsCh,
             "table_headers_abricate");
-        await abricateTable.addTableData(resultsCh);
+        await abricateTable.addTableData(resultsCh, append);
         await abricateTable.buildDataTable(true);
     });
 

@@ -141,6 +141,12 @@ const sparkline = (sample, color) => {
 
     });
 
+    // Remove Print option to be able to fit the menu to the div
+    $("#sparkline-container").find(".highcharts-button").on("click", () => {
+        $("#sparkline-container").find(".highcharts-menu-item").first().css({"display": "none"});
+    });
+
+
 };
 
 const updateLabels = (el, fw, idx) => {
