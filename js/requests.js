@@ -95,12 +95,22 @@ const getPHYLOViZTrees = async () => {
     );
 };
 
-//Request to get PHYLOViZ Online job status
+//Request to get PHYLOViZ Online Platform job status
 const fetchJob = async (redisJobId) => {
 
     return await $.get(
         reportsRoute+"app/api/v1.0/phyloviz/",
         {job_id: redisJobId},
+    );
+
+};
+
+//Request to get PHYLOViZ Online job status
+const fetchPHYLOViZ = async (jobID) => {
+
+    return await $.get(
+        reportsRoute+"app/api/v1.0/phyloviz/job/",
+        {jobid: jobID},
     );
 
 };

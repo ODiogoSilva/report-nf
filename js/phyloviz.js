@@ -11,22 +11,52 @@
 */
 
 /**
- * Function to fetch job status of PHYLOViZ Online
+ * Function to fetch job status of INNUENDO Platform
  * @param redis_job_id
  */
 const fetchTreeJob = async (redisJobId) => {
 
     const response = await fetchJob(redisJobId);
+    let message = "";
 
     if (response.status === true) {
         clearInterval(intervalCheckTree[redisJobId]);
-        let message = "Your tree is ready to be visualized! Go to the PHYLOViZ Table at the Reports menu.";
-        if (response.result.message !== undefined) {
-            message = response.result.message;
-        }
+
         if(response.result === 404){
             message = "PHYLOViZ Online: Bad credentials.";
+            modalAlert(message, function () {
+
+            });
         }
+        else{
+            const phylovizJob = response.result[0].jobid.replace(/\s/g,'');
+
+            intervalCheckPHYLOViZTrees[phylovizJob] = setInterval(() => {
+                fetchPHYLOViZJob(phylovizJob);
+            }, 5000);
+        }
+    }
+    else if (response.status === false) {
+        clearInterval(intervalCheckTree[redisJobId]);
+        modalAlert("There was an error when sending the request to PHYLOViZ Online.", function () {
+
+        });
+    }
+};
+
+/**
+ * Get PHYLOVIZ Online queue job status
+ * @param jobID
+ * @returns {Promise.<void>}
+ */
+const fetchPHYLOViZJob = async (jobID) => {
+    const response = await fetchPHYLOViZ(jobID);
+    console.log(response);
+
+    if (response.status === "complete") {
+        let message = "Your tree is ready to be visualized! Go to the PHYLOViZ Table at the Reports menu.";
+
+        clearInterval(intervalCheckPHYLOViZTrees[jobID]);
 
         ( async () => {
             const trees = await getPHYLOViZTrees();
@@ -38,13 +68,9 @@ const fetchTreeJob = async (redisJobId) => {
 
         });
     }
-    else if (response.status === false) {
-        clearInterval(intervalCheckTree[redisJobId]);
-        modalAlert("There was an error when producing the tree at PHYLOViZ Online.", function () {
 
-        });
-    }
 };
+
 
 /*
     File where all functions to process data to send to PHYLOViZ Online will be available.

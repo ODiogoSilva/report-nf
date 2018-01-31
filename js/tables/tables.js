@@ -198,7 +198,7 @@ class Table {
                 }],
             select: {
                 style:    "multi",
-                selector: "td:first-child"
+                selector: "td:first-child>input"
             },
             "fnCreatedRow": (nRow, aData) => {
                 // Get ID based on pipeline id and sample name
