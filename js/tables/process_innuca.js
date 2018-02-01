@@ -144,12 +144,12 @@ const setMaxFilters = (header, value) => {
     ]);
 
     // Skip, if header is not present in filters object
-    if (!dataFilters.hasOwnProperty(header)) {return;}
+    if (!dataFilters.hasOwnProperty(headersMatch[header])) {return;}
 
-    if ( value > dataFilters[header].max ) {
-        dataFilters[header].max = value;
-        sliderMap.get(header).slider({max: value});
-        sliderMap.get(header).slider("setValue", [0, value]);
+    if ( value > dataFilters[headersMatch[header]].max ) {
+        dataFilters[headersMatch[header]].max = value;
+        sliderMap.get(headersMatch[header]).slider({max: value});
+        sliderMap.get(headersMatch[header]).slider("setValue", [0, value]);
     }
 
 };

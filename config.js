@@ -57,6 +57,15 @@ let dataFilters = {
     "assembled bp": {"range": [null, null], "max": null},
 };
 
+// Match object for data filters headers in INNUca
+const headersMatch = {
+    "Raw BP": "bp",
+    "Contigs": "contigs",
+    "Coverage (2nd)": "coverage (2nd)",
+    "Assembled BP": "assembled bp",
+    "Reads": "reads"
+};
+
 // Object with the report highlight options. Can be changed dynamically
 // during the app session
 let dataHighlights = {
