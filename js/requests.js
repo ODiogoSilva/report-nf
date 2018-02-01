@@ -61,6 +61,8 @@ const getReportByFilter = async (filter) => {
 };
 
 const getStrainsMetadata = async (filter) => {
+
+    console.log(filter);
     return await $.post(
         reportsRoute+"app/api/v1.0/strains/name/",
         filter,

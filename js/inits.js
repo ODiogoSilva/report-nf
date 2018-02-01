@@ -309,15 +309,22 @@ const initNavSelection = () => {
     });
 };
 
-
-const getMetadataMapping = (reportInfo) => {
+/**
+ * Filter metadata based on the selected strains
+ * @param reportInfo
+ * @param selectedSamples
+ * @returns {[null,null]}
+ */
+const getMetadataMapping = (reportInfo, selectedSamples) => {
 
     let projectAr = [];
     let sampleAr = [];
 
     for (const el of reportInfo) {
-        projectAr.push(el.project_id);
-        sampleAr.push(el.sample_name);
+        if (selectedSamples.includes(el.sample_name)){
+            projectAr.push(el.project_id);
+            sampleAr.push(el.sample_name);
+        }
     }
 
     const projectStr = projectAr.join();
@@ -349,7 +356,7 @@ const submissionRoutine = async (selectorIds) => {
 
     const strainsForRequest = [];
 
-    const projectSampleMap = await getMetadataMapping(reportInfo);
+    const projectSampleMap = await getMetadataMapping(reportInfo, selectedStrains);
 
     for (const el of reportInfo){
         if (selectedStrains.includes(el.sample_name)){

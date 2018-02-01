@@ -52,6 +52,25 @@ const testRowValue = (rg, tableRow, header) => {
 
 };
 
+/**
+ * Function to filter projects from the reports that have been removed from the platform
+ * @param projects
+ * @returns {Promise.<Array>}
+ */
+const filterProjects = async (projects) => {
+
+    let tempProjects = [];
+
+    for (const project of projects) {
+        if (project.is_removed !== "true") {
+            tempProjects.push(project);
+        }
+    }
+
+    return tempProjects;
+
+};
+
 const addToFilters = (po, array) => {
 
     // Define id and push to array if it's not there
