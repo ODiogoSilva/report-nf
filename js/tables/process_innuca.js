@@ -135,6 +135,15 @@ const getQc = (qcObject, sampleObj) => {
  */
 const setMaxFilters = (header, value) => {
 
+    // Match object for data filters headers in INNUca
+    const headersMatch = {
+        "Raw BP": "bp",
+        "Contigs": "contigs",
+        "Coverage (2nd)": "coverage (2nd)",
+        "Assembled BP": "assembled bp",
+        "Reads": "reads"
+    };
+
     const sliderMap = new Map([
         ["bp", $("#sliderbp")],
         ["reads", $("#sliderrn")],

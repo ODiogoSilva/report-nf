@@ -35,6 +35,15 @@ const testArray = (array, testString) => {
  */
 const testRowValue = (rg, tableRow, header) => {
 
+    // Match object for data filters headers in INNUca
+    const headersMatch = {
+        "Raw_BP": "bp",
+        "Contigs": "contigs",
+        "Coverage_(2nd)": "coverage_(2nd)",
+        "Assembled_BP": "assembled bp",
+        "Reads": "reads"
+    };
+
     // Get header value from reportJson
     let val = null;
     for (const x of tableRow)  {
@@ -150,13 +159,11 @@ const filterJson = (jsonResult, metadataJson, filterObject) => {
             // Filter for base pairs
             if ( !testRowValue(filterObject.bp.range,
                     po.report_json.tableRow, "bp") === true ) {
-                console.log("bp");
                 filteredIds = addToFilters(po, filteredIds);
             }
             // Filter for number of reads
             if ( !testRowValue(filterObject.reads.range,
                     po.report_json.tableRow, "reads") === true ) {
-                console.log("reads");
                 filteredIds = addToFilters(po, filteredIds);
             }
         }
@@ -165,7 +172,6 @@ const filterJson = (jsonResult, metadataJson, filterObject) => {
             // Filter for coverage
             if ( !testRowValue(filterObject["coverage (2nd)"].range,
                     po.report_json.tableRow, "coverage_(2nd)") ) {
-                console.log("coverage");
                 filteredIds = addToFilters(po, filteredIds);
             }
         }
@@ -174,13 +180,11 @@ const filterJson = (jsonResult, metadataJson, filterObject) => {
             // Filter for number of contigs
             if ( !testRowValue(filterObject.contigs.range,
                     po.report_json.tableRow, "contigs")) {
-                console.log("contigs");
                 filteredIds = addToFilters(po, filteredIds);
             }
             // Filter for assembled base pairs
             if ( !testRowValue(filterObject["assembled bp"].range,
-                    po.report_json.tableRow, "contigs") ) {
-                console.log("assembled");
+                    po.report_json.tableRow, "assembled bp") ) {
                 filteredIds = addToFilters(po, filteredIds);
             }
         }
