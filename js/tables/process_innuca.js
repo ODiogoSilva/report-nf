@@ -46,7 +46,7 @@ const getQc = (qcObject, sampleObj) => {
                        style="background: ${qcColor}">
                     ${qcValue}</div>`;
         qcMsg = `<span class='tooltip-qc-text'>
-                        <div class="qc-runtime">Total runtime: <span class="label label-default">${runTime}</span></div>
+                        <div class="qc-runtime">Total runtime: <span class="label label-default">${runTime} minutes</span></div>
                         <div>
                             <ul>
                                 <li>Fail reason(s):</li>
