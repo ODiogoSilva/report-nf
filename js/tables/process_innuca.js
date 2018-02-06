@@ -303,6 +303,15 @@ const parseReport = (reportJSON) => {
         }
     }
 
+    // Remove samples without information for any of the non-mandatory columns.
+    // This prevents the addition of perpetually running samples that exist on the
+    // reports due to other tasks.
+    for (const [key, vals] of storage.entries()){
+        if (vals.size === startHeaders.length + 1){
+            storage.delete(key)
+        }
+    }
+
     // Add the final headers to the table data object
     let headers = startHeaders.concat(sortedColumns);
 
