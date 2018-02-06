@@ -276,7 +276,11 @@ app.controller("reportsController", async ($scope) => {
 
     // Query information about available species and projects
     const spResults = await getSpecies();
-    const pResults = await getProjects();
+    let pResults = await getProjects();
+
+    pResults = await filterProjects(pResults);
+
+    console.log(pResults);
 
     //Get info in case of app on iframe
     runFromParent();

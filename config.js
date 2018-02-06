@@ -38,8 +38,11 @@ let chewbbacaToReportId = {};
 //PHYLOVIZ Online max submission size
 let phylovizMaxSubSize = 1000;
 
-// Object for jobs submitted to PHYLOViZ Online
+// Object for jobs submitted to PHYLOViZ Online on the Platform
 let intervalCheckTree = {};
+
+// Object for jobs submitted to PHYLOViZ Online
+let intervalCheckPHYLOViZTrees = {};
 
 // Object with the project filters. Each value can be dynamically changed
 // during the app session

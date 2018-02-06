@@ -135,6 +135,15 @@ const getQc = (qcObject, sampleObj) => {
  */
 const setMaxFilters = (header, value) => {
 
+    // Match object for data filters headers in INNUca
+    const headersMatch = {
+        "Raw BP": "bp",
+        "Contigs": "contigs",
+        "Coverage (2nd)": "coverage (2nd)",
+        "Assembled BP": "assembled bp",
+        "Reads": "reads"
+    };
+
     const sliderMap = new Map([
         ["bp", $("#sliderbp")],
         ["reads", $("#sliderrn")],
@@ -144,12 +153,12 @@ const setMaxFilters = (header, value) => {
     ]);
 
     // Skip, if header is not present in filters object
-    if (!dataFilters.hasOwnProperty(header)) {return;}
+    if (!dataFilters.hasOwnProperty(headersMatch[header])) {return;}
 
-    if ( value > dataFilters[header].max ) {
-        dataFilters[header].max = value;
-        sliderMap.get(header).slider({max: value});
-        sliderMap.get(header).slider("setValue", [0, value]);
+    if ( value > dataFilters[headersMatch[header]].max ) {
+        dataFilters[headersMatch[header]].max = value;
+        sliderMap.get(headersMatch[header]).slider({max: value});
+        sliderMap.get(headersMatch[header]).slider("setValue", [0, value]);
     }
 
 };

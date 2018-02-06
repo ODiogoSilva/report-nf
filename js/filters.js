@@ -35,10 +35,19 @@ const testArray = (array, testString) => {
  */
 const testRowValue = (rg, tableRow, header) => {
 
+    // Match object for data filters headers in INNUca
+    const headersMatch = {
+        "Raw_BP": "bp",
+        "Contigs": "contigs",
+        "Coverage_(2nd)": "coverage_(2nd)",
+        "Assembled_BP": "assembled bp",
+        "Reads": "reads"
+    };
+
     // Get header value from reportJson
     let val = null;
     for (const x of tableRow)  {
-        if ( x.header === header ) {
+        if ( headersMatch[x.header] === header ) {
             val = x.value;
         }
     }
@@ -49,6 +58,25 @@ const testRowValue = (rg, tableRow, header) => {
     }
     return !(rg[1] !== null && val > rg[1]);
 
+
+};
+
+/**
+ * Function to filter projects from the reports that have been removed from the platform
+ * @param projects
+ * @returns {Promise.<Array>}
+ */
+const filterProjects = async (projects) => {
+
+    let tempProjects = [];
+
+    for (const project of projects) {
+        if (project.is_removed !== "true") {
+            tempProjects.push(project);
+        }
+    }
+
+    return tempProjects;
 
 };
 
@@ -156,11 +184,12 @@ const filterJson = (jsonResult, metadataJson, filterObject) => {
             }
             // Filter for assembled base pairs
             if ( !testRowValue(filterObject["assembled bp"].range,
-                    po.report_json.tableRow, "contigs") ) {
+                    po.report_json.tableRow, "assembled bp") ) {
                 filteredIds = addToFilters(po, filteredIds);
             }
         }
     }
+
 
     // Filter JSON array
     let pid;
