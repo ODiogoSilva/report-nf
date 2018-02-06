@@ -49,6 +49,8 @@ const findAbricateGene = async (sampleId, geneName, database) => {
 const showAbricateModal = (sampleId, sampleName) => {
 
     let abricateGenes = [];
+    // These are the expected databases for Abricate
+    const abricateDatabases = ["card", "resfinder", "vfdb", "plasmidfinder"];
 
     $("#abricateModal").modal("show");
 
@@ -62,8 +64,16 @@ const showAbricateModal = (sampleId, sampleName) => {
     }
 
     // Populate modal
-    for (const db of Object.keys(abricateGenes)) {
+    for (const db of abricateDatabases) {
+
         const dbSel = $("#modal" + db);
+
+        // If a particular database is not found, empty the respective container
+        if (!abricateGenes.hasOwnProperty(db)){
+            dbSel.empty();
+            continue
+        }
+
         const sid = `${sampleId.split(".")[0]}.${sampleName.replace(/ /g,"")}`;
         dbSel.empty();
         for (const gene of abricateGenes[db]) {
