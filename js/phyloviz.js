@@ -152,6 +152,15 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
         }
     }
 
+    //Case no profiles are selected
+    if (selectedSampleNames.length === 0){
+
+        modalAlert("Please select some Profiles from the Table before sending the request to PHYLOViZ Online", () => {
+
+        });
+
+        return;
+    }
 
     const data = {
         job_ids: selectedJobIds.join(","),
