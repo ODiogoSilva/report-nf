@@ -19,12 +19,12 @@ const fetchTreeJob = async (redisJobId) => {
     const response = await fetchJob(redisJobId);
     let message = "";
 
-    if (response.status === true) {
+    if (response.status === true && response.result.message === undefined) {
         clearInterval(intervalCheckTree[redisJobId]);
 
         if(response.result === 404){
             message = "PHYLOViZ Online: Bad credentials.";
-            modalAlert(message, function () {
+            modalAlert(message, () => {
 
             });
         }
@@ -36,9 +36,15 @@ const fetchTreeJob = async (redisJobId) => {
             }, 5000);
         }
     }
+    else if (response.status === true && response.result.message !== undefined){
+        clearInterval(intervalCheckTree[redisJobId]);
+        modalAlert(response.result.message, () => {
+
+        });
+    }
     else if (response.status === false) {
         clearInterval(intervalCheckTree[redisJobId]);
-        modalAlert("There was an error when sending the request to PHYLOViZ Online.", function () {
+        modalAlert("There was an error when sending the request to PHYLOViZ Online.", () => {
 
         });
     }
@@ -51,7 +57,6 @@ const fetchTreeJob = async (redisJobId) => {
  */
 const fetchPHYLOViZJob = async (jobID) => {
     const response = await fetchPHYLOViZ(jobID);
-    console.log(response);
 
     if (response.status === "complete") {
         let message = "Your tree is ready to be visualized! Go to the PHYLOViZ Table at the Reports menu.";
@@ -165,6 +170,8 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
     };
 
     const res = await sendToPHYLOViZ(data);
+
+    console.log(res);
 
     modalAlert("Your request was sent to PHYLOViZ Online server. You will be notified when the tree is ready to be visualized. All available trees can be found on the PHYLOViZ Table at the Reports menu.", function(){
 
