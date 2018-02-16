@@ -46,9 +46,9 @@ const saveStatusFile = () => {
 };
 
 
-const getAssemblyPath = (sampleId) => {
+const getAssemblyPath = (sampleId, pipelineId) => {
 
-    const assemblySuffix = "/results/assembly/pilon/sample_polished.assembly.fasta";
+    const assemblySuffix = `/results/assembly/pilon/sample_${pipelineId}_polished.assembly.fasta`;
     let filePath;
     let sampleName;
 
@@ -74,8 +74,9 @@ const getAssemblies = (dt) => {
     $.map(dt.rows(".selected").data(), (d) => {
 
         const pid = `${d.id.split(".")[0]}.${d.Sample}`;
+        const pipelineId = `${d.id.split(".")[1]}`;
 
-        const res = getAssemblyPath(pid);
+        const res = getAssemblyPath(pid, pipelineId);
 
         fileList.push(res[0]);
         sampleNames.push(res[1]);
