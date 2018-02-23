@@ -426,6 +426,17 @@ const initProjectSubmission = (scope) => {
         loadingGif.css({display: "none"});
         $("#row-main").css({display: "block"});
         $("#current_workflow").css({display:"block"});
+
+        //Case loading reports directly from the project page of the platform
+        try {
+            window.parent.$("#overlayProjects").css({"display":"none"});
+            window.parent.$("#overlayWorking").css({"display":"none"});
+            window.parent.$("#single_project_controller_div").css({"display":"block"});
+            window.parent.$("#submission_status").empty();
+        }
+        catch (e) {
+            console.log("Not from the single project page");
+        }
     });
 };
 

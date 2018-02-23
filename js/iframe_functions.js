@@ -41,18 +41,11 @@ var loadReport = async (selectedNames, project_id) => {
     $("#project_select").trigger("hide.bs.select");
 
     setTimeout(() => {
-        $.each(selectedNames, function(i,e){
+        $.each(selectedNames, (i,e) => {
             $("#f_by_name option[value='" + e + "']").prop("selected", true);
         });
 
         $("#submitProject").trigger("click");
-
-        setTimeout(() => {
-            window.parent.$("#overlayProjects").css({"display":"none"});
-            window.parent.$("#overlayWorking").css({"display":"none"});
-            window.parent.$("#single_project_controller_div").css({"display":"block"});
-            window.parent.$("#submission_status").empty();
-        }, 1000);
 
     }, 1000);
 
