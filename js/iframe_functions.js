@@ -28,6 +28,16 @@ var addUserData = async (username, userID) => {
 };
 
 /**
+ * Function to load project directly from the parent single project page
+ * @param selectedNames
+ * @param project_id
+ * @returns {Promise.<void>}
+ */
+var loadReport = async (selectedNames, project_id) => {
+    console.log(selectedNames, project_id);
+};
+
+/**
  * Function to prompt for username and password in case of running reports locally
  */
 const promptPassword = () => {

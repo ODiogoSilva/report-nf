@@ -36,6 +36,7 @@ const triggerV = () => {
         modalParameters.empty();
         const correspondenceObj = {};
 
+
         $("#phylovizParametersDiv").css({"display": "none"});
         $("#valuesAbricateDiv").css({"display": "none"});
 
@@ -79,6 +80,15 @@ const triggerV = () => {
                         itemDiv += `<li class="list-group-item">${"chewBBACAStatus"}<button type="button" class="btn btn-default abricate-btn ${active}"><i class="fa fa-bullseye paramTrigger" name="${"chewBBACAStatus"}" procedure="${target}"></i></button></li>`;
 
                         correspondenceObj["chewBBACAStatus"] = true;
+
+                    }
+                    else if(correspondenceObj["st"] !== true && el["st"] !== undefined){
+                        if(activeAdditionalSel["st"] !== undefined && activeAdditionalSel["st"][0] != false){
+                            active = "active-btn";
+                        }
+                        itemDiv += `<li class="list-group-item">${"st"}<button type="button" class="btn btn-default abricate-btn ${active}"><i class="fa fa-bullseye paramTrigger" name="${"st"}" procedure="${target}"></i></button></li>`;
+
+                        correspondenceObj["st"] = true;
 
                     }
 

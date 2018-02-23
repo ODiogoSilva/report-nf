@@ -87,8 +87,12 @@ const initReports = (scope, globalResults, append = true) => {
                     }
                     strainTableValDict[report.sample_name][report.report_json.task] = [{"chewBBACAStatus":report.report_json.status}];
                 }
-
-
+                else if (report.report_json.task === "mlst") {
+                    if(!taskArray.includes(report.report_json.task)){
+                        taskArray.push(report.report_json.task);
+                    }
+                    strainTableValDict[report.sample_name][report.report_json.task] = [{"species":report.report_json.species, "st": report.report_json.st}];
+                }
 
             }
         });

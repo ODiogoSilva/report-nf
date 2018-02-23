@@ -137,6 +137,9 @@ const processPHYLOViZRequest = async (chewbbacaTable) => {
                             else if(el["chewBBACAStatus"] !== undefined){
                                 globalAdditionalData[sample]["chewBBACAStatus"] = el["chewBBACAStatus"];
                             }
+                            else if(el["st"] !== undefined){
+                                globalAdditionalData[sample]["st"] = el["species"] + "(" + el["st"] + ")";
+                            }
                             else {
                                 globalAdditionalData[sample][el.header] = el.value;
                             }
