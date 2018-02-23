@@ -253,6 +253,7 @@ const initProjectSelection = () => {
     $("#project_select").on("hide.bs.select", async () => {
         // Get the report info object containng the timestamp and sample
         // name information
+        console.log($("#project_select").val());
         const selectedOpts = $("#project_select").val();
 
         // Only proceed when at least one project has been selected
@@ -262,15 +263,18 @@ const initProjectSelection = () => {
             // (sample names and time stamps)
             reportInfo = await getReportInfo(selectedOpts);
 
-            // Use the report information to populate the filter elements
-            populateFilter(reportInfo);
-            // Update project and sample number indicators
-            populateProjectIndicator(reportInfo);
+            if (reportInfo.length !== 0){
+                // Use the report information to populate the filter elements
+                populateFilter(reportInfo);
+                // Update project and sample number indicators
+                populateProjectIndicator(reportInfo);
 
-            // Display filter elements and submission button
-            $("#submitDiv").css({display: "inline-block"});
-            $("#homeFilters").css({display: "block"});
-            $(".pcounter").css({display: "inline-block"});
+                // Display filter elements and submission button
+                $("#submitDiv").css({display: "inline-block"});
+                $("#homeFilters").css({display: "block"});
+                $(".pcounter").css({display: "inline-block"});
+            }
+
         } else {
             // When no valid projects are selected, hide the filter elements
             // and submission button

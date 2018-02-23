@@ -34,11 +34,17 @@ const getReportInfo = async (projectIds) => {
     let res = [];
     const projectIdsString = projectIds.join();
 
-    const info = await $.get(
-        reportsRoute+"app/api/v1.0/reports/project/info",
-        { project_id: projectIdsString }
-    );
-    res = res.concat(info);
+    try {
+        const info = await $.get(
+            reportsRoute+"app/api/v1.0/reports/project/info",
+            { project_id: projectIdsString }
+        );
+
+        res = res.concat(info);
+    }
+    catch(e){
+        modalAlert("No reports available for the selected projects.", () =>{});
+    }
 
     return res;
 };
