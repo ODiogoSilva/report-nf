@@ -40,6 +40,15 @@ var loadReport = async (selectedNames, project_id) => {
     //$("#project_select option[value='" + String(project_id) + "']").trigger("click");
     $("#project_select").trigger("hide.bs.select");
 
+    setTimeout(() => {
+        $.each(selectedNames, function(i,e){
+            $("#f_by_name option[value='" + e + "']").prop("selected", true);
+        });
+
+        $("#submitProject").trigger("click");
+
+    }, 1000);
+
 };
 
 /**
