@@ -47,10 +47,12 @@ var loadReport = async (selectedNames, project_id) => {
 
         $("#submitProject").trigger("click");
 
-        window.parent.$("#overlayProjects").css({"display":"none"});
-        window.parent.$("#overlayWorking").css({"display":"none"});
-        window.parent.$("#single_project_controller_div").css({"display":"block"});
-        window.parent.$("#submission_status").empty();
+        setTimeout(() => {
+            window.parent.$("#overlayProjects").css({"display":"none"});
+            window.parent.$("#overlayWorking").css({"display":"none"});
+            window.parent.$("#single_project_controller_div").css({"display":"block"});
+            window.parent.$("#submission_status").empty();
+        }, 1000);
 
     }, 1000);
 
