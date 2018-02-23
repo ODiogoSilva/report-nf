@@ -36,7 +36,7 @@ var addUserData = async (username, userID) => {
 var loadReport = async (selectedNames, project_id) => {
     console.log(selectedNames, project_id);
     $("#btProjectSelect").trigger("click");
-    $("#project_select").find('option:nth-child(' + String(project_id) + ')').prop("selected",true);
+    $("#project_select").find('option[value="' + String(project_id) + '"').prop("selected",true);
     //$("#project_select option[value='" + String(project_id) + "']").trigger("click");
     $("#project_select").trigger("hide.bs.select");
 
