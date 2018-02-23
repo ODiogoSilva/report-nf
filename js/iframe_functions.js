@@ -34,7 +34,7 @@ var addUserData = async (username, userID) => {
  * @returns {Promise.<void>}
  */
 var loadReport = async (selectedNames, project_id) => {
-    console.log(selectedNames, project_id);
+
     $("#btProjectSelect").trigger("click");
     $("#project_select").find('option[value="' + String(project_id) + '"]').prop("selected",true);
     //$("#project_select option[value='" + String(project_id) + "']").trigger("click");
@@ -46,6 +46,11 @@ var loadReport = async (selectedNames, project_id) => {
         });
 
         $("#submitProject").trigger("click");
+
+        window.parent.$("#overlayProjects").css({"display":"none"});
+        window.parent.$("#overlayWorking").css({"display":"none"});
+        window.parent.$("#single_project_controller_div").css({"display":"block"});
+        window.parent.$("#submission_status").empty();
 
     }, 1000);
 
