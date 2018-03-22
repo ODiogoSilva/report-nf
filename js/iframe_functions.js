@@ -41,6 +41,9 @@ var loadReport = async (selectedNames, project_id) => {
     $("#project_select").trigger("hide.bs.select");
 
     setTimeout(() => {
+
+        $("#f_by_name option:selected").prop("selected", false);
+
         $.each(selectedNames, (i,e) => {
             $("#f_by_name option[value='" + e + "']").prop("selected", true);
         });
