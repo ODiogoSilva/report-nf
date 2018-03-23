@@ -5,6 +5,7 @@
 const runFromParent = () => {
     try {
         window.parent.setUpFrame(() => {
+            console.log("CALLBACK");
             window.parent.check_to_load_reports();
         });
     }
