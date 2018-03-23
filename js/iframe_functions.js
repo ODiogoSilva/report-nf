@@ -2,14 +2,16 @@
  *
  * @returns {boolean}
  */
-const runFromParent = () => {
+const runFromParent = (callback) => {
     try {
-        window.parent.setUpFrame();
+        window.parent.setUpFrame(() => {
+            callback();
+        });
     }
     catch(e){
         promptPassword();
+        callback();
     }
-    return true;
 };
 
 /**
@@ -18,12 +20,14 @@ const runFromParent = () => {
  * @param username
  * @param userID
  */
-var addUserData = async (username, userID) => {
+var addUserData = async (username, userID, callback) => {
     USERNAME = username;
     USERID = userID;
 
     //Get user Trees
     trees =  await getPHYLOViZTrees();
+
+    callback();
 
 };
 
