@@ -2,16 +2,16 @@
  *
  * @returns {boolean}
  */
-const runFromParent = (callback) => {
+const runFromParent = () => {
     try {
         window.parent.setUpFrame(() => {
-            callback();
+            window.parent.check_to_load_reports();
         });
     }
     catch(e){
         promptPassword();
-        callback();
     }
+    return true;
 };
 
 /**
