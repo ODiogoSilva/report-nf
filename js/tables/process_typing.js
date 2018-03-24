@@ -28,7 +28,7 @@ const parseTypingReport = (rdata) => {
         let header;
 
         if (jr.hasOwnProperty("typing")) {
-            header = headerConversion[jr.task];
+            header = headerConversion[jr.task.split("_").splice(0,2).join("_")];
             storage.get(id).set(header, Object.values(jr.typing)[0]);
         }
         if (jr.hasOwnProperty("expectedSpecies")) {

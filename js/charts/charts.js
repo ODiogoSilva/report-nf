@@ -296,12 +296,13 @@ const getTaskReport = (rawData, task, path) => {
     };
 
     const data = new Map;
+    const taskExp = new RegExp(`^${task}_[0-9]`);
 
     for (const r of rawData) {
         // Get unique ID of project + sample name
         const pid = `${r.project_id}.${r.sample_name}`;
         // Find specified task and add plot data JSON to array
-        if (r.report_json.task === task) {
+        if (taskExp.test(r.report_json.task)) {
             const val = getValue(r.report_json, path);
             if (val) {
                 data.set(pid, getValue(r.report_json, path));
