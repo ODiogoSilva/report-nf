@@ -88,7 +88,7 @@ const innucaTable = new Table("master_table_innuca");
 innucaTable.setLastColumn("Assembled BP");
 // Temporary fix to force the order of the table columns
 innucaTable.setColumns(["Raw BP", "Reads", "Coverage (1st)", "Trimmed (%)",
-    "Coverage (2nd)", "Contigs", "Assembled BP"]);
+    "Coverage (2nd)", "True Coverage", "Contigs", "Assembled BP"]);
 innucaTable.addAdditionalButton({
     extend: "collection",
     text: "Selection",
