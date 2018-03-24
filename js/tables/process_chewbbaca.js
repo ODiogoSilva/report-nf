@@ -38,10 +38,12 @@ const processChewbbaca = (reportsData) => {
 
     const refDict = {"fail": "label-danger", "warning": "label-warning", "pass": "label-success"};
 
+    const taskExp = new RegExp(`^chewbbaca_[0-9]`);
+
     /* Get headers */
     let firstTime = true;
     for (const report of reportsData) {
-        if (report.report_json.task === "chewbbaca"){
+        if (taskExp.test(report.report_json.task) ){
             if (firstTime) {
                 chewbbacaHeaders = chewbbacaHeaders.concat(report.report_json.cagao[1].header);
                 firstTime = false;
@@ -77,7 +79,7 @@ const processChewbbaca = (reportsData) => {
     /* Get data for each strain to add to the table */
 
     for (const [index, report] of reportsData.entries()) {
-        if (report.report_json.task === "chewbbaca"){
+        if (taskExp.test(report.report_json.task)){
             chewbbacaToReportId[report.sample_name] = report.project_id + "." + report.pipeline_id + "." +report.process_id;
 
             let dataObject = {
