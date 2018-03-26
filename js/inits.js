@@ -587,8 +587,8 @@ const initDropFile = (scope) => {
         $("#homeInnuendo").css({display: "none"});
 
         data = results.data;
-        dataFilters = results.dataFilters;
-        dataHighlights = results.dataHighlights;
+        dataFilters = (results.dataFilters ? results.dataFilters : dataFilters);
+        dataHighlights = (results.dataHighlights ? results.dataHighlights : dataHighlights);
         console.log("ADD data");
 
         // Update sidebar elements (filters and highlights) according to the
