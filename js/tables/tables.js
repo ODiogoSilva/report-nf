@@ -32,6 +32,10 @@ class Table {
                 "csv",
                 "excel",
                 "pdf",
+            {
+                extend: 'colvis',
+                columns: ':not(.noVis)'
+            }
         ];
         this.initCompleteFunc = () => {};
     }
@@ -53,7 +57,7 @@ class Table {
      * @param columnArray
      */
     setColumns(columnArray) {
-        this.columnArray = columnArray;
+        // this.columnArray = columnArray;
     }
 
     /*
@@ -182,6 +186,7 @@ class Table {
             scrollX,
             lengthChange: false,
             buttons: this.tableAdditionalButtons,
+            colReorder: true,
             columnDefs: [ {
                 orderable: false,
                 className: "select-checkbox",
@@ -195,6 +200,10 @@ class Table {
                 {
                     targets: [1,2],
                     width: "50px",
+                },
+                {
+                    targets: 1,
+                    className: 'noVis'
                 }],
             select: {
                 style:    "multi",

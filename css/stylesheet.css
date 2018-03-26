@@ -249,6 +249,22 @@ th {
     vertical-align: middle;
 }
 
+.secondary-header {
+    font-size: 10px;
+    color: rgba(40, 167, 69, 0.80);
+    text-align: center;
+    height: 15px;
+    line-height: 15px;
+    overflow: hidden;
+    /*text-transform: uppercase;*/
+    letter-spacing: 0.5px;
+}
+
+.primary-header {
+    font-size: 12px;
+    min-width: 100px;
+}
+
 .badge-qc {
     color: white;
     font-weight: bold;

@@ -163,6 +163,29 @@ const setMaxFilters = (header, value) => {
 
 };
 
+const  builHeader = (header, task) => {
+
+    let taskId = task.split("_").map((el) => {
+        if (parseInt(el)){
+            return el
+        }
+    });
+    taskId = taskId.join(" ");
+
+    let taskName = task.split("_").map((el) => {
+        if ( ! parseInt(el) ){
+            return el
+        }
+    });
+    taskName = taskName.join(" ");
+
+    return `<div class="secondary-header" data-toggle="tooltip" 
+             data-placement="top" title="Task ID: ${taskId}
+Task name: ${taskName}">${taskId}: ${taskName}</div>
+            <div class="primary-header">${header}</div>`;
+
+};
+
 /**
  * Parses the raw JSON report data and returns processed data for building
  * the summary table.
@@ -273,8 +296,17 @@ const parseReport = (reportJSON) => {
                     continue;
                 }
 
-                const header = cell.header.replace("_", " ");
-                storage.get(id).set(header, cell.value);
+                let header = {
+                    "header": cell.header.replace("_", " "),
+                    "task": jr.task
+                };
+
+                header = builHeader(cell.header.replace("_", " "), jr.task);
+                if (storage.get(id).has(header)){
+                    storage.get(id).set(header, cell.value);
+                } else {
+                    storage.get(id).set(header, cell.value);
+                }
 
                 // Add the column header to the columns array, if it doesn't
                 // exist yet
@@ -297,7 +329,10 @@ const parseReport = (reportJSON) => {
 
     // Sort the column headers according to the process id
     if (!innucaTable.columnArray){
-        columns = [...columns.entries()].sort( (a,b) => {return a[1] - b[1];});
+        columns = [...columns.entries()].sort( (a,b) => {
+            const af = parseFloat(a[1].split("_").join("."));
+            const bf = parseFloat(b[1].split("_").join("."));
+            return af - bf;});
         for (let c of columns) {
             sortedColumns.push(c[0]);
         }
@@ -314,6 +349,10 @@ const parseReport = (reportJSON) => {
 
     // Add the final headers to the table data object
     let headers = startHeaders.concat(sortedColumns);
+
+    console.log(storage)
+    console.log(sortedColumns)
+    console.log(columnBars)
 
     return {
         storage,
@@ -398,7 +437,7 @@ const createTableData = (parsedJson, ignoreMax) => {
                         // Set/Update maximum filters value
                         if ( !ignoreMax === true ) {setMaxFilters(col, maxValue);}
                     }
-                    const outDiv = `<div id="${col.replace(/ |\(|\)/g, "")}" class='table-cell'><div class='table-bar' style='width:${prop}%'></div>${v.get(col)}</div>`;
+                    const outDiv = `<div class='table-cell'><div class='table-bar' style='width:${prop}%'></div>${v.get(col)}</div>`;
                     v.set(col, outDiv);
                 }
             }
