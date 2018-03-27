@@ -84,14 +84,14 @@ const assemblyBoxplot = (rawData, path, taskName) => {
 
 const assemblyContigSize = (rawData, path) => {
 
-    return assemblyBoxplot(rawData, path, "pilon");
+    return assemblyBoxplot(rawData, path, "pilon_report");
 
 };
 
 
 const assemblyContigCoverage = (rawData, path) => {
 
-    return assemblyBoxplot(rawData, path, "assembly_mapping");
+    return assemblyBoxplot(rawData, path, "pilon_report");
 
 };
 

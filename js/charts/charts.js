@@ -296,7 +296,7 @@ const getTaskReport = (rawData, task, path) => {
     };
 
     const data = new Map;
-    const taskExp = new RegExp(`^${task}_[0-9]`);
+    const taskExp = new RegExp(`^${task}_[0-9]*`);
 
     for (const r of rawData) {
         // Get unique ID of project + sample name

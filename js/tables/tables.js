@@ -160,6 +160,11 @@ class Table {
         for (const el of this.tableData) {
             const pid = el.id.split(".")[0] + "." + el.Sample;
             if (pid === id) {
+                for (const s of Object.keys(el)) {
+                    if ($(s).length > 1 && $(s).closest(".primary-header")[0].innerHTML === target){
+                        return $(el[s])
+                    }
+                }
                 return $(el[target]);
             }
         }

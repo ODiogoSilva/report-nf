@@ -62,12 +62,12 @@ const getQc = (qcObject, sampleObj) => {
 
     // If the sample has not yet finished but did not fail, return the loader
     // div
-    if (qcObject.status === "pending"){
-        qcDiv = "<div class='loader'></div>";
-        return {
-            qcDiv
-        };
-    }
+    // if (qcObject.status === "pending"){
+    //     qcDiv = "<div class='loader'></div>";
+    //     return {
+    //         qcDiv
+    //     };
+    // }
 
     // If the sample has finished without failing or errors, evaluate the
     // QC grade
@@ -400,11 +400,11 @@ const createTableData = (parsedJson, ignoreMax) => {
         }
 
         // Check if current sample has finished
-        if (v.has(innucaTable.lastHeader)) {
-            parsedJson.qcStorage.get(k).status = "finished";
-        } else {
-            parsedJson.qcStorage.get(k).status = "pending";
-        }
+        // if (v.has(innucaTable.lastHeader)) {
+        //     parsedJson.qcStorage.get(k).status = "finished";
+        // } else {
+        //     parsedJson.qcStorage.get(k).status = "pending";
+        // }
 
         // Get QC message for a sample
         let qcObj = getQc(parsedJson.qcStorage.get(k), v);

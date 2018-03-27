@@ -23,7 +23,7 @@ const getLineSeries = async (mapObject) => {
 
 const bdFastqcBaseSequenceQuality = (rawData, path) => {
 
-    const taskName = "fastqc";
+    const taskName = "fastqc2_report";
     const chartData = new Map;
 
     // Get JSON report array
@@ -65,7 +65,7 @@ const bdFastqcBaseSequenceQuality = (rawData, path) => {
 
 const bdFastqcSequenceQuality = (rawData, path) => {
 
-    const taskName = "fastqc";
+    const taskName = "fastqc2_report";
     const chartData = new Map;
 
     // Get JSON report array
@@ -108,7 +108,7 @@ const bdFastqcSequenceQuality = (rawData, path) => {
 
 const bdFastqcGcContent = (rawData, path) => {
 
-    const taskName = "fastqc";
+    const taskName = "fastqc2_report";
     const chartData = new Map;
 
     // Get JSON report array
@@ -134,7 +134,7 @@ const bdFastqcGcContent = (rawData, path) => {
 
 const bdFastqcSequenceLength = (rawData, path) => {
 
-    const taskName = "fastqc";
+    const taskName = "fastqc2_report";
     const chartData = new Map;
 
     // Get JSON report array
@@ -162,7 +162,7 @@ const bdFastqcSequenceLength = (rawData, path) => {
 
 const bdFastqcNContent = (rawData, path) => {
 
-    const taskName = "fastqc";
+    const taskName = "fastqc2_report";
     const chartData = new Map;
 
     // Get JSON report array

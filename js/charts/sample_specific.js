@@ -1130,6 +1130,7 @@ const showModelGraphs = (sample) => {
         });
 
     } catch(err) {
+        console.log(err)
         modalMessage(`Sample specific data is currently not available for` +
                      ` ${sample}`, "Warning");
     }
