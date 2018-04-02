@@ -65,33 +65,38 @@ const initReports = (scope, globalResults, append = true) => {
         //Add tasks list to array
         r.filteredJson.map((report) => {
             if(report.report_json.task !== undefined){
+
+                task_to_use = report.report_json.task.split("_");
+                task_to_use.splice(-1,1);
+                task_to_use = task_to_use.join("_");
+
                 if (!strainTableValDict.hasOwnProperty(report.sample_name)){
                     strainTableValDict[report.sample_name] = {};
                 }
 
                 if (report.report_json.hasOwnProperty("tableRow")){
-                    if(!taskArray.includes(report.report_json.task)){
-                        taskArray.push(report.report_json.task);
+                    if(!taskArray.includes(task_to_use)){
+                        taskArray.push(task_to_use);
                     }
-                    strainTableValDict[report.sample_name][report.report_json.task] = report.report_json.tableRow;
+                    strainTableValDict[report.sample_name][task_to_use] = report.report_json.tableRow;
                 }
                 else if (report.report_json.hasOwnProperty("typing")){
-                    if(!taskArray.includes(report.report_json.task)){
-                        taskArray.push(report.report_json.task);
+                    if(!taskArray.includes(task_to_use)){
+                        taskArray.push(task_to_use);
                     }
-                    strainTableValDict[report.sample_name][report.report_json.task] = [report.report_json.typing];
+                    strainTableValDict[report.sample_name][task_to_use] = [report.report_json.typing];
                 }
                 else if (report.report_json.hasOwnProperty("status")) {
-                    if(!taskArray.includes(report.report_json.task)){
-                        taskArray.push(report.report_json.task);
+                    if(!taskArray.includes(task_to_use)){
+                        taskArray.push(task_to_use);
                     }
-                    strainTableValDict[report.sample_name][report.report_json.task] = [{"chewBBACAStatus":report.report_json.status}];
+                    strainTableValDict[report.sample_name][task_to_use] = [{"chewBBACAStatus":report.report_json.status}];
                 }
-                else if (report.report_json.task === "mlst") {
-                    if(!taskArray.includes(report.report_json.task)){
-                        taskArray.push(report.report_json.task);
+                else if (task_to_use === "mlst") {
+                    if(!taskArray.includes(task_to_use)){
+                        taskArray.push(task_to_use);
                     }
-                    strainTableValDict[report.sample_name][report.report_json.task] = [{"species":report.report_json.species, "st": report.report_json.st}];
+                    strainTableValDict[report.sample_name][task_to_use] = [{"species":report.report_json.species, "st": report.report_json.st}];
                 }
 
             }
