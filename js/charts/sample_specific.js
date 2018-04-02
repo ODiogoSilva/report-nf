@@ -296,9 +296,11 @@ const getAbricateReport = async (sample, xbars) => {
 
     let counter = 0;
 
+    const taskExp = new RegExp(`^abricate_[0-9]`);
+
     for (const el of data.results) {
         const pid = `${el.project_id}.${el.sample_name}`;
-        if (pid === sample && el.report_json.task === "abricate") {
+        if (pid === sample && taskExp.test(el.report_json.task)) {
             for (const [key, val] of Object.entries(el.report_json.plotData)) {
 
                 const tempData = Array.from(val, (x) => {return {

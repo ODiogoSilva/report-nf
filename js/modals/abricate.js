@@ -50,7 +50,7 @@ const showAbricateModal = (sampleId, sampleName) => {
 
     let abricateGenes = [];
     // These are the expected databases for Abricate
-    const abricateDatabases = ["card", "resfinder", "vfdb", "plasmidfinder"];
+    const abricateDatabases = ["card", "resfinder", "vfdb", "plasmidfinder", "virulencefinder"];
 
     $("#abricateModal").modal("show");
 
@@ -77,6 +77,7 @@ const showAbricateModal = (sampleId, sampleName) => {
         const sid = `${sampleId.split(".")[0]}.${sampleName.replace(/ /g,"")}`;
         dbSel.empty();
         for (const gene of abricateGenes[db]) {
+            console.log(db)
             const itemDiv = `<li class="list-group-item">${gene}<button onclick="findAbricateGene('${sid}', '${gene}', '${db}')" type="button" class="btn btn-default abricate-btn"><i class="fa fa-bullseye"></i></button></li>`;
             dbSel.append(itemDiv);
         }

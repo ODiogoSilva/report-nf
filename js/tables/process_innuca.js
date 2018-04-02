@@ -39,7 +39,12 @@ const getQc = (qcObject, sampleObj) => {
                 continue
             }
 
-            const failMsg = el.value.split(":")[0].replace(/_/g, " ");
+            let failMsg;
+            if (el.value.constructor === Array){
+                 failMsg = el.value[0].split(":")[0].replace(/_/g, " ");
+            } else {
+                 failMsg = el.value.split(":")[0].replace(/_/g, " ");
+            }
             failMessages.push(`(${el.process}) ${failMsg}`);
         }
         qcDiv = `<div id=${sample} class='badge-qc tooltip-qc' 
