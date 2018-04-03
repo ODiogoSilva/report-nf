@@ -247,7 +247,7 @@ const readReportFile = (files) => {
  *      selected projects
  *      - Populates the project and sample counter indicators
  */
-const initProjectSelection = async () => {
+const initProjectSelection = () => {
 
     // Trigger events when the main project dropdown is closed
     $("#project_select").on("hide.bs.select", async () => {
