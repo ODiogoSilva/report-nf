@@ -170,7 +170,7 @@ const buildProfiles = async (sampleNames, database_name) => {
  * @param file_names
  * @returns {Promise.<void>}
  */
-const downloadProfiles = async (paths, file_names) => {
+/*const downloadProfiles = async (paths, file_names) => {
 
     const url = reportsRoute + "app/api/v1.0/reports/files/?paths=" +
         paths.join(";") + "&file_names=" + file_names.join(";");
@@ -180,4 +180,4 @@ const downloadProfiles = async (paths, file_names) => {
     link.href = url;
     link.click();
 
-}
+}*/

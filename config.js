@@ -1,7 +1,7 @@
 /*global Table, ChartManager */
 
 //Route to get the reports from
-const reportsRoute = "https://192.92.149.157/";
+const reportsRoute = "https://193.166.24.85/";
 // const reportsRoute = "http://10.105.7.44/";
 
 //Species available on the reports database
