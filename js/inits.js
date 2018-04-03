@@ -364,6 +364,8 @@ const submissionRoutine = async (selectorIds) => {
 
     const strainsForRequest = [];
 
+    console.log(reportInfo);
+
     const projectSampleMap = await getMetadataMapping(reportInfo, selectedStrains);
 
     for (const el of reportInfo){
