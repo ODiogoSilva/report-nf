@@ -277,6 +277,11 @@ const initProjectSelection = () => {
                 $(".pcounter").css({display: "inline-block"});
             }
 
+            /*
+            Trigger custom event case from iframe
+             */
+            $("#project_select").trigger("endLoad");
+
         } else {
             // When no valid projects are selected, hide the filter elements
             // and submission button

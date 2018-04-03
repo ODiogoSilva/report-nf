@@ -41,11 +41,9 @@ var loadReport = async (selectedNames, project_id) => {
 
     $("#btProjectSelect").trigger("click");
     $("#project_select").find('option[value="' + String(project_id) + '"]').prop("selected",true);
-    //$("#project_select option[value='" + String(project_id) + "']").trigger("click");
     $("#project_select").trigger("hide.bs.select");
 
-    setTimeout(() => {
-
+    $("#project_select").off("endLoad").on("endLoad", () => {
         $("#f_by_name option:selected").prop("selected", false);
 
         $.each(selectedNames, (i,e) => {
@@ -53,8 +51,7 @@ var loadReport = async (selectedNames, project_id) => {
         });
 
         $("#submitProject").trigger("click");
-
-    }, 1000);
+    });
 
 };
 

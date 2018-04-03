@@ -312,7 +312,7 @@ app.controller("reportsController", async ($scope) => {
     // in the home screen for selecting/loading projects
     initHomeButtonsToggle();
     // Initialize the Project selection picker and filter elements
-    await initProjectSelection();
+    initProjectSelection();
     initNavSelection();
     // Initialize the project selection submission
     initProjectSubmission($scope);
