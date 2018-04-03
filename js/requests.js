@@ -133,7 +133,8 @@ const loginPlatform = async (data) => {
 
 const getFile = async (filePath, sampleNames) => {
 
-    const url = reportsRoute + "app/api/v1.0/reports/strain/files/?path=" + filePath + "&sampleNames=" + sampleNames ;
+    const url = reportsRoute + "app/api/v1.0/reports/strain/files/?path=" +
+        filePath + "&sampleNames=" + sampleNames ;
 
     const link = document.createElement("a");
     link.download = filePath.split('/').slice(-1)[0];
@@ -141,3 +142,42 @@ const getFile = async (filePath, sampleNames) => {
     link.click();
 
 };
+
+/**
+ * Function to build files with core and wg MLST profiles of the selected
+ * strains
+ * @param sampleNames
+ * @param database_name
+ * @returns {Promise.<*>}
+ */
+const buildProfiles = async (sampleNames, database_name) => {
+
+    return await $.get(
+        reportsRoute+"app/api/v1.0/phyloviz/profiles/",
+        {
+            strain_names: sampleNames.join(";"),
+            database_name: database_name,
+            get_json: "false"
+
+        },
+    );
+
+};
+
+/**
+ * Function to download a zip file with the selected profiles
+ * @param paths
+ * @param file_names
+ * @returns {Promise.<void>}
+ */
+const downloadProfiles = async (paths, file_names) => {
+
+    const url = reportsRoute + "app/api/v1.0/reports/files/?paths=" +
+        paths.join(";") + "&file_names=" + file_names.join(";");
+
+    const link = document.createElement("a");
+    link.download = paths[0].split('/').slice(-1)[0];
+    link.href = url;
+    link.click();
+
+}

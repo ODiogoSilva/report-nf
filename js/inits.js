@@ -263,6 +263,8 @@ const initProjectSelection = () => {
             // (sample names and time stamps)
             reportInfo = await getReportInfo(selectedOpts);
 
+            console.log(reportInfo);
+
             if (reportInfo.length !== 0){
                 // Use the report information to populate the filter elements
                 populateFilter(reportInfo);
@@ -304,6 +306,8 @@ const initNavSelection = () => {
             // Get report information for the selected projects
             // (sample names and time stamps)
             reportInfo = await getReportInfo(selectedOpts);
+
+            console.log(reportInfo);
 
             // Use the report information to populate the filter elements
             populateFilter(reportInfo);
