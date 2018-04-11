@@ -37,7 +37,8 @@ const initHomeButtonsToggle = () => {
 
     const homeButtons = [
         "#btProjectSelect",
-        "#btProjectLoad"
+        "#btProjectLoad",
+        "#btSavedProject"
     ];
 
     for (const bt of homeButtons) {
@@ -78,6 +79,18 @@ const populateSelect = (container, speciesData, projectsData) => {
     });
 
     $("#"+container).empty().append(options).selectpicker("refresh");
+
+};
+
+const initSavedReportsTable = async (userId) => {
+
+    const savedReports = await getSavedReports(userId);
+    const resultsSV = await savedReportsTable
+        .processSavedReports(savedReports);
+
+    savedReportsTable.addTableHeaders(resultsSV, "saved_reports_table_headers");
+    savedReportsTable.addTableData(resultsSV, false);
+    savedReportsTable.buildDataTable(true);
 
 };
 

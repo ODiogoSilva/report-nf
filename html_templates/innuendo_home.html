@@ -19,6 +19,8 @@
             <div class="btn-group" data-toggle="buttons" style="width: 80%">
                 <label id="btProjectSelect" class="btn btn-primary primary-bts" data-target="projectSelect"><input type="radio">Select project</label>
                 <label id="btProjectLoad" class="btn btn-primary primary-bts" data-target="projectLoad"><input type="radio">Load from file</label>
+                <label id="btSavedProject" class="btn btn-primary primary-bts"
+                       data-target="savedProjects"><input type="radio">Saved Reports</label>
             </div>
             <p class="p1">Or simply drag and drop a report JSON file</p>
             <div id="optsContainer" style="text-align: center">
@@ -68,6 +70,24 @@
                                     <i class="glyphicon glyphicon-search"></i><input type="file" style="display: none;">
                                 </span>
                             </label>
+                        </div>
+                    </div>
+                </div>
+                <div id="savedProjects" class="banner">
+                    <h4 class="banner-header">Choose a Saved Report<span
+                            id="savedProjectsCounter" class="label label-success pcounter"></span></h4>
+                    <div id="submitSavedProjectDiv">
+                        <hr class="rule2">
+                        <table id="saved_reports_table"
+                               class="table table-striped" cellspacing="0" style="height:100%;width:100%;">
+                            <thead>
+                            </thead>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                        <div class="row">
+                            <button id="submitSavedProject"
+                                    class="btn btn-primary">Submit</button>
                         </div>
                     </div>
                 </div>

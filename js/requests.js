@@ -181,3 +181,13 @@ const buildProfiles = async (sampleNames, database_name) => {
     link.click();
 
 }*/
+
+const getSavedReports = async (userId) => {
+
+    return await $.get(
+        reportsRoute+"app/api/v1.0/reports/saved/",
+        {
+            user_id: userId,
+        },
+    );
+};

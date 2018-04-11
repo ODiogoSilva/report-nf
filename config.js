@@ -183,4 +183,6 @@ abricateTable.addAdditionalButton({
 
 const treesTable = new Table("master_table_trees");
 
+const savedReportsTable = new Table("saved_reports_table");
+
 

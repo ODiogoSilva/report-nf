@@ -316,6 +316,8 @@ app.controller("reportsController", async ($scope) => {
     initNavSelection();
     // Initialize the project selection submission
     initProjectSubmission($scope);
+    // Initialize saved reports table
+    await initSavedReportsTable(USERID);
 
     //
     // NAVBAR INITS //

@@ -271,4 +271,9 @@ class Table {
     async processTrees(treesReports) {
         return await processTrees(treesReports);
     }
+
+    /* Process Saved Reports to load into the DataTable */
+    async processSavedReports(savedReports) {
+        return await processSavedReports(savedReports);
+    }
 }
