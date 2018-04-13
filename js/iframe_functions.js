@@ -41,6 +41,7 @@ var loadReport = async (selectedNames, project_id) => {
 
     $("#btProjectSelect").trigger("click");
     $("#project_select").find('option[value="' + String(project_id) + '"]').prop("selected",true);
+    $('.selectpicker').trigger('change');
     $("#project_select").trigger("hide.bs.select");
 
     $("#project_select").off("endLoad").on("endLoad", () => {

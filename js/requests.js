@@ -68,7 +68,6 @@ const getReportByFilter = async (filter) => {
 
 const getStrainsMetadata = async (filter) => {
 
-    console.log(filter);
     return await $.post(
         reportsRoute+"app/api/v1.0/strains/name/",
         filter,
@@ -189,5 +188,13 @@ const getSavedReports = async (userId) => {
         {
             user_id: userId,
         },
+    );
+};
+
+const saveReportRequest = async (requestObject) => {
+
+    return await $.post(
+        reportsRoute+"app/api/v1.0/reports/saved/",
+        requestObject,
     );
 };

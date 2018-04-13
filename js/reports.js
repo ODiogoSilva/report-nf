@@ -42,6 +42,9 @@
 */
 const app = angular.module("reportsApp", []);
 
+// Global scope to be accessed anywhere.
+let sc;
+
 /**
  * Function to build tables and graphs based on the reports
  * @param scope
@@ -233,6 +236,8 @@ const modalMessage = (text, title) => {
 /* Angular controller to control the DOM elements from the index.html file */
 app.controller("reportsController", async ($scope) => {
 
+    // Assign global scope
+    sc = $scope;
 
     $scope.graph1Name = "Assembly charts";
     $scope.graph2Name = "Graph 2";

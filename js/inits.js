@@ -51,6 +51,11 @@ const initHomeButtonsToggle = () => {
             resetHomeOpts();
             targetDiv.css({"display": "inline-block"});
 
+            // Trigger redraw of table when visible
+            if(bt === "#btSavedProject"){
+                $("#savedProjects").trigger("redraw");
+            }
+
         });
     }
 };
@@ -266,7 +271,6 @@ const initProjectSelection = () => {
     $("#project_select").on("hide.bs.select", async () => {
         // Get the report info object containng the timestamp and sample
         // name information
-        console.log($("#project_select").val());
         const selectedOpts = $("#project_select").val();
 
         // Only proceed when at least one project has been selected
@@ -275,8 +279,6 @@ const initProjectSelection = () => {
             // Get report information for the selected projects
             // (sample names and time stamps)
             reportInfo = await getReportInfo(selectedOpts);
-
-            console.log(reportInfo);
 
             if (reportInfo.length !== 0){
                 // Use the report information to populate the filter elements
@@ -324,8 +326,6 @@ const initNavSelection = () => {
             // Get report information for the selected projects
             // (sample names and time stamps)
             reportInfo = await getReportInfo(selectedOpts);
-
-            console.log(reportInfo);
 
             // Use the report information to populate the filter elements
             populateFilter(reportInfo);
@@ -408,6 +408,51 @@ const submissionRoutine = async (selectorIds) => {
         {
             selectedProjects: projectSampleMap[0],
             selectedStrains: projectSampleMap[1]
+        }
+    );
+
+    return {
+        results: res,
+        metadataResults: resMetadata
+    };
+
+};
+
+
+/**
+ * This function returns
+ * @param selectedStrains
+ * @param selectedProjects
+ * @returns {Promise.<{results: *, metadataResults: *}>}
+ */
+const getSavedReportStrains =  async (selectedStrains, selectedProjects) => {
+
+    const res = await getReportByFilter(
+        {
+            selectedProjects,
+            selectedStrains: selectedStrains
+        }
+    );
+
+    const strainArray = selectedStrains.split(",");
+
+    let projectAr = [];
+    let sampleAr = [];
+
+    for (const process of res) {
+        if (strainArray.indexOf(process.sample_name) > -1){
+            projectAr.push(process.project_id);
+            sampleAr.push(process.sample_name);
+        }
+    }
+
+    const projectStr = projectAr.join();
+    const sampleStr = sampleAr.join();
+
+    const resMetadata = await getStrainsMetadata(
+        {
+            selectedProjects: projectStr,
+            selectedStrains: sampleStr
         }
     );
 

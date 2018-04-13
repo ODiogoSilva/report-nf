@@ -131,7 +131,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                        Save Report to File</a>
+                        Export Report</a>
                 </h4>
             </div>
             <div id="collapse3" class="panel-collapse collapse">
@@ -140,6 +140,40 @@
                         <input id="save_file_name" type="text" class="form-control" placeholder="Enter file name">
                         <span class="input-group-addon button_side" id="save_status_file" onclick="saveStatusFile()">Save</span>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion"
+                       href="#collapse5">
+                        Save Report</a>
+                </h4>
+            </div>
+            <div id="collapse5" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="input-group">
+                        <input id="save_report_name" type="text"
+                               class="form-control"
+                               placeholder="Enter report name">
+                        <input id="save_report_description" type="text"
+                               class="form-control"
+                               placeholder="Enter report description">
+                    </div>
+                    <div style="width:100%;text-align: left;">
+                        <label>Make public
+                            <input id="save_report_checkbox"
+                                      type="checkbox"></label>
+                    </div>
+                    <div style="width:100%;">
+                        <div style="text-align: center;">
+                            <button class="btn btn-md btn-primary button_side"
+                              id="save_report_sub" onclick="saveReport()">
+                            Save</button>
+                        </div>
+                    </div>
+                    <div class="error" id="save_report_message"></div>
                 </div>
             </div>
         </div>

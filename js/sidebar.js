@@ -259,6 +259,24 @@ const triggerHighlights = async () => {
 
 };
 
+/**
+ * Function to update the highlight labels by counting the size of projects
+ * or sample array.
+ */
+const updateHighlightLabels = () => {
+
+    if (dataHighlights.projects.length > 0){
+        $("#projectHighlightCounter").html(`(${dataHighlights.projects.length})`);
+    }
+    else if (dataHighlights.samples.length > 0){
+        $("#sampleHighlightCounter").html(`(${dataHighlights.samples.length})`);
+    }
+};
+
+const updateFiltersLabels = () => {
+
+}
+
 const removeHighlightGroup = (containerDiv, targetDiv, type) => {
 
     const containerSel = $("#" + containerDiv);

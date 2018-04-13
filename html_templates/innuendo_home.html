@@ -74,8 +74,17 @@
                     </div>
                 </div>
                 <div id="savedProjects" class="banner">
-                    <h4 class="banner-header">Choose a Saved Report<span
-                            id="savedProjectsCounter" class="label label-success pcounter"></span></h4>
+                    <h4 class="banner-header">Choose a Saved Report
+                        <button type="button" class="btn btn-sm btn-danger"
+                                value="" style="float:right;"
+                                onclick="deleteSavedReport()">
+                            <i class="fa fa-trash-o" data-toggle="tooltip"
+                               data-placement="top" title="Delete Saved Report"></i></button>
+                        <button class="btn btn-sm btn-primary" style="float:right;"
+                                onclick="loadSavedReport()"><i
+                                class="fa fa-upload" data-toggle="tooltip"
+                                data-placement="top" title="Load Report"></i></button>
+                    </h4>
                     <div id="submitSavedProjectDiv">
                         <hr class="rule2">
                         <table id="saved_reports_table"
