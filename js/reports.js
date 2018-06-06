@@ -158,7 +158,7 @@ const initReports = (scope, globalResults, append = true) => {
     });
 
     p1.then( async (r) => {
-        const resultsCh = await chewbbacaTable.processChewbbaca(r.filteredJson);
+        const resultsCh = await chewbbacaTable.processChewbbaca(r.filteredJson, r.filteredMetadata);
         chewbbacaTable.initCompleteFunc = chewbbacaHeaderTooltip;
         await chewbbacaTable.addTableHeaders(resultsCh,
             "table_headers_chewbbaca");

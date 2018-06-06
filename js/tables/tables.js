@@ -233,8 +233,8 @@ class Table {
     }
 
     /* Process chewBBACA data to load into the DataTable */
-    async processChewbbaca(reports) {
-        return await processChewbbaca(reports);
+    async processChewbbaca(reports, metadata) {
+        return await processChewbbaca(reports, metadata);
     }
 
     /* Process INNUca data to load into the DataTable */

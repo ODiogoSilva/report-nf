@@ -29,10 +29,10 @@ const chewbbacaHeaderTooltip = (settings) => {
 };
 
 
-const processChewbbaca = (reportsData) => {
+const processChewbbaca = (reportsData, metadata) => {
 
     const chewbbacaData = {};
-    let chewbbacaHeaders = ["", "id", "Sample"];
+    let chewbbacaHeaders = ["", "id", "Sample", "Classifier"];
     let dataKey = "";
     const chewbbacaDataArray = [];
 
@@ -109,6 +109,13 @@ const processChewbbaca = (reportsData) => {
             dataObject["project_id"] = report.project_id;
             dataObject["pipeline_id"] = report.pipeline_id;
             dataObject["process_id"] = report.process_id;
+
+            for (const [index1, metadataentry] of metadata.entries()){
+                if (metadataentry.strainID === report.sample_name){
+                    dataObject["Classifier"] = metadataentry.classifier;
+                    break;
+                }
+            }
 
             chewbbacaDataArray.push(dataObject);
 

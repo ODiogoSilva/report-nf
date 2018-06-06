@@ -102,7 +102,7 @@ const initSavedReportsTable = async (userId) => {
 const populateSelectPHYLOViZ = (container, projectsData) => {
     let options = "";
     projectsData.map((entry) => {
-        options += "<option value='"+entry.name+"'>"+entry.name+"</option>";
+        options += "<option value='"+entry.name+"' species_id='"+entry.species_id+"'>"+entry.name+"</option>";
     });
 
     $("#"+container).empty().append(options).selectpicker("refresh");
@@ -410,6 +410,8 @@ const submissionRoutine = async (selectorIds) => {
             selectedStrains: projectSampleMap[1]
         }
     );
+
+    console.log(resMetadata);
 
     return {
         results: res,

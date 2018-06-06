@@ -3,7 +3,8 @@ const parseTypingReport = (rdata) => {
 
     const headerConversion = {
         "seq_typing": "Serotyping",
-        "patho_typing": "Pathotyping"
+        "patho_typing": "Pathotyping",
+        "sistr": "SISTR"
     };
 
     let storage = new Map();
@@ -28,7 +29,9 @@ const parseTypingReport = (rdata) => {
         let header;
 
         if (jr.hasOwnProperty("typing")) {
-            header = headerConversion[jr.task.split("_").splice(0,2).join("_")];
+            task_parts = jr.task.split("_");
+            task_parts.splice(-1,1);
+            header = headerConversion[task_parts.join("_")];
             storage.get(id).set(header, Object.values(jr.typing)[0]);
         }
         if (jr.hasOwnProperty("expectedSpecies")) {
