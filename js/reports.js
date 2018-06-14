@@ -164,6 +164,9 @@ const initReports = (scope, globalResults, append = true) => {
             "table_headers_chewbbaca");
         await chewbbacaTable.addTableData(resultsCh, append);
         await chewbbacaTable.buildDataTable(true);
+        chewbbacaTable
+            .tableObj
+            .columns( 4 ).search("1").draw();
     });
 
     p1.then( async (r) => {
@@ -346,7 +349,7 @@ app.controller("reportsController", async ($scope) => {
     //
 
     // Populate dropdown with species database from the platform.
-    populateSelectPHYLOViZ("species_database", speciesDatabase);
+    populateSelectPHYLOViZ("species_database", speciesDatabase, "1");
 
     //
     // MODALs INITS //

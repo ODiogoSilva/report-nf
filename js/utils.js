@@ -153,7 +153,7 @@ const loadSavedReport = async () => {
 
 const getAssemblyPath = (sampleId, pipelineId) => {
 
-    const assemblySuffix = `/results/assembly/pilon/sample_${pipelineId}_polished.assembly.fasta`;
+    const assemblySuffix = `/results/assembly/pilon_*/sample_${pipelineId}_polished.assembly.fasta`;
     let filePath;
     let sampleName;
 

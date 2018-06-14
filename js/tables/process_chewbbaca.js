@@ -32,7 +32,7 @@ const chewbbacaHeaderTooltip = (settings) => {
 const processChewbbaca = (reportsData, metadata) => {
 
     const chewbbacaData = {};
-    let chewbbacaHeaders = ["", "id", "Sample", "Classifier"];
+    let chewbbacaHeaders = ["", "id", "Sample", "Species ID", "Classifier"];
     let dataKey = "";
     const chewbbacaDataArray = [];
 
@@ -113,6 +113,7 @@ const processChewbbaca = (reportsData, metadata) => {
             for (const [index1, metadataentry] of metadata.entries()){
                 if (metadataentry.strainID === report.sample_name){
                     dataObject["Classifier"] = metadataentry.classifier;
+                    dataObject["Species ID"] = metadataentry.species_id;
                     break;
                 }
             }
@@ -127,6 +128,43 @@ const processChewbbaca = (reportsData, metadata) => {
     chewbbacaData.data = chewbbacaDataArray;
 
     return chewbbacaData;
+
+};
+
+/**
+ * Construct table dependent on the species selected.
+ * @param speciesName
+ */
+const rebuildChewbbaca = (speciesName) => {
+
+    let species_id = "";
+
+    $.map(chewbbacaTable.tableObj.rows().nodes(), (r) => {
+        if($(r).hasClass("selected")){
+            $(r).find("input").trigger("click");
+        }
+    });
+
+    /*chewbbacaTable
+        .tableObj.rows().deselect();*/
+
+    chewbbacaTable
+        .tableObj
+        .columns( 4 ).search('').draw();
+
+    for (const s of speciesDatabase){
+        if (speciesName === s.name){
+            species_id = s.species_id
+        }
+    }
+
+    console.log("filter");
+    // Filter table content based on species id
+    chewbbacaTable
+        .tableObj
+        .columns( 4 ).search(species_id).draw();
+
+    populateSelectPHYLOViZ("species_database", speciesDatabase, species_id);
 
 };
 

@@ -99,10 +99,12 @@ const initSavedReportsTable = async (userId) => {
 
 };
 
-const populateSelectPHYLOViZ = (container, projectsData) => {
+const populateSelectPHYLOViZ = (container, projectsData, species_id) => {
     let options = "";
     projectsData.map((entry) => {
-        options += "<option value='"+entry.name+"' species_id='"+entry.species_id+"'>"+entry.name+"</option>";
+        if (species_id === entry.species_id){
+            options += "<option value='"+entry.name+"' species_id='"+entry.species_id+"'>"+entry.name+"</option>";
+        }
     });
 
     $("#"+container).empty().append(options).selectpicker("refresh");

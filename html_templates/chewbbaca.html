@@ -7,23 +7,35 @@
             data-target="#chewbbacaDiv"><i class="fa fa-chevron-down" aria-hidden="true"></i>
     </button>
     <div id="chewbbacaDiv" class="collapse in">
-        <div>
-            <p class="sub-header">chewBBACA Table</p>
-            <button id="phyloviz_button" class="btn btn-sm btn-warning" style="float:right;display:inline-block;margin-left:5px">
-                <i class="fa" data-toggle="tooltip" data-placement="top" title="Send data to PHYLOViZ Online">
-                    Send to PHYLOViZ Online
-                </i>
-            </button>
-            <button id="download_profiles_button" class="btn btn-sm btn-default" style="float:right;display:inline-block">
-                <i class="fa fa-download" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Download Profiles"></i>
-            </button>
+        <ul id="chewBBACATabs" class="nav nav-tabs"
+            style="float:right;display:inline-block;">
+            <li class="active"><a onclick="rebuildChewbbaca('E.coli')" data-toggle="tab">Escherichia coli</a></li>
+            <li><a onclick="rebuildChewbbaca('Yersinia')" data-toggle="tab">Yersinia enterocolitica</a></li>
+            <li><a onclick="rebuildChewbbaca('Campylobacter')" data-toggle="tab">Campylobacter jejuni</a></li>
+            <li><a onclick="rebuildChewbbaca('Salmonella')" data-toggle="tab">Salmonella enterica</a></li>
+        </ul>
+        <br>
+        <div class="tab-content"
+             style="width:100%;padding-top:40px">
+            <div id="chewbbacapane" class="tab-pane active" style="width:100%;">
+                <p class="sub-header">chewBBACA Table</p>
+                <button id="phyloviz_button" class="btn btn-sm btn-warning" style="float:right;display:inline-block;margin-left:5px">
+                    <i class="fa" data-toggle="tooltip" data-placement="top" title="Send data to PHYLOViZ Online">
+                        Send to PHYLOViZ Online
+                    </i>
+                </button>
+                <button id="download_profiles_button" class="btn btn-sm btn-default" style="float:right;display:inline-block">
+                    <i class="fa fa-download" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Download Profiles"></i>
+                </button>
+            <table id="master_table_chewbbaca" class="table table-striped" cellspacing="0"
+                   style="height:100%;width:100%;">
+                <thead>
+                </thead>
+                <tfoot>
+                </tfoot>
+            </table>
+            </div>
         </div>
-        <table id="master_table_chewbbaca" class="table table-striped" cellspacing="0"
-               style="height:100%;width:100%;">
-            <thead>
-            </thead>
-            <tfoot>
-            </tfoot>
-        </table>
     </div>
+
 </div>

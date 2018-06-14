@@ -300,23 +300,25 @@ const getAbricateReport = async (sample, xbars) => {
 
     for (const el of data.results) {
         const pid = `${el.project_id}.${el.sample_name}`;
+
         if (pid === sample && taskExp.test(el.report_json.task)) {
-            for (const [key, val] of Object.entries(el.report_json.plotData)) {
+            if(el.report_json.plotData !== undefined){
+                for (const [key, val] of Object.entries(el.report_json.plotData)) {
+                    const tempData = Array.from(val, (x) => {return {
+                        x: convertXPosition(x.seqRange[0], x.contig, xbars),
+                        x2: convertXPosition(x.seqRange[1], x.contig, xbars),
+                        y: counter,
+                        gene: x.gene,
+                        accession: x.accession,
+                        coverage: x.coverage,
+                        ident: x["identity"],
+                        windowSize
+                    };});
 
-                const tempData = Array.from(val, (x) => {return {
-                    x: convertXPosition(x.seqRange[0], x.contig, xbars),
-                    x2: convertXPosition(x.seqRange[1], x.contig, xbars),
-                    y: counter,
-                    gene: x.gene,
-                    accession: x.accession,
-                    coverage: x.coverage,
-                    ident: x["identity"],
-                    windowSize
-                };});
-
-                categories.push(key);
-                seriesFinal.push({name: key, data: tempData, pointWidth: 12, pointRange: 0});
-                counter += 1;
+                    categories.push(key);
+                    seriesFinal.push({name: key, data: tempData, pointWidth: 12, pointRange: 0});
+                    counter += 1;
+                }
             }
         }
     }
