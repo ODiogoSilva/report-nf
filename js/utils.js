@@ -159,7 +159,7 @@ const getAssemblyPath = (sampleId, pipelineId) => {
 
     for (const el of data.results){
 
-        if (el.report_json.task === "pilon"){
+        if (el.report_json.task.indexOf("pilon") > -1){
             const pid = `${el.project_id}.${el.sample_name}`;
             if (sampleId === pid){
                 filePath = el.report_json.workdir.split("/").slice(0, -3).join("/") + assemblySuffix;
