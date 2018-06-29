@@ -326,6 +326,8 @@ div.dataTables_wrapper {
     margin: 0 auto;
 }
 
+.modal { overflow: auto !important; }
+
 #modalAlert {
     z-index: 999999999;
 }

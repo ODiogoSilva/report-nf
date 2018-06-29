@@ -162,7 +162,8 @@ const getAssemblyPath = (sampleId, pipelineId) => {
         if (el.report_json.task.indexOf("pilon") > -1){
             const pid = `${el.project_id}.${el.sample_name}`;
             if (sampleId === pid){
-                assemblySuffix = assemblySuffix + el.report_json.task + `/${el.sample_name}_trim_spades3111_proc_filt_polished.fasta`;
+                //assemblySuffix = assemblySuffix + el.report_json.task + `/${el.sample_name}_trim_spades3111_proc_filt_polished.fasta`;
+                assemblySuffix = assemblySuffix + el.report_json.task + `/sample_trim_spades3111_proc_filt_polished.fasta`;
                 filePath = el.report_json.workdir.split("/").slice(0, -3).join("/") + assemblySuffix;
                 sampleName = el.sample_name
             }
